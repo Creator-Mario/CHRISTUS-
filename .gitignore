@@ -19,3 +19,8 @@ linux/
 macos/
 web/
 windows/
+
+# Electron
+electron/node_modules/
+electron/dist/
+electron/app.html

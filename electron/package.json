@@ -1,0 +1,54 @@
+{
+  "name": "bde-bibel",
+  "productName": "BdE Bibel",
+  "version": "1.0.0",
+  "description": "Buch des Dienstes zur Evangelisation – Elberfelder 1905. © 2025 Mario Reiner Denzer",
+  "author": {
+    "name": "Mario Reiner Denzer"
+  },
+  "license": "SEE LICENSE IN ../LICENSE",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "33.4.5",
+    "electron-builder": "26.8.1"
+  },
+  "build": {
+    "appId": "com.christusbibel.bde",
+    "productName": "BdE Bibel",
+    "copyright": "© 2025 Mario Reiner Denzer",
+    "files": [
+      "main.js",
+      "app.html"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.reference"
+    },
+    "linux": {
+      "target": [{ "target": "AppImage", "arch": ["x64"] }],
+      "icon": "build/icon.png",
+      "category": "Education"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "BdE Bibel"
+    }
+  }
+}

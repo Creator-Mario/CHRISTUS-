@@ -853,8 +853,14 @@ def build(csv_path: str, output_path: str,
 
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Build self-contained Bible HTML")
+    parser.add_argument("--out", default=OUTPUT_PATH,
+                        help="Output HTML path (default: preview/standalone.html)")
+    args = parser.parse_args()
+    out = args.out
     print(f"CSV:      {CSV_PATH}")
     print(f"Passages: {PASSAGES_JSON}")
-    print(f"Output:   {OUTPUT_PATH}")
-    build(CSV_PATH, OUTPUT_PATH)
+    print(f"Output:   {out}")
+    build(CSV_PATH, out)
     print("Done.")

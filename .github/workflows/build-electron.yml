@@ -1,0 +1,218 @@
+name: Build Desktop App (Electron)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'electron/**'
+      - 'preview/standalone.html'
+      - 'tools/build_standalone_preview.py'
+      - 'tools/build_bible_db.py'
+      - 'tools/generate_passages_json.py'
+      - 'data/**'
+      - '.github/workflows/build-electron.yml'
+  workflow_dispatch:   # Manual trigger from any branch
+
+permissions:
+  contents: write   # Required to create GitHub Releases
+
+jobs:
+  build:
+    strategy:
+      # Keep fail-fast: false so a failed build on one OS doesn't cancel the
+      # other platform builds – each artefact is independently publishable.
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            artifact: BdE-Bibel-Setup.exe
+            glob: "electron/dist/*.exe"
+          - os: macos-latest
+            platform: mac
+            artifact: BdE-Bibel.dmg
+            glob: "electron/dist/*.dmg"
+          - os: ubuntu-latest
+            platform: linux
+            artifact: BdE-Bibel.AppImage
+            glob: "electron/dist/*.AppImage"
+
+    runs-on: ${{ matrix.os }}
+    name: Build (${{ matrix.platform }})
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Python: generate DB + standalone HTML ──────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate passages JSON
+        run: python3 tools/generate_passages_json.py
+
+      - name: Build SQLite database
+        run: python3 tools/build_bible_db.py
+
+      - name: Build self-contained app.html
+        run: python3 tools/build_standalone_preview.py --out electron/app.html
+
+      # ── Generate SVG app icon ──────────────────────────────────────────────
+      - name: Generate app icon (SVG → PNG via Inkscape / rsvg-convert)
+        shell: bash
+        run: |
+          mkdir -p electron/build
+          python3 - <<'EOF'
+          # Write minimal SVG icon (gold cross on navy circle)
+          svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+            <circle cx="128" cy="128" r="128" fill="#0d1b2a"/>
+            <rect x="116" y="40"  width="24" height="176" rx="6" fill="#c9a227"/>
+            <rect x="56"  y="96"  width="144" height="24" rx="6" fill="#c9a227"/>
+          </svg>"""
+          with open('/tmp/icon.svg', 'w') as f:
+              f.write(svg)
+          print("SVG written")
+          EOF
+          # Try rsvg-convert (Linux), otherwise cairosvg via pip
+          if command -v rsvg-convert &>/dev/null; then
+            rsvg-convert -w 256 -h 256 /tmp/icon.svg -o electron/build/icon.png
+          elif command -v inkscape &>/dev/null; then
+            inkscape /tmp/icon.svg --export-filename=electron/build/icon.png -w 256 -h 256
+          else
+            pip install cairosvg -q
+            python3 -c "import cairosvg; cairosvg.svg2png(url='/tmp/icon.svg', write_to='electron/build/icon.png', output_width=256, output_height=256)"
+          fi
+          ls -lh electron/build/
+
+      - name: Convert PNG icon for Windows (.ico)
+        if: matrix.platform == 'win'
+        shell: pwsh
+        run: |
+          # Use Python pillow to create .ico
+          pip install pillow -q
+          python -c "
+          from PIL import Image
+          img = Image.open('electron/build/icon.png').resize((256,256), Image.Resampling.LANCZOS)
+          img.save('electron/build/icon.ico', format='ICO', sizes=[(256,256),(128,128),(64,64),(32,32),(16,16)])
+          print('icon.ico created')
+          "
+
+      - name: Convert PNG icon for macOS (.icns)
+        if: matrix.platform == 'mac'
+        shell: bash
+        run: |
+          mkdir -p /tmp/bde.iconset
+          for size in 16 32 64 128 256 512; do
+            sips -z $size $size electron/build/icon.png \
+              --out /tmp/bde.iconset/icon_${size}x${size}.png 2>/dev/null || true
+          done
+          iconutil -c icns /tmp/bde.iconset -o electron/build/icon.icns 2>/dev/null || \
+            cp electron/build/icon.png electron/build/icon.icns
+
+      # ── Node / Electron-builder ────────────────────────────────────────────
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Electron dependencies
+        working-directory: electron
+        run: npm install
+
+      - name: Build desktop app
+        working-directory: electron
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --${{ matrix.platform }} --publish=never
+
+      # ── Rename artefact to consistent name ────────────────────────────────
+      - name: Locate and rename artefact
+        shell: bash
+        run: |
+          mkdir -p dist_out
+          # Find the generated installer/image
+          find electron/dist -maxdepth 1 -type f \
+            \( -name "*.exe" -o -name "*.dmg" -o -name "*.AppImage" \) \
+            | head -1 | xargs -I{} cp {} dist_out/${{ matrix.artifact }}
+          ls -lh dist_out/
+
+      - name: Upload artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist_out/${{ matrix.artifact }}
+          retention-days: 90
+
+  # ── Publish all three builds to a single GitHub Release ───────────────────
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Publish GitHub Release
+
+    steps:
+      - name: Download all artefacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_assets
+          merge-multiple: true
+
+      - name: List artefacts
+        run: ls -lh release_assets/
+
+      - name: Create / update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: desktop-latest
+          name: "BdE Bibel – Desktop App (Windows / Mac / Linux)"
+          body: |
+            ## 🖥️ Buch des Dienstes zur Evangelisation – Desktop App
+
+            ### Download (kein Browser, keine Installation nötig)
+
+            | Betriebssystem | Datei | Beschreibung |
+            |---|---|---|
+            | 🪟 Windows | **BdE-Bibel-Setup.exe** | Installer – einfach doppelklicken |
+            | 🍎 macOS | **BdE-Bibel.dmg** | Disk-Image – ins Programme-Ordner ziehen |
+            | 🐧 Linux | **BdE-Bibel.AppImage** | Ausführbar machen + starten |
+
+            > ⬇️ Klicke unten auf den Dateinamen zum Herunterladen
+
+            ---
+            ### Windows – Installation
+            1. `BdE-Bibel-Setup.exe` herunterladen
+            2. Doppelklick → "Ja" bei der Sicherheitswarnung
+            3. Installationsassistent folgen → App startet automatisch ✅
+
+            ### macOS – Installation
+            1. `BdE-Bibel.dmg` herunterladen + öffnen
+            2. App in den Programme-Ordner ziehen
+            3. Beim ersten Start: Rechtsklick → Öffnen → Trotzdem öffnen ✅
+
+            ### Linux – Installation
+            ```bash
+            chmod +x BdE-Bibel.AppImage
+            ./BdE-Bibel.AppImage
+            ```
+
+            ---
+            ### Inhalt der App
+            - 📖 Elberfelder 1905 (Public Domain) – 66 Bücher · 31.102 Verse
+            - 🎯 Thematische Bibelstellen in 18 Themen
+            - 🔍 Volltext-Suche durch alle Verse
+            - 📵 **100 % offline** – kein Internet erforderlich
+
+            ### Creator & Copyright
+            Mario Reiner Denzer · © 2025 · Version 1.0.0
+
+            ---
+            ### Alternative: Android APK
+            👉 Siehe Release **Christus Bibel – Android APK**
+
+            ### Alternative: Browser-App (ohne Installation)
+            👉 https://creator-mario.github.io/CHRISTUS-/preview/standalone.html
+          files: release_assets/**
+          make_latest: true
+          draft: false
+          prerelease: false

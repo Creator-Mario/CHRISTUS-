@@ -44,10 +44,26 @@
       transition:background .15s;
     }
     .btn-open:hover{background:rgba(201,162,39,.12);}
+    .section{
+      width:100%;max-width:500px;
+      border-top:1px solid rgba(201,162,39,.3);
+      padding-top:18px;
+    }
+    .section-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#8ab0cc;margin-bottom:12px;}
+    .dl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;width:100%;max-width:500px;}
+    .dl-card{
+      background:rgba(255,255,255,.07);border:1px solid rgba(201,162,39,.25);
+      border-radius:12px;padding:14px 12px;text-decoration:none;
+      color:#ede4d0;transition:background .15s;
+    }
+    .dl-card:hover{background:rgba(201,162,39,.15);}
+    .dl-card .os{font-size:22px;display:block;margin-bottom:4px;}
+    .dl-card .os-name{font-size:13px;font-weight:700;color:#f4d160;}
+    .dl-card .os-file{font-size:11px;opacity:.65;font-family:monospace;}
     .info{
       background:rgba(255,255,255,.07);border:1px solid rgba(201,162,39,.25);
-      border-radius:14px;padding:18px 24px;max-width:440px;
-      font-size:13px;line-height:1.8;text-align:left;color:#ede4d0;
+      border-radius:14px;padding:18px 24px;max-width:480px;
+      font-size:13px;line-height:1.9;text-align:left;color:#ede4d0;
     }
     .info b{color:#f4d160;}
     .copy{font-size:11px;opacity:.45;margin-top:8px;}
@@ -62,22 +78,58 @@
 
   <div class="divider"></div>
 
-  <!-- Primary: Download the file -->
-  <a class="btn-dl" href="preview/standalone.html" download="BdE-Bibel.html">
-    💾&nbsp; App herunterladen (2 MB)
-  </a>
+  <!-- ── Desktop (Electron) ── -->
+  <div class="section">
+    <p class="section-title">🖥️ Desktop-App – eigenständig, kein Browser nötig</p>
+  </div>
+  <div class="dl-grid">
+    <a class="dl-card" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
+      <span class="os">🪟</span>
+      <span class="os-name">Windows</span>
+      <span class="os-file">BdE-Bibel-Setup.exe</span>
+    </a>
+    <a class="dl-card" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
+      <span class="os">🍎</span>
+      <span class="os-name">macOS</span>
+      <span class="os-file">BdE-Bibel.dmg</span>
+    </a>
+    <a class="dl-card" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
+      <span class="os">🐧</span>
+      <span class="os-name">Linux</span>
+      <span class="os-file">BdE-Bibel.AppImage</span>
+    </a>
+  </div>
 
-  <!-- Secondary: Open directly in browser -->
+  <!-- ── Browser / Mobile ── -->
+  <div class="section">
+    <p class="section-title">📱 Browser-App – Android · iPhone · Desktop</p>
+  </div>
+
+  <a class="btn-dl" href="preview/standalone.html" download="BdE-Bibel.html">
+    💾&nbsp; Als Datei herunterladen (2 MB)
+  </a>
   <a class="btn-open" href="preview/standalone.html">
     ▶&nbsp; Direkt im Browser öffnen
   </a>
 
+  <!-- ── Android APK ── -->
+  <div class="section">
+    <p class="section-title">📱 Android APK – direkte Installation</p>
+  </div>
+  <a class="btn-open" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/apk-latest" target="_blank">
+    ⬇️&nbsp; Android APK herunterladen
+  </a>
+
   <div class="info">
-    <b>So verwendest du die heruntergeladene Datei:</b><br>
-    1. Auf „App herunterladen" klicken → <code>BdE-Bibel.html</code> wird gespeichert<br>
-    2. Datei per Doppelklick im Browser öffnen<br>
-    3. Fertig – funktioniert <b>komplett offline</b>, ohne Internet ✅<br><br>
-    <b>Als App installieren (Handy):</b><br>
+    <b>🖥️ Desktop-App (Windows):</b><br>
+    1. „BdE-Bibel-Setup.exe" von GitHub Releases herunterladen<br>
+    2. Doppelklick → Installationsassistent folgen<br>
+    3. App startet sofort – <b>ohne Browser, komplett offline</b> ✅<br><br>
+    <b>📄 Browser-Datei (alle Geräte):</b><br>
+    1. „Als Datei herunterladen" → <code>BdE-Bibel.html</code> speichern<br>
+    2. Per Doppelklick im Browser öffnen – <b>funktioniert offline</b> ✅<br>
+    3. Weiterleiten per WhatsApp, E-Mail, USB, Bluetooth …<br><br>
+    <b>📱 Als App installieren (Handy, ohne APK):</b><br>
     🤖 Android Chrome → Menü ⋮ → „Zum Startbildschirm"<br>
     🍎 iPhone Safari → Teilen ↑ → „Zum Home-Bildschirm"
   </div>
