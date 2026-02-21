@@ -1,6 +1,16 @@
 # CHRISTUS-
 Bibelstellen
 
+## 🌐 Live-Vorschau
+
+**👉 [https://creator-mario.github.io/CHRISTUS-/preview/](https://creator-mario.github.io/CHRISTUS-/preview/)**
+
+> Die Vorschau wird automatisch per GitHub Actions aktualisiert, sobald
+> Änderungen auf `main` gepusht werden.  
+> GitHub Pages muss einmalig im Repository aktiviert werden – siehe [Einrichtung](#github-pages-einrichten).
+
+---
+
 ## Bible Database
 
 The repository includes the **Elberfelder 1905** German Bible translation as a
@@ -135,3 +145,20 @@ flutter run
 | `lib/screens/chapters_screen.dart` | Chapter grid for a selected book |
 | `lib/screens/verses_screen.dart` | Verse list for a selected chapter |
 | `lib/screens/search_screen.dart` | Global FTS5 full-text search |
+
+---
+
+## GitHub Pages einrichten
+
+Damit der Link **[https://creator-mario.github.io/CHRISTUS-/preview/](https://creator-mario.github.io/CHRISTUS-/preview/)** funktioniert, muss GitHub Pages **einmalig** im Repository aktiviert werden:
+
+1. Gehe zu **Settings → Pages** im Repository  
+   `https://github.com/Creator-Mario/CHRISTUS-/settings/pages`
+2. Unter **Source** → **GitHub Actions** auswählen
+3. Speichern – fertig!
+
+Der Workflow (`.github/workflows/deploy-preview.yml`) läuft automatisch bei
+jedem Push auf `main` und veröffentlicht die aktualisierte Vorschau.
+
+Du kannst den Workflow auch manuell starten:  
+**Actions → "Deploy Bible Preview to GitHub Pages" → Run workflow**
