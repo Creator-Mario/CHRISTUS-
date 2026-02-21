@@ -83,6 +83,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <title>Buch des Dienstes zur Evangelisation</title>
 
   <!-- PWA -->
+  <!-- Primary manifest: works on GitHub Pages where icons/icon-192.png is served -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0d1b2a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -90,6 +91,11 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <meta name="apple-mobile-web-app-title" content="BDE Bibel" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="description" content="Buch des Dienstes zur Evangelisation – Elberfelder 1905. Creator &amp; Copyright: Mario Reiner Denzer © 2025" />
+  <!-- App icons – embedded base64 so they work from file:// and any URL -->
+  <link rel="icon" type="image/png" sizes="192x192"
+        href="data:image/png;base64,%%ICON192%%" />
+  <link rel="apple-touch-icon" sizes="192x192"
+        href="data:image/png;base64,%%ICON192%%" />
 
   <style>
     :root {
@@ -651,14 +657,29 @@ function goHome() {
   showView('view-home');
 }
 
+// ── Helpers ───────────────────────────────────────────────────
+// Convert "#rrggbb" to "rgba(r,g,b,a)" – avoids 8-digit hex which
+// isn't supported on old Android WebView / Samsung Internet.
+function hexFade(hex, a) {
+  a = a === undefined ? 0.75 : a;
+  var r = parseInt(hex.slice(1,3),16);
+  var g = parseInt(hex.slice(3,5),16);
+  var b = parseInt(hex.slice(5,7),16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+}
+
 // ── Home ──────────────────────────────────────────────────────
 function renderHome() {
   const grid = document.getElementById('theme-grid');
+  if (!PASSAGE_DATA || !PASSAGE_DATA.themes || !PASSAGE_DATA.themes.length) {
+    grid.innerHTML = '<p style="padding:20px;color:#888">Keine Themen verfügbar.</p>';
+    return;
+  }
   grid.innerHTML = PASSAGE_DATA.themes.map((t, i) => {
     const color = THEME_COLORS[i % THEME_COLORS.length];
     const count = PASSAGE_DATA.passages.filter(p => p.theme_id === t.id).length;
     return `<div class="theme-card" data-tid="${t.id}" data-color="${color}"
-                 style="background:linear-gradient(135deg,${color},${color}cc)">
+                 style="background:linear-gradient(135deg,${color},${hexFade(color)})">
               <span class="theme-icon">${escHtml(t.icon)}</span>
               <span class="theme-name">${escHtml(t.name)}</span>
               <span class="theme-count">${count} Stellen</span>
@@ -1022,10 +1043,21 @@ def build(csv_path: str, output_path: str,
     else:
         print(f"  WARNING: pako not found at {pako_path}", flush=True)
 
+    # Embed app icon as base64 so it works from any URL (file://, GitHub Pages, shared link)
+    icon192_b64 = ""
+    icon_path = os.path.join(REPO_ROOT, "preview", "icons", "icon-192.png")
+    if os.path.exists(icon_path):
+        with open(icon_path, "rb") as f:
+            icon192_b64 = base64.b64encode(f.read()).decode()
+        print(f"  Icon 192x192: {len(icon192_b64):,} chars base64", flush=True)
+    else:
+        print(f"  WARNING: icon not found at {icon_path}", flush=True)
+
     html = (HTML_TEMPLATE
             .replace("'%%PAYLOAD%%'", f"'{payload}'")
             .replace("%%PASSAGE_DATA%%", passage_data_js)
-            .replace("%%PAKO%%", pako_src))
+            .replace("%%PAKO%%", pako_src)
+            .replace("%%ICON192%%", icon192_b64))
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
     size_kb = os.path.getsize(output_path) / 1024
