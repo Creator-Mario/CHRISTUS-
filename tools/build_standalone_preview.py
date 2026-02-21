@@ -377,15 +377,22 @@ function openAllBooks() {
   document.getElementById('app-bar').style.background = '#1a237e';
   document.getElementById('app-title').textContent = 'Alle Bücher';
   const list = document.getElementById('book-list');
-  list.innerHTML = Object.entries(BOOKS).map(([id, name]) =>
-    `<div class="list-item" data-book="${id}">
+  const AT_LABEL = '<div class="section-header">Altes Testament (1–39)</div>';
+  const NT_LABEL = '<div class="section-header">Neues Testament (40–66)</div>';
+  list.innerHTML = AT_LABEL + Object.entries(BOOKS).map(([id, name]) => {
+    const bookId = Number(id);
+    const chs  = Object.keys(IDX[bookId] || {}).length;
+    const vs   = Object.values(IDX[bookId] || {}).reduce((s,a)=>s+a.length, 0);
+    const divider = bookId === 40 ? NT_LABEL : '';
+    return divider + `<div class="list-item" data-book="${id}">
        <div class="avatar">${id}</div>
        <div class="list-item-text">
          <div class="list-item-title">${escHtml(name)}</div>
+         <div class="list-item-ref">${chs} Kapitel · ${vs} Verse</div>
        </div>
        <span style="color:#999">›</span>
-     </div>`
-  ).join('');
+     </div>`;
+  }).join('');
   list.onclick = e => {
     const el = e.target.closest('[data-book]');
     if (el) openBook(Number(el.dataset.book));
@@ -396,9 +403,11 @@ function openAllBooks() {
 function openBook(bookId) {
   const chapters = Object.keys(IDX[bookId] || {}).map(Number).sort((a,b)=>a-b);
   const grid = document.getElementById('chapter-grid');
-  grid.innerHTML = chapters.map(c =>
-    `<button class="chapter-btn" data-book="${bookId}" data-ch="${c}">${c}</button>`
-  ).join('');
+  grid.innerHTML = `<div class="section-header" style="grid-column:1/-1">${Object.keys(IDX[bookId]||{}).length} Kapitel</div>` +
+    chapters.map(c => {
+      const vs = (IDX[bookId][c] || []).length;
+      return `<button class="chapter-btn" data-book="${bookId}" data-ch="${c}" title="${vs} Verse">${c}</button>`;
+    }).join('');
   grid.onclick = e => {
     const el = e.target.closest('[data-ch]');
     if (el) openChapter(Number(el.dataset.book), Number(el.dataset.ch));
