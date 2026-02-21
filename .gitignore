@@ -1,0 +1,6 @@
+# Generated database asset – rebuild with: python3 tools/build_bible_db.py
+assets/db/bible.sqlite
+
+# Python
+__pycache__/
+*.py[cod]
