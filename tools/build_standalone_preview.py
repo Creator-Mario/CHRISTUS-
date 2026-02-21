@@ -208,6 +208,69 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       padding: 5px 10px; border-radius: 16px;
       display: none; white-space: nowrap; flex-shrink: 0;
     }
+
+    /* ── A2HS / Install guide modal ── */
+    #a2hs-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,.82); align-items: flex-end;
+      justify-content: center;
+    }
+    #a2hs-overlay.open { display: flex; }
+    #a2hs-modal {
+      background: #0d1b2a; border: 2px solid rgba(201,162,39,.55);
+      border-radius: 20px 20px 0 0; width: 100%; max-width: 520px;
+      padding: 24px 20px 32px; box-shadow: 0 -8px 40px rgba(0,0,0,.7);
+      animation: slideUp .25s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(120px); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+    .a2hs-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .a2hs-title {
+      font-size: 17px; font-weight: 700; color: var(--gold-lt);
+      font-family: Georgia, serif;
+    }
+    .a2hs-close {
+      background: none; border: none; color: #6a8aaa;
+      font-size: 22px; cursor: pointer; padding: 0 4px; line-height: 1;
+    }
+    .a2hs-tabs {
+      display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .a2hs-tab {
+      padding: 6px 14px; border-radius: 20px; font-size: 13px;
+      cursor: pointer; border: 1.5px solid rgba(201,162,39,.35);
+      color: #8ab0cc; background: transparent; transition: all .15s;
+    }
+    .a2hs-tab.active {
+      background: linear-gradient(135deg, #c9a227, #f4d160);
+      color: #0d1b2a; border-color: transparent; font-weight: 700;
+    }
+    .a2hs-panel { display: none; }
+    .a2hs-panel.active { display: block; }
+    .a2hs-step {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 14px; padding: 12px 14px;
+      background: rgba(255,255,255,.04); border-radius: 12px;
+      border-left: 3px solid rgba(201,162,39,.5);
+    }
+    .a2hs-num {
+      min-width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, #c9a227, #f4d160);
+      color: #0d1b2a; font-weight: 900; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .a2hs-step-text { font-size: 14px; color: #cdd8e3; line-height: 1.5; }
+    .a2hs-step-text strong { color: var(--gold-lt); }
+    .a2hs-note {
+      font-size: 12px; color: #6a8aaa; text-align: center;
+      margin-top: 8px; line-height: 1.5;
+    }
     /* ── Offline badge ── */
     #offline-badge {
       display: none; align-items: center; gap: 5px;
@@ -361,6 +424,92 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <button class="splash-start" onclick="closeSplash()">✝ &nbsp;Zur Bibel</button>
   <button id="install-btn-splash">⬇ &nbsp;App installieren</button>
   <button id="save-btn-splash" onclick="saveOffline()" title="Als Datei speichern">💾 &nbsp;Offline speichern</button>
+</div>
+
+<!-- ── A2HS Install Guide Modal ────────────────────────────── -->
+<div id="a2hs-overlay" role="dialog" aria-modal="true" aria-label="App installieren">
+  <div id="a2hs-modal">
+    <div class="a2hs-header">
+      <span class="a2hs-title">📱 App zum Startbildschirm</span>
+      <button class="a2hs-close" onclick="closeA2HS()" aria-label="Schließen">✕</button>
+    </div>
+    <div class="a2hs-tabs">
+      <button class="a2hs-tab" id="tab-android" onclick="switchA2HS('android')"><span aria-hidden="true">🤖</span> Android</button>
+      <button class="a2hs-tab" id="tab-iphone"  onclick="switchA2HS('iphone')"><span aria-hidden="true">🍎</span> iPhone</button>
+      <button class="a2hs-tab" id="tab-desktop" onclick="switchA2HS('desktop')"><span aria-hidden="true">💻</span> Desktop</button>
+    </div>
+
+    <!-- Android -->
+    <div class="a2hs-panel" id="panel-android">
+      <div class="a2hs-step">
+        <div class="a2hs-num">1</div>
+        <div class="a2hs-step-text">Öffne diese Seite in <strong>Chrome</strong> (oder Samsung Internet) auf deinem Android-Gerät.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">2</div>
+        <div class="a2hs-step-text">Tippe auf das <strong>Menü ⋮</strong> (drei Punkte oben rechts).</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">3</div>
+        <div class="a2hs-step-text">Wähle <strong>„Zum Startbildschirm hinzufügen"</strong> aus der Liste.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">4</div>
+        <div class="a2hs-step-text">Tippe auf <strong>„Hinzufügen"</strong> im Bestätigungsdialog.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">5</div>
+        <div class="a2hs-step-text">✅ Das <strong>✝ BdE-Symbol</strong> erscheint auf deinem Startbildschirm – die App öffnet sich wie eine native App!</div>
+      </div>
+      <div class="a2hs-note">💡 Tipp: In Samsung Internet heißt es „Seite hinzufügen zu → Startbildschirm"</div>
+    </div>
+
+    <!-- iPhone -->
+    <div class="a2hs-panel" id="panel-iphone">
+      <div class="a2hs-step">
+        <div class="a2hs-num">1</div>
+        <div class="a2hs-step-text">Öffne diese Seite in <strong>Safari</strong> auf deinem iPhone oder iPad.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">2</div>
+        <div class="a2hs-step-text">Tippe auf das <strong>Teilen-Symbol ⬆</strong> unten in der Mitte der Symbolleiste.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">3</div>
+        <div class="a2hs-step-text">Scrolle nach unten und tippe auf <strong>„Zum Home-Bildschirm"</strong>.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">4</div>
+        <div class="a2hs-step-text">Tippe rechts oben auf <strong>„Hinzufügen"</strong>.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">5</div>
+        <div class="a2hs-step-text">✅ Das <strong>✝ BdE-Symbol</strong> erscheint auf deinem Home-Bildschirm!</div>
+      </div>
+      <div class="a2hs-note">⚠ Nur Safari unterstützt „Zum Home-Bildschirm" auf iPhone/iPad. Chrome iOS unterstützt diese Funktion nicht.</div>
+    </div>
+
+    <!-- Desktop -->
+    <div class="a2hs-panel" id="panel-desktop">
+      <div class="a2hs-step">
+        <div class="a2hs-num">1</div>
+        <div class="a2hs-step-text">Öffne diese Seite in <strong>Chrome oder Edge</strong> am Computer.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">2</div>
+        <div class="a2hs-step-text">Klicke auf das <strong>Install-Symbol ⊕</strong> rechts in der Adressleiste (erscheint automatisch).</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">3</div>
+        <div class="a2hs-step-text">Klicke auf <strong>„Installieren"</strong> im Popup-Dialog.</div>
+      </div>
+      <div class="a2hs-step">
+        <div class="a2hs-num">4</div>
+        <div class="a2hs-step-text">✅ Die App öffnet sich in einem <strong>eigenen Fenster</strong> ohne Browser-Leiste – wie ein Programm!</div>
+      </div>
+      <div class="a2hs-note">💡 Alternative: Datei <strong>BdE-Bibel.html</strong> herunterladen und direkt öffnen – funktioniert offline ohne Installation.</div>
+    </div>
+  </div>
 </div>
 
 <!-- ── Update banner ────────────────────────────────────────── -->
@@ -801,6 +950,29 @@ window.addEventListener('appinstalled', () => {
 });
 document.getElementById('install-btn-splash').addEventListener('click', installApp);
 
+function detectPlatform() {
+  const ua = navigator.userAgent.toLowerCase();
+  if (/iphone|ipad|ipod/.test(ua)) return 'iphone';
+  if (/android/.test(ua)) return 'android';
+  return 'desktop';
+}
+function switchA2HS(platform) {
+  ['android','iphone','desktop'].forEach(p => {
+    document.getElementById('panel-' + p).classList.toggle('active', p === platform);
+    document.getElementById('tab-' + p).classList.toggle('active', p === platform);
+  });
+}
+function showA2HS() {
+  switchA2HS(detectPlatform());
+  document.getElementById('a2hs-overlay').classList.add('open');
+}
+function closeA2HS() {
+  document.getElementById('a2hs-overlay').classList.remove('open');
+}
+document.getElementById('a2hs-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeA2HS();
+});
+
 function installApp() {
   if (_installPrompt) {
     _installPrompt.prompt();
@@ -808,12 +980,7 @@ function installApp() {
       .then(() => { _installPrompt = null; })
       .catch(() => { _installPrompt = null; });
   } else {
-    alert(
-      'So installierst du die App:\n\n' +
-      '\u{1F4F1} Android Chrome: Men\u00fc (\u22ee) \u2192 \u201eZum Startbildschirm hinzuf\u00fcgen\u201c\n' +
-      '\u{1F34E} iPhone Safari: Teilen (\u2191) \u2192 \u201eZum Home-Bildschirm\u201c\n' +
-      '\u{1F4BB} Desktop Chrome/Edge: Adressleiste \u2192 Install-Symbol (\u2295)'
-    );
+    showA2HS();
   }
 }
 </script>
