@@ -118,23 +118,16 @@
       <b>Kein Internet nötig</b> nach dem Download. Kein App-Store. Kein Setup.
     </p>
 
-    <!-- Direct GitHub Release download – always works, proper file download -->
+    <!-- Same-origin Pages link → browser triggers real download with filename -->
     <a class="btn-main"
-       href="https://github.com/Creator-Mario/CHRISTUS-/releases/download/html-latest/BDE-Bibel.html"
+       href="preview/standalone.html"
        download="BDE-Bibel.html">
       💾&nbsp; BDE-Bibel.html herunterladen
     </a>
 
-    <!-- Open directly in browser (relative, works when served via Pages) -->
+    <!-- Open directly in browser (same file, no download prompt) -->
     <a class="btn-secondary" href="preview/standalone.html" target="_blank">
       ▶&nbsp; Direkt im Browser öffnen
-    </a>
-
-    <!-- Releases page as fallback -->
-    <a class="btn-secondary"
-       href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/html-latest"
-       target="_blank">
-      📦&nbsp; GitHub Releases-Seite öffnen
     </a>
   </div>
 
@@ -149,7 +142,7 @@
       <li><i>Optional:</i> Menü ⋮ → <b>„Zum Startbildschirm hinzufügen"</b> → App-Symbol</li>
     </ol>
     <p class="note">
-      📌 Wenn der Browser-Download nicht klappt: Link lange gedrückt halten → „Link speichern unter"
+      📌 Falls kein Download-Dialog: Link lange halten → „Link speichern unter"
     </p>
   </div>
 
@@ -164,20 +157,19 @@
     </ol>
   </div>
 
-  <!-- ─── Other platforms ─── -->
   <p class="section-label">Weitere Plattformen</p>
   <div class="platforms">
-    <a class="pcard" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/apk-latest" target="_blank">
+    <a class="pcard" href="https://github.com/Creator-Mario/CHRISTUS-/releases" target="_blank">
       <span class="pos">🤖</span>
       <span class="pname">Android APK</span>
       <span class="pdesc">Direkte Installation</span>
-      <span class="coming">Wird in GitHub Actions erstellt →<br>Releases-Seite prüfen</span>
+      <span class="coming">GitHub Releases-Seite →<br>nach „apk-latest" suchen</span>
     </a>
-    <a class="pcard" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
+    <a class="pcard" href="https://github.com/Creator-Mario/CHRISTUS-/releases" target="_blank">
       <span class="pos">🖥️</span>
       <span class="pname">Desktop (Win/Mac/Linux)</span>
       <span class="pdesc">Standalone Electron-App</span>
-      <span class="coming">Wird in GitHub Actions erstellt →<br>Releases-Seite prüfen</span>
+      <span class="coming">GitHub Releases-Seite →<br>nach „desktop-latest" suchen</span>
     </a>
   </div>
 

@@ -9,9 +9,11 @@
 
 ### ⬇️ Download-Link (immer aktuell)
 
-👉 **[BDE-Bibel.html herunterladen](https://github.com/Creator-Mario/CHRISTUS-/releases/download/html-latest/BDE-Bibel.html)**
+👉 **[BDE-Bibel.html öffnen / herunterladen](https://creator-mario.github.io/CHRISTUS-/preview/standalone.html)**
 
-oder **[GitHub Releases-Seite öffnen](https://github.com/Creator-Mario/CHRISTUS-/releases/tag/html-latest)**
+*(Link öffnen → im Browser: Menü → "Seite speichern unter" → BDE-Bibel.html)*
+
+oder direkt die **[App-Startseite öffnen](https://creator-mario.github.io/CHRISTUS-/)**
 
 ---
 
