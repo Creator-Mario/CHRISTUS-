@@ -1,0 +1,107 @@
+name: Build & Release Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'pubspec.yaml'
+      - 'elberfelder_1905.csv'
+      - 'tools/**'
+      - 'schema/**'
+      - 'data/**'
+      - '.github/workflows/build-apk.yml'
+  workflow_dispatch:   # Allow manual trigger from any branch
+
+permissions:
+  contents: write   # Needed to create GitHub Releases
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.0'
+          channel: stable
+          cache: true
+
+      - name: Set up Java (Android SDK requirement)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Generate passages JSON
+        run: python3 tools/generate_passages_json.py
+
+      - name: Build Bible SQLite database
+        run: python3 tools/build_bible_db.py
+
+      - name: Bootstrap Flutter project (Android platform files)
+        run: |
+          # flutter create adds missing platform dirs without touching lib/
+          flutter create \
+            --project-name christus \
+            --org com.christusbibel \
+            --platforms android \
+            .
+
+      - name: Install Dart dependencies
+        run: flutter pub get
+
+      - name: Build APK (release)
+        run: flutter build apk --release
+
+      - name: Rename APK
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk \
+             dist/christus-bibel.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: christus-bibel-apk
+          path: dist/christus-bibel.apk
+          retention-days: 90
+
+      - name: Create / update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-latest
+          name: "Christus Bibel – Android APK"
+          body: |
+            ## 📱 Christus Bibel – Android App
+
+            ### Download & Installation
+
+            1. **[⬇️ christus-bibel.apk]** herunterladen (Schaltfläche unten)
+            2. Auf dem Android-Gerät öffnen
+            3. Falls gefragt: „Aus unbekannten Quellen installieren" erlauben
+               *(Einstellungen → Sicherheit → Unbekannte Quellen)*
+            4. App installieren und starten ✅
+
+            ### Inhalt
+            - 📖 Elberfelder 1905 (Public Domain) – 66 Bücher, 31.102 Verse
+            - 🎯 228 kuratierte Bibelstellen in 18 Themen
+            - 🔍 Volltext-Suche
+            - 📵 Komplett offline – kein Internet nötig
+
+            ### Alternative: Browser-App (Android + iPhone + Desktop)
+            Ohne Installation, direkt im Browser öffnen oder als PWA installieren:
+            👉 https://creator-mario.github.io/CHRISTUS-/preview/standalone.html
+          files: dist/christus-bibel.apk
+          make_latest: true
+          draft: false
+          prerelease: false

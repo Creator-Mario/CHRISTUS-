@@ -75,6 +75,16 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Christus – Bibel</title>
+
+  <!-- PWA: installable as app on Android/iOS/Desktop -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1a237e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Christus" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="description" content="Elberfelder 1905 – Deutsche Bibel mit Volltextsuche und wichtigen Bibelstellen" />
+
   <style>
     :root {
       --primary: #1a237e;
@@ -104,6 +114,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       font-size: 20px; cursor: pointer; padding: 4px 8px; }
     #books-toggle  { background: none; border: none; color: #fff;
       font-size: 20px; cursor: pointer; padding: 4px 8px; }
+    #install-btn   { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5);
+      color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;
+      padding: 4px 10px; border-radius: 14px; display: none; white-space: nowrap; }
 
     #search-bar { background: var(--primary); padding: 8px 12px; display: none; }
     #search-input { width: 100%; padding: 8px 12px; font-size: 15px;
@@ -175,6 +188,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div id="app-bar">
   <button id="back-btn" onclick="goBack()">&#8592;</button>
   <span id="app-title">Christus – Bibel</span>
+  <button id="install-btn" onclick="installApp()" title="App installieren">&#11015; App</button>
   <button id="books-toggle"  title="Alle Bücher" onclick="openAllBooks()">&#128214;</button>
   <button id="search-toggle" title="Suchen"      onclick="showSearch()">&#128269;</button>
 </div>
@@ -475,6 +489,48 @@ function highlightTerms(text, terms) {
     pos = e;
   });
   return html + escHtml(text.slice(pos));
+}
+
+// ── PWA: Service Worker + Install prompt ──────────────────────────────────
+let _installPrompt = null;
+
+// Register SW (only works when served via HTTPS/localhost, not file://)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err =>
+      console.debug('SW registration failed (expected on file://):', err)
+    );
+  });
+}
+
+// Capture the browser's "beforeinstallprompt" event
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _installPrompt = e;
+  document.getElementById('install-btn').style.display = 'block';
+});
+
+// Hide install button once app is installed
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-btn').style.display = 'none';
+  _installPrompt = null;
+});
+
+function installApp() {
+  if (_installPrompt) {
+    _installPrompt.prompt();
+    _installPrompt.userChoice
+      .then(() => { _installPrompt = null; })
+      .catch(() => { _installPrompt = null; });
+  } else {
+    // Fallback: guide user
+    alert(
+      'So installierst du die App:\n\n' +
+      '📱 Android Chrome: Menü (⋮) → "Zum Startbildschirm hinzufügen"\n' +
+      '🍎 iPhone Safari: Teilen (↑) → "Zum Home-Bildschirm"\n' +
+      '💻 Desktop Chrome/Edge: Adressleiste → Install-Symbol (⊕)'
+    );
+  }
 }
 </script>
 </body>

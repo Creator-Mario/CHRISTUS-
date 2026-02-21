@@ -1,75 +1,63 @@
 # CHRISTUS-
 Bibelstellen
 
-## ⚠️ EINE EINMALIGE AKTION NÖTIG – GitHub Pages aktivieren
+---
 
-Der Deployment-Workflow hat bereits gestartet. Du musst **einmalig** folgendes tun:
+## 📲 App herunterladen
 
-### 👉 Jetzt hier klicken:
-**https://github.com/Creator-Mario/CHRISTUS-/settings/pages**
+### Option 1 – Android APK (native App)
 
-Dann:
-1. Unter **"Source"** → **"GitHub Actions"** auswählen (nicht "Deploy from a branch"!)
-2. Auf **"Save"** klicken
-3. Zurück zur Actions-Seite gehen und den Workflow erneut starten:  
-   **https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml**  
-   → **"Run workflow"** → **"Run workflow"** (grüner Button)
-4. ~2 Minuten warten
-5. ✅ Link ist live: **https://creator-mario.github.io/CHRISTUS-/**
+Sobald der PR gemerged ist und der Workflow läuft, erscheint der APK-Download hier:  
+👉 **https://github.com/Creator-Mario/CHRISTUS-/releases/latest**
+
+**Installation:**
+1. APK-Datei auf das Android-Gerät herunterladen
+2. Datei öffnen → „Installieren"
+3. Falls gefragt: *Einstellungen → Sicherheit → Unbekannte Quellen* erlauben
 
 ---
 
-## 📥 Sofort-Link – Jetzt herunterladen & öffnen (kein Setup nötig)
+### Option 2 – Browser-App als PWA installieren (Android + iPhone + Desktop)
 
-**Kein Server, kein Flutter, kein Setup nötig!**
+Öffne diesen Link im Browser deines Geräts:  
+👉 **https://creator-mario.github.io/CHRISTUS-/preview/standalone.html**
 
-### 👉 Direkter Download-Link (funktioniert sofort):
+**Android Chrome:** Menü (⋮) → **„Zum Startbildschirm hinzufügen"**  
+**iPhone Safari:** Teilen (↑) → **„Zum Home-Bildschirm"**  
+**Desktop Chrome/Edge:** Klick auf das **⊕-Symbol** in der Adressleiste
 
-**[Hier klicken → Raw-Datei speichern](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
-
-Oder über GitHub:  
-**https://github.com/Creator-Mario/CHRISTUS-/blob/copilot/add-sqlite-bible-database/preview/standalone.html**
-→ Dann oben rechts auf **„Raw"** klicken → Rechtsklick → **„Speichern unter"** → Doppelklick auf die gespeicherte Datei
-
-✅ Alle 31.102 Verse, 66 Bücher und Volltextsuche – komplett offline, ohne Server!
+Die App funktioniert dann wie eine native App – mit eigenem Icon, Vollbild und offline.
 
 ---
 
-## 🌐 Live-Vorschau (nach GitHub Pages Aktivierung)
+### Option 3 – Sofort-Download (HTML-Datei, ohne Installation)
 
+Datei herunterladen und direkt im Browser öffnen:  
+👉 **[standalone.html herunterladen (Raw)](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
+→ Rechtsklick → „Speichern unter" → Doppelklick auf die gespeicherte Datei ✅
+
+> ~1,9 MB · alle Daten eingebettet · komplett offline · kein Server nötig
+
+---
+
+## ⚠️ Einmalige Setup-Schritte (für Live-Link & APK-Build)
+
+| # | Schritt | Link |
+|---|---|---|
+| 1 | Repository öffentlich stellen | [Settings → Danger Zone → Change to public](https://github.com/Creator-Mario/CHRISTUS-/settings) |
+| 2 | GitHub Pages aktivieren | [Settings → Pages → Source → GitHub Actions → Save](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
+| 3 | Pages-Workflow starten | [Actions → Deploy Bible Preview → Run workflow](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml) |
+| 4 | APK-Workflow starten | [Actions → Build & Release Android APK → Run workflow](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/build-apk.yml) |
+
+📖 **[→ Ausführliche Anleitung (auf Deutsch)](docs/anleitung-repository-oeffentlich.md)**
+
+---
+
+## 🌐 Live-Vorschau
 
 **👉 [https://creator-mario.github.io/CHRISTUS-/preview/](https://creator-mario.github.io/CHRISTUS-/preview/)**
 
-> Die Vorschau wird automatisch per GitHub Actions aktualisiert, sobald
-> Änderungen auf `main` gepusht werden.  
-> GitHub Pages muss einmalig im Repository aktiviert werden – siehe [Einrichtung](#github-pages-einrichten).
-
 ---
-
-## 🔓 Repository öffentlich machen
-
-Damit GitHub Pages (kostenlos) und der Live-Link funktionieren, muss das
-Repository auf **öffentlich** gestellt werden.
-
-📖 **[→ Detaillierte Schritt-für-Schritt-Anleitung](docs/anleitung-repository-oeffentlich.md)**
-
-### Kurzfassung (5 Schritte)
-
-| # | Was | Wo |
-|---|---|---|
-| 1 | Repository-Einstellungen öffnen | [github.com/Creator-Mario/CHRISTUS-/settings](https://github.com/Creator-Mario/CHRISTUS-/settings) |
-| 2 | Ganz nach unten scrollen → **Danger Zone** | auf der Settings-Seite |
-| 3 | **„Change visibility"** → **„Change to public"** klicken | in der Danger Zone |
-| 4 | Repository-Namen `Creator-Mario/CHRISTUS-` eintippen und bestätigen | im Bestätigungs-Dialog |
-| 5 | Pages aktivieren: **Settings → Pages → Source → GitHub Actions → Save** | [github.com/Creator-Mario/CHRISTUS-/settings/pages](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
-
-Danach den Workflow starten:  
-👉 [Actions → „Deploy Bible Preview to GitHub Pages" → „Run workflow"](https://github.com/Creator-Mario/CHRISTUS-/actions)
-
-Nach ~2 Minuten ist der Link **https://creator-mario.github.io/CHRISTUS-/preview/** live. ✅
-
-> **Sicher?** Ja – der Bibel-Text (Elberfelder 1905) ist Public Domain.
-> Es gibt keine Passwörter oder private Daten im Repository.
 
 ## Bible Database
 

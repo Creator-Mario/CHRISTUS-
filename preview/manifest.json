@@ -1,0 +1,28 @@
+{
+  "name": "Christus – Bibel",
+  "short_name": "Christus",
+  "description": "Elberfelder 1905 – Deutsche Bibelübersetzung mit Volltext-Suche und wichtigen Bibelstellen",
+  "start_url": "./standalone.html",
+  "display": "standalone",
+  "background_color": "#1a237e",
+  "theme_color": "#1a237e",
+  "orientation": "portrait-primary",
+  "lang": "de",
+  "categories": ["education", "books", "lifestyle"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='24' fill='%231a237e'/%3E%3Ctext x='96' y='130' font-size='110' text-anchor='middle' fill='white'%3E✝%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='64' fill='%231a237e'/%3E%3Ctext x='256' y='350' font-size='300' text-anchor='middle' fill='white'%3E✝%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
