@@ -3,27 +3,35 @@
 
 ---
 
-## 💾 App sofort herunterladen (kein Setup nötig)
+## 💾 App herunterladen – sofort, kein Setup
 
-> **Eine einzige HTML-Datei – komplett offline – funktioniert auf jedem Gerät**
+> **Eine einzige ~2 MB HTML-Datei – offline – Android · iPhone · Windows · Mac**
 
-### Schritt 1 – Datei herunterladen
+### 🤖 Android – so funktioniert der Download
 
-👉 **[HIER KLICKEN → BdE-Bibel.html herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
+1. Diesen Link im **Chrome-Browser** öffnen:  
+   👉 **[BdE-Bibel.html direkt öffnen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
 
-*Rechtsklick auf den Link → „Speichern unter" → Speichern als `BdE-Bibel.html`*
+2. Link **lange gedrückt halten** → **„Link speichern unter"** → als `BdE-Bibel.html` speichern  
+   *(oder Chrome-Menü ⋮ → Herunterladen)*
 
-### Schritt 2 – Datei öffnen
+3. **Datei-App** → Downloads → **BdE-Bibel.html** antippen → öffnet in Chrome
 
-Doppelklick auf die heruntergeladene Datei `BdE-Bibel.html` → öffnet sich im Browser
+4. **Menü ⋮ → „Zum Startbildschirm hinzufügen"** → App-Symbol auf dem Homescreen ✅
 
-✅ **Funktioniert sofort – komplett ohne Internet**
+> ⚠️ **Falls 404 erscheint:** Das Repository muss **öffentlich** sein.  
+> Einstellung: GitHub → Settings → „Change to public" → [Anleitung](docs/anleitung-repository-oeffentlich.md)
 
-### Schritt 3 – Weitergeben
+### 💻 Windows / Mac
 
-Datei per **WhatsApp · E-Mail · USB-Stick · Bluetooth** an andere senden
+👉 **[HIER KLICKEN → BdE-Bibel.html herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
+*Rechtsklick → „Speichern unter" → Doppelklick zum Öffnen*
 
-> 📦 ~2 MB · alle 31 102 Bibelverse · 18 Themen · 359 Bibelstellen
+### 🍎 iPhone
+
+Link in **Safari** öffnen → Teilen ↑ → **„Zum Home-Bildschirm"** → Fertig ✅
+
+> 📦 ~2 MB · 66 Bücher · 31 102 Verse · 18 Themen · komplett offline
 
 ---
 

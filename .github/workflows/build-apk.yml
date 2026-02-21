@@ -2,7 +2,7 @@ name: Build & Release Android APK
 
 on:
   push:
-    branches: [main]
+    branches: [main, copilot/add-sqlite-bible-database]  # PR branch included so APK is built before merge
     paths:
       - 'lib/**'
       - 'pubspec.yaml'

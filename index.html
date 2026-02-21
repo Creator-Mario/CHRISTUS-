@@ -10,22 +10,40 @@
       font-family:Georgia,'Times New Roman',serif;
       background:linear-gradient(160deg,#08121c 0%,#1a2f45 60%,#0d1b2a 100%);
       min-height:100vh;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;
-      padding:32px 20px;text-align:center;gap:18px;color:#f7f3e9;
+      align-items:center;
+      padding:32px 20px 48px;text-align:center;gap:16px;color:#f7f3e9;
     }
     .icon{
-      width:110px;height:110px;border-radius:50%;
+      width:100px;height:100px;border-radius:50%;
       background:linear-gradient(135deg,#c9a227,#f4d160);
       display:flex;align-items:center;justify-content:center;
-      font-size:58px;color:#0d1b2a;
+      font-size:52px;color:#0d1b2a;
       box-shadow:0 0 50px rgba(201,162,39,.5);
+      margin-top:8px;
     }
-    h1{font-size:clamp(18px,5vw,28px);color:#f4d160;line-height:1.3;max-width:480px;}
-    .sub{font-size:14px;opacity:.75;max-width:400px;line-height:1.6;}
+    h1{font-size:clamp(17px,5vw,26px);color:#f4d160;line-height:1.4;max-width:460px;}
+    .sub{font-size:13px;opacity:.75;max-width:380px;line-height:1.6;}
     .divider{width:80px;height:2px;background:linear-gradient(90deg,transparent,#c9a227,transparent);}
-    .btn-dl{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:16px 36px;
+
+    /* ── BIG primary download card ── */
+    .card-primary{
+      width:100%;max-width:480px;
+      background:linear-gradient(135deg,rgba(201,162,39,.18),rgba(244,209,96,.08));
+      border:2px solid #c9a227;border-radius:20px;
+      padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;
+    }
+    .card-primary .badge{
+      background:#c9a227;color:#0d1b2a;
+      border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;
+      letter-spacing:.8px;text-transform:uppercase;
+    }
+    .card-primary h2{font-size:20px;color:#f4d160;}
+    .card-primary p{font-size:13px;line-height:1.8;color:#ede4d0;max-width:380px;}
+    .card-primary p b{color:#f4d160;}
+
+    .btn-main{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:16px 36px;width:100%;max-width:320px;
       background:linear-gradient(135deg,#c9a227,#f4d160);
       color:#0d1b2a;border:none;border-radius:32px;
       font-size:18px;font-family:Georgia,serif;font-weight:700;
@@ -33,105 +51,125 @@
       box-shadow:0 4px 24px rgba(201,162,39,.45);
       transition:transform .15s,box-shadow .15s;
     }
-    .btn-dl:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(201,162,39,.6);}
-    .btn-open{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:12px 28px;
-      background:transparent;border:2px solid rgba(201,162,39,.5);
+    .btn-main:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(201,162,39,.6);}
+
+    .btn-secondary{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:12px 24px;width:100%;max-width:320px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(201,162,39,.4);
       color:#f4d160;border-radius:28px;
-      font-size:15px;font-family:Georgia,serif;
+      font-size:14px;font-family:Georgia,serif;
       cursor:pointer;text-decoration:none;
       transition:background .15s;
     }
-    .btn-open:hover{background:rgba(201,162,39,.12);}
-    .section{
-      width:100%;max-width:500px;
-      border-top:1px solid rgba(201,162,39,.3);
-      padding-top:18px;
+    .btn-secondary:hover{background:rgba(201,162,39,.15);}
+
+    /* ── section heading ── */
+    .section-label{
+      font-size:11px;text-transform:uppercase;letter-spacing:1.5px;
+      color:#8ab0cc;margin-top:4px;
     }
-    .section-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#8ab0cc;margin-bottom:12px;}
-    .dl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;width:100%;max-width:500px;}
-    .dl-card{
-      background:rgba(255,255,255,.07);border:1px solid rgba(201,162,39,.25);
+
+    /* ── install steps ── */
+    .steps{
+      width:100%;max-width:480px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(201,162,39,.22);
+      border-radius:14px;padding:18px 20px;text-align:left;
+    }
+    .steps h3{font-size:14px;color:#f4d160;margin-bottom:10px;}
+    .steps ol{padding-left:18px;font-size:13px;line-height:2;color:#ede4d0;}
+    .steps ol b{color:#f4d160;}
+    .steps .note{font-size:12px;color:#8ab0cc;margin-top:8px;border-top:1px solid rgba(201,162,39,.15);padding-top:8px;}
+
+    /* ── other platforms ── */
+    .platforms{
+      width:100%;max-width:480px;
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    }
+    .pcard{
+      background:rgba(255,255,255,.06);border:1px solid rgba(201,162,39,.2);
       border-radius:12px;padding:14px 12px;text-decoration:none;
-      color:#ede4d0;transition:background .15s;
+      color:#ede4d0;transition:background .15s;text-align:center;
     }
-    .dl-card:hover{background:rgba(201,162,39,.15);}
-    .dl-card .os{font-size:22px;display:block;margin-bottom:4px;}
-    .dl-card .os-name{font-size:13px;font-weight:700;color:#f4d160;}
-    .dl-card .os-file{font-size:11px;opacity:.65;font-family:monospace;}
-    .info{
-      background:rgba(255,255,255,.07);border:1px solid rgba(201,162,39,.25);
-      border-radius:14px;padding:18px 24px;max-width:480px;
-      font-size:13px;line-height:1.9;text-align:left;color:#ede4d0;
-    }
-    .info b{color:#f4d160;}
-    .copy{font-size:11px;opacity:.45;margin-top:8px;}
+    .pcard:hover{background:rgba(201,162,39,.12);}
+    .pcard .pos{font-size:24px;display:block;margin-bottom:4px;}
+    .pcard .pname{font-size:13px;font-weight:700;color:#f4d160;display:block;}
+    .pcard .pdesc{font-size:11px;opacity:.65;display:block;margin-top:2px;}
+    .pcard .coming{font-size:10px;color:#8ab0cc;display:block;margin-top:4px;}
+
+    .copy{font-size:11px;opacity:.4;margin-top:12px;}
   </style>
 </head>
 <body>
 
   <div class="icon">✝</div>
-
   <h1>Buch des Dienstes zur Evangelisation</h1>
-  <p class="sub">Elberfelder Bibel 1905 · 66 Bücher · 31 102 Verse · 18 Themen</p>
-
+  <p class="sub">Elberfelder Bibel 1905 · 66 Bücher · 31&nbsp;102 Verse · 18 Themen</p>
   <div class="divider"></div>
 
-  <!-- ── Desktop (Electron) ── -->
-  <div class="section">
-    <p class="section-title">🖥️ Desktop-App – eigenständig, kein Browser nötig</p>
-  </div>
-  <div class="dl-grid">
-    <a class="dl-card" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
-      <span class="os">🪟</span>
-      <span class="os-name">Windows</span>
-      <span class="os-file">BdE-Bibel-Setup.exe</span>
+  <!-- ═══════════════════════════════════════════════════
+       PRIMARY: HTML-App (works right now on every device)
+       ═══════════════════════════════════════════════════ -->
+  <div class="card-primary">
+    <span class="badge">✅ Sofort verfügbar – alle Geräte</span>
+    <h2>📱 App als Datei herunterladen</h2>
+    <p>
+      Eine einzige <b>~2 MB HTML-Datei</b> – läuft auf Android, iPhone, Windows, Mac.<br>
+      <b>Kein Internet nötig</b> nach dem Download. Kein App-Store. Kein Setup.
+    </p>
+
+    <!-- Download button (triggers Save As in browser) -->
+    <a class="btn-main" href="preview/standalone.html" download="BdE-Bibel.html">
+      💾&nbsp; BdE-Bibel.html herunterladen
     </a>
-    <a class="dl-card" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
-      <span class="os">🍎</span>
-      <span class="os-name">macOS</span>
-      <span class="os-file">BdE-Bibel.dmg</span>
-    </a>
-    <a class="dl-card" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
-      <span class="os">🐧</span>
-      <span class="os-name">Linux</span>
-      <span class="os-file">BdE-Bibel.AppImage</span>
+
+    <!-- Open directly in browser -->
+    <a class="btn-secondary" href="preview/standalone.html" target="_blank">
+      ▶&nbsp; Direkt im Browser öffnen
     </a>
   </div>
 
-  <!-- ── Browser / Mobile ── -->
-  <div class="section">
-    <p class="section-title">📱 Browser-App – Android · iPhone · Desktop</p>
+  <!-- ─── Android install steps ─── -->
+  <div class="steps">
+    <h3>🤖 Android – Schritt für Schritt</h3>
+    <ol>
+      <li>Oben auf <b>„BdE-Bibel.html herunterladen"</b> tippen</li>
+      <li>Browser fragt: <b>Speichern</b> bestätigen → Datei landet in „Downloads"</li>
+      <li>Datei-App öffnen → Downloads → <b>BdE-Bibel.html</b> antippen</li>
+      <li>Chrome öffnet die App → <b>fertig, funktioniert offline</b> ✅</li>
+      <li><i>Optional:</i> Menü ⋮ → <b>„Zum Startbildschirm hinzufügen"</b> → App-Symbol</li>
+    </ol>
+    <p class="note">
+      📌 Wenn der Browser-Download nicht klappt: Link lange gedrückt halten → „Link speichern unter"
+    </p>
   </div>
 
-  <a class="btn-dl" href="preview/standalone.html" download="BdE-Bibel.html">
-    💾&nbsp; Als Datei herunterladen (2 MB)
-  </a>
-  <a class="btn-open" href="preview/standalone.html">
-    ▶&nbsp; Direkt im Browser öffnen
-  </a>
-
-  <!-- ── Android APK ── -->
-  <div class="section">
-    <p class="section-title">📱 Android APK – direkte Installation</p>
+  <!-- ─── iPhone install steps ─── -->
+  <div class="steps">
+    <h3>🍎 iPhone / iPad – Schritt für Schritt</h3>
+    <ol>
+      <li>Auf <b>„Direkt im Browser öffnen"</b> tippen (Safari)</li>
+      <li>Teilen-Symbol ↑ unten antippen</li>
+      <li><b>„Zum Home-Bildschirm"</b> → Hinzufügen → App-Symbol erscheint</li>
+      <li>App öffnet sich wie eine native App – <b>offline nutzbar</b> ✅</li>
+    </ol>
   </div>
-  <a class="btn-open" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/apk-latest" target="_blank">
-    ⬇️&nbsp; Android APK herunterladen
-  </a>
 
-  <div class="info">
-    <b>🖥️ Desktop-App (Windows):</b><br>
-    1. „BdE-Bibel-Setup.exe" von GitHub Releases herunterladen<br>
-    2. Doppelklick → Installationsassistent folgen<br>
-    3. App startet sofort – <b>ohne Browser, komplett offline</b> ✅<br><br>
-    <b>📄 Browser-Datei (alle Geräte):</b><br>
-    1. „Als Datei herunterladen" → <code>BdE-Bibel.html</code> speichern<br>
-    2. Per Doppelklick im Browser öffnen – <b>funktioniert offline</b> ✅<br>
-    3. Weiterleiten per WhatsApp, E-Mail, USB, Bluetooth …<br><br>
-    <b>📱 Als App installieren (Handy, ohne APK):</b><br>
-    🤖 Android Chrome → Menü ⋮ → „Zum Startbildschirm"<br>
-    🍎 iPhone Safari → Teilen ↑ → „Zum Home-Bildschirm"
+  <!-- ─── Other platforms ─── -->
+  <p class="section-label">Weitere Plattformen</p>
+  <div class="platforms">
+    <a class="pcard" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/apk-latest" target="_blank">
+      <span class="pos">🤖</span>
+      <span class="pname">Android APK</span>
+      <span class="pdesc">Direkte Installation</span>
+      <span class="coming">Wird in GitHub Actions erstellt →<br>Releases-Seite prüfen</span>
+    </a>
+    <a class="pcard" href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/desktop-latest" target="_blank">
+      <span class="pos">🖥️</span>
+      <span class="pname">Desktop (Win/Mac/Linux)</span>
+      <span class="pdesc">Standalone Electron-App</span>
+      <span class="coming">Wird in GitHub Actions erstellt →<br>Releases-Seite prüfen</span>
+    </a>
   </div>
 
   <p class="copy">Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0</p>
