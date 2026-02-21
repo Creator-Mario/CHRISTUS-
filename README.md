@@ -68,3 +68,45 @@ LIMIT  20;
 
 > **Note:** `assets/db/bible.sqlite` is listed in `.gitignore` and must be
 > regenerated locally after checkout.
+
+---
+
+## Flutter App
+
+The repository contains a complete Flutter app that lets you browse the Bible
+hierarchically (Book → Chapter → Verses) and perform a full-text search.
+
+### Prerequisites
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) ≥ 3.0
+
+### First-time setup
+
+```bash
+# 1. Generate platform-specific files (Android, iOS, …)
+flutter create . --project-name christus --org com.example
+
+# 2. Install Dart dependencies
+flutter pub get
+
+# 3. Build the database asset (see above)
+python3 tools/build_bible_db.py
+```
+
+### Run the app
+
+```bash
+flutter run
+```
+
+### App structure
+
+| Path | Purpose |
+|---|---|
+| `lib/main.dart` | App entry point & Material theme |
+| `lib/database/bible_db.dart` | SQLite helper (copies asset on first launch) |
+| `lib/models/` | `Book` and `Verse` data classes |
+| `lib/screens/books_screen.dart` | Home – list of all 66 books |
+| `lib/screens/chapters_screen.dart` | Chapter grid for a selected book |
+| `lib/screens/verses_screen.dart` | Verse list for a selected chapter |
+| `lib/screens/search_screen.dart` | Global FTS5 full-text search |
