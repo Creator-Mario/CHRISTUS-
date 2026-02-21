@@ -1,0 +1,71 @@
+name: Release HTML App
+
+# Runs on every push that touches the standalone HTML or its generators.
+# Creates / updates the GitHub Release "html-latest" with BDE-Bibel.html attached.
+# This workflow needs NO Flutter / Java → completes in ~30 seconds.
+
+on:
+  push:
+    branches:
+      - main
+      - copilot/add-sqlite-bible-database   # PR branch: build before merge
+    paths:
+      - 'preview/standalone.html'
+      - 'tools/build_standalone_preview.py'
+      - 'tools/generate_passages_json.py'
+      - 'elberfelder_1905.csv'
+      - '.github/workflows/release-html.yml'
+  workflow_dispatch:   # Manual trigger from any branch
+
+permissions:
+  contents: write   # Needed to create GitHub Releases
+
+jobs:
+  release-html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The standalone.html is pre-built and committed; just rename it.
+      - name: Prepare download file
+        run: cp preview/standalone.html BDE-Bibel.html
+
+      - name: Create / update GitHub Release with HTML file
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: html-latest
+          name: "BDE Bibel – HTML App (alle Geräte)"
+          body: |
+            ## 📖 BDE Bibel – Offline HTML-App
+
+            ### ⬇️ So herunterladen und nutzen
+
+            **Schritt 1:** Auf **[BDE-Bibel.html](https://github.com/Creator-Mario/CHRISTUS-/releases/download/html-latest/BDE-Bibel.html)** klicken → Datei wird heruntergeladen
+
+            **Schritt 2 – Android:**
+            - Datei-App → Downloads → **BDE-Bibel.html** antippen → öffnet in Chrome
+            - Menü ⋮ → **„Zum Startbildschirm hinzufügen"** → App-Symbol ✅
+
+            **Schritt 2 – iPhone:**
+            - Datei in **Safari** öffnen
+            - Teilen-Symbol ↑ → **„Zum Home-Bildschirm"** → Hinzufügen ✅
+
+            **Schritt 2 – Windows / Mac:**
+            - Doppelklick auf `BDE-Bibel.html` → öffnet im Browser
+            - Lesezeichen setzen oder direkt nutzen ✅
+
+            ### Inhalt
+            - 📖 Elberfelder 1905 (Public Domain) – 66 Bücher · 31 102 Verse
+            - 🎯 359 kuratierte Bibelstellen in 18 Themen
+            - 🔍 Volltext-Suche (FTS5)
+            - 📵 **Komplett offline** – kein Internet nötig nach dem Download
+            - 📏 ~2 MB – eine einzige HTML-Datei
+
+            ---
+            *Creator & Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0*
+          files: BDE-Bibel.html
+          make_latest: true
+          draft: false
+          prerelease: false

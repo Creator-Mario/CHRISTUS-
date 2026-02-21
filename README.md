@@ -7,29 +7,33 @@
 
 > **Eine einzige ~2 MB HTML-Datei – offline – Android · iPhone · Windows · Mac**
 
-### 🤖 Android – so funktioniert der Download
+### ⬇️ Download-Link (immer aktuell)
 
-1. Diesen Link im **Chrome-Browser** öffnen:  
-   👉 **[BDE-Bibel.html direkt öffnen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
+👉 **[BDE-Bibel.html herunterladen](https://github.com/Creator-Mario/CHRISTUS-/releases/download/html-latest/BDE-Bibel.html)**
 
-2. Link **lange gedrückt halten** → **„Link speichern unter"** → als `BDE-Bibel.html` speichern  
-   *(oder Chrome-Menü ⋮ → Herunterladen)*
+oder **[GitHub Releases-Seite öffnen](https://github.com/Creator-Mario/CHRISTUS-/releases/tag/html-latest)**
 
-3. **Datei-App** → Downloads → **BDE-Bibel.html** antippen → öffnet in Chrome
+---
 
-4. **Menü ⋮ → „Zum Startbildschirm hinzufügen"** → App-Symbol auf dem Homescreen ✅
+### 🤖 Android – Schritt für Schritt
 
-> ⚠️ **Falls 404 erscheint:** Das Repository muss **öffentlich** sein.  
-> Einstellung: GitHub → Settings → „Change to public" → [Anleitung](docs/anleitung-repository-oeffentlich.md)
+1. Oben auf **„BDE-Bibel.html herunterladen"** tippen
+2. Browser fragt: **Speichern** bestätigen → Datei landet im Ordner „Downloads"
+3. **Datei-App** öffnen → Downloads → **BDE-Bibel.html** antippen → öffnet in Chrome
+4. Chrome-Menü **⋮ → „Zum Startbildschirm hinzufügen"** → App-Symbol ✅
+5. App öffnet sich wie eine native App – **komplett offline nutzbar**
 
-### 💻 Windows / Mac
+### 💻 Windows / Mac – Schritt für Schritt
 
-👉 **[HIER KLICKEN → BDE-Bibel.html herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
-*Rechtsklick → „Speichern unter" → Doppelklick zum Öffnen*
+1. Oben auf **„BDE-Bibel.html herunterladen"** klicken → Datei speichern
+2. **Doppelklick** auf `BDE-Bibel.html` → öffnet im Browser
+3. Lesezeichen setzen oder auf den Desktop verschieben ✅
 
-### 🍎 iPhone
+### 🍎 iPhone – Schritt für Schritt
 
-Link in **Safari** öffnen → Teilen ↑ → **„Zum Home-Bildschirm"** → Fertig ✅
+1. Link in **Safari** öffnen
+2. Teilen-Symbol **↑** unten antippen
+3. **„Zum Home-Bildschirm"** → Hinzufügen ✅
 
 > 📦 ~2 MB · 66 Bücher · 31 102 Verse · 18 Themen · komplett offline
 

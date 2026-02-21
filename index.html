@@ -118,14 +118,23 @@
       <b>Kein Internet nötig</b> nach dem Download. Kein App-Store. Kein Setup.
     </p>
 
-    <!-- Download button (triggers Save As in browser) -->
-    <a class="btn-main" href="preview/standalone.html" download="BDE-Bibel.html">
+    <!-- Direct GitHub Release download – always works, proper file download -->
+    <a class="btn-main"
+       href="https://github.com/Creator-Mario/CHRISTUS-/releases/download/html-latest/BDE-Bibel.html"
+       download="BDE-Bibel.html">
       💾&nbsp; BDE-Bibel.html herunterladen
     </a>
 
-    <!-- Open directly in browser -->
+    <!-- Open directly in browser (relative, works when served via Pages) -->
     <a class="btn-secondary" href="preview/standalone.html" target="_blank">
       ▶&nbsp; Direkt im Browser öffnen
+    </a>
+
+    <!-- Releases page as fallback -->
+    <a class="btn-secondary"
+       href="https://github.com/Creator-Mario/CHRISTUS-/releases/tag/html-latest"
+       target="_blank">
+      📦&nbsp; GitHub Releases-Seite öffnen
     </a>
   </div>
 
