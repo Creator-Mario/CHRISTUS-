@@ -408,6 +408,38 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     .verse-row[data-hl="red"]    { background: rgba(239,68,68,.18)  !important; border-left: 4px solid #ef4444; padding-left: 14px; }
     .verse-row.hl-selected       { outline: 2px solid var(--gold); outline-offset: -2px; }
 
+    /* ── Word-level highlighting ── */
+    mark.hl-word-green  { background: rgba(34,197,94,.40);  border-radius: 2px; padding: 0 1px; color: inherit; }
+    mark.hl-word-yellow { background: rgba(234,179,8,.55);  border-radius: 2px; padding: 0 1px; color: inherit; }
+    mark.hl-word-red    { background: rgba(239,68,68,.40);  border-radius: 2px; padding: 0 1px; color: inherit; }
+
+    /* ── Word-HL floating toolbar ── */
+    #word-hl-bar {
+      display: none; position: fixed; z-index: 900;
+      background: #0d1b2a; border: 2px solid rgba(201,162,39,.8);
+      border-radius: 40px; padding: 7px 14px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.7);
+      align-items: center; gap: 10px;
+      pointer-events: all;
+    }
+    #word-hl-bar.open { display: flex; }
+    .whl-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2.5px solid rgba(255,255,255,.3);
+      cursor: pointer; flex-shrink: 0; transition: transform .12s;
+    }
+    .whl-btn:active { transform: scale(.85); }
+    .whl-green  { background: #22c55e; }
+    .whl-yellow { background: #eab308; }
+    .whl-red    { background: #ef4444; }
+    .whl-clear  {
+      background: none; border: 1.5px solid rgba(201,162,39,.5);
+      color: #c9a227; border-radius: 20px; font-size: 12px;
+      padding: 5px 11px; cursor: pointer; white-space: nowrap;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .whl-clear:active { background: rgba(201,162,39,.15); }
+
     /* ── Highlight toolbar ── */
     #hl-toolbar {
       display: none; position: fixed; bottom: 28px; left: 50%;
@@ -623,6 +655,14 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <button class="hl-clear"         onclick="setHL(null)"                               aria-label="Markierung löschen">✕ löschen</button>
 </div>
 
+<!-- ── Word-level highlight toolbar (appears at selection) ────── -->
+<div id="word-hl-bar" role="toolbar" aria-label="Wort markieren">
+  <button class="whl-btn whl-green"  onclick="applyWordHL('green')"  title="Grün"  aria-label="Grün markieren"></button>
+  <button class="whl-btn whl-yellow" onclick="applyWordHL('yellow')" title="Gelb"  aria-label="Gelb markieren"></button>
+  <button class="whl-btn whl-red"    onclick="applyWordHL('red')"    title="Rot"   aria-label="Rot markieren"></button>
+  <button class="whl-clear"          onclick="clearWordHLSel()"                    aria-label="Markierung löschen">✕</button>
+</div>
+
 <!-- pako inflate (ES5) – works on all Android/iOS/Desktop browsers -->
 <script>%%PAKO%%</script>
 <script>
@@ -788,11 +828,12 @@ function openPassage(passageId) {
       html += `<div class="chapter-heading">${escHtml((BOOKS[b] || '?') + ' ' + c)}</div>`;
       lastChap = c;
     }
-    html += `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`;
+    html += `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup><span class="vtext" data-plain="${escHtmlAttr(t)}">${escHtml(t)}</span></div>`;
   });
   const ptEl = document.getElementById('passage-text');
   ptEl.innerHTML = html || '<div class="empty">Keine Verse gefunden.</div>';
   applyStoredHL(ptEl);
+  applyAllWordHL();
   navigate('view-text');
 }
 
@@ -863,9 +904,10 @@ function openChapter(bookId, chapter) {
   const rows = (IDX[bookId] || {})[chapter] || [];
   const vlEl = document.getElementById('verse-list');
   vlEl.innerHTML = rows.map(([b, c, v, t]) =>
-    `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`
+    `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup><span class="vtext" data-plain="${escHtmlAttr(t)}">${escHtml(t)}</span></div>`
   ).join('');
   applyStoredHL(vlEl);
+  applyAllWordHL();
   document.getElementById('app-title').textContent = `${BOOKS[bookId] || ''} ${chapter}`;
   navigate('view-verses');
 }
@@ -917,6 +959,12 @@ function escHtml(s) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
+function escHtmlAttr(s) {
+  // Identical to escHtml — all five HTML special chars must be escaped in attribute values
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 function escRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
 function highlightTerms(text, terms) {
@@ -942,6 +990,138 @@ function highlightTerms(text, terms) {
   });
   return html + escHtml(text.slice(pos));
 }
+
+// ── Word-level Highlighting ───────────────────────────────────
+const WORD_HL_KEY = 'bde_whl_v1';
+let WORD_HL_STORE = {};
+try { WORD_HL_STORE = JSON.parse(localStorage.getItem(WORD_HL_KEY) || '{}'); } catch(e) { WORD_HL_STORE = {}; }
+
+function saveWordHL() {
+  try { localStorage.setItem(WORD_HL_KEY, JSON.stringify(WORD_HL_STORE)); } catch(e) {}
+}
+
+/* Get character offset of (node, offset) within a root element's text */
+function getTextOffset(root, targetNode, targetOffset) {
+  let total = 0;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node === targetNode) return total + targetOffset;
+    total += node.textContent.length;
+  }
+  return -1;
+}
+
+/* Re-render a .vtext span inserting <mark> tags for stored word highlights */
+function reRenderVText(vtext, vkey) {
+  const text = vtext.dataset.plain || vtext.textContent;
+  const ranges = (WORD_HL_STORE[vkey] || []).slice().sort(function(a,b){ return a.start - b.start; });
+  if (!ranges.length) { vtext.innerHTML = escHtml(text); return; }
+  let result = '', pos = 0;
+  for (let i = 0; i < ranges.length; i++) {
+    const {start, end, color} = ranges[i];
+    const s = Math.max(start, pos), e = Math.min(end, text.length);
+    if (s >= e) continue;
+    if (s > pos) result += escHtml(text.slice(pos, s));
+    result += '<mark class="hl-word-' + color + '">' + escHtml(text.slice(s, e)) + '</mark>';
+    pos = e;
+  }
+  result += escHtml(text.slice(pos));
+  vtext.innerHTML = result;
+}
+
+/* Apply stored word highlights to all visible .vtext spans */
+function applyAllWordHL() {
+  document.querySelectorAll('.vtext[data-plain]').forEach(function(vtext) {
+    const row = vtext.closest('[data-vkey]');
+    if (!row) return;
+    const vkey = row.dataset.vkey;
+    if (WORD_HL_STORE[vkey] && WORD_HL_STORE[vkey].length) reRenderVText(vtext, vkey);
+  });
+}
+
+/* Show word-hl bar at bounding rect of current selection */
+let _whlSelVText = null;
+function showWordHLBar(rect) {
+  const bar = document.getElementById('word-hl-bar');
+  bar.classList.add('open');
+  const barW = 200; // approx
+  let left = rect.left + window.scrollX + (rect.width / 2) - (barW / 2);
+  left = Math.max(4, Math.min(left, window.innerWidth - barW - 4));
+  let top  = rect.top + window.scrollY - 54;
+  if (top < window.scrollY + 4) top = rect.bottom + window.scrollY + 8;
+  bar.style.left = left + 'px';
+  bar.style.top  = top  + 'px';
+}
+function hideWordHLBar() {
+  document.getElementById('word-hl-bar').classList.remove('open');
+  _whlSelVText = null;
+}
+
+/* Apply selected color to current text selection within a .vtext span */
+function applyWordHL(color) {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || sel.rangeCount === 0) { hideWordHLBar(); return; }
+  const range = sel.getRangeAt(0);
+  let ancestor = range.commonAncestorContainer;
+  if (ancestor.nodeType === Node.TEXT_NODE) ancestor = ancestor.parentNode;
+  const vtext = ancestor.closest('.vtext') || (ancestor.classList && ancestor.classList.contains('vtext') ? ancestor : null);
+  if (!vtext) { hideWordHLBar(); return; }
+  const row = vtext.closest('[data-vkey]');
+  if (!row) { hideWordHLBar(); return; }
+  const vkey = row.dataset.vkey;
+  const start = getTextOffset(vtext, range.startContainer, range.startOffset);
+  const end   = getTextOffset(vtext, range.endContainer,   range.endOffset);
+  if (start < 0 || end < 0 || start >= end) { hideWordHLBar(); return; }
+  if (!WORD_HL_STORE[vkey]) WORD_HL_STORE[vkey] = [];
+  // Remove any range that overlaps the new selection (fully or partially), then add new range
+  WORD_HL_STORE[vkey] = WORD_HL_STORE[vkey].filter(function(r){ return r.end <= start || r.start >= end; });
+  WORD_HL_STORE[vkey].push({start: start, end: end, color: color});
+  saveWordHL();
+  reRenderVText(vtext, vkey);
+  sel.removeAllRanges();
+  hideWordHLBar();
+}
+
+/* Clear all word highlights from the verse under current selection */
+function clearWordHLSel() {
+  if (_whlSelVText) {
+    const row = _whlSelVText.closest('[data-vkey]');
+    if (row) {
+      const vkey = row.dataset.vkey;
+      delete WORD_HL_STORE[vkey];
+      saveWordHL();
+      const text = _whlSelVText.dataset.plain || _whlSelVText.textContent;
+      _whlSelVText.innerHTML = escHtml(text);
+    }
+  }
+  const selAfter = window.getSelection();
+  if (selAfter) selAfter.removeAllRanges();
+  hideWordHLBar();
+}
+
+/* selectionchange → show/hide word-hl bar */
+document.addEventListener('selectionchange', function() {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || sel.rangeCount === 0 || sel.toString().trim() === '') {
+    // Don't hide immediately — let button clicks fire first
+    return;
+  }
+  const range = sel.getRangeAt(0);
+  let ancestor = range.commonAncestorContainer;
+  if (ancestor.nodeType === Node.TEXT_NODE) ancestor = ancestor.parentNode;
+  const vtext = ancestor.closest ? ancestor.closest('.vtext') : null;
+  if (!vtext) { hideWordHLBar(); return; }
+  _whlSelVText = vtext;
+  showWordHLBar(range.getBoundingClientRect());
+});
+
+/* Clicking outside the bar and not in a verse closes it */
+document.addEventListener('mousedown', function(e) {
+  if (!document.getElementById('word-hl-bar').classList.contains('open')) return;
+  if (e.target.closest('#word-hl-bar')) return; // clicks inside bar are fine
+  hideWordHLBar();
+});
 
 // ── Text Highlighting ─────────────────────────────────────────
 const HL_KEY = 'bde_hl_v1';
