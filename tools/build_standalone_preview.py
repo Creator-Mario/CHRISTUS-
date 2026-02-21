@@ -23,6 +23,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(REPO_ROOT, "elberfelder_1905.csv")
 PASSAGES_JSON = os.path.join(REPO_ROOT, "data", "key_passages.json")
 OUTPUT_PATH = os.path.join(REPO_ROOT, "preview", "standalone.html")
+PAKO_PATH = os.path.join(REPO_ROOT, "tools", "vendor", "pako_inflate.min.js")
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -568,6 +569,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div id="view-verses"   class="view"><div id="verse-list"></div></div>
 <div id="view-search"   class="view"><div id="search-results"></div></div>
 
+<!-- pako inflate (ES5) – works on all Android/iOS/Desktop browsers -->
+<script>%%PAKO%%</script>
 <script>
 // ── Embedded data ─────────────────────────────────────────────
 const PAYLOAD_B64  = '%%PAYLOAD%%';
@@ -594,19 +597,18 @@ function closeSplash() {
 }
 
 // ── Bootstrap ─────────────────────────────────────────────────
-(async function init() {
+(function init() {
   try {
     const binStr = atob(PAYLOAD_B64);
     const bytes  = new Uint8Array(binStr.length);
     for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
-    const ds = new DecompressionStream('gzip');
-    const w  = ds.writable.getWriter(); w.write(bytes); w.close();
-    const buf  = await new Response(ds.readable).arrayBuffer();
-    const data = JSON.parse(new TextDecoder().decode(buf));
+    // pako.inflate works on ALL browsers (Android WebView, old Chrome, old Safari)
+    const decompressed = pako.inflate(bytes);
+    const data = JSON.parse(new TextDecoder().decode(decompressed));
     BOOKS  = data.books;
     VERSES = data.verses;
-    VERSES.forEach(row => {
-      const [b, c] = row;
+    VERSES.forEach(function(row) {
+      var b = row[0], c = row[1];
       if (!IDX[b])    IDX[b]    = {};
       if (!IDX[b][c]) IDX[b][c] = [];
       IDX[b][c].push(row);
@@ -617,7 +619,7 @@ function closeSplash() {
   } catch (err) {
     document.getElementById('loading').innerHTML =
       '<b>Fehler:</b> ' + escHtml(err.message) +
-      '<br><small>Bitte einen modernen Browser verwenden (Chrome 80+, Firefox 113+, Safari 16.4+).</small>';
+      '<br><small>Bitte die Seite neu laden (F5). Bei weiteren Problemen: browser-cache leeren.</small>';
   }
 })();
 
@@ -990,7 +992,8 @@ function installApp() {
 
 
 def build(csv_path: str, output_path: str,
-          passages_json: str = PASSAGES_JSON) -> None:
+          passages_json: str = PASSAGES_JSON,
+          pako_path: str = PAKO_PATH) -> None:
     print("Reading CSV …", flush=True)
     books, verses = load_data(csv_path)
     print(f"  {len(books)} books, {len(verses)} verses", flush=True)
@@ -1010,9 +1013,19 @@ def build(csv_path: str, output_path: str,
     else:
         print(f"  (Passage data not found at {passages_json})", flush=True)
 
+    # Read pako inflate library (ES5, works on all Android/iOS/Desktop)
+    pako_src = ""
+    if os.path.exists(pako_path):
+        with open(pako_path, encoding="utf-8") as f:
+            pako_src = f.read()
+        print(f"  pako inflate: {len(pako_src):,} bytes", flush=True)
+    else:
+        print(f"  WARNING: pako not found at {pako_path}", flush=True)
+
     html = (HTML_TEMPLATE
             .replace("'%%PAYLOAD%%'", f"'{payload}'")
-            .replace("%%PASSAGE_DATA%%", passage_data_js))
+            .replace("%%PASSAGE_DATA%%", passage_data_js)
+            .replace("%%PAKO%%", pako_src))
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
     size_kb = os.path.getsize(output_path) / 1024
