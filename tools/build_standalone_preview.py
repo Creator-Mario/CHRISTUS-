@@ -401,6 +401,43 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       font-family: 'Segoe UI', sans-serif; }
     mark { background: #ffe57f; border-radius: 2px; padding: 0 1px; }
 
+    /* ── Text highlighting ── */
+    .verse-row { cursor: pointer; }
+    .verse-row[data-hl="green"]  { background: rgba(34,197,94,.18) !important; border-left: 4px solid #22c55e; padding-left: 14px; }
+    .verse-row[data-hl="yellow"] { background: rgba(234,179,8,.22)  !important; border-left: 4px solid #eab308; padding-left: 14px; }
+    .verse-row[data-hl="red"]    { background: rgba(239,68,68,.18)  !important; border-left: 4px solid #ef4444; padding-left: 14px; }
+    .verse-row.hl-selected       { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+    /* ── Highlight toolbar ── */
+    #hl-toolbar {
+      display: none; position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%); z-index: 800;
+      background: #0d1b2a; border: 2px solid rgba(201,162,39,.7);
+      border-radius: 40px; padding: 8px 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.7);
+      align-items: center; gap: 10px; min-width: 270px;
+      justify-content: center;
+    }
+    #hl-toolbar.open { display: flex; }
+    .hl-label { font-size: 13px; color: #8ab0cc; font-family: 'Segoe UI', sans-serif; }
+    .hl-divider { width: 1px; height: 24px; background: rgba(201,162,39,.35); flex-shrink: 0; }
+    .hl-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2.5px solid rgba(255,255,255,.25);
+      cursor: pointer; transition: transform .12s, border-color .15s; flex-shrink: 0;
+    }
+    .hl-btn:active  { transform: scale(.88); }
+    .hl-btn.hl-green  { background: #22c55e; }
+    .hl-btn.hl-yellow { background: #eab308; }
+    .hl-btn.hl-red    { background: #ef4444; }
+    .hl-clear {
+      background: none; border: 1.5px solid rgba(201,162,39,.45);
+      color: #c9a227; border-radius: 20px; font-size: 12px;
+      padding: 6px 12px; cursor: pointer; white-space: nowrap;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .hl-clear:active { background: rgba(201,162,39,.15); }
+
     /* ── Misc ── */
     #loading { text-align: center; padding: 80px 16px;
       color: var(--text2); font-size: 16px; font-family: Georgia, serif; }
@@ -575,6 +612,17 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div id="view-verses"   class="view"><div id="verse-list"></div></div>
 <div id="view-search"   class="view"><div id="search-results"></div></div>
 
+<!-- ── Highlight toolbar ───────────────────────────────────────── -->
+<div id="hl-toolbar" role="toolbar" aria-label="Vers markieren">
+  <span class="hl-label" aria-hidden="true">🎨</span>
+  <span class="hl-divider"></span>
+  <button class="hl-btn hl-green"  onclick="setHL('green')"  title="Grün markieren"   aria-label="Grün"></button>
+  <button class="hl-btn hl-yellow" onclick="setHL('yellow')" title="Gelb markieren"   aria-label="Gelb"></button>
+  <button class="hl-btn hl-red"    onclick="setHL('red')"    title="Rot markieren"    aria-label="Rot"></button>
+  <span class="hl-divider"></span>
+  <button class="hl-clear"         onclick="setHL(null)"                               aria-label="Markierung löschen">✕ löschen</button>
+</div>
+
 <!-- pako inflate (ES5) – works on all Android/iOS/Desktop browsers -->
 <script>%%PAKO%%</script>
 <script>
@@ -740,10 +788,11 @@ function openPassage(passageId) {
       html += `<div class="chapter-heading">${escHtml((BOOKS[b] || '?') + ' ' + c)}</div>`;
       lastChap = c;
     }
-    html += `<div class="verse-row"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`;
+    html += `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`;
   });
-  document.getElementById('passage-text').innerHTML =
-    html || '<div class="empty">Keine Verse gefunden.</div>';
+  const ptEl = document.getElementById('passage-text');
+  ptEl.innerHTML = html || '<div class="empty">Keine Verse gefunden.</div>';
+  applyStoredHL(ptEl);
   navigate('view-text');
 }
 
@@ -812,9 +861,11 @@ function openBook(bookId) {
 // ── Verses ────────────────────────────────────────────────────
 function openChapter(bookId, chapter) {
   const rows = (IDX[bookId] || {})[chapter] || [];
-  document.getElementById('verse-list').innerHTML = rows.map(([,, v, t]) =>
-    `<div class="verse-row"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`
+  const vlEl = document.getElementById('verse-list');
+  vlEl.innerHTML = rows.map(([b, c, v, t]) =>
+    `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`
   ).join('');
+  applyStoredHL(vlEl);
   document.getElementById('app-title').textContent = `${BOOKS[bookId] || ''} ${chapter}`;
   navigate('view-verses');
 }
@@ -891,6 +942,65 @@ function highlightTerms(text, terms) {
   });
   return html + escHtml(text.slice(pos));
 }
+
+// ── Text Highlighting ─────────────────────────────────────────
+const HL_KEY = 'bde_hl_v1';
+let HL_STORE = {};
+try { HL_STORE = JSON.parse(localStorage.getItem(HL_KEY) || '{}'); } catch(e) { HL_STORE = {}; }
+
+let _hlRow  = null;
+let _hlVKey = null;
+
+function saveHL() {
+  try { localStorage.setItem(HL_KEY, JSON.stringify(HL_STORE)); } catch(e) {}
+}
+
+function applyStoredHL(container) {
+  container.querySelectorAll('[data-vkey]').forEach(function(row) {
+    const color = HL_STORE[row.dataset.vkey];
+    if (color) row.setAttribute('data-hl', color);
+    else row.removeAttribute('data-hl');
+  });
+}
+
+function hlTap(event, row) {
+  event.stopPropagation();
+  if (_hlRow && _hlRow !== row) _hlRow.classList.remove('hl-selected');
+  if (_hlRow === row && document.getElementById('hl-toolbar').classList.contains('open')) {
+    closeHLToolbar(); return;
+  }
+  _hlRow  = row;
+  _hlVKey = row.dataset.vkey;
+  row.classList.add('hl-selected');
+  document.getElementById('hl-toolbar').classList.add('open');
+}
+
+function setHL(color) {
+  if (!_hlRow || !_hlVKey) return;
+  if (color) {
+    HL_STORE[_hlVKey] = color;
+    _hlRow.setAttribute('data-hl', color);
+  } else {
+    delete HL_STORE[_hlVKey];
+    _hlRow.removeAttribute('data-hl');
+  }
+  saveHL();
+  _hlRow.classList.remove('hl-selected');
+  closeHLToolbar();
+}
+
+function closeHLToolbar() {
+  document.getElementById('hl-toolbar').classList.remove('open');
+  if (_hlRow) { _hlRow.classList.remove('hl-selected'); _hlRow = null; }
+  _hlVKey = null;
+}
+
+document.addEventListener('click', function(e) {
+  if (document.getElementById('hl-toolbar').classList.contains('open') &&
+      !e.target.closest('#hl-toolbar') && !e.target.closest('[data-vkey]')) {
+    closeHLToolbar();
+  }
+});
 
 // ── PWA: Service Worker + Install + Update ────────────────────
 let _installPrompt = null;
