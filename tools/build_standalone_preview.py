@@ -964,6 +964,50 @@ const LANG = {
       20:'Gospel of Mark',
       21:'Gospel of Luke',
       22:'Gospel of John'
+    },
+    passage_titles: {
+      1:'The Creation of the World',2:'The Garden of Eden',3:'The Fall of Man',4:'Cain and Abel',5:'The Flood and Noah\'s Covenant',
+      6:'God\'s Covenant with Abraham',7:'God Promises Abraham a Son',8:'Hagar and Ishmael',9:'The Covenant of Circumcision',10:'Abraham\'s Intercession for Sodom',
+      11:'Sodom and Gomorrah',12:'The Birth of Isaac',13:'The Sacrifice of Isaac',14:'Finding a Bride for Isaac',15:'Esau and Jacob',
+      16:'Isaac Blesses Jacob',17:'Jacob\'s Ladder',18:'Jacob at Laban\'s House',19:'Jacob Wrestles at Jabbok',20:'Jacob Reconciles with Esau',
+      21:'Joseph\'s Dreams',22:'Joseph Sold into Egypt',23:'Joseph and Potiphar\'s Wife',24:'Joseph Interprets Pharaoh\'s Dreams',25:'Joseph Reconciles with His Brothers',
+      26:'Moses\' Birth and Calling',27:'The Ten Plagues',28:'The Passover and the Exodus',29:'Crossing the Red Sea',30:'Manna in the Wilderness',
+      31:'Water from the Rock',32:'The Battle against Amalek',33:'Revelation at Sinai and the Ten Commandments',34:'The Book of the Covenant',35:'The Covenant at Sinai',
+      36:'The Golden Calf',37:'The Tabernacle',38:'The Aaronic Blessing',39:'The Spies in Canaan',40:'Moses Cannot Enter the Promised Land',
+      41:'The Year of Release',42:'The Social Law',43:'The Greatest Commandment',44:'Blessings and Curses',45:'The New Covenant',
+      46:'The Calling of Joshua',47:'Crossing the Jordan',48:'The Conquest of Jericho',49:'The Covenant at Shechem',50:'Deborah and Barak',
+      51:'The Calling of Gideon',52:'Samson\'s Birth and Calling',53:'Samson and Delilah',54:'Ruth and Naomi',55:'Everyone Did What Was Right in Their Own Eyes',
+      56:'The Birth of Samuel',57:'The Calling of Samuel',58:'The Demand for a King',59:'The Anointing of Saul',60:'The Anointing of David',
+      61:'David and Goliath',62:'David\'s Friendship with Jonathan',63:'David Spares Saul',64:'David\'s Repentance after Adultery',65:'Absalom\'s Revolt and Death',
+      66:'Solomon Asks for Wisdom',67:'The Judgment of Solomon',68:'The Building of the Temple',69:'The Queen of Sheba',70:'The Division of the Kingdom',
+      71:'Elijah at the Brook and the Widow',72:'The Contest on Mount Carmel',73:'Elijah at Mount Horeb',74:'Naboth\'s Vineyard',75:'Elijah\'s Ascension',
+      76:'Elisha and the Widow',77:'Elisha and the Shunammite',78:'The Healing of Naaman',79:'Jonah Flees from God',80:'Jonah in Nineveh',
+      231:'The Song of Hannah',232:'Jonah\'s Song of Thanksgiving',233:'The Magnificat of Mary',234:'The Benedictus of Zechariah',235:'The Nunc Dimittis of Simeon',
+      236:'The Calling of Isaiah',237:'The Song of the Vineyard',238:'The Sign of Immanuel',239:'A Child Is Born to Us',240:'Peace in the Kingdom of Peace',
+      241:'Comfort for God\'s People',242:'The Servant of God',243:'The Calling of Jeremiah',244:'The Potter\'s Clay',245:'Jeremiah\'s Temple Sermon',
+      246:'The Vision of the Valley of Dry Bones',247:'Belshazzar\'s Feast',248:'Daniel in the Lions\' Den',249:'Swords into Plowshares',250:'What the LORD Requires',
+      251:'The Genealogy of Jesus',252:'The Wise Men from the East',253:'The Flight to Egypt',254:'The Announcement of Jesus\' Birth',255:'Mary\'s Visit to Elizabeth',
+      256:'The Magnificat of Mary',257:'The Birth of John the Baptist',258:'The Birth of Jesus in Bethlehem',259:'Circumcision and Presentation in the Temple',260:'The Twelve-Year-Old Jesus in the Temple',
+      261:'John the Baptist',262:'The Baptism of Jesus',263:'The Temptation of Jesus',264:'The Calling of the First Disciples',265:'The Calling of Matthew',
+      266:'The Sending Out of the Twelve',267:'The Wedding at Cana',268:'The Samaritan Woman at the Well',269:'Jesus in Nazareth',270:'The Centurion of Capernaum',
+      271:'The Beatitudes',272:'Salt and Light',273:'Jesus and the Law',274:'On Marriage and Divorce',275:'On Love for Enemies',
+      276:'On Giving and Prayer',277:'The Lord\'s Prayer',278:'On Heavenly Treasures and Worry',279:'On Judging',280:'The Golden Rule and the House Builders',
+      281:'The Sower',282:'The Weeds among the Wheat',283:'The Mustard Seed and the Yeast',284:'The Hidden Treasure and the Pearl',285:'The Workers in the Vineyard',
+      286:'The Unforgiving Servant',287:'The Wise and Foolish Virgins',288:'The Parable of the Talents',289:'The Final Judgment',290:'The Wicked Tenants',
+      291:'The Good Samaritan',292:'The Rich Fool',293:'The Lost Sheep and the Lost Coin',294:'The Prodigal Son',295:'The Dishonest Manager',
+      296:'The Rich Man and Poor Lazarus',297:'The Pharisee and the Tax Collector',298:'The Great Banquet',299:'The Barren Fig Tree',
+      300:'Calming the Storm',301:'The Healing of the Paralytic',302:'The Feeding of the Five Thousand',303:'Jesus Walks on Water',304:'The Bleeding Woman and Jairus\' Daughter',
+      305:'The Healing of the Man Born Blind',306:'The Raising of Lazarus',307:'The Healing of the Gerasene Demoniac',308:'The Centurion\'s Servant',309:'The Healing of the Crippled Woman',
+      310:'The Entry into Jerusalem',311:'The Cleansing of the Temple',312:'The Last Supper',313:'The Washing of Feet',314:'Jesus in Gethsemane',
+      315:'The Arrest and Denial',316:'Jesus before Pilate and Herod',317:'The Crucifixion and Death of Jesus',318:'The Burial of Jesus',319:'The Empty Tomb',
+      320:'The Appearance to Mary Magdalene',321:'The Road to Emmaus',322:'The Appearance to Thomas',323:'The Great Commission',324:'The Ascension',
+      325:'Pentecost – Outpouring of the Holy Spirit',326:'The First Church in Jerusalem',327:'The Healing of the Lame Man',328:'The Stoning of Stephen',329:'The Conversion of Saul',
+      330:'Paul\'s Areopagus Speech',331:'Justification by Faith',332:'Abraham\'s Faith',333:'Peace with God',334:'The New Man in Christ',
+      335:'Life in the Spirit',336:'The Hymn of Love',337:'The Resurrection of the Dead',338:'The Fruits of the Spirit',339:'The Praise of Grace',
+      340:'The Armor of God',341:'The Philippian Hymn',342:'I Can Do All Things through Christ',343:'The Colossian Hymn',344:'The Appearing of Grace',
+      345:'Jesus the High Priest',346:'The Cloud of Witnesses',347:'Faith and Works',348:'God Resists the Proud',349:'The Patience of Job',
+      350:'The New Birth',351:'The Royal Priesthood',352:'God Is Light',353:'The Mystery of Godliness',354:'The Calling of Timothy',
+      355:'The Son of Man',356:'The Seven Letters to the Churches',357:'The Throne of God and the Lamb',358:'The New Jerusalem',359:'The Call: Yes, I Am Coming Soon'
     }
   },
   id: {
@@ -1013,6 +1057,50 @@ const LANG = {
       20:'Injil Markus',
       21:'Injil Lukas',
       22:'Injil Yohanes'
+    },
+    passage_titles: {
+      1:'Penciptaan Dunia',2:'Taman Eden',3:'Kejatuhan Manusia',4:'Kain dan Habel',5:'Banjir dan Perjanjian Nuh',
+      6:'Perjanjian Allah dengan Abraham',7:'Allah Berjanji Memberi Abraham Seorang Anak',8:'Hagar dan Ismael',9:'Perjanjian Sunat',10:'Doa Syafaat Abraham untuk Sodom',
+      11:'Sodom dan Gomora',12:'Kelahiran Ishak',13:'Pengorbanan Ishak',14:'Mencari Istri untuk Ishak',15:'Esau dan Yakub',
+      16:'Ishak Memberkati Yakub',17:'Tangga Yakub',18:'Yakub di Rumah Laban',19:'Yakub Bergumul di Sungai Yabok',20:'Yakub Berdamai dengan Esau',
+      21:'Mimpi Yusuf',22:'Yusuf Dijual ke Mesir',23:'Yusuf dan Istri Potifar',24:'Yusuf Menafsirkan Mimpi Firaun',25:'Yusuf Berdamai dengan Saudara-Saudaranya',
+      26:'Kelahiran dan Panggilan Musa',27:'Sepuluh Tulah',28:'Paskah dan Keluaran dari Mesir',29:'Menyeberangi Laut Merah',30:'Manna di Padang Gurun',
+      31:'Air dari Batu Karang',32:'Perang Melawan Amalek',33:'Wahyu di Sinai dan Sepuluh Perintah',34:'Kitab Perjanjian',35:'Perjanjian di Sinai',
+      36:'Anak Lembu Emas',37:'Kemah Suci',38:'Berkat Harun',39:'Pengintai di Kanaan',40:'Musa Tidak Boleh Masuk Tanah Perjanjian',
+      41:'Tahun Pembebasan',42:'Hukum Sosial',43:'Perintah Utama',44:'Berkat dan Kutuk',45:'Perjanjian Baru',
+      46:'Panggilan Yosua',47:'Menyeberangi Sungai Yordan',48:'Penaklukan Yerikho',49:'Perjanjian di Sikhem',50:'Debora dan Barak',
+      51:'Panggilan Gideon',52:'Kelahiran dan Panggilan Simson',53:'Simson dan Delila',54:'Rut dan Naomi',55:'Setiap Orang Melakukan yang Benar di Matanya',
+      56:'Kelahiran Samuel',57:'Panggilan Samuel',58:'Permintaan Raja',59:'Pengurapan Saul',60:'Pengurapan Daud',
+      61:'Daud dan Goliat',62:'Persahabatan Daud dan Yonatan',63:'Daud Mengampuni Saul',64:'Pertobatan Daud setelah Dosa',65:'Pemberontakan dan Kematian Absalom',
+      66:'Salomo Meminta Hikmat',67:'Keadilan Salomo',68:'Pembangunan Bait Allah',69:'Ratu Syeba',70:'Perpecahan Kerajaan',
+      71:'Elia di Tepi Sungai dan Janda Sarfat',72:'Pertandingan di Gunung Karmel',73:'Elia di Gunung Horeb',74:'Kebun Anggur Nabot',75:'Pengangkatan Elia',
+      76:'Elisa dan Janda',77:'Elisa dan Perempuan Sunem',78:'Penyembuhan Naaman',79:'Yunus Melarikan Diri dari Allah',80:'Yunus di Niniwe',
+      231:'Nyanyian Hana',232:'Nyanyian Syukur Yunus',233:'Magnificat Maria',234:'Benediktus Zakharia',235:'Nunc Dimittis Simeon',
+      236:'Panggilan Yesaya',237:'Nyanyian Kebun Anggur',238:'Tanda Imanuel',239:'Seorang Anak Lahir bagi Kita',240:'Damai dalam Kerajaan Damai',
+      241:'Penghiburan bagi Umat Allah',242:'Hamba Tuhan',243:'Panggilan Yeremia',244:'Tanah Liat di Tangan Penjunan',245:'Khotbah di Bait Allah',
+      246:'Penglihatan Lembah Tulang-Belulang Kering',247:'Pesta Belsazar',248:'Daniel di Gua Singa',249:'Pedang menjadi Mata Bajak',250:'Apa yang Dikehendaki Tuhan',
+      251:'Silsilah Yesus',252:'Orang Majus dari Timur',253:'Pengungsian ke Mesir',254:'Pengumuman Kelahiran Yesus',255:'Kunjungan Maria kepada Elisabet',
+      256:'Magnificat Maria',257:'Kelahiran Yohanes Pembaptis',258:'Kelahiran Yesus di Betlehem',259:'Sunat dan Penyajian di Bait Allah',260:'Yesus yang Berusia Dua Belas Tahun di Bait Allah',
+      261:'Yohanes Pembaptis',262:'Baptisan Yesus',263:'Pencobaan Yesus',264:'Panggilan Murid-Murid Pertama',265:'Panggilan Matius',
+      266:'Pengutusan Dua Belas Murid',267:'Pernikahan di Kana',268:'Perempuan Samaria di Sumur',269:'Yesus di Nazaret',270:'Perwira di Kapernaum',
+      271:'Ucapan Bahagia',272:'Garam dan Terang',273:'Yesus dan Hukum Taurat',274:'Tentang Perkawinan dan Perceraian',275:'Tentang Mengasihi Musuh',
+      276:'Tentang Memberi dan Berdoa',277:'Doa Bapa Kami',278:'Tentang Harta Surgawi dan Kecemasan',279:'Tentang Menghakimi',280:'Aturan Emas dan Pembangunan Rumah',
+      281:'Penabur',282:'Lalang di antara Gandum',283:'Biji Sesawi dan Ragi',284:'Harta Tersembunyi dan Mutiara Berharga',285:'Pekerja di Kebun Anggur',
+      286:'Hamba yang Tidak Mengampuni',287:'Gadis-Gadis Bijaksana dan Bodoh',288:'Perumpamaan tentang Talenta',289:'Penghakiman Terakhir',290:'Penggarap-Penggarap yang Jahat',
+      291:'Orang Samaria yang Baik Hati',292:'Orang Kaya yang Bodoh',293:'Domba yang Hilang dan Koin yang Hilang',294:'Anak yang Hilang',295:'Bendahara yang Tidak Jujur',
+      296:'Orang Kaya dan Lazarus yang Miskin',297:'Orang Farisi dan Pemungut Cukai',298:'Perjamuan Besar',299:'Pohon Ara yang Tidak Berbuah',
+      300:'Meredakan Angin Ribut',301:'Penyembuhan Orang Lumpuh',302:'Pemberian Makan Lima Ribu Orang',303:'Yesus Berjalan di atas Air',304:'Perempuan Sakit Pendarahan dan Anak Yairus',
+      305:'Penyembuhan Orang yang Lahir Buta',306:'Kebangkitan Lazarus',307:'Penyembuhan Orang Kerasukan di Gerasa',308:'Penyembuhan Hamba Perwira',309:'Penyembuhan Perempuan yang Bungkuk',
+      310:'Masuk ke Yerusalem',311:'Pembersihan Bait Allah',312:'Perjamuan Malam Terakhir',313:'Pembasuhan Kaki',314:'Yesus di Taman Getsemani',
+      315:'Penangkapan dan Penyangkalan',316:'Yesus di Hadapan Pilatus dan Herodes',317:'Penyaliban dan Kematian Yesus',318:'Penguburan Yesus',319:'Kubur yang Kosong',
+      320:'Penampakan kepada Maria Magdalena',321:'Perjalanan ke Emaus',322:'Penampakan kepada Tomas',323:'Amanat Agung',324:'Kenaikan ke Surga',
+      325:'Pentakosta – Pencurahan Roh Kudus',326:'Jemaat Pertama di Yerusalem',327:'Penyembuhan Orang Lumpuh',328:'Penganiayaan Stefanus',329:'Pertobatan Saulus',
+      330:'Pidato Paulus di Areopagus',331:'Pembenaran oleh Iman',332:'Iman Abraham',333:'Damai dengan Allah',334:'Manusia Baru dalam Kristus',
+      335:'Hidup dalam Roh',336:'Hymne Kasih',337:'Kebangkitan Orang Mati',338:'Buah-Buah Roh',339:'Pujian atas Kasih Karunia',
+      340:'Perlengkapan Senjata Allah',341:'Hymne Filipi',342:'Aku Dapat Menanggung Segala Sesuatu melalui Kristus',343:'Hymne Kolose',344:'Penampakan Kasih Karunia',
+      345:'Yesus Imam Besar',346:'Awan Saksi-Saksi',347:'Iman dan Perbuatan',348:'Allah Menentang Orang yang Sombong',349:'Kesabaran Ayub',
+      350:'Kelahiran Baru',351:'Imamat yang Rajani',352:'Allah adalah Terang',353:'Rahasia Kesalehan',354:'Panggilan Timotius',
+      355:'Anak Manusia',356:'Tujuh Surat kepada Jemaat',357:'Takhta Allah dan Anak Domba',358:'Yerusalem Baru',359:'Seruan: Ya, Aku Datang Segera'
     }
   }
 };
@@ -1026,6 +1114,23 @@ function tTheme(id) {
   var lx = LANG[CURRENT_LANG] || LANG.de;
   return (lx.theme_names && lx.theme_names[id]) ||
          (LANG.de.theme_names && LANG.de.theme_names[id]) || '';
+}
+// Return a passage title in the current language.
+// – Gospel chapter themes (19–22): generate dynamically from translated book name + chapter
+// – Psalms (book 19, same chapter_from/to): "Psalm N" (EN) / "Mazmur N" (ID)
+// – All others: look up passage_titles dict, fall back to German p.title
+function tPassage(p) {
+  if (p.theme_id >= 19) {
+    return (BOOKS[p.book_id] || '') + '\u2002' + p.chapter_from;
+  }
+  if (p.book_id === 19 && p.chapter_from === p.chapter_to) {
+    var n = p.chapter_from;
+    if (CURRENT_LANG === 'id') return 'Mazmur ' + n;
+    if (CURRENT_LANG === 'en') return 'Psalm ' + n;
+    return p.title;
+  }
+  var lx = LANG[CURRENT_LANG] || LANG.de;
+  return (lx.passage_titles && lx.passage_titles[p.id]) || p.title;
 }
 function applyLang() {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
@@ -1186,7 +1291,7 @@ function openTheme(themeId, color) {
     `<div class="list-item" data-pid="${p.id}">
        <div class="avatar" style="background:${color};border-color:var(--gold)">${i + 1}</div>
        <div class="list-item-text">
-         <div class="list-item-title">${escHtml(p.title)}</div>
+         <div class="list-item-title">${escHtml(tPassage(p))}</div>
          <div class="list-item-ref">${escHtml(refString(p))}</div>
        </div>
        <span style="color:var(--gold)">›</span>
@@ -1210,7 +1315,7 @@ function refString(p) {
 function openPassage(passageId) {
   const p = PASSAGE_DATA.passages.find(x => x.id === passageId);
   if (!p) return;
-  document.getElementById('app-title').textContent = p.title;
+  document.getElementById('app-title').textContent = tPassage(p);
   let html = '', lastChap = null;
   versesForPassage(p).forEach(([b, c, v, t]) => {
     if (c !== lastChap) {
