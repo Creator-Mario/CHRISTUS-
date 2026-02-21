@@ -24,3 +24,7 @@ windows/
 electron/node_modules/
 electron/dist/
 electron/app.html
+
+# Downloaded Bible translation caches (fetched at build time)
+data/bible/en_kjv.json
+data/bible/id_bible.xml

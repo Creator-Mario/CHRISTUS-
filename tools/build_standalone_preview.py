@@ -18,6 +18,8 @@ import gzip
 import json
 import os
 import sys
+import urllib.request
+import xml.etree.ElementTree as ET
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(REPO_ROOT, "elberfelder_1905.csv")
@@ -25,8 +27,82 @@ PASSAGES_JSON = os.path.join(REPO_ROOT, "data", "key_passages.json")
 OUTPUT_PATH = os.path.join(REPO_ROOT, "preview", "standalone.html")
 PAKO_PATH = os.path.join(REPO_ROOT, "tools", "vendor", "pako_inflate.min.js")
 
+# Cache paths for downloaded translations (not committed to git)
+KJV_CACHE = os.path.join(REPO_ROOT, "data", "bible", "en_kjv.json")
+ID_CACHE  = os.path.join(REPO_ROOT, "data", "bible", "id_bible.xml")
+
+# ── Book name tables ──────────────────────────────────────────────────────────
+
+EN_BOOK_NAMES = [
+    "", "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+    "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel",
+    "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra",
+    "Nehemiah", "Esther", "Job", "Psalms", "Proverbs",
+    "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations",
+    "Ezekiel", "Daniel", "Hosea", "Joel", "Amos",
+    "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk",
+    "Zephaniah", "Haggai", "Zechariah", "Malachi",
+    "Matthew", "Mark", "Luke", "John", "Acts",
+    "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians",
+    "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians",
+    "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews",
+    "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John",
+    "Jude", "Revelation",
+]
+
+ID_BOOK_NAMES = [
+    "", "Kejadian", "Keluaran", "Imamat", "Bilangan", "Ulangan",
+    "Yosua", "Hakim-Hakim", "Rut", "1 Samuel", "2 Samuel",
+    "1 Raja-Raja", "2 Raja-Raja", "1 Tawarikh", "2 Tawarikh", "Ezra",
+    "Nehemia", "Ester", "Ayub", "Mazmur", "Amsal",
+    "Pengkhotbah", "Kidung Agung", "Yesaya", "Yeremia", "Ratapan",
+    "Yehezkiel", "Daniel", "Hosea", "Yoel", "Amos",
+    "Obaja", "Yunus", "Mikha", "Nahum", "Habakuk",
+    "Zefanya", "Hagai", "Zakharia", "Maleakhi",
+    "Matius", "Markus", "Lukas", "Yohanes", "Kisah Para Rasul",
+    "Roma", "1 Korintus", "2 Korintus", "Galatia", "Efesus",
+    "Filipi", "Kolose", "1 Tesalonika", "2 Tesalonika",
+    "1 Timotius", "2 Timotius", "Titus", "Filemon", "Ibrani",
+    "Yakobus", "1 Petrus", "2 Petrus", "1 Yohanes", "2 Yohanes", "3 Yohanes",
+    "Yudas", "Wahyu",
+]
+
+# thiagobodruk/bible en_kjv.json book order matches books 1-66
+KJV_URL = "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/en_kjv.json"
+# christos-c/bible-corpus Indonesian XML
+ID_URL  = "https://raw.githubusercontent.com/christos-c/bible-corpus/master/bibles/Indonesian.xml"
+
+# OSIS-style book code → book number (for the christos-c XML)
+ID_CODE_TO_NUM = {
+    "GEN":1,"EXO":2,"LEV":3,"NUM":4,"DEU":5,"JOS":6,"JDG":7,"RUT":8,
+    "1SA":9,"2SA":10,"1KI":11,"2KI":12,"1CH":13,"2CH":14,"EZR":15,
+    "NEH":16,"EST":17,"JOB":18,"PSA":19,"PRO":20,"ECC":21,"SON":22,
+    "ISA":23,"JER":24,"LAM":25,"EZE":26,"DAN":27,"HOS":28,"JOE":29,
+    "AMO":30,"OBA":31,"JON":32,"MIC":33,"NAH":34,"HAB":35,"ZEP":36,
+    "HAG":37,"ZEC":38,"MAL":39,"MAT":40,"MAR":41,"LUK":42,"JOH":43,
+    "ACT":44,"ROM":45,"1CO":46,"2CO":47,"GAL":48,"EPH":49,"PHI":50,
+    "COL":51,"1TH":52,"2TH":53,"1TI":54,"2TI":55,"TIT":56,"PHM":57,
+    "HEB":58,"JAM":59,"1PE":60,"2PE":61,"1JO":62,"2JO":63,"3JO":64,
+    "JUD":65,"REV":66,
+}
+
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+
+def _fetch(url: str, cache_path: str) -> bytes:
+    """Return raw bytes, using a local cache file to avoid repeat downloads."""
+    if os.path.exists(cache_path):
+        with open(cache_path, "rb") as f:
+            return f.read()
+    print(f"  Downloading {url} …", flush=True)
+    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        data = r.read()
+    with open(cache_path, "wb") as f:
+        f.write(data)
+    return data
+
 
 def find_header(reader):
     for row in reader:
@@ -36,6 +112,7 @@ def find_header(reader):
 
 
 def load_data(csv_path: str):
+    """Load German Elberfelder 1905 from CSV."""
     books: dict[int, str] = {}
     verses: list[list] = []
     with open(csv_path, encoding="utf-8", newline="") as fh:
@@ -59,10 +136,68 @@ def load_data(csv_path: str):
     return books, verses
 
 
-def build_payload(books: dict, verses: list) -> str:
-    """Return base64-encoded gzip-compressed JSON payload."""
+def load_kjv() -> tuple[dict, list]:
+    """Load English KJV from thiagobodruk/bible JSON (public domain)."""
+    raw = _fetch(KJV_URL, KJV_CACHE)
+    data = json.loads(raw.decode("utf-8-sig"))
+    books: dict[int, str] = {}
+    verses: list[list] = []
+    for book_idx, book in enumerate(data):
+        book_id = book_idx + 1  # 1-based
+        books[book_id] = EN_BOOK_NAMES[book_id]
+        for ch_idx, chapter in enumerate(book["chapters"]):
+            chapter_num = ch_idx + 1
+            for v_idx, text in enumerate(chapter):
+                verse_num = v_idx + 1
+                verses.append([book_id, chapter_num, verse_num, text])
+    return books, verses
+
+
+def load_indonesian() -> tuple[dict, list]:
+    """Load Indonesian Bible from christos-c/bible-corpus XML."""
+    raw = _fetch(ID_URL, ID_CACHE)
+    root = ET.fromstring(raw.decode("utf-8"))
+    books: dict[int, str] = {}
+    verses: list[list] = []
+    for seg in root.iter("seg"):
+        if seg.get("type") != "verse":
+            continue
+        sid = seg.get("id", "")   # e.g. "b.GEN.1.1"
+        parts = sid.split(".")
+        if len(parts) < 4:
+            continue
+        code = parts[1]
+        book_id = ID_CODE_TO_NUM.get(code)
+        if book_id is None:
+            continue
+        try:
+            chapter = int(parts[2])
+            verse   = int(parts[3])
+        except ValueError:
+            continue
+        text = (seg.text or "").strip()
+        books[book_id] = ID_BOOK_NAMES[book_id]
+        verses.append([book_id, chapter, verse, text])
+    return books, verses
+
+
+def build_payload(books_de: dict, verses_de: list,
+                  books_en: dict, verses_en: list,
+                  books_id: dict, verses_id: list) -> str:
+    """Return base64-encoded gzip-compressed multilingual JSON payload."""
     payload = json.dumps(
-        {"books": {str(k): v for k, v in sorted(books.items())}, "verses": verses},
+        {
+            "books": {
+                "de": {str(k): v for k, v in sorted(books_de.items())},
+                "en": {str(k): v for k, v in sorted(books_en.items())},
+                "id": {str(k): v for k, v in sorted(books_id.items())},
+            },
+            "verses": {
+                "de": verses_de,
+                "en": verses_en,
+                "id": verses_id,
+            },
+        },
         ensure_ascii=False,
         separators=(",", ":"),
     ).encode("utf-8")
@@ -714,6 +849,7 @@ const PAYLOAD_B64  = '%%PAYLOAD%%';
 const PASSAGE_DATA = %%PASSAGE_DATA%%;
 
 // ── State ─────────────────────────────────────────────────────
+let ALL_DATA = null;  // full multilingual payload: {books:{de,en,id}, verses:{de,en,id}}
 let BOOKS  = {};
 let VERSES = [];
 let IDX    = {};
@@ -906,11 +1042,28 @@ function setLang(lang) {
   try { localStorage.setItem('bde_lang', lang); } catch(e) {}
   document.getElementById('lang-screen').style.display = 'none';
   applyLang();
+  // Reload Bible data for the selected language and re-render home
+  if (ALL_DATA) { loadLangData(lang); renderHome(); }
   // Splash is now visible (lang-screen was covering it)
 }
 function changeLang() {
   try { localStorage.removeItem('bde_lang'); } catch(e) {}
   document.getElementById('lang-screen').style.display = 'flex';
+}
+
+// ── Load per-language Bible data from the multilingual payload ────────────
+function loadLangData(lang) {
+  var langBooks  = (ALL_DATA.books  && ALL_DATA.books[lang])  || ALL_DATA.books  || {};
+  var langVerses = (ALL_DATA.verses && ALL_DATA.verses[lang]) || ALL_DATA.verses || [];
+  BOOKS  = langBooks;
+  VERSES = langVerses;
+  IDX    = {};
+  VERSES.forEach(function(row) {
+    var b = row[0], c = row[1];
+    if (!IDX[b])    IDX[b]    = {};
+    if (!IDX[b][c]) IDX[b][c] = [];
+    IDX[b][c].push(row);
+  });
 }
 
 // ── Splash ────────────────────────────────────────────────────
@@ -937,14 +1090,8 @@ function closeSplash() {
     // pako.inflate works on ALL browsers (Android WebView, old Chrome, old Safari)
     const decompressed = pako.inflate(bytes);
     const data = JSON.parse(new TextDecoder().decode(decompressed));
-    BOOKS  = data.books;
-    VERSES = data.verses;
-    VERSES.forEach(function(row) {
-      var b = row[0], c = row[1];
-      if (!IDX[b])    IDX[b]    = {};
-      if (!IDX[b][c]) IDX[b][c] = [];
-      IDX[b][c].push(row);
-    });
+    ALL_DATA = data;
+    loadLangData(CURRENT_LANG);
     document.getElementById('loading').style.display = 'none';
     showView('view-home');
     renderHome();
@@ -1566,12 +1713,28 @@ function installApp() {
 def build(csv_path: str, output_path: str,
           passages_json: str = PASSAGES_JSON,
           pako_path: str = PAKO_PATH) -> None:
-    print("Reading CSV …", flush=True)
-    books, verses = load_data(csv_path)
-    print(f"  {len(books)} books, {len(verses)} verses", flush=True)
+    print("Reading German CSV (Elberfelder 1905) …", flush=True)
+    books_de, verses_de = load_data(csv_path)
+    print(f"  {len(books_de)} books, {len(verses_de)} verses", flush=True)
 
-    print("Compressing Bible data …", flush=True)
-    payload = build_payload(books, verses)
+    print("Loading English KJV …", flush=True)
+    try:
+        books_en, verses_en = load_kjv()
+        print(f"  {len(books_en)} books, {len(verses_en)} verses", flush=True)
+    except Exception as e:
+        print(f"  WARNING: KJV unavailable ({e}), falling back to German", flush=True)
+        books_en, verses_en = books_de, verses_de
+
+    print("Loading Indonesian Bible …", flush=True)
+    try:
+        books_id, verses_id = load_indonesian()
+        print(f"  {len(books_id)} books, {len(verses_id)} verses", flush=True)
+    except Exception as e:
+        print(f"  WARNING: Indonesian unavailable ({e}), falling back to German", flush=True)
+        books_id, verses_id = books_de, verses_de
+
+    print("Compressing multilingual Bible data …", flush=True)
+    payload = build_payload(books_de, verses_de, books_en, verses_en, books_id, verses_id)
     print(f"  Payload size: {len(payload) / 1024:.0f} KB (base64)", flush=True)
 
     # Load passage data (small – embed as plain JSON, not base64)
