@@ -35,6 +35,31 @@ The script will:
 
 Progress and validation counts are printed to stdout.
 
+### Browser preview (ohne Flutter)
+
+Um die App im Browser zu testen, ohne Flutter installieren zu müssen:
+
+```bash
+# 1. Datenbank erstellen (einmalig)
+python3 tools/build_bible_db.py
+
+# 2. Lokalen HTTP-Server starten (Repository-Stammverzeichnis!)
+python3 -m http.server 8000
+
+# 3. Im Browser öffnen
+#    http://localhost:8000/preview/
+```
+
+Die Vorschau (`preview/index.html`) lädt die SQLite-Datenbank direkt im
+Browser über [sql.js](https://sql.js.org/) und bietet:
+
+- 📖 Alle 66 Bücher, Kapitel und Verse
+- 🔍 Volltext-Suche (FTS5) mit Treffer-Hervorhebung
+- ← Zurück-Navigation
+
+> **Hinweis:** Der lokale HTTP-Server ist notwendig, weil Browser das Laden
+> lokaler Dateien über `file://` aus Sicherheitsgründen blockieren.
+
 ### Database schema
 
 | Table | Purpose |
