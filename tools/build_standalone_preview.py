@@ -558,7 +558,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <strong>Buch des Dienstes zur Evangelisation</strong><br>
     Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0<br>
     Bibeltext: Elberfelder 1905 (gemeinfrei)<br>
-    <button onclick="saveOffline()" style="
+    <button id="save-footer-btn" onclick="saveOffline()" style="
       margin-top:10px; padding:8px 20px;
       background:linear-gradient(135deg,#c9a227,#f4d160);
       color:#0d1b2a; border:none; border-radius:20px;
@@ -602,6 +602,8 @@ const APP_BAR_TITLE = 'BDE\u202fBibel';
 // ── Splash ────────────────────────────────────────────────────
 function closeSplash() {
   document.getElementById('splash').style.display = 'none';
+  // Safety net: re-render themes in case DOM wasn't ready during init()
+  renderHome();
 }
 
 // ── Bootstrap ─────────────────────────────────────────────────
@@ -963,6 +965,19 @@ function showUpdateNotice() {
   document.getElementById('update-btn').style.display = 'block';
 }
 
+// Hide "Als Datei speichern" buttons when the app is installed (runs as standalone)
+function hideSaveButtons() {
+  var fb = document.getElementById('save-footer-btn');
+  var sb = document.getElementById('save-btn-splash');
+  if (fb) fb.style.display = 'none';
+  if (sb) sb.style.display = 'none';
+}
+// Detect if already running as installed PWA (standalone mode)
+if (window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true) {
+  hideSaveButtons();
+}
+
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   _installPrompt = e;
@@ -972,6 +987,7 @@ window.addEventListener('beforeinstallprompt', e => {
 window.addEventListener('appinstalled', () => {
   document.getElementById('install-btn').style.display = 'none';
   document.getElementById('install-btn-splash').style.display = 'none';
+  hideSaveButtons();
   _installPrompt = null;
 });
 document.getElementById('install-btn-splash').addEventListener('click', installApp);
