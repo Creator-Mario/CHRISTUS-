@@ -646,7 +646,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <!-- ── Language picker ──────────────────────────────────────── -->
 <div id="lang-screen">
   <div class="splash-icon">✝</div>
-  <div class="splash-title">Buch des Dienstes zur Evangelisation</div>
+  <div class="splash-title" data-i18n="app_title">Buch des Dienstes zur Evangelisation</div>
   <div class="lang-pick">Bitte wähle eine Sprache · Choose a language · Pilih bahasa</div>
   <div class="lang-cards">
     <button class="lang-card" onclick="setLang('de')">
@@ -667,10 +667,10 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <!-- ── Splash cover ─────────────────────────────────────────── -->
 <div id="splash">
   <div class="splash-icon">✝</div>
-  <div class="splash-title">Buch des Dienstes zur Evangelisation</div>
-  <div class="splash-subtitle">Elberfelder Bibel 1905</div>
+  <div class="splash-title" data-i18n="app_title">Buch des Dienstes zur Evangelisation</div>
+  <div class="splash-subtitle" data-i18n="splash_subtitle">Elberfelder Bibel 1905</div>
   <div class="splash-divider"></div>
-  <div class="splash-creator">von Mario Reiner Denzer</div>
+  <div class="splash-creator" data-i18n="splash_creator">von Mario Reiner Denzer</div>
   <div class="splash-copy">© 2025 Mario Reiner Denzer</div>
   <div class="splash-version">Version 1.0.0</div>
   <button class="splash-start" onclick="closeSplash()" data-i18n="splash_start">✝ &nbsp;Zur Bibel</button>
@@ -682,8 +682,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div id="a2hs-overlay" role="dialog" aria-modal="true" aria-label="App installieren">
   <div id="a2hs-modal">
     <div class="a2hs-header">
-      <span class="a2hs-title">📱 App zum Startbildschirm</span>
-      <button class="a2hs-close" onclick="closeA2HS()" aria-label="Schließen">✕</button>
+      <span class="a2hs-title" data-i18n="a2hs_title">📱 App zum Startbildschirm</span>
+      <button class="a2hs-close" onclick="closeA2HS()" id="a2hs-close-btn" aria-label="Schließen">✕</button>
     </div>
     <div class="a2hs-tabs">
       <button class="a2hs-tab" id="tab-android" onclick="switchA2HS('android')"><span aria-hidden="true">🤖</span> Android</button>
@@ -796,15 +796,15 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div id="view-home" class="view">
   <div id="home-header">
     <div class="home-cross">✝</div>
-    <div class="home-title">Buch des Dienstes zur Evangelisation</div>
-    <div class="home-sub">Elberfelder 1905 · 66 Bücher · 31 102 Verse</div>
+    <div class="home-title" data-i18n="app_title">Buch des Dienstes zur Evangelisation</div>
+    <div class="home-sub" data-i18n="home_sub">Elberfelder 1905 · 66 Bücher · 31 102 Verse</div>
   </div>
-  <div class="section-header">Thematische Bibelstellen</div>
+  <div class="section-header" data-i18n="thematic_header">Thematische Bibelstellen</div>
   <div id="theme-grid"></div>
   <div id="app-footer">
-    <strong>Buch des Dienstes zur Evangelisation</strong><br>
-    Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0<br>
-    Bibeltext: Elberfelder 1905 (gemeinfrei)<br>
+    <strong data-i18n="app_title">Buch des Dienstes zur Evangelisation</strong><br>
+    <span data-i18n="footer_credit">Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0</span><br>
+    <span data-i18n="footer_bible">Bibeltext: Elberfelder 1905 (gemeinfrei)</span><br>
     <button id="save-footer-btn" onclick="saveOffline()" data-i18n="save_offline_btn" style="
       margin-top:10px; padding:8px 20px;
       background:linear-gradient(135deg,#c9a227,#f4d160);
@@ -869,6 +869,44 @@ const APP_BAR_TITLE = 'BDE\u202fBibel';
 // ── i18n ──────────────────────────────────────────────────────
 const LANG = {
   de: {
+    app_title:         'Buch des Dienstes zur Evangelisation',
+    splash_subtitle:   'Elberfelder Bibel 1905',
+    splash_creator:    'von Mario Reiner Denzer',
+    footer_credit:     'Creator \u0026 Copyright: Mario Reiner Denzer \u00b7 \u00a9 2025 \u00b7 Version 1.0.0',
+    footer_bible:      'Bibeltext: Elberfelder 1905 (gemeinfrei)',
+    a2hs_title:        '\ud83d\udcf1 App zum Startbildschirm',
+    a2hs_close_label:  'Schlie\xdfen',
+    a2hs: {
+      android: {
+        steps: [
+          'Öffne diese Seite in <strong>Chrome</strong> (oder Samsung Internet) auf deinem Android-Gerät.',
+          'Tippe auf das <strong>Menü ⋮</strong> (drei Punkte oben rechts).',
+          'Wähle <strong>„Zum Startbildschirm hinzufügen"</strong> aus der Liste.',
+          'Tippe auf <strong>„Hinzufügen"</strong> im Bestätigungsdialog.',
+          '✅ Das <strong>✝ BDE-Symbol</strong> erscheint auf deinem Startbildschirm \u2013 die App öffnet sich wie eine native App!'
+        ],
+        note: '💡 Tipp: In Samsung Internet heißt es „Seite hinzufügen zu → Startbildschirm"'
+      },
+      iphone: {
+        steps: [
+          'Öffne diese Seite in <strong>Safari</strong> auf deinem iPhone oder iPad.',
+          'Tippe auf das <strong>Teilen-Symbol ⬆</strong> unten in der Mitte der Symbolleiste.',
+          'Scrolle nach unten und tippe auf <strong>„Zum Home-Bildschirm"</strong>.',
+          'Tippe rechts oben auf <strong>„Hinzufügen"</strong>.',
+          '✅ Das <strong>✝ BDE-Symbol</strong> erscheint auf deinem Home-Bildschirm!'
+        ],
+        note: '⚠ Nur Safari unterstützt „Zum Home-Bildschirm" auf iPhone/iPad. Chrome iOS unterstützt diese Funktion nicht.'
+      },
+      desktop: {
+        steps: [
+          'Öffne diese Seite in <strong>Chrome oder Edge</strong> am Computer.',
+          'Klicke auf das <strong>Install-Symbol ⊕</strong> rechts in der Adressleiste (erscheint automatisch).',
+          'Klicke auf <strong>„Installieren"</strong> im Popup-Dialog.',
+          '✅ Die App öffnet sich in einem <strong>eigenen Fenster</strong> ohne Browser-Leiste \u2013 wie ein Programm!'
+        ],
+        note: '💡 Alternative: Datei <strong>BDE-Bibel.html</strong> herunterladen und direkt öffnen \u2013 funktioniert offline ohne Installation.'
+      }
+    },
     splash_start:      '✝\u00a0\u00a0Zur Bibel',
     install_btn:       '⬇\u00a0\u00a0App installieren',
     save_offline_btn:  '💾\u00a0App als Datei speichern (offline)',
@@ -918,6 +956,44 @@ const LANG = {
     }
   },
   en: {
+    app_title:         'Book of Evangelical Service',
+    splash_subtitle:   'Elberfeld Bible 1905',
+    splash_creator:    'by Mario Reiner Denzer',
+    footer_credit:     'Creator \u0026 Copyright: Mario Reiner Denzer \u00b7 \u00a9 2025 \u00b7 Version 1.0.0',
+    footer_bible:      'Bible text: Elberfeld 1905 (public domain)',
+    a2hs_title:        '\ud83d\udcf1 Add App to Home Screen',
+    a2hs_close_label:  'Close',
+    a2hs: {
+      android: {
+        steps: [
+          'Open this page in <strong>Chrome</strong> (or Samsung Internet) on your Android device.',
+          'Tap the <strong>Menu ⋮</strong> (three dots in the top right).',
+          'Select <strong>"Add to Home Screen"</strong> from the list.',
+          'Tap <strong>"Add"</strong> in the confirmation dialog.',
+          '✅ The <strong>✝ BDE icon</strong> appears on your home screen \u2013 the app opens like a native app!'
+        ],
+        note: '💡 Tip: In Samsung Internet, it is called "Add page to \u2192 Home Screen"'
+      },
+      iphone: {
+        steps: [
+          'Open this page in <strong>Safari</strong> on your iPhone or iPad.',
+          'Tap the <strong>Share icon ⬆</strong> in the center bottom of the toolbar.',
+          'Scroll down and tap <strong>"Add to Home Screen"</strong>.',
+          'Tap <strong>"Add"</strong> in the top right.',
+          '✅ The <strong>✝ BDE icon</strong> appears on your Home Screen!'
+        ],
+        note: '⚠ Only Safari supports "Add to Home Screen" on iPhone/iPad. Chrome iOS does not support this feature.'
+      },
+      desktop: {
+        steps: [
+          'Open this page in <strong>Chrome or Edge</strong> on your computer.',
+          'Click the <strong>Install icon ⊕</strong> on the right side of the address bar (appears automatically).',
+          'Click <strong>"Install"</strong> in the popup dialog.',
+          '✅ The app opens in its <strong>own window</strong> without a browser bar \u2013 just like a program!'
+        ],
+        note: '💡 Alternative: Download the file <strong>BDE-Bibel.html</strong> and open it directly \u2013 works offline without installation.'
+      }
+    },
     splash_start:      '✝\u00a0\u00a0Open the Bible',
     install_btn:       '⬇\u00a0\u00a0Install App',
     save_offline_btn:  '💾\u00a0Save App as File (offline)',
@@ -1011,6 +1087,44 @@ const LANG = {
     }
   },
   id: {
+    app_title:         'Buku Pelayanan Penginjilan',
+    splash_subtitle:   'Alkitab Elberfeld 1905',
+    splash_creator:    'oleh Mario Reiner Denzer',
+    footer_credit:     'Pencipta \u0026 Hak Cipta: Mario Reiner Denzer \u00b7 \u00a9 2025 \u00b7 Versi 1.0.0',
+    footer_bible:      'Teks Alkitab: Elberfeld 1905 (domain publik)',
+    a2hs_title:        '\ud83d\udcf1 Tambah Aplikasi ke Layar Beranda',
+    a2hs_close_label:  'Tutup',
+    a2hs: {
+      android: {
+        steps: [
+          'Buka halaman ini di <strong>Chrome</strong> (atau Samsung Internet) pada perangkat Android Anda.',
+          'Ketuk <strong>Menu ⋮</strong> (tiga titik di kanan atas).',
+          'Pilih <strong>"Tambahkan ke Layar Utama"</strong> dari daftar.',
+          'Ketuk <strong>"Tambah"</strong> pada dialog konfirmasi.',
+          '✅ Ikon <strong>✝ BDE</strong> muncul di layar beranda Anda \u2013 aplikasi terbuka seperti aplikasi asli!'
+        ],
+        note: '💡 Tips: Di Samsung Internet, namanya "Tambahkan halaman ke \u2192 Layar Utama"'
+      },
+      iphone: {
+        steps: [
+          'Buka halaman ini di <strong>Safari</strong> pada iPhone atau iPad Anda.',
+          'Ketuk <strong>ikon Bagikan ⬆</strong> di bagian bawah tengah bilah alat.',
+          'Gulir ke bawah dan ketuk <strong>"Tambahkan ke Layar Utama"</strong>.',
+          'Ketuk <strong>"Tambah"</strong> di kanan atas.',
+          '✅ Ikon <strong>✝ BDE</strong> muncul di Layar Utama Anda!'
+        ],
+        note: '⚠ Hanya Safari yang mendukung "Tambahkan ke Layar Utama" di iPhone/iPad. Chrome iOS tidak mendukung fitur ini.'
+      },
+      desktop: {
+        steps: [
+          'Buka halaman ini di <strong>Chrome atau Edge</strong> di komputer Anda.',
+          'Klik <strong>ikon Install ⊕</strong> di sisi kanan bilah alamat (muncul secara otomatis).',
+          'Klik <strong>"Instal"</strong> pada dialog popup.',
+          '✅ Aplikasi terbuka di <strong>jendela sendiri</strong> tanpa bilah browser \u2013 seperti sebuah program!'
+        ],
+        note: '💡 Alternatif: Unduh file <strong>BDE-Bibel.html</strong> dan buka langsung \u2013 berfungsi offline tanpa instalasi.'
+      }
+    },
     splash_start:      '✝\u00a0\u00a0Buka Alkitab',
     install_btn:       '⬇\u00a0\u00a0Pasang Aplikasi',
     save_offline_btn:  '💾\u00a0Simpan Aplikasi sebagai File (offline)',
@@ -1141,6 +1255,28 @@ function applyLang() {
     el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
   });
   document.getElementById('loading').textContent = t('loading');
+  renderA2HS();
+}
+function renderA2HS() {
+  var lx = LANG[CURRENT_LANG] || LANG.de;
+  var a2hs = lx.a2hs || LANG.de.a2hs;
+  if (!a2hs) return;
+  function buildPanel(id, data) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var html = (data.steps || []).map(function(s, i) {
+      return '<div class="a2hs-step"><div class="a2hs-num">'+(i+1)+'</div><div class="a2hs-step-text">'+s+'</div></div>';
+    }).join('');
+    if (data.note) html += '<div class="a2hs-note">'+data.note+'</div>';
+    el.innerHTML = html;
+  }
+  buildPanel('panel-android', a2hs.android);
+  buildPanel('panel-iphone',  a2hs.iphone);
+  buildPanel('panel-desktop', a2hs.desktop);
+  var titleEl = document.querySelector('.a2hs-title');
+  if (titleEl) titleEl.textContent = t('a2hs_title');
+  var closeBtn = document.getElementById('a2hs-close-btn');
+  if (closeBtn) closeBtn.setAttribute('aria-label', t('a2hs_close_label'));
 }
 function setLang(lang) {
   CURRENT_LANG = lang;
