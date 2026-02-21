@@ -10,12 +10,12 @@
 ### 🤖 Android – so funktioniert der Download
 
 1. Diesen Link im **Chrome-Browser** öffnen:  
-   👉 **[BdE-Bibel.html direkt öffnen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
+   👉 **[BDE-Bibel.html direkt öffnen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
 
-2. Link **lange gedrückt halten** → **„Link speichern unter"** → als `BdE-Bibel.html` speichern  
+2. Link **lange gedrückt halten** → **„Link speichern unter"** → als `BDE-Bibel.html` speichern  
    *(oder Chrome-Menü ⋮ → Herunterladen)*
 
-3. **Datei-App** → Downloads → **BdE-Bibel.html** antippen → öffnet in Chrome
+3. **Datei-App** → Downloads → **BDE-Bibel.html** antippen → öffnet in Chrome
 
 4. **Menü ⋮ → „Zum Startbildschirm hinzufügen"** → App-Symbol auf dem Homescreen ✅
 
@@ -24,7 +24,7 @@
 
 ### 💻 Windows / Mac
 
-👉 **[HIER KLICKEN → BdE-Bibel.html herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
+👉 **[HIER KLICKEN → BDE-Bibel.html herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
 *Rechtsklick → „Speichern unter" → Doppelklick zum Öffnen*
 
 ### 🍎 iPhone

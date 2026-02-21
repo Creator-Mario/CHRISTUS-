@@ -26,15 +26,15 @@ jobs:
         include:
           - os: windows-latest
             platform: win
-            artifact: BdE-Bibel-Setup.exe
+            artifact: BDE-Bibel-Setup.exe
             glob: "electron/dist/*.exe"
           - os: macos-latest
             platform: mac
-            artifact: BdE-Bibel.dmg
+            artifact: BDE-Bibel.dmg
             glob: "electron/dist/*.dmg"
           - os: ubuntu-latest
             platform: linux
-            artifact: BdE-Bibel.AppImage
+            artifact: BDE-Bibel.AppImage
             glob: "electron/dist/*.AppImage"
 
     runs-on: ${{ matrix.os }}
@@ -165,7 +165,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: desktop-latest
-          name: "BdE Bibel – Desktop App (Windows / Mac / Linux)"
+          name: "BDE Bibel – Desktop App (Windows / Mac / Linux)"
           body: |
             ## 🖥️ Buch des Dienstes zur Evangelisation – Desktop App
 
@@ -173,27 +173,27 @@ jobs:
 
             | Betriebssystem | Datei | Beschreibung |
             |---|---|---|
-            | 🪟 Windows | **BdE-Bibel-Setup.exe** | Installer – einfach doppelklicken |
-            | 🍎 macOS | **BdE-Bibel.dmg** | Disk-Image – ins Programme-Ordner ziehen |
-            | 🐧 Linux | **BdE-Bibel.AppImage** | Ausführbar machen + starten |
+            | 🪟 Windows | **BDE-Bibel-Setup.exe** | Installer – einfach doppelklicken |
+            | 🍎 macOS | **BDE-Bibel.dmg** | Disk-Image – ins Programme-Ordner ziehen |
+            | 🐧 Linux | **BDE-Bibel.AppImage** | Ausführbar machen + starten |
 
             > ⬇️ Klicke unten auf den Dateinamen zum Herunterladen
 
             ---
             ### Windows – Installation
-            1. `BdE-Bibel-Setup.exe` herunterladen
+            1. `BDE-Bibel-Setup.exe` herunterladen
             2. Doppelklick → "Ja" bei der Sicherheitswarnung
             3. Installationsassistent folgen → App startet automatisch ✅
 
             ### macOS – Installation
-            1. `BdE-Bibel.dmg` herunterladen + öffnen
+            1. `BDE-Bibel.dmg` herunterladen + öffnen
             2. App in den Programme-Ordner ziehen
             3. Beim ersten Start: Rechtsklick → Öffnen → Trotzdem öffnen ✅
 
             ### Linux – Installation
             ```bash
-            chmod +x BdE-Bibel.AppImage
-            ./BdE-Bibel.AppImage
+            chmod +x BDE-Bibel.AppImage
+            ./BDE-Bibel.AppImage
             ```
 
             ---

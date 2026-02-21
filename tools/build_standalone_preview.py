@@ -86,7 +86,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <meta name="theme-color" content="#0d1b2a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="BdE Bibel" />
+  <meta name="apple-mobile-web-app-title" content="BDE Bibel" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="description" content="Buch des Dienstes zur Evangelisation – Elberfelder 1905. Creator &amp; Copyright: Mario Reiner Denzer © 2025" />
 
@@ -459,7 +459,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       </div>
       <div class="a2hs-step">
         <div class="a2hs-num">5</div>
-        <div class="a2hs-step-text">✅ Das <strong>✝ BdE-Symbol</strong> erscheint auf deinem Startbildschirm – die App öffnet sich wie eine native App!</div>
+        <div class="a2hs-step-text">✅ Das <strong>✝ BDE-Symbol</strong> erscheint auf deinem Startbildschirm – die App öffnet sich wie eine native App!</div>
       </div>
       <div class="a2hs-note">💡 Tipp: In Samsung Internet heißt es „Seite hinzufügen zu → Startbildschirm"</div>
     </div>
@@ -484,7 +484,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       </div>
       <div class="a2hs-step">
         <div class="a2hs-num">5</div>
-        <div class="a2hs-step-text">✅ Das <strong>✝ BdE-Symbol</strong> erscheint auf deinem Home-Bildschirm!</div>
+        <div class="a2hs-step-text">✅ Das <strong>✝ BDE-Symbol</strong> erscheint auf deinem Home-Bildschirm!</div>
       </div>
       <div class="a2hs-note">⚠ Nur Safari unterstützt „Zum Home-Bildschirm" auf iPhone/iPad. Chrome iOS unterstützt diese Funktion nicht.</div>
     </div>
@@ -507,7 +507,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
         <div class="a2hs-num">4</div>
         <div class="a2hs-step-text">✅ Die App öffnet sich in einem <strong>eigenen Fenster</strong> ohne Browser-Leiste – wie ein Programm!</div>
       </div>
-      <div class="a2hs-note">💡 Alternative: Datei <strong>BdE-Bibel.html</strong> herunterladen und direkt öffnen – funktioniert offline ohne Installation.</div>
+      <div class="a2hs-note">💡 Alternative: Datei <strong>BDE-Bibel.html</strong> herunterladen und direkt öffnen – funktioniert offline ohne Installation.</div>
     </div>
   </div>
 </div>
@@ -522,7 +522,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div id="app-bar">
   <button id="back-btn" onclick="goBack()">&#8592;</button>
   <button id="app-icon-btn" onclick="goHome()" title="Startseite">✝</button>
-  <span id="app-title">BdE – Bibel</span>
+  <span id="app-title">BDE – Bibel</span>
   <button id="update-btn"  onclick="location.reload()" title="Update verfügbar">↻ Update</button>
   <button id="install-btn" onclick="installApp()"      title="App installieren">⬇ Installieren</button>
   <span   id="offline-badge">📵 Offline</span>
@@ -622,7 +622,7 @@ function closeSplash() {
 })();
 
 // ── Navigation ────────────────────────────────────────────────
-const APP_BAR_TITLE = 'BdE\u202fBibel';
+const APP_BAR_TITLE = 'BDE\u202fBibel';
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -889,7 +889,7 @@ if (!navigator.onLine) updateOfflineBadge();
 function saveOffline() {
   const a = document.createElement('a');
   a.href = location.href;
-  a.download = 'BdE-Bibel-offline.html';
+  a.download = 'BDE-Bibel-offline.html';
   // If we're on file://, just show instructions
   if (location.protocol === 'file:') {
     alert('Du verwendest die Datei bereits lokal.\n\nDiese Datei einfach weiter teilen – sie funktioniert überall ohne Internet!');

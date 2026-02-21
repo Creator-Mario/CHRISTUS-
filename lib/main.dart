@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 
 void main() {
-  runApp(const BdEApp());
+  runApp(const BDEApp());
 }
 
-class BdEApp extends StatelessWidget {
-  const BdEApp({super.key});
+class BDEApp extends StatelessWidget {
+  const BDEApp({super.key});
 
   @override
   Widget build(BuildContext context) {

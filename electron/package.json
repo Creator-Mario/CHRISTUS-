@@ -1,6 +1,6 @@
 {
   "name": "bde-bibel",
-  "productName": "BdE Bibel",
+  "productName": "BDE Bibel",
   "version": "1.0.0",
   "description": "Buch des Dienstes zur Evangelisation – Elberfelder 1905. © 2025 Mario Reiner Denzer",
   "author": {
@@ -18,7 +18,7 @@
   },
   "build": {
     "appId": "com.christusbibel.bde",
-    "productName": "BdE Bibel",
+    "productName": "BDE Bibel",
     "copyright": "© 2025 Mario Reiner Denzer",
     "files": [
       "main.js",
@@ -48,7 +48,7 @@
       "installerHeaderIcon": "build/icon.ico",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "BdE Bibel"
+      "shortcutName": "BDE Bibel"
     }
   }
 }

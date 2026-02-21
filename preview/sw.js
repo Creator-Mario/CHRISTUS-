@@ -12,7 +12,7 @@ const ASSETS = [
 const OFFLINE_HTML = `<!DOCTYPE html>
 <html lang="de"><head><meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Offline – BdE Bibel</title>
+<title>Offline – BDE Bibel</title>
 <style>
   body{font-family:Georgia,serif;background:#0d1b2a;color:#f7f3e9;
        display:flex;flex-direction:column;align-items:center;justify-content:center;

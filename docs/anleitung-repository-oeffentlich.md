@@ -214,5 +214,5 @@ Du brauchst GitHub Pages gar nicht. Lade einfach diese Datei herunter:
 
 👉 [standalone.html direkt herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)
 
-→ Rechtsklick → „Speichern unter" → `BdE-Bibel.html`
+→ Rechtsklick → „Speichern unter" → `BDE-Bibel.html`
 → Doppelklick öffnet die App im Browser – komplett offline ✅
