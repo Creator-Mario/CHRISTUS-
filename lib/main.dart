@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/books_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const ChristusApp());
@@ -18,7 +18,7 @@ class ChristusApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1A237E)),
         useMaterial3: true,
       ),
-      home: const BooksScreen(),
+      home: const HomeScreen(),
     );
   }
 }

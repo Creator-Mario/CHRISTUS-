@@ -29,3 +29,27 @@ CREATE VIRTUAL TABLE IF NOT EXISTS bible_verses_fts USING fts5 (
     content='bible_verses',
     content_rowid='rowid'
 );
+
+-- ── Curated key passages ──────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS passage_themes (
+    id   INTEGER PRIMARY KEY,
+    name TEXT    NOT NULL,
+    icon TEXT    NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS key_passages (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    theme_id     INTEGER NOT NULL,
+    sort_order   INTEGER NOT NULL DEFAULT 0,
+    title        TEXT    NOT NULL,
+    book_id      INTEGER NOT NULL,
+    chapter_from INTEGER NOT NULL,
+    verse_from   INTEGER NOT NULL,
+    chapter_to   INTEGER NOT NULL,
+    verse_to     INTEGER NOT NULL,
+    FOREIGN KEY (theme_id) REFERENCES passage_themes(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_key_passages_theme
+    ON key_passages (theme_id, sort_order);

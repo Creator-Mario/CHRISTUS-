@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/book.dart';
+import '../models/passage.dart';
+import '../models/passage_theme.dart';
 import '../models/verse.dart';
 
 /// Singleton that opens (and, on first launch, copies from assets) the
@@ -35,12 +37,64 @@ class BibleDatabase {
     return openDatabase(dbPath, readOnly: true);
   }
 
+  // ── Passage themes ────────────────────────────────────────────────────────
+
+  Future<List<PassageTheme>> allThemes() async {
+    final db = await database;
+    final rows = await db.query('passage_themes', orderBy: 'id');
+    return rows.map(PassageTheme.fromMap).toList();
+  }
+
+  // ── Key passages ──────────────────────────────────────────────────────────
+
+  Future<List<Passage>> passagesForTheme(int themeId) async {
+    final db = await database;
+    final rows = await db.query(
+      'key_passages',
+      where: 'theme_id = ?',
+      whereArgs: [themeId],
+      orderBy: 'sort_order',
+    );
+    return rows.map(Passage.fromMap).toList();
+  }
+
+  /// Returns all verses that belong to the given passage range.
+  Future<List<Verse>> versesForPassage(Passage p) async {
+    final db = await database;
+    final rows = await db.rawQuery(
+      '''
+      SELECT book_id, chapter, verse, text
+      FROM   bible_verses
+      WHERE  book_id = ?
+        AND (
+          (chapter = ? AND verse >= ?)
+          OR (chapter > ? AND chapter < ?)
+          OR (chapter = ? AND verse <= ?)
+        )
+      ORDER BY chapter, verse
+      ''',
+      [
+        p.bookId,
+        p.chapterFrom, p.verseFrom,
+        p.chapterFrom, p.chapterTo,
+        p.chapterTo,   p.verseTo,
+      ],
+    );
+    return rows.map(Verse.fromMap).toList();
+  }
+
   // ── Books ────────────────────────────────────────────────────────────────
 
   Future<List<Book>> allBooks() async {
     final db = await database;
     final rows = await db.query('books', orderBy: 'id');
     return rows.map(Book.fromMap).toList();
+  }
+
+  Future<Book?> bookById(int id) async {
+    final db = await database;
+    final rows = await db.query('books', where: 'id = ?', whereArgs: [id]);
+    return rows.isEmpty ? null : Book.fromMap(rows.first);
   }
 
   // ── Chapters ─────────────────────────────────────────────────────────────
@@ -113,3 +167,4 @@ class BibleDatabase {
     _db = null;
   }
 }
+

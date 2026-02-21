@@ -37,7 +37,9 @@ jobs:
           python-version: '3.12'
 
       - name: Build Bible SQLite database
-        run: python3 tools/build_bible_db.py
+        run: |
+          python3 tools/generate_passages_json.py
+          python3 tools/build_bible_db.py
 
       - name: Build standalone preview HTML
         run: python3 tools/build_standalone_preview.py

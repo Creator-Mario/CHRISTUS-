@@ -14,6 +14,7 @@ and writes
 """
 
 import csv
+import json
 import os
 import sqlite3
 import sys
@@ -23,6 +24,7 @@ CSV_PATH = os.path.join(REPO_ROOT, "elberfelder_1905.csv")
 DB_DIR = os.path.join(REPO_ROOT, "assets", "db")
 DB_PATH = os.path.join(DB_DIR, "bible.sqlite")
 SCHEMA_PATH = os.path.join(REPO_ROOT, "schema", "bible_schema.sql")
+PASSAGES_JSON = os.path.join(REPO_ROOT, "data", "key_passages.json")
 
 
 def find_header_row(reader):
@@ -39,7 +41,8 @@ def find_header_row(reader):
     raise RuntimeError("CSV header row not found – expected columns 'Verse ID' and 'Book Number'")
 
 
-def build_database(csv_path: str, db_path: str, schema_path: str) -> None:
+def build_database(csv_path: str, db_path: str, schema_path: str,
+                   passages_json: str = PASSAGES_JSON) -> None:
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
 
     # Remove stale database so we always start fresh.
@@ -132,13 +135,54 @@ def build_database(csv_path: str, db_path: str, schema_path: str) -> None:
             )
             sys.exit(1)
 
+        # Populate key passages from JSON.
+        if os.path.exists(passages_json):
+            _populate_passages(con, passages_json)
+        else:
+            print(f"  (Skipping key passages – {passages_json} not found)", flush=True)
+
     finally:
         con.close()
+
+
+def _populate_passages(con: sqlite3.Connection, json_path: str) -> None:
+    """Insert passage_themes and key_passages from the curated JSON file."""
+    with open(json_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    with con:
+        con.executemany(
+            "INSERT OR REPLACE INTO passage_themes (id, name, icon) VALUES (?, ?, ?)",
+            [(t["id"], t["name"], t["icon"]) for t in data["themes"]],
+        )
+        con.executemany(
+            """INSERT OR REPLACE INTO key_passages
+               (id, theme_id, sort_order, title, book_id,
+                chapter_from, verse_from, chapter_to, verse_to)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            [
+                (
+                    p["id"], p["theme_id"], p["sort_order"], p["title"],
+                    p["book_id"], p["chapter_from"], p["verse_from"],
+                    p["chapter_to"], p["verse_to"],
+                )
+                for p in data["passages"]
+            ],
+        )
+
+    theme_count   = con.execute("SELECT COUNT(*) FROM passage_themes").fetchone()[0]
+    passage_count = con.execute("SELECT COUNT(*) FROM key_passages").fetchone()[0]
+    print(
+        f"  passage_themes:   {theme_count}\n"
+        f"  key_passages:     {passage_count}",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":
     print(f"Reading CSV:  {CSV_PATH}")
     print(f"Schema:       {SCHEMA_PATH}")
+    print(f"Passages:     {PASSAGES_JSON}")
     print(f"Output DB:    {DB_PATH}")
     build_database(CSV_PATH, DB_PATH, SCHEMA_PATH)
     print("Done.")
