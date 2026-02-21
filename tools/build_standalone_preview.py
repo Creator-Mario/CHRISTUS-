@@ -470,6 +470,26 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     }
     .hl-clear:active { background: rgba(201,162,39,.15); }
 
+    /* ── Language picker ── */
+    #lang-screen {
+      position: fixed; inset: 0; z-index: 1001;
+      background: linear-gradient(160deg, #08121c 0%, #1a2f45 60%, #0d1b2a 100%);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 32px 24px; text-align: center; gap: 14px;
+    }
+    .lang-pick { font-size: 13px; color: #8ab0cc; }
+    .lang-cards { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    .lang-card {
+      background: rgba(255,255,255,.06); border: 2px solid rgba(201,162,39,.3);
+      border-radius: 14px; padding: 18px 22px; cursor: pointer; color: #fff;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-family: Georgia,serif; min-width: 100px;
+      transition: border-color .15s, background .15s, transform .12s;
+    }
+    .lang-card:hover, .lang-card:focus { border-color: var(--gold); background: rgba(201,162,39,.12); transform: translateY(-2px); outline: none; }
+    .lang-flag { font-size: 40px; }
+    .lang-name { font-size: 14px; font-weight: 700; color: var(--gold-lt); }
+
     /* ── Misc ── */
     #loading { text-align: center; padding: 80px 16px;
       color: var(--text2); font-size: 16px; font-family: Georgia, serif; }
@@ -488,6 +508,27 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 </head>
 <body>
 
+<!-- ── Language picker ──────────────────────────────────────── -->
+<div id="lang-screen">
+  <div class="splash-icon">✝</div>
+  <div class="splash-title">Buch des Dienstes zur Evangelisation</div>
+  <div class="lang-pick">Bitte wähle eine Sprache · Choose a language · Pilih bahasa</div>
+  <div class="lang-cards">
+    <button class="lang-card" onclick="setLang('de')">
+      <span class="lang-flag" aria-hidden="true">🇩🇪</span>
+      <span class="lang-name">Deutsch</span>
+    </button>
+    <button class="lang-card" onclick="setLang('en')">
+      <span class="lang-flag" aria-hidden="true">🇬🇧</span>
+      <span class="lang-name">English</span>
+    </button>
+    <button class="lang-card" onclick="setLang('id')">
+      <span class="lang-flag" aria-hidden="true">🇮🇩</span>
+      <span class="lang-name">Bahasa Indonesia</span>
+    </button>
+  </div>
+</div>
+
 <!-- ── Splash cover ─────────────────────────────────────────── -->
 <div id="splash">
   <div class="splash-icon">✝</div>
@@ -497,9 +538,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <div class="splash-creator">von Mario Reiner Denzer</div>
   <div class="splash-copy">© 2025 Mario Reiner Denzer</div>
   <div class="splash-version">Version 1.0.0</div>
-  <button class="splash-start" onclick="closeSplash()">✝ &nbsp;Zur Bibel</button>
-  <button id="install-btn-splash">⬇ &nbsp;App installieren</button>
-  <button id="save-btn-splash" onclick="saveOffline()" title="Als Datei speichern">💾 &nbsp;Offline speichern</button>
+  <button class="splash-start" onclick="closeSplash()" data-i18n="splash_start">✝ &nbsp;Zur Bibel</button>
+  <button id="install-btn-splash" data-i18n="install_btn">⬇ &nbsp;App installieren</button>
+  <button id="save-btn-splash" onclick="saveOffline()" title="Als Datei speichern" data-i18n="save_offline_btn">💾 &nbsp;Offline speichern</button>
 </div>
 
 <!-- ── A2HS Install Guide Modal ────────────────────────────── -->
@@ -590,8 +631,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
 <!-- ── Update banner ────────────────────────────────────────── -->
 <div id="update-bar">
-  <span style="flex:1">🔄 Neue Version verfügbar!</span>
-  <button id="update-reload" onclick="location.reload()">Jetzt aktualisieren</button>
+  <span style="flex:1" data-i18n="update_msg">🔄 Neue Version verfügbar!</span>
+  <button id="update-reload" onclick="location.reload()" data-i18n="update_btn">Jetzt aktualisieren</button>
 </div>
 
 <!-- ── App bar ──────────────────────────────────────────────── -->
@@ -599,9 +640,10 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <button id="back-btn" onclick="goBack()">&#8592;</button>
   <button id="app-icon-btn" onclick="goHome()" title="Startseite">✝</button>
   <span id="app-title">BDE – Bibel</span>
-  <button id="update-btn"  onclick="location.reload()" title="Update verfügbar">↻ Update</button>
-  <button id="install-btn" onclick="installApp()"      title="App installieren">⬇ Installieren</button>
-  <span   id="offline-badge">📵 Offline</span>
+  <button id="update-btn"  onclick="location.reload()" title="Update verfügbar" data-i18n="update_btn_bar">↻ Update</button>
+  <button id="install-btn" onclick="installApp()"      title="App installieren" data-i18n="install_bar">⬇ Installieren</button>
+  <span   id="offline-badge" data-i18n="offline_badge">📵 Offline</span>
+  <button class="bar-btn" id="lang-btn"     title="Sprache ändern" onclick="changeLang()">🌐</button>
   <button class="bar-btn" id="books-toggle"  title="Alle Bücher" onclick="openAllBooks()">&#128214;</button>
   <button class="bar-btn" id="search-toggle" title="Suchen"      onclick="showSearch()">&#128269;</button>
 </div>
@@ -609,6 +651,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <!-- ── Search bar ───────────────────────────────────────────── -->
 <div id="search-bar">
   <input id="search-input" type="search" placeholder="Bibelstellen suchen …"
+         data-i18n-placeholder="search_placeholder"
          oninput="onSearchInput(this.value)" />
 </div>
 
@@ -627,7 +670,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <strong>Buch des Dienstes zur Evangelisation</strong><br>
     Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0<br>
     Bibeltext: Elberfelder 1905 (gemeinfrei)<br>
-    <button id="save-footer-btn" onclick="saveOffline()" style="
+    <button id="save-footer-btn" onclick="saveOffline()" data-i18n="save_offline_btn" style="
       margin-top:10px; padding:8px 20px;
       background:linear-gradient(135deg,#c9a227,#f4d160);
       color:#0d1b2a; border:none; border-radius:20px;
@@ -687,6 +730,189 @@ const THEME_COLORS = [
 // Must be declared before init() IIFE to avoid temporal dead zone
 const APP_BAR_TITLE = 'BDE\u202fBibel';
 
+// ── i18n ──────────────────────────────────────────────────────
+const LANG = {
+  de: {
+    splash_start:      '✝\u00a0\u00a0Zur Bibel',
+    install_btn:       '⬇\u00a0\u00a0App installieren',
+    save_offline_btn:  '💾\u00a0App als Datei speichern (offline)',
+    update_msg:        '🔄 Neue Version verfügbar!',
+    update_btn:        'Jetzt aktualisieren',
+    update_btn_bar:    '↻ Update',
+    install_bar:       '⬇ Installieren',
+    offline_badge:     '📵 Offline',
+    online_badge:      '✅ Online',
+    search_placeholder:'Bibelstellen suchen \u2026',
+    search_hint:       'Suchbegriff eingeben \u2026',
+    no_results:        'Keine Ergebnisse gefunden.',
+    loading:           '✝\u2005Daten werden geladen \u2026',
+    all_books:         'Alle Bücher',
+    search_title:      'Suchen',
+    at_label:          'Altes Testament (1\u201339)',
+    nt_label:          'Neues Testament (40\u201366)',
+    chapters_unit:     'Kapitel',
+    verses_unit:       'Verse',
+    passages_unit:     'Stellen',
+    thematic_header:   'Thematische Bibelstellen',
+    home_sub:          'Elberfelder 1905 \u00b7 66 Bücher \u00b7 31\u202f102 Verse',
+    passages:          'Passagen',
+    theme_names: {
+      1:'Schöpfung und Ursprung',
+      2:'Die Erzväter und Mütter Israels',
+      3:'Der Auszug aus Ägypten und die Wüstenzeit',
+      4:'Gesetz und Bund',
+      5:'Einzug und Landnahme',
+      6:'Die Zeit der Richter',
+      7:'Könige und Prophetie in Israel',
+      8:'Die großen Propheten Elia und Elisa',
+      9:'Psalmen: Gebete und Lieder',
+      10:'Prophetische Bücher und Botschaft',
+      11:'Jesus Christus: Geburt und Kindheit',
+      12:'Jesu Wirken: Taufe, Versuchung und Berufung',
+      13:'Die Bergpredigt',
+      14:'Gleichnisse Jesu',
+      15:'Wunder und Heilungen',
+      16:'Passion und Auferstehung Jesu',
+      17:'Die Apostelgeschichte und die Briefe',
+      18:'Die Offenbarung: Vollendung',
+      19:'Matthäus-Evangelium',
+      20:'Markus-Evangelium',
+      21:'Lukas-Evangelium',
+      22:'Johannes-Evangelium'
+    }
+  },
+  en: {
+    splash_start:      '✝\u00a0\u00a0Open the Bible',
+    install_btn:       '⬇\u00a0\u00a0Install App',
+    save_offline_btn:  '💾\u00a0Save App as File (offline)',
+    update_msg:        '🔄 New version available!',
+    update_btn:        'Update now',
+    update_btn_bar:    '↻ Update',
+    install_bar:       '⬇ Install',
+    offline_badge:     '📵 Offline',
+    online_badge:      '✅ Online',
+    search_placeholder:'Search Bible passages \u2026',
+    search_hint:       'Enter search term \u2026',
+    no_results:        'No results found.',
+    loading:           '✝\u2005Loading data \u2026',
+    all_books:         'All Books',
+    search_title:      'Search',
+    at_label:          'Old Testament (1\u201339)',
+    nt_label:          'New Testament (40\u201366)',
+    chapters_unit:     'Chapters',
+    verses_unit:       'Verses',
+    passages_unit:     'Passages',
+    thematic_header:   'Thematic Bible Passages',
+    home_sub:          'Elberfelder 1905 \u00b7 66 Books \u00b7 31,102 Verses',
+    passages:          'Passages',
+    theme_names: {
+      1:'Creation and Origin',
+      2:'Patriarchs and Matriarchs of Israel',
+      3:'The Exodus and Wilderness',
+      4:'Law and Covenant',
+      5:'Entry and Conquest of the Land',
+      6:'The Time of the Judges',
+      7:'Kings and Prophecy in Israel',
+      8:'The Great Prophets Elijah and Elisha',
+      9:'Psalms: Prayers and Songs',
+      10:'Prophetic Books and Message',
+      11:'Jesus Christ: Birth and Childhood',
+      12:"Jesus' Ministry: Baptism, Temptation and Calling",
+      13:'The Sermon on the Mount',
+      14:'Parables of Jesus',
+      15:'Miracles and Healings',
+      16:'Passion and Resurrection of Jesus',
+      17:'Acts of the Apostles and the Epistles',
+      18:'The Revelation: Fulfillment',
+      19:'Gospel of Matthew',
+      20:'Gospel of Mark',
+      21:'Gospel of Luke',
+      22:'Gospel of John'
+    }
+  },
+  id: {
+    splash_start:      '✝\u00a0\u00a0Buka Alkitab',
+    install_btn:       '⬇\u00a0\u00a0Pasang Aplikasi',
+    save_offline_btn:  '💾\u00a0Simpan Aplikasi sebagai File (offline)',
+    update_msg:        '🔄 Versi baru tersedia!',
+    update_btn:        'Perbarui sekarang',
+    update_btn_bar:    '↻ Perbarui',
+    install_bar:       '⬇ Pasang',
+    offline_badge:     '📵 Offline',
+    online_badge:      '✅ Online',
+    search_placeholder:'Cari ayat Alkitab \u2026',
+    search_hint:       'Masukkan kata pencarian \u2026',
+    no_results:        'Tidak ada hasil ditemukan.',
+    loading:           '✝\u2005Memuat data \u2026',
+    all_books:         'Semua Kitab',
+    search_title:      'Cari',
+    at_label:          'Perjanjian Lama (1\u201339)',
+    nt_label:          'Perjanjian Baru (40\u201366)',
+    chapters_unit:     'Pasal',
+    verses_unit:       'Ayat',
+    passages_unit:     'Bagian',
+    thematic_header:   'Ayat-Ayat Alkitab Tematik',
+    home_sub:          'Elberfelder 1905 \u00b7 66 Kitab \u00b7 31.102 Ayat',
+    passages:          'Bagian',
+    theme_names: {
+      1:'Penciptaan dan Asal Mula',
+      2:'Bapa dan Ibu Israel',
+      3:'Keluaran dari Mesir dan Padang Gurun',
+      4:'Hukum dan Perjanjian',
+      5:'Masuk dan Penaklukan Tanah',
+      6:'Zaman Para Hakim',
+      7:'Raja-Raja dan Nubuat di Israel',
+      8:'Nabi-Nabi Besar Elia dan Elisa',
+      9:'Mazmur: Doa dan Nyanyian',
+      10:'Kitab-Kitab Nabi dan Pesannya',
+      11:'Yesus Kristus: Kelahiran dan Masa Kecil',
+      12:'Pelayanan Yesus: Baptisan, Pencobaan dan Panggilan',
+      13:'Khotbah di Bukit',
+      14:'Perumpamaan Yesus',
+      15:'Mujizat dan Penyembuhan',
+      16:'Sengsara dan Kebangkitan Yesus',
+      17:'Kisah Para Rasul dan Surat-Surat',
+      18:'Kitab Wahyu: Penggenapan',
+      19:'Injil Matius',
+      20:'Injil Markus',
+      21:'Injil Lukas',
+      22:'Injil Yohanes'
+    }
+  }
+};
+
+let CURRENT_LANG = 'de';
+function t(key) {
+  var lx = LANG[CURRENT_LANG] || LANG.de;
+  return lx[key] !== undefined ? lx[key] : (LANG.de[key] || key);
+}
+function tTheme(id) {
+  var lx = LANG[CURRENT_LANG] || LANG.de;
+  return (lx.theme_names && lx.theme_names[id]) ||
+         (LANG.de.theme_names && LANG.de.theme_names[id]) || '';
+}
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    el.textContent = t(key);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+  });
+  document.getElementById('loading').textContent = t('loading');
+}
+function setLang(lang) {
+  CURRENT_LANG = lang;
+  try { localStorage.setItem('bde_lang', lang); } catch(e) {}
+  document.getElementById('lang-screen').style.display = 'none';
+  applyLang();
+  // Splash is now visible (lang-screen was covering it)
+}
+function changeLang() {
+  try { localStorage.removeItem('bde_lang'); } catch(e) {}
+  document.getElementById('lang-screen').style.display = 'flex';
+}
+
 // ── Splash ────────────────────────────────────────────────────
 function closeSplash() {
   document.getElementById('splash').style.display = 'none';
@@ -696,6 +922,14 @@ function closeSplash() {
 
 // ── Bootstrap ─────────────────────────────────────────────────
 (function init() {
+  // Restore saved language; hide lang-screen if already chosen
+  var savedLang = null;
+  try { savedLang = localStorage.getItem('bde_lang'); } catch(e) {}
+  if (savedLang && LANG[savedLang]) {
+    CURRENT_LANG = savedLang;
+    document.getElementById('lang-screen').style.display = 'none';
+  }
+  applyLang();
   try {
     const binStr = atob(PAYLOAD_B64);
     const bytes  = new Uint8Array(binStr.length);
@@ -768,14 +1002,21 @@ function renderHome() {
     grid.innerHTML = '<p style="padding:20px;color:#888">Keine Themen verfügbar.</p>';
     return;
   }
-  grid.innerHTML = PASSAGE_DATA.themes.map((t, i) => {
+  // Update home header sub-text with translated stats
+  const homeSub = document.querySelector('.home-sub');
+  if (homeSub) homeSub.textContent = t('home_sub');
+  // Update thematic section header
+  const thHdr = document.querySelector('#view-home .section-header');
+  if (thHdr) thHdr.textContent = t('thematic_header');
+  grid.innerHTML = PASSAGE_DATA.themes.map((th, i) => {
     const color = THEME_COLORS[i % THEME_COLORS.length];
-    const count = PASSAGE_DATA.passages.filter(p => p.theme_id === t.id).length;
-    return `<div class="theme-card" data-tid="${t.id}" data-color="${color}"
+    const count = PASSAGE_DATA.passages.filter(p => p.theme_id === th.id).length;
+    const name  = tTheme(th.id) || escHtml(th.name);
+    return `<div class="theme-card" data-tid="${th.id}" data-color="${color}"
                  style="background:linear-gradient(135deg,${color},${hexFade(color)})">
-              <span class="theme-icon">${escHtml(t.icon)}</span>
-              <span class="theme-name">${escHtml(t.name)}</span>
-              <span class="theme-count">${count} Stellen</span>
+              <span class="theme-icon">${escHtml(th.icon)}</span>
+              <span class="theme-name">${escHtml(name)}</span>
+              <span class="theme-count">${count} ${t('passages_unit')}</span>
             </div>`;
   }).join('');
   grid.onclick = e => {
@@ -787,10 +1028,11 @@ function renderHome() {
 // ── Passage list ──────────────────────────────────────────────
 function openTheme(themeId, color) {
   currentThemeColor = color;
-  const theme    = PASSAGE_DATA.themes.find(t => t.id === themeId);
+  const theme    = PASSAGE_DATA.themes.find(th => th.id === themeId);
   const passages = PASSAGE_DATA.passages.filter(p => p.theme_id === themeId);
+  const themeName = tTheme(themeId) || (theme ? theme.name : t('passages'));
   document.getElementById('app-title').textContent =
-    theme ? theme.icon + '\u2002' + theme.name : 'Passagen';
+    theme ? theme.icon + '\u2002' + themeName : t('passages');
   document.getElementById('app-bar').style.background = color;
   const list = document.getElementById('passage-list');
   list.innerHTML = passages.map((p, i) =>
@@ -854,10 +1096,10 @@ function versesForPassage(p) {
 // ── All books ─────────────────────────────────────────────────
 function openAllBooks() {
   document.getElementById('app-bar').style.background = '';
-  document.getElementById('app-title').textContent = 'Alle B\u00fccher';
+  document.getElementById('app-title').textContent = t('all_books');
   const list     = document.getElementById('book-list');
-  const AT_LABEL = '<div class="section-header">Altes Testament (1\u201339)</div>';
-  const NT_LABEL = '<div class="section-header">Neues Testament (40\u201366)</div>';
+  const AT_LABEL = '<div class="section-header">' + escHtml(t('at_label')) + '</div>';
+  const NT_LABEL = '<div class="section-header">' + escHtml(t('nt_label')) + '</div>';
   list.innerHTML = AT_LABEL + Object.entries(BOOKS).map(([id, name]) => {
     const bookId = Number(id);
     const chs    = Object.keys(IDX[bookId] || {}).length;
@@ -868,7 +1110,7 @@ function openAllBooks() {
          <div class="avatar">${id}</div>
          <div class="list-item-text">
            <div class="list-item-title">${escHtml(name)}</div>
-           <div class="list-item-ref">${chs} Kapitel \u00b7 ${vs} Verse</div>
+           <div class="list-item-ref">${chs} ${t('chapters_unit')} \u00b7 ${vs} ${t('verses_unit')}</div>
          </div>
          <span style="color:var(--gold)">\u203a</span>
        </div>`;
@@ -885,11 +1127,11 @@ function openBook(bookId) {
   const grid = document.getElementById('chapter-grid');
   grid.innerHTML =
     `<div class="section-header" style="grid-column:1/-1">` +
-      `${escHtml(BOOKS[bookId] || '')} \u00b7 ${chapters.length} Kapitel` +
+      `${escHtml(BOOKS[bookId] || '')} \u00b7 ${chapters.length} ${t('chapters_unit')}` +
     `</div>` +
     chapters.map(c => {
       const vs = (IDX[bookId][c] || []).length;
-      return `<button class="chapter-btn" data-book="${bookId}" data-ch="${c}" title="${vs} Verse">${c}</button>`;
+      return `<button class="chapter-btn" data-book="${bookId}" data-ch="${c}" title="${vs} ${t('verses_unit')}">${c}</button>`;
     }).join('');
   grid.onclick = e => {
     const el = e.target.closest('[data-ch]');
@@ -915,11 +1157,11 @@ function openChapter(bookId, chapter) {
 // ── Search ────────────────────────────────────────────────────
 function showSearch() {
   document.getElementById('app-bar').style.background = '';
-  document.getElementById('app-title').textContent = 'Suchen';
+  document.getElementById('app-title').textContent = t('search_title');
   navigate('view-search');
   document.getElementById('search-input').focus();
   document.getElementById('search-results').innerHTML =
-    '<div class="empty">Suchbegriff eingeben \u2026</div>';
+    '<div class="empty">' + escHtml(t('search_hint')) + '</div>';
 }
 function onSearchInput(val) {
   clearTimeout(searchTimer);
@@ -928,17 +1170,17 @@ function onSearchInput(val) {
 function runSearch(raw) {
   const q = raw.trim();
   const container = document.getElementById('search-results');
-  if (!q) { container.innerHTML = '<div class="empty">Suchbegriff eingeben \u2026</div>'; return; }
+  if (!q) { container.innerHTML = '<div class="empty">' + escHtml(t('search_hint')) + '</div>'; return; }
   const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
   const results = [];
   for (const row of VERSES) {
-    if (terms.every(t => row[3].toLowerCase().includes(t))) {
+    if (terms.every(term => row[3].toLowerCase().includes(term))) {
       results.push(row);
       if (results.length >= 60) break;
     }
   }
   if (!results.length) {
-    container.innerHTML = '<div class="empty">Keine Ergebnisse gefunden.</div>';
+    container.innerHTML = '<div class="empty">' + escHtml(t('no_results')) + '</div>';
     return;
   }
   container.innerHTML = results.map(([b, c, v, text]) =>
@@ -1189,10 +1431,10 @@ let _installPrompt = null;
 function updateOfflineBadge() {
   const badge = document.getElementById('offline-badge');
   if (!navigator.onLine) {
-    badge.textContent = '📵 Offline';
+    badge.textContent = t('offline_badge');
     badge.className = 'offline';
   } else {
-    badge.textContent = '✅ Online';
+    badge.textContent = t('online_badge');
     badge.className = 'online';
     // hide after 3 s once back online
     setTimeout(() => { badge.className = ''; }, 3000);
