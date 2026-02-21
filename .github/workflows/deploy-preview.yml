@@ -14,10 +14,9 @@ on:
       - '.github/workflows/deploy-preview.yml'
   workflow_dispatch:   # Allow manual trigger from any branch
 
+# Write permission needed to push the gh-pages branch
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 # Only one deployment at a time; cancel any in-progress run.
 concurrency:
@@ -25,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,24 +43,18 @@ jobs:
       - name: Build standalone preview HTML
         run: python3 tools/build_standalone_preview.py
 
-      - name: Assemble Pages site
+      - name: Assemble site
         run: |
           mkdir -p _site/assets/db
           cp assets/db/bible.sqlite _site/assets/db/bible.sqlite
           cp -r preview _site/preview
           cp index.html _site/index.html
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
+          # 404 → redirect to root so any direct URL still loads the app
+          cp _site/index.html _site/404.html
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          force_orphan: true

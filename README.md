@@ -40,14 +40,16 @@ Datei herunterladen und direkt im Browser öffnen:
 
 ---
 
-## ⚠️ Einmalige Setup-Schritte (für Live-Link & APK-Build)
+## ⚠️ Einmalige Setup-Schritte (einmalig nötig – danach alles automatisch)
 
 | # | Schritt | Link |
 |---|---|---|
 | 1 | Repository öffentlich stellen | [Settings → Danger Zone → Change to public](https://github.com/Creator-Mario/CHRISTUS-/settings) |
-| 2 | GitHub Pages aktivieren | [Settings → Pages → Source → GitHub Actions → Save](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
-| 3 | Pages-Workflow starten | [Actions → Deploy Bible Preview → Run workflow](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml) |
+| 2 | **GitHub Pages aktivieren** – Source: **Deploy from a branch** → Branch: **gh-pages** → **Save** | [Settings → Pages](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
+| 3 | Pages-Workflow starten (einmalig) | [Actions → Deploy Bible Preview → Run workflow](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml) |
 | 4 | APK-Workflow starten | [Actions → Build & Release Android APK → Run workflow](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/build-apk.yml) |
+
+> **Wichtig bei Schritt 2:** Bitte **„Deploy from a branch"** wählen (nicht „GitHub Actions"), und als Branch **`gh-pages`** einstellen.
 
 📖 **[→ Ausführliche Anleitung (auf Deutsch)](docs/anleitung-repository-oeffentlich.md)**
 
@@ -55,7 +57,7 @@ Datei herunterladen und direkt im Browser öffnen:
 
 ## 🌐 Live-Vorschau
 
-**👉 [https://creator-mario.github.io/CHRISTUS-/preview/](https://creator-mario.github.io/CHRISTUS-/preview/)**
+**👉 [https://creator-mario.github.io/CHRISTUS-/preview/standalone.html](https://creator-mario.github.io/CHRISTUS-/preview/standalone.html)**
 
 ---
 

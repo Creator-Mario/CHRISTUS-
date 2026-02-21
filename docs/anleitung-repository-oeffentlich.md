@@ -80,9 +80,30 @@ Klicke danach auf den roten Knopf:
 ## Teil 2 – GitHub Pages aktivieren
 
 GitHub Pages ist der kostenlose Hosting-Dienst für öffentliche Repositories.
-Damit wird der Live-Link `creator-mario.github.io/CHRISTUS-/preview/` aktiv.
+Damit wird der Live-Link `creator-mario.github.io/CHRISTUS-/preview/standalone.html` aktiv.
 
-### Schritt 6 – Pages-Einstellungen öffnen
+### Schritt 6 – Workflow zuerst starten (erstellt den gh-pages Branch)
+
+Öffne diesen Link:
+
+```
+https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml
+```
+
+Klicke oben rechts auf:
+
+```
+[ Run workflow ▼ ]
+  Branch: main (oder copilot/add-sqlite-bible-database)
+  [ Run workflow ]   ← Grünen Knopf klicken
+```
+
+Warte ~2–3 Minuten bis ein grünes ✅ erscheint.  
+Danach existiert der Branch `gh-pages` im Repository.
+
+---
+
+### Schritt 7 – Pages-Einstellungen öffnen
 
 Öffne diesen Link:
 
@@ -92,50 +113,29 @@ https://github.com/Creator-Mario/CHRISTUS-/settings/pages
 
 ---
 
-### Schritt 7 – Quelle auf „GitHub Actions" setzen
+### Schritt 8 – Quelle auf „Deploy from a branch → gh-pages" setzen
 
 Du siehst unter **„Build and deployment"** die Option **„Source"**.
 
 Klicke auf das Dropdown-Menü und wähle:
 
 ```
-Source:  [ GitHub Actions ]   ← Das auswählen (nicht "Deploy from a branch")
+Source:  [ Deploy from a branch ]   ← Das auswählen
+```
+
+Dann beim zweiten Dropdown:
+
+```
+Branch:  [ gh-pages ]    Folder: [ / (root) ]   ← So einstellen
 ```
 
 Klicke **„Save"**.
 
 ---
 
-### Schritt 8 – Workflow manuell starten
+### Schritt 9 – Warten (~1 Minute)
 
-Öffne die Actions-Seite:
-
-```
-https://github.com/Creator-Mario/CHRISTUS-/actions
-```
-
-Auf der linken Seite siehst du:
-
-```
-Workflows
-─────────────────────────────────
-▶ Deploy Bible Preview to GitHub Pages   ← Hier klicken
-```
-
-Klicke auf diesen Workflow, dann oben rechts auf:
-
-```
-[ Run workflow ▼ ]
-  Branch: main
-  [ Run workflow ]   ← Grünen Knopf klicken
-```
-
----
-
-### Schritt 9 – Warten (~2 Minuten)
-
-Der Workflow läuft jetzt. Du kannst den Fortschritt live beobachten.
-Ein grünes ✅ bedeutet: Deployment erfolgreich.
+GitHub bereitet die Seite vor. Nach ca. 1 Minute ist der Link aktiv.
 
 ---
 
@@ -144,10 +144,10 @@ Ein grünes ✅ bedeutet: Deployment erfolgreich.
 Nach dem erfolgreichen Deployment ist die App erreichbar unter:
 
 ```
-https://creator-mario.github.io/CHRISTUS-/preview/
+https://creator-mario.github.io/CHRISTUS-/preview/standalone.html
 ```
 
-👉 **[Jetzt öffnen](https://creator-mario.github.io/CHRISTUS-/preview/)**
+👉 **[Jetzt öffnen](https://creator-mario.github.io/CHRISTUS-/preview/standalone.html)**
 
 ---
 
@@ -158,8 +158,8 @@ https://creator-mario.github.io/CHRISTUS-/preview/
 | Repository-Einstellungen | https://github.com/Creator-Mario/CHRISTUS-/settings |
 | Sichtbarkeit ändern | https://github.com/Creator-Mario/CHRISTUS-/settings (Danger Zone) |
 | Pages-Einstellungen | https://github.com/Creator-Mario/CHRISTUS-/settings/pages |
-| Workflow starten | https://github.com/Creator-Mario/CHRISTUS-/actions |
-| Live-Vorschau | https://creator-mario.github.io/CHRISTUS-/preview/ |
+| Workflow starten | https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml |
+| Live-Vorschau | https://creator-mario.github.io/CHRISTUS-/preview/standalone.html |
 
 ---
 
