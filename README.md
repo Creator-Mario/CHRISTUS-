@@ -16,32 +16,25 @@ Bibelstellen
 Damit GitHub Pages (kostenlos) und der Live-Link funktionieren, muss das
 Repository auf **öffentlich** gestellt werden.
 
-### Schritt-für-Schritt
+📖 **[→ Detaillierte Schritt-für-Schritt-Anleitung](docs/anleitung-repository-oeffentlich.md)**
 
-1. Öffne die Repository-Einstellungen:  
-   👉 **https://github.com/Creator-Mario/CHRISTUS-/settings**
+### Kurzfassung (5 Schritte)
 
-2. Scrolle ganz nach unten zur Sektion **"Danger Zone"**
+| # | Was | Wo |
+|---|---|---|
+| 1 | Repository-Einstellungen öffnen | [github.com/Creator-Mario/CHRISTUS-/settings](https://github.com/Creator-Mario/CHRISTUS-/settings) |
+| 2 | Ganz nach unten scrollen → **Danger Zone** | auf der Settings-Seite |
+| 3 | **„Change visibility"** → **„Change to public"** klicken | in der Danger Zone |
+| 4 | Repository-Namen `Creator-Mario/CHRISTUS-` eintippen und bestätigen | im Bestätigungs-Dialog |
+| 5 | Pages aktivieren: **Settings → Pages → Source → GitHub Actions → Save** | [github.com/Creator-Mario/CHRISTUS-/settings/pages](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
 
-3. Klicke auf **"Change visibility"** → **"Change to public"**
+Danach den Workflow starten:  
+👉 [Actions → „Deploy Bible Preview to GitHub Pages" → „Run workflow"](https://github.com/Creator-Mario/CHRISTUS-/actions)
 
-4. Bestätige mit deinem GitHub-Benutzernamen und klicke **"I want to make this repository public"**
+Nach ~2 Minuten ist der Link **https://creator-mario.github.io/CHRISTUS-/preview/** live. ✅
 
-> ✅ Das ist sicher – der Inhalt (Bibel-Text) ist sowieso Public Domain.
-
-### Danach: GitHub Pages aktivieren
-
-Nach dem Öffentlich-Machen:
-
-1. Öffne **https://github.com/Creator-Mario/CHRISTUS-/settings/pages**
-2. Unter **"Source"** → **"GitHub Actions"** auswählen
-3. **Save** klicken
-4. Den Workflow manuell starten:  
-   **https://github.com/Creator-Mario/CHRISTUS-/actions** → **"Deploy Bible Preview to GitHub Pages"** → **"Run workflow"**
-5. Nach ~2 Minuten ist der Link live:  
-   👉 **https://creator-mario.github.io/CHRISTUS-/preview/**
-
----
+> **Sicher?** Ja – der Bibel-Text (Elberfelder 1905) ist Public Domain.
+> Es gibt keine Passwörter oder private Daten im Repository.
 
 ## Bible Database
 
