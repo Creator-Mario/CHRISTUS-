@@ -596,6 +596,8 @@ const THEME_COLORS = [
   '#1e4a3a','#6a2000','#2a2a70','#106040','#4a0060',
   '#802000','#004040','#600040'
 ];
+// Must be declared before init() IIFE to avoid temporal dead zone
+const APP_BAR_TITLE = 'BDE\u202fBibel';
 
 // ── Splash ────────────────────────────────────────────────────
 function closeSplash() {
@@ -623,14 +625,15 @@ function closeSplash() {
     showView('view-home');
     renderHome();
   } catch (err) {
-    document.getElementById('loading').innerHTML =
-      '<b>Fehler:</b> ' + escHtml(err.message) +
-      '<br><small>Bitte die Seite neu laden (F5). Bei weiteren Problemen: browser-cache leeren.</small>';
+    var loadEl = document.getElementById('loading');
+    loadEl.style.display = 'block';
+    loadEl.innerHTML =
+      '<b style="color:#c00">Fehler:</b> ' + escHtml(err.message) +
+      '<br><small>Bitte die Seite neu laden. Bei Problemen: Browser-Cache leeren.</small>';
   }
 })();
 
 // ── Navigation ────────────────────────────────────────────────
-const APP_BAR_TITLE = 'BDE\u202fBibel';
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
