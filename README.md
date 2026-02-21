@@ -1,7 +1,25 @@
 # CHRISTUS-
 Bibelstellen
 
-## 📥 Sofort-Link – Jetzt herunterladen & öffnen
+## ⚠️ EINE EINMALIGE AKTION NÖTIG – GitHub Pages aktivieren
+
+Der Deployment-Workflow hat bereits gestartet. Du musst **einmalig** folgendes tun:
+
+### 👉 Jetzt hier klicken:
+**https://github.com/Creator-Mario/CHRISTUS-/settings/pages**
+
+Dann:
+1. Unter **"Source"** → **"GitHub Actions"** auswählen (nicht "Deploy from a branch"!)
+2. Auf **"Save"** klicken
+3. Zurück zur Actions-Seite gehen und den Workflow erneut starten:  
+   **https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml**  
+   → **"Run workflow"** → **"Run workflow"** (grüner Button)
+4. ~2 Minuten warten
+5. ✅ Link ist live: **https://creator-mario.github.io/CHRISTUS-/**
+
+---
+
+## 📥 Sofort-Link – Jetzt herunterladen & öffnen (kein Setup nötig)
 
 **Kein Server, kein Flutter, kein Setup nötig!**
 
