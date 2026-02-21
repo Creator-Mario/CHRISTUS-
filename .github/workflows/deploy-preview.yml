@@ -36,6 +36,9 @@ jobs:
       - name: Build Bible SQLite database
         run: python3 tools/build_bible_db.py
 
+      - name: Build standalone preview HTML
+        run: python3 tools/build_standalone_preview.py
+
       - name: Assemble Pages site
         run: |
           mkdir -p _site/assets/db
