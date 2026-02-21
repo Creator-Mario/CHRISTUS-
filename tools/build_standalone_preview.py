@@ -151,6 +151,13 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       cursor: pointer; display: none; transition: background .15s;
     }
     #install-btn-splash:hover { background: rgba(201,162,39,.12); }
+    #save-btn-splash {
+      margin-top: 4px; padding: 9px 22px;
+      background: transparent; border: 1.5px solid rgba(201,162,39,.3);
+      color: rgba(244,209,96,.7); font-size: 12px; border-radius: 24px;
+      cursor: pointer; transition: background .15s;
+    }
+    #save-btn-splash:hover { background: rgba(201,162,39,.10); }
 
     /* ── Update banner ── */
     #update-bar {
@@ -201,6 +208,14 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       padding: 5px 10px; border-radius: 16px;
       display: none; white-space: nowrap; flex-shrink: 0;
     }
+    /* ── Offline badge ── */
+    #offline-badge {
+      display: none; align-items: center; gap: 5px;
+      background: #333; color: #ffd; font-size: 11px;
+      padding: 5px 12px; border-radius: 16px; white-space: nowrap; flex-shrink: 0;
+    }
+    #offline-badge.offline { display: flex; background: #8b0000; }
+    #offline-badge.online  { display: flex; background: #1a5c1a; }
 
     /* ── Search bar ── */
     #search-bar { background: var(--navy2); padding: 8px 12px; display: none;
@@ -345,6 +360,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <div class="splash-version">Version 1.0.0</div>
   <button class="splash-start" onclick="closeSplash()">✝ &nbsp;Zur Bibel</button>
   <button id="install-btn-splash">⬇ &nbsp;App installieren</button>
+  <button id="save-btn-splash" onclick="saveOffline()" title="Als Datei speichern">💾 &nbsp;Offline speichern</button>
 </div>
 
 <!-- ── Update banner ────────────────────────────────────────── -->
@@ -360,6 +376,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <span id="app-title">BdE – Bibel</span>
   <button id="update-btn"  onclick="location.reload()" title="Update verfügbar">↻ Update</button>
   <button id="install-btn" onclick="installApp()"      title="App installieren">⬇ Installieren</button>
+  <span   id="offline-badge">📵 Offline</span>
   <button class="bar-btn" id="books-toggle"  title="Alle Bücher" onclick="openAllBooks()">&#128214;</button>
   <button class="bar-btn" id="search-toggle" title="Suchen"      onclick="showSearch()">&#128269;</button>
 </div>
@@ -384,7 +401,15 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <div id="app-footer">
     <strong>Buch des Dienstes zur Evangelisation</strong><br>
     Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0<br>
-    Bibeltext: Elberfelder 1905 (gemeinfrei)
+    Bibeltext: Elberfelder 1905 (gemeinfrei)<br>
+    <button onclick="saveOffline()" style="
+      margin-top:10px; padding:8px 20px;
+      background:linear-gradient(135deg,#c9a227,#f4d160);
+      color:#0d1b2a; border:none; border-radius:20px;
+      font-size:13px; font-family:Georgia,serif;
+      font-weight:700; cursor:pointer;">
+      💾 App als Datei speichern (offline)
+    </button>
   </div>
 </div>
 <div id="view-passages" class="view"><div id="passage-list"></div></div>
@@ -692,6 +717,49 @@ function highlightTerms(text, terms) {
 
 // ── PWA: Service Worker + Install + Update ────────────────────
 let _installPrompt = null;
+
+// ── Offline indicator ─────────────────────────────────────────
+function updateOfflineBadge() {
+  const badge = document.getElementById('offline-badge');
+  if (!navigator.onLine) {
+    badge.textContent = '📵 Offline';
+    badge.className = 'offline';
+  } else {
+    badge.textContent = '✅ Online';
+    badge.className = 'online';
+    // hide after 3 s once back online
+    setTimeout(() => { badge.className = ''; }, 3000);
+  }
+}
+window.addEventListener('online',  updateOfflineBadge);
+window.addEventListener('offline', updateOfflineBadge);
+// On load: only show if already offline
+if (!navigator.onLine) updateOfflineBadge();
+
+// ── Save for offline ──────────────────────────────────────────
+function saveOffline() {
+  const a = document.createElement('a');
+  a.href = location.href;
+  a.download = 'BdE-Bibel-offline.html';
+  // If we're on file://, just show instructions
+  if (location.protocol === 'file:') {
+    alert('Du verwendest die Datei bereits lokal.\n\nDiese Datei einfach weiter teilen – sie funktioniert überall ohne Internet!');
+    return;
+  }
+  // Fetch this page and trigger download
+  fetch(location.href)
+    .then(r => r.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      a.href = url;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    })
+    .catch(() => {
+      // Fallback: just link to current URL with download attribute
+      a.click();
+    });
+}
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

@@ -3,56 +3,48 @@
 
 ---
 
-## 🚀 App SOFORT nutzen – kein Download, kein Workflow nötig
+## 📲 App herunterladen & weitergeben
 
-> **Diese Methode funktioniert sofort** – die App-Datei ist bereits im Repository und braucht keinen Workflow.
+### 💾 Option 1 – Datei herunterladen (empfohlen)
 
-### ✅ Schritt 1 – Datei direkt herunterladen und öffnen
+> **Eine einzige Datei – komplett offline – kein Internet nötig**
 
-👉 **[standalone.html herunterladen (Rechtsklick → „Speichern unter")](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
+**Wenn GitHub Pages aktiv ist** (Repository öffentlich):
 
-→ Gespeicherte Datei per **Doppelklick** im Browser öffnen → fertig ✅
+👉 **[BdE-Bibel.html herunterladen](https://creator-mario.github.io/CHRISTUS-/preview/standalone.html)**  
+*(Rechtsklick → „Speichern unter" → `BdE-Bibel.html`)*
 
-> ~1,9 MB · alle Bibeltexte eingebettet · komplett offline · kein Server nötig
+**Oder direkt aus dem Repository** (immer verfügbar):
+
+👉 **[standalone.html aus GitHub herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
+*(Rechtsklick → „Speichern unter" → Datei umbenennen zu `BdE-Bibel.html`)*
+
+**So verwendest du die Datei:**
+1. Datei per Doppelklick im Browser öffnen
+2. Funktioniert sofort – **komplett ohne Internet** ✅
+3. Datei per WhatsApp / E-Mail / USB weiterteilen
+
+> 📦 ~2 MB · alle 31 102 Bibelverse eingebettet · 18 Themen · 359 Bibelstellen
 
 ---
 
-### ✅ Schritt 2 – Als App auf dem Handy installieren (GitHub Pages)
+### 🌐 Option 2 – Im Browser öffnen (GitHub Pages)
 
-**Einmalige Einrichtung (~2 Minuten):**
+**Einmalige Einrichtung:**
 
 | # | Was tun | Link |
 |---|---|---|
-| 1 | Repository öffentlich stellen (falls noch nicht) | [Settings → Danger Zone → „Change to public"](https://github.com/Creator-Mario/CHRISTUS-/settings) |
-| 2 | Öffne **Settings → Pages** | [→ Pages-Einstellungen](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
-| 3 | **Source:** „Deploy from a branch" auswählen | (Dropdown-Menü auf der Pages-Seite) |
-| 4 | **Branch:** `copilot/add-sqlite-bible-database` · **Folder:** `/ (root)` · **Save** | (Branch-Auswahl direkt darunter) |
-| 5 | 1–2 Minuten warten | GitHub baut die Seite |
-| 6 | App aufrufen: | 👉 **https://creator-mario.github.io/CHRISTUS-/** |
+| 1 | Repository öffentlich stellen | [Settings → „Change to public"](https://github.com/Creator-Mario/CHRISTUS-/settings) |
+| 2 | Pages aktivieren | [Settings → Pages](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
+| 3 | **Source:** Branch `copilot/add-sqlite-bible-database` · Folder `/ (root)` · Save | — |
+| 4 | 1–2 Min warten, dann öffnen: | 👉 **https://creator-mario.github.io/CHRISTUS-/** |
 
-**Nach dem Öffnen als App installieren:**  
-🤖 **Android Chrome:** Menü (⋮) → „Zum Startbildschirm hinzufügen"  
-🍎 **iPhone Safari:** Teilen (↑) → „Zum Home-Bildschirm"  
-💻 **Desktop Chrome/Edge:** ⊕-Symbol in der Adressleiste klicken
+**Als App auf dem Handy installieren:**  
+🤖 **Android Chrome:** Menü ⋮ → „Zum Startbildschirm hinzufügen"  
+🍎 **iPhone Safari:** Teilen ↑ → „Zum Home-Bildschirm"  
+💻 **Desktop Chrome/Edge:** ⊕-Symbol in der Adressleiste
 
 ---
-
-## 📲 Weitere Optionen
-
-### Option A – Android APK (native App)
-
-Sobald der PR in `main` gemerged ist, läuft der APK-Workflow automatisch:  
-👉 **https://github.com/Creator-Mario/CHRISTUS-/releases/latest**
-
-### Option B – Workflows manuell starten
-
-Falls GitHub Pages-Workflow nötig:  
-👉 [Actions → „Deploy Bible Preview" → „Run workflow"](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml)
-
-> **Hinweis zu Workflow-Fehlern:** Wenn Workflows als „action_required" angezeigt werden,  
-> musst du sie einmalig freigeben: **Actions-Tab → betroffenen Run öffnen → „Approve and run"** klicken.  
-> Alternativ: Settings → Actions → General → „Allow all actions" aktivieren.
-
 📖 **[→ Ausführliche Anleitung (auf Deutsch)](docs/anleitung-repository-oeffentlich.md)**
 
 ---
