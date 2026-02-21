@@ -1,63 +1,66 @@
-# CHRISTUS-
-Bibelstellen
+# Buch des Dienstes zur Evangelisation
+*Creator & Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0*
 
 ---
 
-## 📲 App herunterladen
+## 🚀 App SOFORT nutzen – kein Download, kein Workflow nötig
 
-### Option 1 – Android APK (native App)
+> **Diese Methode funktioniert sofort** – die App-Datei ist bereits im Repository und braucht keinen Workflow.
 
-Sobald der PR gemerged ist und der Workflow läuft, erscheint der APK-Download hier:  
+### ✅ Schritt 1 – Datei direkt herunterladen und öffnen
+
+👉 **[standalone.html herunterladen (Rechtsklick → „Speichern unter")](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
+
+→ Gespeicherte Datei per **Doppelklick** im Browser öffnen → fertig ✅
+
+> ~1,9 MB · alle Bibeltexte eingebettet · komplett offline · kein Server nötig
+
+---
+
+### ✅ Schritt 2 – Als App auf dem Handy installieren (GitHub Pages)
+
+**Einmalige Einrichtung (~2 Minuten):**
+
+| # | Was tun | Link |
+|---|---|---|
+| 1 | Repository öffentlich stellen (falls noch nicht) | [Settings → Danger Zone → „Change to public"](https://github.com/Creator-Mario/CHRISTUS-/settings) |
+| 2 | Öffne **Settings → Pages** | [→ Pages-Einstellungen](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
+| 3 | **Source:** „Deploy from a branch" auswählen | (Dropdown-Menü auf der Pages-Seite) |
+| 4 | **Branch:** `copilot/add-sqlite-bible-database` · **Folder:** `/ (root)` · **Save** | (Branch-Auswahl direkt darunter) |
+| 5 | 1–2 Minuten warten | GitHub baut die Seite |
+| 6 | App aufrufen: | 👉 **https://creator-mario.github.io/CHRISTUS-/** |
+
+**Nach dem Öffnen als App installieren:**  
+🤖 **Android Chrome:** Menü (⋮) → „Zum Startbildschirm hinzufügen"  
+🍎 **iPhone Safari:** Teilen (↑) → „Zum Home-Bildschirm"  
+💻 **Desktop Chrome/Edge:** ⊕-Symbol in der Adressleiste klicken
+
+---
+
+## 📲 Weitere Optionen
+
+### Option A – Android APK (native App)
+
+Sobald der PR in `main` gemerged ist, läuft der APK-Workflow automatisch:  
 👉 **https://github.com/Creator-Mario/CHRISTUS-/releases/latest**
 
-**Installation:**
-1. APK-Datei auf das Android-Gerät herunterladen
-2. Datei öffnen → „Installieren"
-3. Falls gefragt: *Einstellungen → Sicherheit → Unbekannte Quellen* erlauben
+### Option B – Workflows manuell starten
 
----
+Falls GitHub Pages-Workflow nötig:  
+👉 [Actions → „Deploy Bible Preview" → „Run workflow"](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml)
 
-### Option 2 – Browser-App als PWA installieren (Android + iPhone + Desktop)
-
-Öffne diesen Link im Browser deines Geräts:  
-👉 **https://creator-mario.github.io/CHRISTUS-/preview/standalone.html**
-
-**Android Chrome:** Menü (⋮) → **„Zum Startbildschirm hinzufügen"**  
-**iPhone Safari:** Teilen (↑) → **„Zum Home-Bildschirm"**  
-**Desktop Chrome/Edge:** Klick auf das **⊕-Symbol** in der Adressleiste
-
-Die App funktioniert dann wie eine native App – mit eigenem Icon, Vollbild und offline.
-
----
-
-### Option 3 – Sofort-Download (HTML-Datei, ohne Installation)
-
-Datei herunterladen und direkt im Browser öffnen:  
-👉 **[standalone.html herunterladen (Raw)](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
-→ Rechtsklick → „Speichern unter" → Doppelklick auf die gespeicherte Datei ✅
-
-> ~1,9 MB · alle Daten eingebettet · komplett offline · kein Server nötig
-
----
-
-## ⚠️ Einmalige Setup-Schritte (einmalig nötig – danach alles automatisch)
-
-| # | Schritt | Link |
-|---|---|---|
-| 1 | Repository öffentlich stellen | [Settings → Danger Zone → Change to public](https://github.com/Creator-Mario/CHRISTUS-/settings) |
-| 2 | **GitHub Pages aktivieren** – Source: **Deploy from a branch** → Branch: **gh-pages** → **Save** | [Settings → Pages](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
-| 3 | Pages-Workflow starten (einmalig) | [Actions → Deploy Bible Preview → Run workflow](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml) |
-| 4 | APK-Workflow starten | [Actions → Build & Release Android APK → Run workflow](https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/build-apk.yml) |
-
-> **Wichtig bei Schritt 2:** Bitte **„Deploy from a branch"** wählen (nicht „GitHub Actions"), und als Branch **`gh-pages`** einstellen.
+> **Hinweis zu Workflow-Fehlern:** Wenn Workflows als „action_required" angezeigt werden,  
+> musst du sie einmalig freigeben: **Actions-Tab → betroffenen Run öffnen → „Approve and run"** klicken.  
+> Alternativ: Settings → Actions → General → „Allow all actions" aktivieren.
 
 📖 **[→ Ausführliche Anleitung (auf Deutsch)](docs/anleitung-repository-oeffentlich.md)**
 
 ---
 
-## 🌐 Live-Vorschau
+## 🌐 Live-URL (nach Pages-Aktivierung)
 
-**👉 [https://creator-mario.github.io/CHRISTUS-/preview/standalone.html](https://creator-mario.github.io/CHRISTUS-/preview/standalone.html)**
+**👉 [https://creator-mario.github.io/CHRISTUS-/](https://creator-mario.github.io/CHRISTUS-/)**  
+(leitet automatisch zur App weiter)
 
 ---
 

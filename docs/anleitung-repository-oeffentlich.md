@@ -79,33 +79,12 @@ Klicke danach auf den roten Knopf:
 
 ## Teil 2 – GitHub Pages aktivieren
 
-GitHub Pages ist der kostenlose Hosting-Dienst für öffentliche Repositories.
-Damit wird der Live-Link `creator-mario.github.io/CHRISTUS-/preview/standalone.html` aktiv.
+GitHub Pages hostet die App kostenlos. Die App-Datei (`standalone.html`) ist
+**bereits im Repository gespeichert** – es muss kein Workflow laufen!
 
-### Schritt 6 – Workflow zuerst starten (erstellt den gh-pages Branch)
+### Schritt 6 – Pages-Einstellungen öffnen
 
-Öffne diesen Link:
-
-```
-https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml
-```
-
-Klicke oben rechts auf:
-
-```
-[ Run workflow ▼ ]
-  Branch: main (oder copilot/add-sqlite-bible-database)
-  [ Run workflow ]   ← Grünen Knopf klicken
-```
-
-Warte ~2–3 Minuten bis ein grünes ✅ erscheint.  
-Danach existiert der Branch `gh-pages` im Repository.
-
----
-
-### Schritt 7 – Pages-Einstellungen öffnen
-
-Öffne diesen Link:
+Öffne diesen Link direkt:
 
 ```
 https://github.com/Creator-Mario/CHRISTUS-/settings/pages
@@ -113,41 +92,64 @@ https://github.com/Creator-Mario/CHRISTUS-/settings/pages
 
 ---
 
-### Schritt 8 – Quelle auf „Deploy from a branch → gh-pages" setzen
+### Schritt 7 – Source auf „Deploy from a branch" setzen
 
 Du siehst unter **„Build and deployment"** die Option **„Source"**.
 
-Klicke auf das Dropdown-Menü und wähle:
+Klicke auf das Dropdown und wähle:
 
 ```
 Source:  [ Deploy from a branch ]   ← Das auswählen
 ```
 
-Dann beim zweiten Dropdown:
+---
+
+### Schritt 8 – Branch und Ordner einstellen
+
+Beim zweiten Dropdown-Menü:
 
 ```
-Branch:  [ gh-pages ]    Folder: [ / (root) ]   ← So einstellen
+Branch:  [ copilot/add-sqlite-bible-database ]    Folder: [ / (root) ]
 ```
+
+> ℹ️ Wenn der PR bereits in `main` gemerged ist, stattdessen `main` wählen.
 
 Klicke **„Save"**.
 
 ---
 
-### Schritt 9 – Warten (~1 Minute)
+### Schritt 9 – Warten (~1–2 Minuten)
 
-GitHub bereitet die Seite vor. Nach ca. 1 Minute ist der Link aktiv.
+GitHub bereitet die Seite vor. Nach ca. 1–2 Minuten erscheint oben auf der
+Pages-Seite ein grünes Banner mit dem Link.
 
 ---
 
 ## ✅ Fertig – Dein Live-Link
 
-Nach dem erfolgreichen Deployment ist die App erreichbar unter:
-
 ```
-https://creator-mario.github.io/CHRISTUS-/preview/standalone.html
+https://creator-mario.github.io/CHRISTUS-/
 ```
 
-👉 **[Jetzt öffnen](https://creator-mario.github.io/CHRISTUS-/preview/standalone.html)**
+👉 **[Jetzt öffnen](https://creator-mario.github.io/CHRISTUS-/)**
+
+Dieser Link leitet automatisch zur App weiter.
+
+---
+
+## 🔧 Workflows werden als „action_required" blockiert?
+
+GitHub kann Workflows blockieren und eine manuelle Freigabe verlangen.
+
+**So gibst du einen einzelnen Lauf frei:**
+1. Öffne: https://github.com/Creator-Mario/CHRISTUS-/actions
+2. Klicke auf den betroffenen Lauf (oranges ⚠️-Symbol)
+3. Klicke auf **„Approve and run"**
+
+**Oder dauerhaft für alle zulassen:**
+- Settings → Actions → General
+- „Fork pull request workflows from outside collaborators" → **„Allow all actions and reusable workflows"**
+- **Save**
 
 ---
 
@@ -158,27 +160,24 @@ https://creator-mario.github.io/CHRISTUS-/preview/standalone.html
 | Repository-Einstellungen | https://github.com/Creator-Mario/CHRISTUS-/settings |
 | Sichtbarkeit ändern | https://github.com/Creator-Mario/CHRISTUS-/settings (Danger Zone) |
 | Pages-Einstellungen | https://github.com/Creator-Mario/CHRISTUS-/settings/pages |
-| Workflow starten | https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy-preview.yml |
-| Live-Vorschau | https://creator-mario.github.io/CHRISTUS-/preview/standalone.html |
+| Workflow-Freigabe | https://github.com/Creator-Mario/CHRISTUS-/actions |
+| Live-App | https://creator-mario.github.io/CHRISTUS-/ |
 
 ---
 
 ## Häufige Fragen
 
-**❓ Warum ist das sicher?**  
-Der gesamte Inhalt des Repositories ist öffentlich zugänglich gemacht werden
-darf – der Bibel-Text (Elberfelder 1905) ist **Public Domain**.
+**❓ Warum ist das sicher?**
+Der gesamte Inhalt des Repositories darf öffentlich zugänglich sein –
+der Bibel-Text (Elberfelder 1905) ist **Public Domain**.
 Es gibt keine Passwörter, API-Keys oder private Daten im Repository.
 
-**❓ Was passiert mit dem Repository, wenn ich es öffentlich mache?**  
-Jeder im Internet kann den Code und die Dateien lesen. Niemand kann jedoch
-ohne deine Erlaubnis Änderungen vornehmen.
+**❓ Was passiert, wenn ich es wieder auf privat stelle?**
+Der Live-Link hört auf zu funktionieren. Die heruntergeladene standalone.html
+funktioniert weiterhin offline.
 
-**❓ Kann ich es wieder auf privat stellen?**  
-Ja, jederzeit. Gehe wieder zu Settings → Danger Zone → Change visibility
-→ Change to private.
-
-**❓ Der Workflow schlägt fehl – was tun?**  
-Öffne https://github.com/Creator-Mario/CHRISTUS-/actions, klicke auf den
-fehlgeschlagenen Lauf und lies die roten Fehlermeldungen. Häufigste Ursache:
-Pages wurde noch nicht aktiviert (Schritt 6–7 wiederholen).
+**❓ Der Link zeigt 404 – was tun?**
+1. Überprüfe, ob das Repository öffentlich ist
+2. Gehe zu Settings → Pages und prüfe, ob der Branch eingestellt ist
+3. Warte 2–3 Minuten nach dem Speichern der Pages-Einstellungen
+4. Seite im Browser neu laden (Strg+F5)

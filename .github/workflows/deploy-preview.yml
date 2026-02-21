@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - copilot/add-sqlite-bible-database   # Deploy from PR branch until merged
     paths:
       - 'elberfelder_1905.csv'
       - 'schema/**'
