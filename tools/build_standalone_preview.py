@@ -69,139 +69,323 @@ def build_payload(books: dict, verses: list) -> str:
     return base64.b64encode(compressed).decode("ascii")
 
 
+APP_VERSION = "1.0.0"
+APP_YEAR    = "2025"
+APP_AUTHOR  = "Mario Reiner Denzer"
+APP_TITLE   = "Buch des Dienstes zur Evangelisation"
+
 HTML_TEMPLATE = r"""<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Christus – Bibel</title>
+  <title>Buch des Dienstes zur Evangelisation</title>
 
-  <!-- PWA: installable as app on Android/iOS/Desktop -->
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#1a237e" />
+  <meta name="theme-color" content="#0d1b2a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Christus" />
+  <meta name="apple-mobile-web-app-title" content="BdE Bibel" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="description" content="Elberfelder 1905 – Deutsche Bibel mit Volltextsuche und wichtigen Bibelstellen" />
+  <meta name="description" content="Buch des Dienstes zur Evangelisation – Elberfelder 1905. Creator &amp; Copyright: Mario Reiner Denzer © 2025" />
 
   <style>
     :root {
-      --primary: #1a237e;
-      --primary-light: #534bae;
-      --accent: #e8eaf6;
-      --text: #212121;
-      --text-secondary: #616161;
-      --bg: #fafafa;
-      --card: #fff;
-      --border: #e0e0e0;
+      --navy:    #0d1b2a;
+      --navy2:   #1a2f45;
+      --gold:    #c9a227;
+      --gold-lt: #f4d160;
+      --parch:   #f7f3e9;
+      --parch-d: #ede4d0;
+      --border:  #d9ccb0;
+      --text:    #1a1208;
+      --text2:   #5a4a2e;
+      --card:    #fff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-           background: var(--bg); color: var(--text);
-           max-width: 800px; margin: 0 auto; }
-
-    #app-bar {
-      background: var(--primary); color: #fff;
-      padding: 12px 16px; display: flex; align-items: center; gap: 10px;
-      position: sticky; top: 0; z-index: 10;
-      box-shadow: 0 2px 4px rgba(0,0,0,.3);
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: var(--parch); color: var(--text);
+      max-width: 800px; margin: 0 auto;
     }
-    #back-btn { background: none; border: none; color: #fff;
-      font-size: 22px; cursor: pointer; padding: 4px 8px; display: none; }
-    #app-title { flex: 1; font-size: 17px; font-weight: 600; }
-    #search-toggle { background: none; border: none; color: #fff;
-      font-size: 20px; cursor: pointer; padding: 4px 8px; }
-    #books-toggle  { background: none; border: none; color: #fff;
-      font-size: 20px; cursor: pointer; padding: 4px 8px; }
-    #install-btn   { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5);
-      color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;
-      padding: 4px 10px; border-radius: 14px; display: none; white-space: nowrap; }
 
-    #search-bar { background: var(--primary); padding: 8px 12px; display: none; }
-    #search-input { width: 100%; padding: 8px 12px; font-size: 15px;
-      border: none; border-radius: 4px; outline: none; }
+    /* ── Splash screen ── */
+    #splash {
+      position: fixed; inset: 0; z-index: 1000;
+      background: linear-gradient(160deg, #08121c 0%, #1a2f45 60%, #0d1b2a 100%);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 32px 24px;
+      text-align: center; gap: 10px;
+    }
+    .splash-icon {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: linear-gradient(135deg, #c9a227, #f4d160);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px; color: #0d1b2a;
+      box-shadow: 0 0 40px rgba(201,162,39,.55); margin-bottom: 6px;
+    }
+    .splash-title {
+      font-size: clamp(17px, 5vw, 25px); font-weight: 700;
+      color: var(--gold-lt); line-height: 1.35;
+      text-shadow: 0 2px 10px rgba(0,0,0,.6); max-width: 320px;
+    }
+    .splash-subtitle { font-size: 14px; color: #8ab0cc; font-style: italic; }
+    .splash-divider  { width: 56px; height: 2px; background: var(--gold); opacity: .65; margin: 4px 0; }
+    .splash-creator  { font-size: 14px; color: var(--gold); letter-spacing: .4px; }
+    .splash-copy     { font-size: 12px; color: #6a8aaa; }
+    .splash-version  { font-size: 11px; color: #4a6a8a; }
+    .splash-start {
+      margin-top: 18px; padding: 14px 38px;
+      background: linear-gradient(135deg, #c9a227, #f4d160);
+      color: #0d1b2a; font-size: 16px; font-weight: 700; font-family: Georgia, serif;
+      border: none; border-radius: 32px; cursor: pointer;
+      box-shadow: 0 4px 22px rgba(201,162,39,.45);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .splash-start:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,162,39,.55); }
+    #install-btn-splash {
+      margin-top: 6px; padding: 9px 22px;
+      background: transparent; border: 1.5px solid rgba(201,162,39,.45);
+      color: var(--gold-lt); font-size: 13px; border-radius: 24px;
+      cursor: pointer; display: none; transition: background .15s;
+    }
+    #install-btn-splash:hover { background: rgba(201,162,39,.12); }
 
-    .view { display: none; padding: 0; }
+    /* ── Update banner ── */
+    #update-bar {
+      display: none; background: #4a3800; color: #fff;
+      padding: 10px 16px; align-items: center; gap: 10px; font-size: 14px;
+    }
+    #update-bar.visible { display: flex; }
+    #update-reload {
+      background: var(--gold); color: #0d1b2a;
+      border: none; border-radius: 12px; padding: 4px 14px;
+      font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+
+    /* ── App bar ── */
+    #app-bar {
+      background: var(--navy); color: #fff;
+      padding: 10px 12px; display: flex; align-items: center; gap: 8px;
+      position: sticky; top: 0; z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,.5);
+      border-bottom: 2px solid var(--gold);
+    }
+    #back-btn {
+      background: none; border: none; color: var(--gold);
+      font-size: 22px; cursor: pointer; padding: 4px 6px; display: none;
+    }
+    #app-icon-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 22px; color: var(--gold); padding: 2px 4px; flex-shrink: 0;
+    }
+    #app-title {
+      flex: 1; font-size: 15px; font-weight: 700;
+      color: var(--gold-lt); font-family: Georgia, serif;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .bar-btn {
+      background: none; border: none; color: var(--gold-lt);
+      font-size: 19px; cursor: pointer; padding: 4px 5px;
+    }
+    #install-btn {
+      background: linear-gradient(135deg, #c9a227, #f4d160);
+      border: none; color: #0d1b2a; font-size: 11px; font-weight: 700;
+      cursor: pointer; padding: 5px 11px; border-radius: 16px;
+      display: none; white-space: nowrap; flex-shrink: 0;
+    }
+    #update-btn {
+      background: #c62828; border: none; color: #fff;
+      font-size: 11px; font-weight: 700; cursor: pointer;
+      padding: 5px 10px; border-radius: 16px;
+      display: none; white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── Search bar ── */
+    #search-bar { background: var(--navy2); padding: 8px 12px; display: none;
+      border-bottom: 1px solid var(--gold); }
+    #search-input {
+      width: 100%; padding: 8px 14px; font-size: 15px;
+      border: 1.5px solid var(--gold); border-radius: 20px;
+      outline: none; background: var(--parch); color: var(--text);
+      font-family: Georgia, serif;
+    }
+
+    /* ── Views ── */
+    .view { display: none; }
     .view.active { display: block; }
 
-    /* ── Home: theme grid ── */
-    .section-header { padding: 12px 16px 4px; font-weight: 700; font-size: 14px;
-      color: var(--text-secondary); text-transform: uppercase; letter-spacing: .5px; }
+    /* ── Section headers ── */
+    .section-header {
+      padding: 14px 16px 6px; font-weight: 700; font-size: 12px;
+      color: var(--text2); text-transform: uppercase; letter-spacing: .8px;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Home header banner ── */
+    #home-header {
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy2) 100%);
+      padding: 18px 20px 22px; text-align: center;
+      border-bottom: 2px solid var(--gold);
+    }
+    .home-cross { font-size: 34px; color: var(--gold); margin-bottom: 6px; }
+    .home-title { font-size: 17px; font-weight: 700; color: var(--gold-lt);
+      line-height: 1.35; font-family: Georgia, serif; }
+    .home-sub   { font-size: 12px; color: #6a8aaa; margin-top: 4px;
+      font-family: 'Segoe UI', sans-serif; }
+
+    /* ── Theme grid ── */
     #theme-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 10px; padding: 10px 12px; }
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 10px; padding: 12px 12px 16px;
+    }
     .theme-card {
-      border-radius: 8px; padding: 14px 12px; cursor: pointer;
-      display: flex; flex-direction: column; gap: 8px;
-      color: #fff; min-height: 80px;
-      box-shadow: 0 2px 6px rgba(0,0,0,.2);
-      transition: transform .15s, box-shadow .15s; }
-    .theme-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.25); }
-    .theme-icon { font-size: 26px; }
-    .theme-name { font-size: 12px; font-weight: 600; line-height: 1.3; }
+      border-radius: 10px; padding: 14px 12px; cursor: pointer;
+      display: flex; flex-direction: column; gap: 7px;
+      color: #fff; min-height: 90px;
+      box-shadow: 0 3px 8px rgba(0,0,0,.28);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .theme-card:hover { transform: translateY(-3px); box-shadow: 0 7px 18px rgba(0,0,0,.35); }
+    .theme-icon  { font-size: 28px; }
+    .theme-name  { font-size: 12px; font-weight: 700; line-height: 1.3;
+      font-family: 'Segoe UI', Roboto, sans-serif; }
+    .theme-count { font-size: 10px; opacity: .75; margin-top: auto;
+      font-family: 'Segoe UI', sans-serif; }
 
-    /* ── Passage list ── */
-    .list-item { display: flex; align-items: center; padding: 12px 16px;
+    /* ── List items ── */
+    .list-item {
+      display: flex; align-items: center; padding: 12px 16px;
       border-bottom: 1px solid var(--border); background: var(--card);
-      cursor: pointer; transition: background .15s; }
-    .list-item:hover { background: var(--accent); }
-    .avatar { width: 32px; height: 32px; border-radius: 50%;
-      background: var(--primary); color: #fff;
+      cursor: pointer; transition: background .15s;
+    }
+    .list-item:hover { background: var(--parch-d); }
+    .avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--navy); color: var(--gold);
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 600; flex-shrink: 0; margin-right: 12px; }
-    .list-item-text { flex: 1; }
-    .list-item-title { font-size: 15px; }
-    .list-item-ref { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+      font-size: 11px; font-weight: 700; flex-shrink: 0; margin-right: 12px;
+      border: 1.5px solid var(--gold);
+    }
+    .list-item-text  { flex: 1; }
+    .list-item-title { font-size: 15px; font-family: Georgia, serif; }
+    .list-item-ref   { font-size: 11px; color: var(--text2); margin-top: 2px;
+      font-family: 'Segoe UI', sans-serif; }
 
     /* ── Passage text ── */
-    .chapter-heading { padding: 12px 16px 4px; font-weight: 700;
-      font-size: 15px; color: var(--primary); }
-    .verse-row { padding: 8px 16px; border-bottom: 1px solid var(--border);
-      background: var(--card); line-height: 1.65; }
-    .verse-num { font-weight: 700; color: var(--primary); margin-right: 6px; }
+    .chapter-heading {
+      padding: 14px 18px 8px; font-weight: 700; font-size: 16px;
+      color: var(--navy); font-family: Georgia, serif;
+      border-bottom: 2px solid var(--gold); background: var(--parch-d);
+    }
+    .verse-row {
+      padding: 8px 18px; border-bottom: 1px solid var(--border);
+      background: var(--card); line-height: 1.85; font-family: Georgia, serif;
+      font-size: 15px;
+    }
+    .verse-num {
+      font-weight: 700; color: var(--gold); margin-right: 5px;
+      font-size: 11px;
+    }
 
-    /* ── Books ── */
-    #chapter-grid { display: grid;
+    /* ── Chapter grid ── */
+    #chapter-grid {
+      display: grid;
       grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-      gap: 8px; padding: 12px; }
-    .chapter-btn { padding: 12px 4px; background: var(--primary); color: #fff;
-      border: none; border-radius: 6px; font-size: 15px; cursor: pointer;
-      transition: background .15s; }
-    .chapter-btn:hover { background: var(--primary-light); }
+      gap: 8px; padding: 12px; background: var(--parch);
+    }
+    .chapter-btn {
+      padding: 12px 4px; background: var(--navy); color: var(--gold-lt);
+      border: 1px solid var(--gold); border-radius: 6px;
+      font-size: 15px; cursor: pointer; font-family: Georgia, serif;
+      transition: background .15s, color .15s;
+    }
+    .chapter-btn:hover { background: var(--gold); color: var(--navy); }
 
-    /* ── Search ── */
-    .result-item { padding: 12px 16px; border-bottom: 1px solid var(--border);
-      background: var(--card); cursor: pointer; }
-    .result-item:hover { background: var(--accent); }
-    .result-ref { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
-    mark { background: #fff176; border-radius: 2px; }
+    /* ── Search results ── */
+    .result-item {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      background: var(--card); cursor: pointer;
+      font-family: Georgia, serif; font-size: 15px; line-height: 1.75;
+    }
+    .result-item:hover { background: var(--parch-d); }
+    .result-ref { font-size: 12px; color: var(--text2); margin-top: 4px;
+      font-family: 'Segoe UI', sans-serif; }
+    mark { background: #ffe57f; border-radius: 2px; padding: 0 1px; }
 
-    #loading { text-align: center; padding: 60px 16px;
-      color: var(--text-secondary); font-size: 15px; }
-    .empty { text-align: center; padding: 40px 16px; color: var(--text-secondary); }
+    /* ── Misc ── */
+    #loading { text-align: center; padding: 80px 16px;
+      color: var(--text2); font-size: 16px; font-family: Georgia, serif; }
+    .empty { text-align: center; padding: 40px 16px; color: var(--text2);
+      font-family: Georgia, serif; font-style: italic; }
+
+    /* ── Footer ── */
+    #app-footer {
+      text-align: center; padding: 22px 16px 36px;
+      font-size: 11px; color: var(--text2);
+      font-family: 'Segoe UI', sans-serif;
+      border-top: 1px solid var(--border); line-height: 1.8;
+    }
+    #app-footer strong { color: var(--navy); }
   </style>
 </head>
 <body>
 
+<!-- ── Splash cover ─────────────────────────────────────────── -->
+<div id="splash">
+  <div class="splash-icon">✝</div>
+  <div class="splash-title">Buch des Dienstes zur Evangelisation</div>
+  <div class="splash-subtitle">Elberfelder Bibel 1905</div>
+  <div class="splash-divider"></div>
+  <div class="splash-creator">von Mario Reiner Denzer</div>
+  <div class="splash-copy">© 2025 Mario Reiner Denzer</div>
+  <div class="splash-version">Version 1.0.0</div>
+  <button class="splash-start" onclick="closeSplash()">✝ &nbsp;Zur Bibel</button>
+  <button id="install-btn-splash">⬇ &nbsp;App installieren</button>
+</div>
+
+<!-- ── Update banner ────────────────────────────────────────── -->
+<div id="update-bar">
+  <span style="flex:1">🔄 Neue Version verfügbar!</span>
+  <button id="update-reload" onclick="location.reload()">Jetzt aktualisieren</button>
+</div>
+
+<!-- ── App bar ──────────────────────────────────────────────── -->
 <div id="app-bar">
   <button id="back-btn" onclick="goBack()">&#8592;</button>
-  <span id="app-title">Christus – Bibel</span>
-  <button id="install-btn" onclick="installApp()" title="App installieren">&#11015; App</button>
-  <button id="books-toggle"  title="Alle Bücher" onclick="openAllBooks()">&#128214;</button>
-  <button id="search-toggle" title="Suchen"      onclick="showSearch()">&#128269;</button>
+  <button id="app-icon-btn" onclick="goHome()" title="Startseite">✝</button>
+  <span id="app-title">BdE – Bibel</span>
+  <button id="update-btn"  onclick="location.reload()" title="Update verfügbar">↻ Update</button>
+  <button id="install-btn" onclick="installApp()"      title="App installieren">⬇ Installieren</button>
+  <button class="bar-btn" id="books-toggle"  title="Alle Bücher" onclick="openAllBooks()">&#128214;</button>
+  <button class="bar-btn" id="search-toggle" title="Suchen"      onclick="showSearch()">&#128269;</button>
 </div>
+
+<!-- ── Search bar ───────────────────────────────────────────── -->
 <div id="search-bar">
   <input id="search-input" type="search" placeholder="Bibelstellen suchen …"
          oninput="onSearchInput(this.value)" />
 </div>
 
-<div id="loading">Daten werden geladen …</div>
+<div id="loading">✝&ensp;Daten werden geladen …</div>
 
-<div id="view-home"     class="view">
-  <div class="section-header">Wichtige Bibelstellen</div>
+<!-- ── Views ────────────────────────────────────────────────── -->
+<div id="view-home" class="view">
+  <div id="home-header">
+    <div class="home-cross">✝</div>
+    <div class="home-title">Buch des Dienstes zur Evangelisation</div>
+    <div class="home-sub">Elberfelder 1905 · 66 Bücher · 31 102 Verse</div>
+  </div>
+  <div class="section-header">Thematische Bibelstellen</div>
   <div id="theme-grid"></div>
+  <div id="app-footer">
+    <strong>Buch des Dienstes zur Evangelisation</strong><br>
+    Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0<br>
+    Bibeltext: Elberfelder 1905 (gemeinfrei)
+  </div>
 </div>
 <div id="view-passages" class="view"><div id="passage-list"></div></div>
 <div id="view-text"     class="view"><div id="passage-text"></div></div>
@@ -211,26 +395,31 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div id="view-search"   class="view"><div id="search-results"></div></div>
 
 <script>
-// ── Embedded Bible data ────────────────────────────────────────────────────
-const PAYLOAD_B64 = '%%PAYLOAD%%';
-// ── Embedded passage data (themes + passages) ──────────────────────────────
+// ── Embedded data ─────────────────────────────────────────────
+const PAYLOAD_B64  = '%%PAYLOAD%%';
 const PASSAGE_DATA = %%PASSAGE_DATA%%;
 
-// ── State ──────────────────────────────────────────────────────────────────
-let BOOKS   = {};   // {bookId: name}
-let VERSES  = [];   // [[bookId, chapter, verse, text], ...]
-let IDX     = {};   // bookId → chapter → [verse rows]
+// ── State ─────────────────────────────────────────────────────
+let BOOKS  = {};
+let VERSES = [];
+let IDX    = {};
 let navHistory = [];
 let searchTimer = null;
-let currentThemeColor = '#1a237e';
+let currentThemeColor = '#0d1b2a';
 
 const THEME_COLORS = [
-  '#1a237e','#4a148c','#880e4f','#bf360c','#1b5e20','#006064',
-  '#0d47a1','#37474f','#4e342e','#1a237e','#6a1b9a','#01579b',
-  '#2e7d32','#e65100','#3e2723','#283593','#558b2f','#4527a0'
+  '#1a3a5c','#4a1060','#7b1a1a','#1a4a2e','#6b4500',
+  '#005060','#2d4080','#3e3e1e','#5a2040','#00406a',
+  '#1e4a3a','#6a2000','#2a2a70','#106040','#4a0060',
+  '#802000','#004040','#600040'
 ];
 
-// ── Bootstrap ──────────────────────────────────────────────────────────────
+// ── Splash ────────────────────────────────────────────────────
+function closeSplash() {
+  document.getElementById('splash').style.display = 'none';
+}
+
+// ── Bootstrap ─────────────────────────────────────────────────
 (async function init() {
   try {
     const binStr = atob(PAYLOAD_B64);
@@ -244,7 +433,7 @@ const THEME_COLORS = [
     VERSES = data.verses;
     VERSES.forEach(row => {
       const [b, c] = row;
-      if (!IDX[b]) IDX[b] = {};
+      if (!IDX[b])    IDX[b]    = {};
       if (!IDX[b][c]) IDX[b][c] = [];
       IDX[b][c].push(row);
     });
@@ -258,15 +447,20 @@ const THEME_COLORS = [
   }
 })();
 
-// ── Navigation ─────────────────────────────────────────────────────────────
+// ── Navigation ────────────────────────────────────────────────
+const APP_BAR_TITLE = 'BdE\u202fBibel';
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   const isRoot = (id === 'view-home');
-  document.getElementById('back-btn').style.display     = isRoot ? 'none' : 'block';
+  document.getElementById('back-btn').style.display      = isRoot ? 'none' : 'block';
   document.getElementById('books-toggle').style.display  = (id === 'view-search') ? 'none' : 'block';
   document.getElementById('search-toggle').style.display = (id === 'view-search') ? 'none' : 'block';
   document.getElementById('search-bar').style.display    = (id === 'view-search') ? 'block' : 'none';
+  if (isRoot) {
+    document.getElementById('app-bar').style.background = '';
+    document.getElementById('app-title').textContent = APP_BAR_TITLE;
+  }
 }
 function navigate(viewId) {
   navHistory.push(document.querySelector('.view.active').id);
@@ -274,21 +468,24 @@ function navigate(viewId) {
 }
 function goBack() {
   if (!navHistory.length) return;
-  const prev = navHistory.pop();
-  showView(prev);
-  if (prev === 'view-home') document.getElementById('app-title').textContent = 'Christus – Bibel';
+  showView(navHistory.pop());
+}
+function goHome() {
+  navHistory = [];
+  showView('view-home');
 }
 
-// ── Home: theme grid ────────────────────────────────────────────────────────
+// ── Home ──────────────────────────────────────────────────────
 function renderHome() {
-  document.getElementById('app-title').textContent = 'Christus – Bibel';
   const grid = document.getElementById('theme-grid');
   grid.innerHTML = PASSAGE_DATA.themes.map((t, i) => {
     const color = THEME_COLORS[i % THEME_COLORS.length];
+    const count = PASSAGE_DATA.passages.filter(p => p.theme_id === t.id).length;
     return `<div class="theme-card" data-tid="${t.id}" data-color="${color}"
-                 style="background:${color}">
+                 style="background:linear-gradient(135deg,${color},${color}cc)">
               <span class="theme-icon">${escHtml(t.icon)}</span>
               <span class="theme-name">${escHtml(t.name)}</span>
+              <span class="theme-count">${count} Stellen</span>
             </div>`;
   }).join('');
   grid.onclick = e => {
@@ -297,26 +494,25 @@ function renderHome() {
   };
 }
 
-// ── Passage list ────────────────────────────────────────────────────────────
+// ── Passage list ──────────────────────────────────────────────
 function openTheme(themeId, color) {
   currentThemeColor = color;
-  const theme = PASSAGE_DATA.themes.find(t => t.id === themeId);
+  const theme    = PASSAGE_DATA.themes.find(t => t.id === themeId);
   const passages = PASSAGE_DATA.passages.filter(p => p.theme_id === themeId);
   document.getElementById('app-title').textContent =
-    (theme ? theme.icon + '  ' + theme.name : 'Passagen');
+    theme ? theme.icon + '\u2002' + theme.name : 'Passagen';
   document.getElementById('app-bar').style.background = color;
   const list = document.getElementById('passage-list');
-  list.innerHTML = passages.map((p, i) => {
-    const ref = refString(p);
-    return `<div class="list-item" data-pid="${p.id}">
-              <div class="avatar" style="background:${color}">${i+1}</div>
-              <div class="list-item-text">
-                <div class="list-item-title">${escHtml(p.title)}</div>
-                <div class="list-item-ref">${escHtml(ref)}</div>
-              </div>
-              <span style="color:#999">›</span>
-            </div>`;
-  }).join('');
+  list.innerHTML = passages.map((p, i) =>
+    `<div class="list-item" data-pid="${p.id}">
+       <div class="avatar" style="background:${color};border-color:var(--gold)">${i + 1}</div>
+       <div class="list-item-text">
+         <div class="list-item-title">${escHtml(p.title)}</div>
+         <div class="list-item-ref">${escHtml(refString(p))}</div>
+       </div>
+       <span style="color:var(--gold)">›</span>
+     </div>`
+  ).join('');
   list.onclick = e => {
     const el = e.target.closest('[data-pid]');
     if (el) openPassage(Number(el.dataset.pid));
@@ -326,44 +522,35 @@ function openTheme(themeId, color) {
 
 function refString(p) {
   const bName = BOOKS[p.book_id] || '?';
-  if (p.chapter_from === p.chapter_to) {
-    return `${bName} ${p.chapter_from},${p.verse_from}–${p.verse_to}`;
-  }
-  return `${bName} ${p.chapter_from},${p.verse_from} – ${p.chapter_to},${p.verse_to}`;
+  return p.chapter_from === p.chapter_to
+    ? `${bName} ${p.chapter_from},${p.verse_from}\u2013${p.verse_to}`
+    : `${bName} ${p.chapter_from},${p.verse_from} \u2013 ${p.chapter_to},${p.verse_to}`;
 }
 
-// ── Passage text ────────────────────────────────────────────────────────────
+// ── Passage text ──────────────────────────────────────────────
 function openPassage(passageId) {
   const p = PASSAGE_DATA.passages.find(x => x.id === passageId);
   if (!p) return;
-  const rows = versesForPassage(p);
   document.getElementById('app-title').textContent = p.title;
-
   let html = '', lastChap = null;
-  rows.forEach(([b, c, v, t]) => {
+  versesForPassage(p).forEach(([b, c, v, t]) => {
     if (c !== lastChap) {
-      const bName = BOOKS[b] || '?';
-      html += `<div class="chapter-heading" style="color:${currentThemeColor}">` +
-              escHtml(`${bName} ${c}`) + '</div>';
+      html += `<div class="chapter-heading">${escHtml((BOOKS[b] || '?') + ' ' + c)}</div>`;
       lastChap = c;
     }
-    html += `<div class="verse-row"><span class="verse-num"
-              style="color:${currentThemeColor}">${v}</span>${escHtml(t)}</div>`;
+    html += `<div class="verse-row"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`;
   });
-
-  if (!html) html = '<div class="empty">Keine Verse gefunden.</div>';
-  document.getElementById('passage-text').innerHTML = html;
+  document.getElementById('passage-text').innerHTML =
+    html || '<div class="empty">Keine Verse gefunden.</div>';
   navigate('view-text');
 }
 
 function versesForPassage(p) {
   const result = [];
-  const b = p.book_id;
-  const cf = p.chapter_from, vf = p.verse_from;
-  const ct = p.chapter_to,   vt = p.verse_to;
-  (VERSES).forEach(row => {
+  const { book_id: b, chapter_from: cf, verse_from: vf, chapter_to: ct, verse_to: vt } = p;
+  VERSES.forEach(row => {
     const [rb, rc, rv] = row;
-    if (rb !== b) return;
+    if (rb !== b)          return;
     if (rc < cf || rc > ct) return;
     if (rc === cf && rv < vf) return;
     if (rc === ct && rv > vt) return;
@@ -372,26 +559,27 @@ function versesForPassage(p) {
   return result;
 }
 
-// ── All books ───────────────────────────────────────────────────────────────
+// ── All books ─────────────────────────────────────────────────
 function openAllBooks() {
-  document.getElementById('app-bar').style.background = '#1a237e';
-  document.getElementById('app-title').textContent = 'Alle Bücher';
-  const list = document.getElementById('book-list');
-  const AT_LABEL = '<div class="section-header">Altes Testament (1–39)</div>';
-  const NT_LABEL = '<div class="section-header">Neues Testament (40–66)</div>';
+  document.getElementById('app-bar').style.background = '';
+  document.getElementById('app-title').textContent = 'Alle B\u00fccher';
+  const list     = document.getElementById('book-list');
+  const AT_LABEL = '<div class="section-header">Altes Testament (1\u201339)</div>';
+  const NT_LABEL = '<div class="section-header">Neues Testament (40\u201366)</div>';
   list.innerHTML = AT_LABEL + Object.entries(BOOKS).map(([id, name]) => {
     const bookId = Number(id);
-    const chs  = Object.keys(IDX[bookId] || {}).length;
-    const vs   = Object.values(IDX[bookId] || {}).reduce((s,a)=>s+a.length, 0);
+    const chs    = Object.keys(IDX[bookId] || {}).length;
+    const vs     = Object.values(IDX[bookId] || {}).reduce((s, a) => s + a.length, 0);
     const divider = bookId === 40 ? NT_LABEL : '';
-    return divider + `<div class="list-item" data-book="${id}">
-       <div class="avatar">${id}</div>
-       <div class="list-item-text">
-         <div class="list-item-title">${escHtml(name)}</div>
-         <div class="list-item-ref">${chs} Kapitel · ${vs} Verse</div>
-       </div>
-       <span style="color:#999">›</span>
-     </div>`;
+    return divider +
+      `<div class="list-item" data-book="${id}">
+         <div class="avatar">${id}</div>
+         <div class="list-item-text">
+           <div class="list-item-title">${escHtml(name)}</div>
+           <div class="list-item-ref">${chs} Kapitel \u00b7 ${vs} Verse</div>
+         </div>
+         <span style="color:var(--gold)">\u203a</span>
+       </div>`;
   }).join('');
   list.onclick = e => {
     const el = e.target.closest('[data-book]');
@@ -401,9 +589,12 @@ function openAllBooks() {
 }
 
 function openBook(bookId) {
-  const chapters = Object.keys(IDX[bookId] || {}).map(Number).sort((a,b)=>a-b);
+  const chapters = Object.keys(IDX[bookId] || {}).map(Number).sort((a, b) => a - b);
   const grid = document.getElementById('chapter-grid');
-  grid.innerHTML = `<div class="section-header" style="grid-column:1/-1">${Object.keys(IDX[bookId]||{}).length} Kapitel</div>` +
+  grid.innerHTML =
+    `<div class="section-header" style="grid-column:1/-1">` +
+      `${escHtml(BOOKS[bookId] || '')} \u00b7 ${chapters.length} Kapitel` +
+    `</div>` +
     chapters.map(c => {
       const vs = (IDX[bookId][c] || []).length;
       return `<button class="chapter-btn" data-book="${bookId}" data-ch="${c}" title="${vs} Verse">${c}</button>`;
@@ -416,25 +607,24 @@ function openBook(bookId) {
   navigate('view-chapters');
 }
 
-// ── Verses ──────────────────────────────────────────────────────────────────
+// ── Verses ────────────────────────────────────────────────────
 function openChapter(bookId, chapter) {
   const rows = (IDX[bookId] || {})[chapter] || [];
   document.getElementById('verse-list').innerHTML = rows.map(([,, v, t]) =>
-    `<div class="verse-row"><span class="verse-num">${v}</span>${escHtml(t)}</div>`
+    `<div class="verse-row"><sup class="verse-num">${v}</sup>${escHtml(t)}</div>`
   ).join('');
-  document.getElementById('app-title').textContent =
-    `${BOOKS[bookId] || ''} ${chapter}`;
+  document.getElementById('app-title').textContent = `${BOOKS[bookId] || ''} ${chapter}`;
   navigate('view-verses');
 }
 
-// ── Search ───────────────────────────────────────────────────────────────────
+// ── Search ────────────────────────────────────────────────────
 function showSearch() {
-  document.getElementById('app-bar').style.background = '#1a237e';
+  document.getElementById('app-bar').style.background = '';
   document.getElementById('app-title').textContent = 'Suchen';
   navigate('view-search');
   document.getElementById('search-input').focus();
   document.getElementById('search-results').innerHTML =
-    '<div class="empty">Suchbegriff eingeben …</div>';
+    '<div class="empty">Suchbegriff eingeben \u2026</div>';
 }
 function onSearchInput(val) {
   clearTimeout(searchTimer);
@@ -443,7 +633,7 @@ function onSearchInput(val) {
 function runSearch(raw) {
   const q = raw.trim();
   const container = document.getElementById('search-results');
-  if (!q) { container.innerHTML = '<div class="empty">Suchbegriff eingeben …</div>'; return; }
+  if (!q) { container.innerHTML = '<div class="empty">Suchbegriff eingeben \u2026</div>'; return; }
   const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
   const results = [];
   for (const row of VERSES) {
@@ -456,23 +646,23 @@ function runSearch(raw) {
     container.innerHTML = '<div class="empty">Keine Ergebnisse gefunden.</div>';
     return;
   }
-  const div = document.getElementById('search-results');
-  div.innerHTML = results.map(([b, c, v, text]) =>
+  container.innerHTML = results.map(([b, c, v, text]) =>
     `<div class="result-item" data-book="${b}" data-ch="${c}">
        ${highlightTerms(text, terms)}
        <div class="result-ref">${escHtml(BOOKS[b] || '?')} ${c},${v}</div>
      </div>`
   ).join('');
-  div.onclick = e => {
+  container.onclick = e => {
     const el = e.target.closest('[data-ch]');
     if (el) openChapter(Number(el.dataset.book), Number(el.dataset.ch));
   };
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────
 function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
-                  .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 function escRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
@@ -500,30 +690,48 @@ function highlightTerms(text, terms) {
   return html + escHtml(text.slice(pos));
 }
 
-// ── PWA: Service Worker + Install prompt ──────────────────────────────────
+// ── PWA: Service Worker + Install + Update ────────────────────
 let _installPrompt = null;
 
-// Register SW (only works when served via HTTPS/localhost, not file://)
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err =>
-      console.debug('SW registration failed (expected on file://):', err)
-    );
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => {
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          if (!newSW) return;
+          newSW.addEventListener('statechange', () => {
+            if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdateNotice();
+            }
+          });
+        });
+      })
+      .catch(err => console.debug('SW not available (file://):', err));
+
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data && e.data.type === 'SW_UPDATED') showUpdateNotice();
+    });
   });
 }
 
-// Capture the browser's "beforeinstallprompt" event
+function showUpdateNotice() {
+  document.getElementById('update-bar').classList.add('visible');
+  document.getElementById('update-btn').style.display = 'block';
+}
+
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   _installPrompt = e;
   document.getElementById('install-btn').style.display = 'block';
+  document.getElementById('install-btn-splash').style.display = 'block';
 });
-
-// Hide install button once app is installed
 window.addEventListener('appinstalled', () => {
   document.getElementById('install-btn').style.display = 'none';
+  document.getElementById('install-btn-splash').style.display = 'none';
   _installPrompt = null;
 });
+document.getElementById('install-btn-splash').addEventListener('click', installApp);
 
 function installApp() {
   if (_installPrompt) {
@@ -532,12 +740,11 @@ function installApp() {
       .then(() => { _installPrompt = null; })
       .catch(() => { _installPrompt = null; });
   } else {
-    // Fallback: guide user
     alert(
       'So installierst du die App:\n\n' +
-      '📱 Android Chrome: Menü (⋮) → "Zum Startbildschirm hinzufügen"\n' +
-      '🍎 iPhone Safari: Teilen (↑) → "Zum Home-Bildschirm"\n' +
-      '💻 Desktop Chrome/Edge: Adressleiste → Install-Symbol (⊕)'
+      '\u{1F4F1} Android Chrome: Men\u00fc (\u22ee) \u2192 \u201eZum Startbildschirm hinzuf\u00fcgen\u201c\n' +
+      '\u{1F34E} iPhone Safari: Teilen (\u2191) \u2192 \u201eZum Home-Bildschirm\u201c\n' +
+      '\u{1F4BB} Desktop Chrome/Edge: Adressleiste \u2192 Install-Symbol (\u2295)'
     );
   }
 }

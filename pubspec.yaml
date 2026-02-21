@@ -1,5 +1,5 @@
-name: christus
-description: Elberfelder 1905 – German Bible reader with full-text search.
+name: bde_bibel
+description: "Buch des Dienstes zur Evangelisation – Elberfelder 1905. © 2025 Mario Reiner Denzer"
 publish_to: 'none'
 
 version: 1.0.0+1
