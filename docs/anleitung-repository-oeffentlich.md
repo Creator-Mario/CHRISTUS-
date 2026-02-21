@@ -177,7 +177,42 @@ Der Live-Link hört auf zu funktionieren. Die heruntergeladene standalone.html
 funktioniert weiterhin offline.
 
 **❓ Der Link zeigt 404 – was tun?**
-1. Überprüfe, ob das Repository öffentlich ist
-2. Gehe zu Settings → Pages und prüfe, ob der Branch eingestellt ist
-3. Warte 2–3 Minuten nach dem Speichern der Pages-Einstellungen
-4. Seite im Browser neu laden (Strg+F5)
+
+Gehe diese Checkliste durch:
+
+**Schritt 1:** Ist das Repository öffentlich?
+- Öffne https://github.com/Creator-Mario/CHRISTUS-
+- Wenn du oben „Private" siehst → Teil 1 dieser Anleitung durchführen
+
+**Schritt 2:** Ist GitHub Pages aktiviert?
+- Öffne https://github.com/Creator-Mario/CHRISTUS-/settings/pages
+- Muss so aussehen:
+
+```
+Source:  Deploy from a branch
+Branch:  copilot/add-sqlite-bible-database   /  (root)
+```
+
+- Falls nicht → Schritt 6–8 dieser Anleitung wiederholen
+
+**Schritt 3:** Warte 2–5 Minuten nach dem Speichern
+
+**Schritt 4:** Browser-Cache leeren
+- Windows/Linux: `Strg + Umschalt + R`
+- Mac: `Cmd + Umschalt + R`
+- Handy: Browser-App schließen und neu öffnen
+
+**Schritt 5:** Prüfe ob ein grünes „✅ Your site is live" Banner erscheint
+- Öffne https://github.com/Creator-Mario/CHRISTUS-/settings/pages
+- Dort muss stehen: „Your site is published at https://creator-mario.github.io/CHRISTUS-/"
+
+---
+
+**❓ Funktioniert nicht ohne Internet? Die Offline-HTML nutzen!**
+
+Du brauchst GitHub Pages gar nicht. Lade einfach diese Datei herunter:
+
+👉 [standalone.html direkt herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)
+
+→ Rechtsklick → „Speichern unter" → `BdE-Bibel.html`
+→ Doppelklick öffnet die App im Browser – komplett offline ✅

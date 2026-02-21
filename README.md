@@ -3,56 +3,57 @@
 
 ---
 
-## 📲 App herunterladen & weitergeben
+## 💾 App sofort herunterladen (kein Setup nötig)
 
-### 💾 Option 1 – Datei herunterladen (empfohlen)
+> **Eine einzige HTML-Datei – komplett offline – funktioniert auf jedem Gerät**
 
-> **Eine einzige Datei – komplett offline – kein Internet nötig**
+### Schritt 1 – Datei herunterladen
 
-**Wenn GitHub Pages aktiv ist** (Repository öffentlich):
+👉 **[HIER KLICKEN → BdE-Bibel.html herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
 
-👉 **[BdE-Bibel.html herunterladen](https://creator-mario.github.io/CHRISTUS-/preview/standalone.html)**  
-*(Rechtsklick → „Speichern unter" → `BdE-Bibel.html`)*
+*Rechtsklick auf den Link → „Speichern unter" → Speichern als `BdE-Bibel.html`*
 
-**Oder direkt aus dem Repository** (immer verfügbar):
+### Schritt 2 – Datei öffnen
 
-👉 **[standalone.html aus GitHub herunterladen](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**  
-*(Rechtsklick → „Speichern unter" → Datei umbenennen zu `BdE-Bibel.html`)*
+Doppelklick auf die heruntergeladene Datei `BdE-Bibel.html` → öffnet sich im Browser
 
-**So verwendest du die Datei:**
-1. Datei per Doppelklick im Browser öffnen
-2. Funktioniert sofort – **komplett ohne Internet** ✅
-3. Datei per WhatsApp / E-Mail / USB weiterteilen
+✅ **Funktioniert sofort – komplett ohne Internet**
 
-> 📦 ~2 MB · alle 31 102 Bibelverse eingebettet · 18 Themen · 359 Bibelstellen
+### Schritt 3 – Weitergeben
+
+Datei per **WhatsApp · E-Mail · USB-Stick · Bluetooth** an andere senden
+
+> 📦 ~2 MB · alle 31 102 Bibelverse · 18 Themen · 359 Bibelstellen
 
 ---
 
-### 🌐 Option 2 – Im Browser öffnen (GitHub Pages)
+## 🌐 Als App im Browser / auf dem Handy (GitHub Pages)
 
-**Einmalige Einrichtung:**
+**Voraussetzung:** Repository muss öffentlich sein  
+📖 [→ Schritt-für-Schritt-Anleitung (Deutsch)](docs/anleitung-repository-oeffentlich.md)
 
-| # | Was tun | Link |
-|---|---|---|
-| 1 | Repository öffentlich stellen | [Settings → „Change to public"](https://github.com/Creator-Mario/CHRISTUS-/settings) |
-| 2 | Pages aktivieren | [Settings → Pages](https://github.com/Creator-Mario/CHRISTUS-/settings/pages) |
-| 3 | **Source:** Branch `copilot/add-sqlite-bible-database` · Folder `/ (root)` · Save | — |
-| 4 | 1–2 Min warten, dann öffnen: | 👉 **https://creator-mario.github.io/CHRISTUS-/** |
+### Schritt 1 – Repository öffentlich stellen
+
+1. Öffne: **https://github.com/Creator-Mario/CHRISTUS-/settings**
+2. Ganz nach unten scrollen bis **„Danger Zone"**
+3. Klicke **„Change visibility"** → **„Change to public"**
+4. Bestätige mit deinem GitHub-Passwort
+
+### Schritt 2 – GitHub Pages aktivieren
+
+1. Öffne: **https://github.com/Creator-Mario/CHRISTUS-/settings/pages**
+2. Unter **„Build and deployment"** → **„Source"** → **„Deploy from a branch"** wählen
+3. Branch: **`copilot/add-sqlite-bible-database`** · Folder: **`/ (root)`** → **Save** klicken
+4. **1–2 Minuten warten** (GitHub baut die Seite)
+
+### Schritt 3 – App aufrufen
+
+👉 **https://creator-mario.github.io/CHRISTUS-/**
 
 **Als App auf dem Handy installieren:**  
-🤖 **Android Chrome:** Menü ⋮ → „Zum Startbildschirm hinzufügen"  
-🍎 **iPhone Safari:** Teilen ↑ → „Zum Home-Bildschirm"  
-💻 **Desktop Chrome/Edge:** ⊕-Symbol in der Adressleiste
-
----
-📖 **[→ Ausführliche Anleitung (auf Deutsch)](docs/anleitung-repository-oeffentlich.md)**
-
----
-
-## 🌐 Live-URL (nach Pages-Aktivierung)
-
-**👉 [https://creator-mario.github.io/CHRISTUS-/](https://creator-mario.github.io/CHRISTUS-/)**  
-(leitet automatisch zur App weiter)
+🤖 **Android (Chrome):** Menü ⋮ → „Zum Startbildschirm hinzufügen"  
+🍎 **iPhone (Safari):** Teilen ↑ → „Zum Home-Bildschirm"  
+💻 **Desktop (Chrome/Edge):** ⊕-Symbol rechts in der Adressleiste
 
 ---
 

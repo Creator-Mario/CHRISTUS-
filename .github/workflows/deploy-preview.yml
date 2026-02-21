@@ -45,6 +45,8 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p _site/assets/db
+          # .nojekyll tells GitHub Pages to skip Jekyll → all files served as-is
+          touch _site/.nojekyll
           cp assets/db/bible.sqlite _site/assets/db/bible.sqlite
           cp -r preview _site/preview
           cp index.html _site/index.html
