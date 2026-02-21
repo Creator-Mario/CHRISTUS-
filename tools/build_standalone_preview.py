@@ -290,7 +290,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       margin-top: 6px; padding: 9px 22px;
       background: transparent; border: 1.5px solid rgba(201,162,39,.45);
       color: var(--gold-lt); font-size: 13px; border-radius: 24px;
-      cursor: pointer; display: none; transition: background .15s;
+      cursor: pointer; display: inline-block; transition: background .15s;
     }
     #install-btn-splash:hover { background: rgba(201,162,39,.12); }
     #save-btn-splash {
@@ -693,17 +693,22 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
     <!-- Android -->
     <div class="a2hs-panel" id="panel-android">
+      <div class="a2hs-step" id="a2hs-android-step0" style="display:none">
+        <div class="a2hs-num">0</div>
+        <div class="a2hs-step-text"><strong>Zuerst:</strong> Öffne die BDE-Bibel URL <strong>in Chrome</strong>:<br>
+        <code style="font-size:11px;color:var(--gold-lt);word-break:break-all">https://creator-mario.github.io/CHRISTUS-/preview/standalone.html</code></div>
+      </div>
       <div class="a2hs-step">
-        <div class="a2hs-num">1</div>
-        <div class="a2hs-step-text">Öffne diese Seite in <strong>Chrome</strong> (oder Samsung Internet) auf deinem Android-Gerät.</div>
+        <div class="a2hs-num" id="a2hs-and-n1">1</div>
+        <div class="a2hs-step-text">Seite in <strong>Chrome</strong> oder <strong>Samsung Internet</strong> öffnen (HTTPS-Link, nicht aus Datei).</div>
       </div>
       <div class="a2hs-step">
         <div class="a2hs-num">2</div>
-        <div class="a2hs-step-text">Tippe auf das <strong>Menü ⋮</strong> (drei Punkte oben rechts).</div>
+        <div class="a2hs-step-text">Chrome zeigt automatisch ein <strong>„Installieren"</strong>-Banner am unteren Rand – darauf tippen.</div>
       </div>
       <div class="a2hs-step">
         <div class="a2hs-num">3</div>
-        <div class="a2hs-step-text">Wähle <strong>„Zum Startbildschirm hinzufügen"</strong> aus der Liste.</div>
+        <div class="a2hs-step-text"><em>Kein Banner?</em> Tippe auf das <strong>Menü ⋮</strong> (oben rechts) → <strong>„Zum Startbildschirm hinzufügen"</strong>.</div>
       </div>
       <div class="a2hs-step">
         <div class="a2hs-num">4</div>
@@ -711,9 +716,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       </div>
       <div class="a2hs-step">
         <div class="a2hs-num">5</div>
-        <div class="a2hs-step-text">✅ Das <strong>✝ BDE-Symbol</strong> erscheint auf deinem Startbildschirm – die App öffnet sich wie eine native App!</div>
+        <div class="a2hs-step-text">✅ Das <strong>✝ BDE-Symbol</strong> erscheint auf deinem Startbildschirm – die App öffnet sich offline!</div>
       </div>
-      <div class="a2hs-note">💡 Tipp: In Samsung Internet heißt es „Seite hinzufügen zu → Startbildschirm"</div>
+      <div class="a2hs-note" id="a2hs-and-note">💡 Samsung Internet: „Seite hinzufügen zu → Startbildschirm"</div>
     </div>
 
     <!-- iPhone -->
@@ -1893,24 +1898,61 @@ function hideSaveButtons() {
   if (sb) sb.style.display = 'none';
 }
 // Detect if already running as installed PWA (standalone mode)
-if (window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true) {
+var IS_STANDALONE = window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+if (IS_STANDALONE) {
   hideSaveButtons();
+  // Hide install button – app is already installed
+  document.getElementById('install-btn').style.display = 'none';
+  document.getElementById('install-btn-splash').style.display = 'none';
 }
 
 window.addEventListener('beforeinstallprompt', e => {
+  // HTTPS + Chrome/Edge: immediately trigger the native install prompt banner
   e.preventDefault();
   _installPrompt = e;
+  // Show install buttons in bar + splash
   document.getElementById('install-btn').style.display = 'block';
   document.getElementById('install-btn-splash').style.display = 'block';
+  // Auto-prompt after 2s if user has not already installed or dismissed
+  if (!localStorage.getItem('bde_install_dismissed')) {
+    setTimeout(() => {
+      if (_installPrompt) {
+        _installPrompt.prompt();
+        _installPrompt.userChoice.then(choice => {
+          if (choice.outcome === 'dismissed') {
+            localStorage.setItem('bde_install_dismissed', '1');
+          }
+          _installPrompt = null;
+        }).catch(() => { _installPrompt = null; });
+      }
+    }, 2000);
+  }
 });
 window.addEventListener('appinstalled', () => {
   document.getElementById('install-btn').style.display = 'none';
   document.getElementById('install-btn-splash').style.display = 'none';
   hideSaveButtons();
   _installPrompt = null;
+  localStorage.setItem('bde_install_dismissed', '1');
 });
 document.getElementById('install-btn-splash').addEventListener('click', installApp);
+
+// Auto-show A2HS guide on first visit when NOT standalone and NOT on HTTPS
+// (e.g. file:// or unsupported browser) – guides user to install
+(function autoShowInstallGuide() {
+  if (IS_STANDALONE) return;
+  if (localStorage.getItem('bde_a2hs_shown')) return;
+  // Only auto-show if we are not on HTTPS (no native prompt will fire)
+  if (location.protocol === 'https:') return;
+  // On file:// or http:// – show after 3 seconds
+  setTimeout(function() {
+    if (!IS_STANDALONE && !document.getElementById('a2hs-overlay').classList.contains('open')) {
+      localStorage.setItem('bde_a2hs_shown', '1');
+      showA2HS();
+    }
+  }, 3000);
+})();
 
 function detectPlatform() {
   const ua = navigator.userAgent.toLowerCase();
@@ -1925,7 +1967,11 @@ function switchA2HS(platform) {
   });
 }
 function showA2HS() {
-  switchA2HS(detectPlatform());
+  var platform = detectPlatform();
+  switchA2HS(platform);
+  // Show the "open URL first" step 0 only when running from file://
+  var step0 = document.getElementById('a2hs-android-step0');
+  if (step0) step0.style.display = (location.protocol !== 'https:' && platform === 'android') ? 'flex' : 'none';
   document.getElementById('a2hs-overlay').classList.add('open');
 }
 function closeA2HS() {
