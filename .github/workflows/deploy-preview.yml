@@ -2,14 +2,17 @@ name: Deploy Bible Preview to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - copilot/add-sqlite-bible-database   # Deploy from PR branch until merged
     paths:
       - 'elberfelder_1905.csv'
       - 'schema/**'
       - 'tools/**'
       - 'preview/**'
+      - 'index.html'
       - '.github/workflows/deploy-preview.yml'
-  workflow_dispatch:   # Allow manual trigger
+  workflow_dispatch:   # Allow manual trigger from any branch
 
 permissions:
   contents: read

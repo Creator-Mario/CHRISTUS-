@@ -5,19 +5,20 @@ Bibelstellen
 
 **Kein Server, kein Flutter, kein Setup nötig!**
 
-1. Lade diese Datei herunter (einmal klicken → „Raw" → Rechtsklick → „Speichern unter"):  
-   👉 **[preview/standalone.html](preview/standalone.html)**
+### 👉 Direkter Download-Link (funktioniert sofort):
 
-2. Öffne die heruntergeladene Datei **direkt im Browser** (Doppelklick auf die Datei)
+**[Hier klicken → Raw-Datei speichern](https://raw.githubusercontent.com/Creator-Mario/CHRISTUS-/copilot/add-sqlite-bible-database/preview/standalone.html)**
 
-3. Fertig – alle 31.102 Verse, 66 Bücher und die Volltextsuche funktionieren offline ✅
+Oder über GitHub:  
+**https://github.com/Creator-Mario/CHRISTUS-/blob/copilot/add-sqlite-bible-database/preview/standalone.html**
+→ Dann oben rechts auf **„Raw"** klicken → Rechtsklick → **„Speichern unter"** → Doppelklick auf die gespeicherte Datei
 
-> Die Datei ist ~1,9 MB groß und enthält **alle Daten eingebettet** –
-> sie funktioniert komplett ohne Internet-Verbindung und ohne Server.
+✅ Alle 31.102 Verse, 66 Bücher und Volltextsuche – komplett offline, ohne Server!
 
 ---
 
 ## 🌐 Live-Vorschau (nach GitHub Pages Aktivierung)
+
 
 **👉 [https://creator-mario.github.io/CHRISTUS-/preview/](https://creator-mario.github.io/CHRISTUS-/preview/)**
 
