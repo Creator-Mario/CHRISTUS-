@@ -11,6 +11,38 @@ Bibelstellen
 
 ---
 
+## 🔓 Repository öffentlich machen
+
+Damit GitHub Pages (kostenlos) und der Live-Link funktionieren, muss das
+Repository auf **öffentlich** gestellt werden.
+
+### Schritt-für-Schritt
+
+1. Öffne die Repository-Einstellungen:  
+   👉 **https://github.com/Creator-Mario/CHRISTUS-/settings**
+
+2. Scrolle ganz nach unten zur Sektion **"Danger Zone"**
+
+3. Klicke auf **"Change visibility"** → **"Change to public"**
+
+4. Bestätige mit deinem GitHub-Benutzernamen und klicke **"I want to make this repository public"**
+
+> ✅ Das ist sicher – der Inhalt (Bibel-Text) ist sowieso Public Domain.
+
+### Danach: GitHub Pages aktivieren
+
+Nach dem Öffentlich-Machen:
+
+1. Öffne **https://github.com/Creator-Mario/CHRISTUS-/settings/pages**
+2. Unter **"Source"** → **"GitHub Actions"** auswählen
+3. **Save** klicken
+4. Den Workflow manuell starten:  
+   **https://github.com/Creator-Mario/CHRISTUS-/actions** → **"Deploy Bible Preview to GitHub Pages"** → **"Run workflow"**
+5. Nach ~2 Minuten ist der Link live:  
+   👉 **https://creator-mario.github.io/CHRISTUS-/preview/**
+
+---
+
 ## Bible Database
 
 The repository includes the **Elberfelder 1905** German Bible translation as a
