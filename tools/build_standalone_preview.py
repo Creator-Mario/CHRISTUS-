@@ -154,11 +154,19 @@ def load_kjv() -> tuple[dict, list]:
 
 
 def load_indonesian() -> tuple[dict, list]:
-    """Load Indonesian Bible from christos-c/bible-corpus XML."""
+    """Load Indonesian Bible from christos-c/bible-corpus XML.
+
+    This translation uses combined versification: 1,416 verses are
+    self-closing empty tags (<seg .../>) because their content was merged
+    into the previous verse.  We fill those with a reference note so the
+    app never shows a blank verse number.
+    """
     raw = _fetch(ID_URL, ID_CACHE)
     root = ET.fromstring(raw.decode("utf-8"))
     books: dict[int, str] = {}
     verses: list[list] = []
+    # Track last non-empty verse number per (book_id, chapter) for merge notes
+    last_nonempty: dict[tuple, int] = {}
     for seg in root.iter("seg"):
         if seg.get("type") != "verse":
             continue
@@ -176,6 +184,16 @@ def load_indonesian() -> tuple[dict, list]:
         except ValueError:
             continue
         text = (seg.text or "").strip()
+        if not text:
+            # Empty verse: merged into previous verse in this translation.
+            # Show an informative note instead of a blank line.
+            prev = last_nonempty.get((book_id, chapter))
+            if prev is not None:
+                text = f"[Ayat ini tergabung dengan ayat {prev} dalam terjemahan ini]"
+            else:
+                text = "[Ayat ini tergabung dengan ayat sebelumnya dalam terjemahan ini]"
+        else:
+            last_nonempty[(book_id, chapter)] = verse
         books[book_id] = ID_BOOK_NAMES[book_id]
         verses.append([book_id, chapter, verse, text])
     return books, verses
@@ -542,6 +560,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     .verse-row[data-hl="yellow"] { background: rgba(234,179,8,.22)  !important; border-left: 4px solid #eab308; padding-left: 14px; }
     .verse-row[data-hl="red"]    { background: rgba(239,68,68,.18)  !important; border-left: 4px solid #ef4444; padding-left: 14px; }
     .verse-row.hl-selected       { outline: 2px solid var(--gold); outline-offset: -2px; }
+    /* ── Merged-verse note (Indonesian translation) ── */
+    .verse-merged { font-style: italic; opacity: 0.55; font-size: 0.88em; }
 
     /* ── Word-level highlighting ── */
     mark.hl-word-green  { background: rgba(34,197,94,.40);  border-radius: 2px; padding: 0 1px; color: inherit; }
@@ -1463,7 +1483,7 @@ function openPassage(passageId) {
       html += `<div class="chapter-heading">${escHtml((BOOKS[b] || '?') + ' ' + c)}</div>`;
       lastChap = c;
     }
-    html += `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup><span class="vtext" data-plain="${escHtmlAttr(t)}">${escHtml(t)}</span></div>`;
+    html += `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup><span class="vtext${t.startsWith('[Ayat') ? ' verse-merged' : ''}" data-plain="${escHtmlAttr(t)}">${escHtml(t)}</span></div>`;
   });
   const ptEl = document.getElementById('passage-text');
   ptEl.innerHTML = html || '<div class="empty">Keine Verse gefunden.</div>';
@@ -1539,7 +1559,7 @@ function openChapter(bookId, chapter) {
   const rows = (IDX[bookId] || {})[chapter] || [];
   const vlEl = document.getElementById('verse-list');
   vlEl.innerHTML = rows.map(([b, c, v, t]) =>
-    `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup><span class="vtext" data-plain="${escHtmlAttr(t)}">${escHtml(t)}</span></div>`
+    `<div class="verse-row" data-vkey="${b}:${c}:${v}" onclick="hlTap(event,this)"><sup class="verse-num">${v}</sup><span class="vtext${t.startsWith('[Ayat') ? ' verse-merged' : ''}" data-plain="${escHtmlAttr(t)}">${escHtml(t)}</span></div>`
   ).join('');
   applyStoredHL(vlEl);
   applyAllWordHL();
