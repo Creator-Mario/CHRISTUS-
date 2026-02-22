@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRISTUS App</title>
+    <script>
+        (() => {
+            // Redirect based on previously chosen language; fall back to selection when missing/invalid.
+            const lang = localStorage.getItem('selectedLanguage');
+            const allowed = ['en', 'es', 'pt'];
+            const target = allowed.includes(lang) ? `main.html?lang=${lang}` : '../language_selection.html';
+            window.location.replace(target);
+        })();
+    </script>
+</head>
+<body>
+    <!-- main.html lives beside this file; language selection sits one level up -->
+    <p>Loading...</p>
+</body>
+</html>
