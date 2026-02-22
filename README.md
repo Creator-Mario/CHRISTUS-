@@ -13,6 +13,7 @@
 6. [Flutter App](#-flutter-app)
 7. [Dateistruktur](#-dateistruktur)
 8. [GitHub Actions Workflows](#-github-actions-workflows)
+9. [🔍 Quellcode – Wo finde ich was?](#-quellcode--wo-finde-ich-was)
 
 ---
 
@@ -307,3 +308,33 @@ CHRISTUS-/
 - **King James Version (KJV):** gemeinfrei (Public Domain)
 - **Indonesischer Bibeltext:** christos-c/bible-corpus (Forschungskorpus)
 - **Creator & Copyright App:** Mario Reiner Denzer © 2025
+
+---
+
+## 🔍 Quellcode – Wo finde ich was?
+
+> **Der vollständige Quellcode** ist in diesem Repository öffentlich einsehbar.
+
+### Haupt-Quellcode der Web-App
+
+| Datei | Was steht drin? |
+|-------|-----------------|
+| **[`tools/build_standalone_preview.py`](tools/build_standalone_preview.py)** | 🎯 **Alles** – HTML-Gerüst, CSS (Design), komplettes JavaScript (Logik, Sprachen, Themen, Suche, Markierungen, Notizen, Install-Anleitung) |
+| [`tools/generate_passages_json.py`](tools/generate_passages_json.py) | Definition aller 24 Themen + 604 Bibelstellen |
+| [`tools/build_bible_db.py`](tools/build_bible_db.py) | Erstellt die SQLite-Datenbank aus CSV + JSON |
+| [`schema/bible_schema.sql`](schema/bible_schema.sql) | SQLite-Tabellenstruktur |
+| [`preview/sw.js`](preview/sw.js) | Service Worker (Offline-Cache, Update-Banner) |
+| [`preview/manifest.json`](preview/manifest.json) | PWA-Manifest (App-Icon, Name, display-mode) |
+| [`preview/standalone.html`](preview/standalone.html) | 📦 Generierte Datei (~5,8 MB) – enthält alles komprimiert |
+
+### Flutter-App (Dart)
+
+| Datei | Inhalt |
+|-------|--------|
+| [`lib/main.dart`](lib/main.dart) | Einstiegspunkt, Farbschema, Navigation |
+| [`lib/database/bible_db.dart`](lib/database/bible_db.dart) | SQLite-Zugriff (sqflite) |
+| [`lib/screens/`](lib/screens/) | Bücher-, Kapitel-, Vers-, Suchansicht |
+
+### Vollständige Dokumentation
+
+�� **[docs/quellcode.md](docs/quellcode.md)** – detaillierte Erklärung jeder Datei, jeder Funktion und des Build-Prozesses
