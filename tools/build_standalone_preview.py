@@ -1464,7 +1464,8 @@ function closeSplash() {
   // Restore saved language; hide lang-screen if already chosen
   var savedLang = null;
   try { savedLang = localStorage.getItem('bde_lang'); } catch(e) {}
-  if (savedLang && LANG[savedLang]) {
+  var langAlreadySaved = !!(savedLang && LANG[savedLang]);
+  if (langAlreadySaved) {
     CURRENT_LANG = savedLang;
     document.getElementById('lang-screen').style.display = 'none';
   }
@@ -1481,6 +1482,9 @@ function closeSplash() {
     document.getElementById('loading').style.display = 'none';
     showView('view-home');
     renderHome();
+    // If language was already saved (returning user or after SW update),
+    // skip the splash screen entirely — go straight into the app.
+    if (langAlreadySaved) { closeSplash(); }
   } catch (err) {
     var loadEl = document.getElementById('loading');
     loadEl.style.display = 'block';
