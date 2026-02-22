@@ -1516,6 +1516,17 @@ function closeSplash() {
   renderHome();
 }
 
+// ── Theme groups ─────────────────────────────────────────────
+// Must be declared BEFORE the init() IIFE to avoid temporal dead zone.
+const THEME_GROUPS = [
+  ['tg_ot',       [1,2,3,4,5,6,7,8]],
+  ['tg_psalms',   [9,10]],
+  ['tg_bund',     [23,24]],
+  ['tg_jesus',    [11,12,13,14,15,16]],
+  ['tg_gospels',  [19,20,21,22]],
+  ['tg_nt',       [17,18]],
+];
+
 // ── Bootstrap ─────────────────────────────────────────────────
 (function init() {
   // Restore saved language; hide lang-screen if already chosen
@@ -1597,15 +1608,6 @@ function switchHomeTab(tab) {
   document.getElementById('tab-btn-bible').classList.toggle('active', tab === 'bible');
   document.getElementById('tab-btn-themes').classList.toggle('active', tab === 'themes');
 }
-// Theme groups: [label_key, [theme_ids]]
-const THEME_GROUPS = [
-  ['tg_ot',       [1,2,3,4,5,6,7,8]],
-  ['tg_psalms',   [9,10]],
-  ['tg_bund',     [23,24]],
-  ['tg_jesus',    [11,12,13,14,15,16]],
-  ['tg_gospels',  [19,20,21,22]],
-  ['tg_nt',       [17,18]],
-];
 function renderHome() {
   const grid = document.getElementById('theme-grid');
   if (!PASSAGE_DATA || !PASSAGE_DATA.themes || !PASSAGE_DATA.themes.length) {
