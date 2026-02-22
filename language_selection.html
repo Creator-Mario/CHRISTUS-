@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRISTUS App - Language Selection</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .language-option { display: inline-block; margin: 10px; padding: 20px; border: 2px solid #ccc; cursor: pointer; }
+        .selected { border-color: #007bff; background-color: #e7f3ff; }
+        #continue-btn { display: none; margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Wählen Sie Ihre Sprache / Select Your Language</h1>
+    <div class="language-option" data-lang="en" onclick="selectLanguage('en')">English</div>
+    <div class="language-option" data-lang="es" onclick="selectLanguage('es')">Español</div>
+    <div class="language-option" data-lang="pt" onclick="selectLanguage('pt')">Português</div>
+    <button id="continue-btn" onclick="continueToApp()">Weiter / Continue</button>
+
+    <script>
+        let selectedLang = null;
+
+        function selectLanguage(lang) {
+            selectedLang = lang;
+            document.querySelectorAll('.language-option').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`[data-lang="${lang}"]`).classList.add('selected');
+            document.getElementById('continue-btn').style.display = 'block';
+        }
+
+        function continueToApp() {
+            if (selectedLang) {
+                localStorage.setItem('selectedLanguage', selectedLang);
+                window.location.href = 'main.html';
+            }
+        }
+    </script>
+</body>
+</html>
