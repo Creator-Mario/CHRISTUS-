@@ -474,6 +474,29 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     .home-sub   { font-size: 12px; color: #6a8aaa; margin-top: 4px;
       font-family: 'Segoe UI', sans-serif; }
 
+    /* ── Home tab bar ── */
+    #home-tabs {
+      display: flex; gap: 0;
+      border-bottom: 2px solid var(--gold);
+      background: var(--navy2);
+    }
+    .home-tab {
+      flex: 1; padding: 14px 8px; border: none; cursor: pointer;
+      font-size: 16px; font-weight: 700; font-family: Georgia, serif;
+      background: transparent; color: var(--text2);
+      border-bottom: 3px solid transparent;
+      transition: color .15s, border-color .15s, background .15s;
+      letter-spacing: .3px;
+    }
+    .home-tab.active {
+      color: var(--gold);
+      border-bottom: 3px solid var(--gold);
+      background: rgba(201,162,39,.10);
+    }
+    .home-tab:hover:not(.active) { background: rgba(255,255,255,.06); color: var(--gold-lt); }
+    .home-tab-panel { display: none; }
+    .home-tab-panel.active { display: block; }
+
     /* ── Theme grid ── */
     #theme-grid {
       display: grid;
@@ -804,7 +827,6 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <button id="install-btn" onclick="installApp()"      title="App installieren" data-i18n="install_bar">⬇ Installieren</button>
   <span   id="offline-badge" data-i18n="offline_badge">📵 Offline</span>
   <button class="bar-btn" id="lang-btn"     title="Sprache ändern" onclick="changeLang()">🌐</button>
-  <button class="bar-btn" id="books-toggle"  title="Alle Bücher" onclick="openAllBooks()">&#128214;</button>
   <button class="bar-btn" id="search-toggle" title="Suchen"      onclick="showSearch()">&#128269;</button>
 </div>
 
@@ -824,8 +846,19 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <div class="home-title" data-i18n="app_title">Buch des Dienstes zur Evangelisation</div>
     <div class="home-sub" data-i18n="home_sub">Elberfelder 1905 · 66 Bücher · 31 102 Verse</div>
   </div>
-  <div class="section-header" data-i18n="thematic_header">Thematische Bibelstellen</div>
-  <div id="theme-grid"></div>
+  <!-- ── Big navigation tabs ── -->
+  <div id="home-tabs">
+    <button class="home-tab active" id="tab-btn-bible"  onclick="switchHomeTab('bible')"  data-i18n="tab_bible">📖 Bibel</button>
+    <button class="home-tab"        id="tab-btn-themes" onclick="switchHomeTab('themes')" data-i18n="tab_themes">✝ Themen</button>
+  </div>
+  <!-- Bible tab: inline book list -->
+  <div class="home-tab-panel active" id="panel-bible">
+    <div id="home-book-list"></div>
+  </div>
+  <!-- Themes tab: theme grid -->
+  <div class="home-tab-panel" id="panel-themes">
+    <div id="theme-grid"></div>
+  </div>
   <div id="app-footer">
     <strong data-i18n="app_title">Buch des Dienstes zur Evangelisation</strong><br>
     <span data-i18n="footer_credit">Creator &amp; Copyright: Mario Reiner Denzer · © 2025 · Version 1.0.0</span><br>
@@ -946,6 +979,8 @@ const LANG = {
     no_results:        'Keine Ergebnisse gefunden.',
     loading:           '✝\u2005Daten werden geladen \u2026',
     all_books:         'Alle Bücher',
+    tab_bible:         '📖 Bibel',
+    tab_themes:        '✝ Themen',
     search_title:      'Suchen',
     at_label:          'Altes Testament (1\u201339)',
     nt_label:          'Neues Testament (40\u201366)',
@@ -1033,6 +1068,8 @@ const LANG = {
     no_results:        'No results found.',
     loading:           '✝\u2005Loading data \u2026',
     all_books:         'All Books',
+    tab_bible:         '📖 Bible',
+    tab_themes:        '✝ Themes',
     search_title:      'Search',
     at_label:          'Old Testament (1\u201339)',
     nt_label:          'New Testament (40\u201366)',
@@ -1164,6 +1201,8 @@ const LANG = {
     no_results:        'Tidak ada hasil ditemukan.',
     loading:           '✝\u2005Memuat data \u2026',
     all_books:         'Semua Kitab',
+    tab_bible:         '📖 Alkitab',
+    tab_themes:        '✝ Topik',
     search_title:      'Cari',
     at_label:          'Perjanjian Lama (1\u201339)',
     nt_label:          'Perjanjian Baru (40\u201366)',
@@ -1376,7 +1415,6 @@ function showView(id) {
   document.getElementById(id).classList.add('active');
   const isRoot = (id === 'view-home');
   document.getElementById('back-btn').style.display      = isRoot ? 'none' : 'block';
-  document.getElementById('books-toggle').style.display  = (id === 'view-search') ? 'none' : 'block';
   document.getElementById('search-toggle').style.display = (id === 'view-search') ? 'none' : 'block';
   document.getElementById('search-bar').style.display    = (id === 'view-search') ? 'block' : 'none';
   if (isRoot) {
@@ -1409,32 +1447,69 @@ function hexFade(hex, a) {
 }
 
 // ── Home ──────────────────────────────────────────────────────
+let _homeTab = 'bible';
+function switchHomeTab(tab) {
+  _homeTab = tab;
+  document.getElementById('panel-bible').classList.toggle('active', tab === 'bible');
+  document.getElementById('panel-themes').classList.toggle('active', tab === 'themes');
+  document.getElementById('tab-btn-bible').classList.toggle('active', tab === 'bible');
+  document.getElementById('tab-btn-themes').classList.toggle('active', tab === 'themes');
+}
 function renderHome() {
   const grid = document.getElementById('theme-grid');
   if (!PASSAGE_DATA || !PASSAGE_DATA.themes || !PASSAGE_DATA.themes.length) {
     grid.innerHTML = '<p style="padding:20px;color:#888">Keine Themen verfügbar.</p>';
-    return;
+  } else {
+    // Update home header sub-text with translated stats
+    const homeSub = document.querySelector('.home-sub');
+    if (homeSub) homeSub.textContent = t('home_sub');
+    grid.innerHTML = PASSAGE_DATA.themes.map((th, i) => {
+      const color = THEME_COLORS[i % THEME_COLORS.length];
+      const count = PASSAGE_DATA.passages.filter(p => p.theme_id === th.id).length;
+      const name  = tTheme(th.id) || escHtml(th.name);
+      return `<div class="theme-card" data-tid="${th.id}" data-color="${color}"
+                   style="background:linear-gradient(135deg,${color},${hexFade(color)})">
+                <span class="theme-icon">${escHtml(th.icon)}</span>
+                <span class="theme-name">${escHtml(name)}</span>
+                <span class="theme-count">${count} ${t('passages_unit')}</span>
+              </div>`;
+    }).join('');
+    grid.onclick = e => {
+      const el = e.target.closest('[data-tid]');
+      if (el) openTheme(Number(el.dataset.tid), el.dataset.color);
+    };
   }
-  // Update home header sub-text with translated stats
-  const homeSub = document.querySelector('.home-sub');
-  if (homeSub) homeSub.textContent = t('home_sub');
-  // Update thematic section header
-  const thHdr = document.querySelector('#view-home .section-header');
-  if (thHdr) thHdr.textContent = t('thematic_header');
-  grid.innerHTML = PASSAGE_DATA.themes.map((th, i) => {
-    const color = THEME_COLORS[i % THEME_COLORS.length];
-    const count = PASSAGE_DATA.passages.filter(p => p.theme_id === th.id).length;
-    const name  = tTheme(th.id) || escHtml(th.name);
-    return `<div class="theme-card" data-tid="${th.id}" data-color="${color}"
-                 style="background:linear-gradient(135deg,${color},${hexFade(color)})">
-              <span class="theme-icon">${escHtml(th.icon)}</span>
-              <span class="theme-name">${escHtml(name)}</span>
-              <span class="theme-count">${count} ${t('passages_unit')}</span>
-            </div>`;
+  // Update tab labels
+  const btnBible  = document.getElementById('tab-btn-bible');
+  const btnThemes = document.getElementById('tab-btn-themes');
+  if (btnBible)  btnBible.textContent  = t('tab_bible');
+  if (btnThemes) btnThemes.textContent = t('tab_themes');
+  // Render inline book list in Bible tab
+  renderHomeBibleTab();
+}
+function renderHomeBibleTab() {
+  const list = document.getElementById('home-book-list');
+  if (!list || !BOOKS) return;
+  const AT_LABEL = '<div class="section-header">' + escHtml(t('at_label')) + '</div>';
+  const NT_LABEL = '<div class="section-header">' + escHtml(t('nt_label')) + '</div>';
+  list.innerHTML = AT_LABEL + Object.entries(BOOKS).map(([id, name]) => {
+    const bookId = Number(id);
+    const chs    = Object.keys(IDX[bookId] || {}).length;
+    const vs     = Object.values(IDX[bookId] || {}).reduce((s, a) => s + a.length, 0);
+    const divider = bookId === 40 ? NT_LABEL : '';
+    return divider +
+      `<div class="list-item" data-book="${id}">
+         <div class="avatar">${id}</div>
+         <div class="list-item-text">
+           <div class="list-item-title">${escHtml(name)}</div>
+           <div class="list-item-ref">${chs} ${t('chapters_unit')} \u00b7 ${vs} ${t('verses_unit')}</div>
+         </div>
+         <span style="color:var(--gold)">\u203a</span>
+       </div>`;
   }).join('');
-  grid.onclick = e => {
-    const el = e.target.closest('[data-tid]');
-    if (el) openTheme(Number(el.dataset.tid), el.dataset.color);
+  list.onclick = e => {
+    const el = e.target.closest('[data-book]');
+    if (el) openBook(Number(el.dataset.book));
   };
 }
 
