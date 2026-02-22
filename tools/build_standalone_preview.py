@@ -519,20 +519,31 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     /* ── Theme grid ── */
     #theme-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-      gap: 10px; padding: 12px 12px 16px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; padding: 12px 12px 20px;
     }
+    .theme-group-header {
+      grid-column: 1 / -1;
+      padding: 10px 4px 4px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--gold);
+      border-bottom: 1px solid var(--gold);
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      margin-top: 6px;
+    }
+    .theme-group-header:first-child { margin-top: 0; }
     .theme-card {
-      border-radius: 10px; padding: 14px 12px; cursor: pointer;
-      display: flex; flex-direction: column; gap: 7px;
-      color: #fff; min-height: 90px;
-      box-shadow: 0 3px 8px rgba(0,0,0,.28);
+      border-radius: 12px; padding: 16px 14px; cursor: pointer;
+      display: flex; flex-direction: column; gap: 8px;
+      color: #fff; min-height: 105px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.30);
       transition: transform .15s, box-shadow .15s;
+      border-bottom: 3px solid rgba(201,162,39,.45);
     }
-    .theme-card:hover { transform: translateY(-3px); box-shadow: 0 7px 18px rgba(0,0,0,.35); }
-    .theme-icon  { font-size: 28px; }
-    .theme-name  { font-size: 12px; font-weight: 700; line-height: 1.3;
-      font-family: 'Segoe UI', Roboto, sans-serif; }
+    .theme-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.38); }
+    .theme-icon  { font-size: 32px; }
+    .theme-name  { font-size: 13px; font-weight: 700; line-height: 1.35;
+      font-family: Georgia, serif; }
     .theme-count { font-size: 10px; opacity: .75; margin-top: auto;
       font-family: 'Segoe UI', sans-serif; }
 
@@ -1056,6 +1067,12 @@ const LANG = {
     chapters_unit:     'Kapitel',
     verses_unit:       'Verse',
     passages_unit:     'Stellen',
+    tg_ot:             'Altes Testament – Geschichte',
+    tg_psalms:         'Psalmen & Prophetie',
+    tg_bund:           'Bund',
+    tg_jesus:          'Jesus Christus',
+    tg_gospels:        'Die vier Evangelien',
+    tg_nt:             'Apostelgeschichte & Briefe',
     thematic_header:   'Thematische Bibelstellen',
     home_sub:          'Elberfelder 1905 \u00b7 66 Bücher \u00b7 31\u202f102 Verse',
     passages:          'Passagen',
@@ -1152,6 +1169,12 @@ const LANG = {
     chapters_unit:     'Chapters',
     verses_unit:       'Verses',
     passages_unit:     'Passages',
+    tg_ot:             'Old Testament – History',
+    tg_psalms:         'Psalms & Prophecy',
+    tg_bund:           'Covenant',
+    tg_jesus:          'Jesus Christ',
+    tg_gospels:        'The Four Gospels',
+    tg_nt:             'Acts & Letters',
     thematic_header:   'Thematic Bible Passages',
     home_sub:          'Elberfelder 1905 \u00b7 66 Books \u00b7 31,102 Verses',
     passages:          'Passages',
@@ -1301,6 +1324,12 @@ const LANG = {
     chapters_unit:     'Pasal',
     verses_unit:       'Ayat',
     passages_unit:     'Bagian',
+    tg_ot:             'Perjanjian Lama – Sejarah',
+    tg_psalms:         'Mazmur & Nubuat',
+    tg_bund:           'Perjanjian',
+    tg_jesus:          'Yesus Kristus',
+    tg_gospels:        'Empat Injil',
+    tg_nt:             'Kisah Para Rasul & Surat',
     thematic_header:   'Ayat-Ayat Alkitab Tematik',
     home_sub:          'Elberfelder 1905 \u00b7 66 Kitab \u00b7 31.102 Ayat',
     passages:          'Bagian',
@@ -1568,6 +1597,15 @@ function switchHomeTab(tab) {
   document.getElementById('tab-btn-bible').classList.toggle('active', tab === 'bible');
   document.getElementById('tab-btn-themes').classList.toggle('active', tab === 'themes');
 }
+// Theme groups: [label_key, [theme_ids]]
+const THEME_GROUPS = [
+  ['tg_ot',       [1,2,3,4,5,6,7,8]],
+  ['tg_psalms',   [9,10]],
+  ['tg_bund',     [23,24]],
+  ['tg_jesus',    [11,12,13,14,15,16]],
+  ['tg_gospels',  [19,20,21,22]],
+  ['tg_nt',       [17,18]],
+];
 function renderHome() {
   const grid = document.getElementById('theme-grid');
   if (!PASSAGE_DATA || !PASSAGE_DATA.themes || !PASSAGE_DATA.themes.length) {
@@ -1576,17 +1614,28 @@ function renderHome() {
     // Update home header sub-text with translated stats
     const homeSub = document.querySelector('.home-sub');
     if (homeSub) homeSub.textContent = t('home_sub');
-    grid.innerHTML = PASSAGE_DATA.themes.map((th, i) => {
-      const color = THEME_COLORS[i % THEME_COLORS.length];
-      const count = PASSAGE_DATA.passages.filter(p => p.theme_id === th.id).length;
-      const name  = tTheme(th.id) || escHtml(th.name);
-      return `<div class="theme-card" data-tid="${th.id}" data-color="${color}"
-                   style="background:linear-gradient(135deg,${color},${hexFade(color)})">
-                <span class="theme-icon">${escHtml(th.icon)}</span>
-                <span class="theme-name">${escHtml(name)}</span>
-                <span class="theme-count">${count} ${t('passages_unit')}</span>
-              </div>`;
-    }).join('');
+    // Build a map: theme_id → theme object + color index
+    const themeMap = {};
+    PASSAGE_DATA.themes.forEach((th, i) => { themeMap[th.id] = {th, i}; });
+    let html = '';
+    THEME_GROUPS.forEach(([labelKey, ids]) => {
+      html += `<div class="theme-group-header">${escHtml(t(labelKey))}</div>`;
+      ids.forEach(tid => {
+        const entry = themeMap[tid];
+        if (!entry) return;
+        const {th, i} = entry;
+        const color = THEME_COLORS[i % THEME_COLORS.length];
+        const count = PASSAGE_DATA.passages.filter(p => p.theme_id === th.id).length;
+        const name  = tTheme(th.id) || escHtml(th.name);
+        html += `<div class="theme-card" data-tid="${th.id}" data-color="${color}"
+                      style="background:linear-gradient(135deg,${color},${hexFade(color)})">
+                   <span class="theme-icon">${escHtml(th.icon)}</span>
+                   <span class="theme-name">${escHtml(name)}</span>
+                   <span class="theme-count">${count} ${t('passages_unit')}</span>
+                 </div>`;
+      });
+    });
+    grid.innerHTML = html;
     grid.onclick = e => {
       const el = e.target.closest('[data-tid]');
       if (el) openTheme(Number(el.dataset.tid), el.dataset.color);
