@@ -1,7 +1,7 @@
 // Service Worker – Buch des Dienstes zur Evangelisation
 // © 2025 Mario Reiner Denzer · Version 1.0.0
 
-const CACHE_NAME = 'bde-bibel-v11';
+const CACHE_NAME = 'bde-bibel-v12';
 const ASSETS = [
   './standalone.html',
   './manifest.json',

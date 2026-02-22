@@ -1158,6 +1158,8 @@ const LANG = {
     notes_save:        'Save',
     notes_clear:       'Clear',
     notes_saved:       '✔ saved',
+    theme_names: {
+      1:'Creation and Origin',
       2:'Patriarchs and Matriarchs of Israel',
       3:'The Exodus and Wilderness',
       4:'Law and Covenant',
@@ -1294,6 +1296,8 @@ const LANG = {
     notes_save:        'Simpan',
     notes_clear:       'Hapus',
     notes_saved:       '✔ tersimpan',
+    theme_names: {
+      1:'Penciptaan dan Asal Usul',
       2:'Bapa dan Ibu Israel',
       3:'Keluaran dari Mesir dan Padang Gurun',
       4:'Hukum dan Perjanjian',
