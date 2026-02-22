@@ -687,6 +687,44 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     .lang-flag { font-size: 40px; }
     .lang-name { font-size: 14px; font-weight: 700; color: var(--gold-lt); }
 
+    /* ── Notes / Comments area ── */
+    #passage-notes {
+      margin: 20px 16px 8px; background: rgba(201,162,39,.06);
+      border: 1.5px solid rgba(201,162,39,.3); border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .notes-heading {
+      font-family: Georgia, serif; font-size: 13px; font-weight: 700;
+      color: var(--gold); letter-spacing: .04em; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    #notes-textarea {
+      width: 100%; box-sizing: border-box;
+      min-height: 110px; resize: vertical;
+      background: rgba(255,255,255,.04); color: var(--parchment);
+      border: 1px solid rgba(201,162,39,.35); border-radius: 8px;
+      padding: 10px 12px; font-family: Georgia, serif; font-size: 14px;
+      line-height: 1.6; outline: none;
+    }
+    #notes-textarea:focus { border-color: var(--gold); background: rgba(255,255,255,.07); }
+    .notes-actions {
+      display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end;
+    }
+    .notes-btn {
+      font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700;
+      border-radius: 20px; padding: 6px 16px; cursor: pointer;
+      border: 1.5px solid rgba(201,162,39,.5); transition: background .15s;
+    }
+    #notes-save-btn  { background: var(--gold); color: #0d1b2a; }
+    #notes-save-btn:active { background: #a07c18; }
+    #notes-clear-btn { background: none; color: var(--gold); }
+    #notes-clear-btn:active { background: rgba(201,162,39,.15); }
+    #notes-saved-indicator {
+      font-size: 11px; color: #4ade80; align-self: center;
+      opacity: 0; transition: opacity .4s;
+    }
+    #notes-saved-indicator.show { opacity: 1; }
+
     /* ── Misc ── */
     #loading { text-align: center; padding: 80px 16px;
       color: var(--text2); font-size: 16px; font-family: Georgia, serif; }
@@ -893,7 +931,19 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   </div>
 </div>
 <div id="view-passages" class="view"><div id="passage-list"></div></div>
-<div id="view-text"     class="view"><div id="passage-text"></div></div>
+<div id="view-text" class="view">
+  <div id="passage-text"></div>
+  <!-- ── Notes / Comments section ── -->
+  <div id="passage-notes">
+    <div class="notes-heading">✏️ <span data-i18n="notes_title">Mein Kommentar</span></div>
+    <textarea id="notes-textarea" data-i18n-placeholder="notes_placeholder" placeholder="Kommentar, Gedanken oder Notizen zu dieser Bibelstelle …" aria-label="Kommentar"></textarea>
+    <div class="notes-actions">
+      <span id="notes-saved-indicator">✔ gespeichert</span>
+      <button class="notes-btn" id="notes-clear-btn" onclick="clearNotes()" data-i18n="notes_clear">Löschen</button>
+      <button class="notes-btn" id="notes-save-btn"  onclick="saveNotes()" data-i18n="notes_save">Speichern</button>
+    </div>
+  </div>
+</div>
 <div id="view-books"    class="view"><div id="book-list"></div></div>
 <div id="view-chapters" class="view"><div id="chapter-grid"></div></div>
 <div id="view-verses"   class="view"><div id="verse-list"></div></div>
@@ -1009,6 +1059,11 @@ const LANG = {
     thematic_header:   'Thematische Bibelstellen',
     home_sub:          'Elberfelder 1905 \u00b7 66 Bücher \u00b7 31\u202f102 Verse',
     passages:          'Passagen',
+    notes_title:       'Mein Kommentar',
+    notes_placeholder: 'Kommentar, Gedanken oder Notizen zu dieser Bibelstelle …',
+    notes_save:        'Speichern',
+    notes_clear:       'Löschen',
+    notes_saved:       '✔ gespeichert',
     theme_names: {
       1:'Schöpfung und Ursprung',
       2:'Die Erzväter und Mütter Israels',
@@ -1098,8 +1153,11 @@ const LANG = {
     thematic_header:   'Thematic Bible Passages',
     home_sub:          'Elberfelder 1905 \u00b7 66 Books \u00b7 31,102 Verses',
     passages:          'Passages',
-    theme_names: {
-      1:'Creation and Origin',
+    notes_title:       'My Comment',
+    notes_placeholder: 'Comment, thoughts or notes about this Bible passage …',
+    notes_save:        'Save',
+    notes_clear:       'Clear',
+    notes_saved:       '✔ saved',
       2:'Patriarchs and Matriarchs of Israel',
       3:'The Exodus and Wilderness',
       4:'Law and Covenant',
@@ -1231,8 +1289,11 @@ const LANG = {
     thematic_header:   'Ayat-Ayat Alkitab Tematik',
     home_sub:          'Elberfelder 1905 \u00b7 66 Kitab \u00b7 31.102 Ayat',
     passages:          'Bagian',
-    theme_names: {
-      1:'Penciptaan dan Asal Mula',
+    notes_title:       'Komentar Saya',
+    notes_placeholder: 'Komentar, pikiran atau catatan tentang bagian Alkitab ini …',
+    notes_save:        'Simpan',
+    notes_clear:       'Hapus',
+    notes_saved:       '✔ tersimpan',
       2:'Bapa dan Ibu Israel',
       3:'Keluaran dari Mesir dan Padang Gurun',
       4:'Hukum dan Perjanjian',
@@ -1581,6 +1642,7 @@ function openPassage(passageId) {
   ptEl.innerHTML = html || '<div class="empty">Keine Verse gefunden.</div>';
   applyStoredHL(ptEl);
   applyAllWordHL();
+  loadNotes(passageId);
   navigate('view-text');
 }
 
@@ -1926,6 +1988,72 @@ document.addEventListener('click', function(e) {
   if (document.getElementById('hl-toolbar').classList.contains('open') &&
       !e.target.closest('#hl-toolbar') && !e.target.closest('[data-vkey]')) {
     closeHLToolbar();
+  }
+});
+
+// ── Notes / Comments ──────────────────────────────────────────
+const NOTES_KEY = 'bde_notes_v1';
+let   _currentNotesPid = null;
+let   _notesSaveTimer  = null;
+
+function loadNotes(passageId) {
+  _currentNotesPid = passageId;
+  var ta = document.getElementById('notes-textarea');
+  if (!ta) return;
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) {}
+  ta.value = store[passageId] || '';
+  // Update placeholder and save-indicator from current lang
+  ta.placeholder = t('notes_placeholder');
+  var heading = document.querySelector('#passage-notes .notes-heading [data-i18n="notes_title"]');
+  if (heading) heading.textContent = t('notes_title');
+  var saveBtn  = document.getElementById('notes-save-btn');
+  var clearBtn = document.getElementById('notes-clear-btn');
+  if (saveBtn)  saveBtn.textContent  = t('notes_save');
+  if (clearBtn) clearBtn.textContent = t('notes_clear');
+  hideSavedIndicator();
+}
+
+function saveNotes() {
+  if (_currentNotesPid === null) return;
+  var ta = document.getElementById('notes-textarea');
+  if (!ta) return;
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) {}
+  var text = ta.value.trim();
+  if (text) { store[_currentNotesPid] = ta.value; }
+  else      { delete store[_currentNotesPid]; }
+  try { localStorage.setItem(NOTES_KEY, JSON.stringify(store)); } catch(e) {}
+  showSavedIndicator();
+}
+
+function clearNotes() {
+  if (_currentNotesPid === null) return;
+  var ta = document.getElementById('notes-textarea');
+  if (ta) ta.value = '';
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) {}
+  delete store[_currentNotesPid];
+  try { localStorage.setItem(NOTES_KEY, JSON.stringify(store)); } catch(e) {}
+  hideSavedIndicator();
+}
+
+function showSavedIndicator() {
+  var ind = document.getElementById('notes-saved-indicator');
+  if (!ind) return;
+  ind.textContent = t('notes_saved');
+  ind.classList.add('show');
+  clearTimeout(_notesSaveTimer);
+  _notesSaveTimer = setTimeout(function() { ind.classList.remove('show'); }, 2500);
+}
+function hideSavedIndicator() {
+  var ind = document.getElementById('notes-saved-indicator');
+  if (ind) ind.classList.remove('show');
+}
+// Auto-save on blur (user taps away from textarea)
+document.addEventListener('focusout', function(e) {
+  if (e.target && e.target.id === 'notes-textarea' && _currentNotesPid !== null) {
+    saveNotes();
   }
 });
 
