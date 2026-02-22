@@ -1086,7 +1086,9 @@ const LANG = {
       19:'Matthäus-Evangelium',
       20:'Markus-Evangelium',
       21:'Lukas-Evangelium',
-      22:'Johannes-Evangelium'
+      22:'Johannes-Evangelium',
+      23:'Der alte Bund',
+      24:'Der neue Bund'
     }
   },
   en: {
@@ -1180,7 +1182,9 @@ const LANG = {
       19:'Gospel of Matthew',
       20:'Gospel of Mark',
       21:'Gospel of Luke',
-      22:'Gospel of John'
+      22:'Gospel of John',
+      23:'The Old Covenant',
+      24:'The New Covenant'
     },
     passage_titles: {
       1:'The Creation of the World',2:'The Garden of Eden',3:'The Fall of Man',4:'Cain and Abel',5:'The Flood and Noah\'s Covenant',
@@ -1224,7 +1228,16 @@ const LANG = {
       340:'The Armor of God',341:'The Philippian Hymn',342:'I Can Do All Things through Christ',343:'The Colossian Hymn',344:'The Appearing of Grace',
       345:'Jesus the High Priest',346:'The Cloud of Witnesses',347:'Faith and Works',348:'God Resists the Proud',349:'The Patience of Job',
       350:'The New Birth',351:'The Royal Priesthood',352:'God Is Light',353:'The Mystery of Godliness',354:'The Calling of Timothy',
-      355:'The Son of Man',356:'The Seven Letters to the Churches',357:'The Throne of God and the Lamb',358:'The New Jerusalem',359:'The Call: Yes, I Am Coming Soon'
+      355:'The Son of Man',356:'The Seven Letters to the Churches',357:'The Throne of God and the Lamb',358:'The New Jerusalem',359:'The Call: Yes, I Am Coming Soon',
+      544:'God\'s Covenant with Abraham (Gen 15)',545:'Covenant of Circumcision (Gen 17)',546:'The Revelation at Sinai (Ex 19)',547:'The Ten Commandments (Ex 20)',548:'The Covenant at Sinai (Ex 24)',
+      549:'The Sabbath as Covenant Sign (Ex 31)',550:'Renewal of the Covenant (Ex 34)',551:'The Holiness Code (Lev 19)',552:'Blessings and Curses of the Covenant (Lev 26)',553:'The Great Commandment (Deut 6)',
+      554:'The Covenant Renewed: Curses (Deut 27)',555:'Blessings and Curses (Deut 28)',556:'The Covenant in Moab (Deut 29)',557:'Return and Promise (Deut 30)',558:'Covenant at Shechem (Josh 24)',
+      559:'God\'s Covenant with David (2 Sam 7)',560:'Ps 89: Faithfulness to the Davidic Covenant',561:'The Broken Covenant (Jer 11)',562:'The New Covenant Promised (Jer 31:31-34)',
+      563:'A New Heart (Ezek 36:22-32)',564:'The Old Covenant Is Fading (Heb 8)',565:'The Blood of the Covenant (Heb 9)',
+      566:'The Promise of the New Covenant (Jer 31)',567:'A New Heart and a New Spirit (Ezek 36)',568:'The Institution of the Lord\'s Supper (Mt 26)',569:'You Must Be Born Again (John 3)',
+      570:'The Holy Spirit as Comforter (John 14)',571:'The Spirit of Truth (John 16)',572:'Outpouring of the Holy Spirit (Acts 2)',573:'Life in the Spirit (Rom 8)',574:'Ministers of the New Covenant (2 Cor 3)',
+      575:'Sons of Abraham by Faith (Gal 3)',576:'The Two Covenants (Gal 4:21-31)',577:'The Fullness of Grace (Eph 1)',578:'A Better Covenant (Heb 8)',579:'The Blood of the New Covenant (Heb 9)',
+      580:'The Law Written on the Heart (Heb 10)',581:'Mount Zion and the New City (Heb 12)',582:'The New Jerusalem (Rev 21)',583:'I Am Coming Soon (Rev 22)'
     }
   },
   id: {
@@ -1318,7 +1331,9 @@ const LANG = {
       19:'Injil Matius',
       20:'Injil Markus',
       21:'Injil Lukas',
-      22:'Injil Yohanes'
+      22:'Injil Yohanes',
+      23:'Perjanjian Lama',
+      24:'Perjanjian Baru'
     },
     passage_titles: {
       1:'Penciptaan Dunia',2:'Taman Eden',3:'Kejatuhan Manusia',4:'Kain dan Habel',5:'Banjir dan Perjanjian Nuh',
@@ -1362,7 +1377,16 @@ const LANG = {
       340:'Perlengkapan Senjata Allah',341:'Hymne Filipi',342:'Aku Dapat Menanggung Segala Sesuatu melalui Kristus',343:'Hymne Kolose',344:'Penampakan Kasih Karunia',
       345:'Yesus Imam Besar',346:'Awan Saksi-Saksi',347:'Iman dan Perbuatan',348:'Allah Menentang Orang yang Sombong',349:'Kesabaran Ayub',
       350:'Kelahiran Baru',351:'Imamat yang Rajani',352:'Allah adalah Terang',353:'Rahasia Kesalehan',354:'Panggilan Timotius',
-      355:'Anak Manusia',356:'Tujuh Surat kepada Jemaat',357:'Takhta Allah dan Anak Domba',358:'Yerusalem Baru',359:'Seruan: Ya, Aku Datang Segera'
+      355:'Anak Manusia',356:'Tujuh Surat kepada Jemaat',357:'Takhta Allah dan Anak Domba',358:'Yerusalem Baru',359:'Seruan: Ya, Aku Datang Segera',
+      544:'Perjanjian Allah dengan Abraham (Kej 15)',545:'Perjanjian Sunat (Kej 17)',546:'Wahyu di Sinai (Kel 19)',547:'Sepuluh Perintah (Kel 20)',548:'Perjanjian di Sinai (Kel 24)',
+      549:'Sabat sebagai Tanda Perjanjian (Kel 31)',550:'Pembaruan Perjanjian (Kel 34)',551:'Hukum Kekudusan (Im 19)',552:'Berkat dan Kutuk Perjanjian (Im 26)',553:'Perintah Utama (Ul 6)',
+      554:'Perjanjian Diperbarui: Kutuk (Ul 27)',555:'Berkat dan Kutuk (Ul 28)',556:'Perjanjian di Moab (Ul 29)',557:'Pertobatan dan Janji (Ul 30)',558:'Perjanjian di Sikhem (Yos 24)',
+      559:'Perjanjian Allah dengan Daud (2 Sam 7)',560:'Maz 89: Kesetiaan pada Perjanjian Daud',561:'Perjanjian yang Dilanggar (Yer 11)',562:'Janji Perjanjian Baru (Yer 31:31-34)',
+      563:'Hati yang Baru (Yeh 36:22-32)',564:'Perjanjian Lama Pudar (Ibr 8)',565:'Darah Perjanjian (Ibr 9)',
+      566:'Janji Perjanjian Baru (Yer 31)',567:'Hati Baru dan Roh Baru (Yeh 36)',568:'Penetapan Perjamuan Tuhan (Mat 26)',569:'Kamu Harus Dilahirkan Kembali (Yoh 3)',
+      570:'Roh Kudus sebagai Penghibur (Yoh 14)',571:'Roh Kebenaran (Yoh 16)',572:'Pencurahan Roh Kudus (Kis 2)',573:'Hidup dalam Roh (Rom 8)',574:'Pelayan Perjanjian Baru (2 Kor 3)',
+      575:'Anak-Anak Abraham melalui Iman (Gal 3)',576:'Dua Perjanjian (Gal 4:21-31)',577:'Kelimpahan Kasih Karunia (Ef 1)',578:'Perjanjian yang Lebih Baik (Ibr 8)',579:'Darah Perjanjian Baru (Ibr 9)',
+      580:'Hukum Tertulis di Hati (Ibr 10)',581:'Gunung Sion dan Kota Baru (Ibr 12)',582:'Yerusalem Baru (Why 21)',583:'Aku Datang Segera (Why 22)'
     }
   }
 };
@@ -1382,7 +1406,7 @@ function tTheme(id) {
 // – Psalms (book 19, same chapter_from/to): "Psalm N" (EN) / "Mazmur N" (ID)
 // – All others: look up passage_titles dict, fall back to German p.title
 function tPassage(p) {
-  if (p.theme_id >= 19) {
+  if (p.theme_id >= 19 && p.theme_id <= 22) {
     return (BOOKS[p.book_id] || '') + '\u2002' + p.chapter_from;
   }
   if (p.book_id === 19 && p.chapter_from === p.chapter_to) {
