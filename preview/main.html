@@ -14,7 +14,18 @@
     <button onclick="goBack()">Zurück zur Sprachauswahl</button>
 
     <script>
-        const lang = localStorage.getItem('selectedLanguage') || 'en';
+        const params = new URLSearchParams(window.location.search);
+        const paramLang = params.get('lang');
+        const allowed = ['en', 'es', 'pt'];
+        const stored = localStorage.getItem('selectedLanguage');
+        let lang = 'en';
+
+        if (allowed.includes(paramLang)) {
+            lang = paramLang;
+            localStorage.setItem('selectedLanguage', paramLang);
+        } else if (allowed.includes(stored)) {
+            lang = stored;
+        }
         const translations = {
             en: { welcome: 'Welcome', content: 'This is the main content of the app.' },
             es: { welcome: 'Bienvenido', content: 'Este es el contenido principal de la aplicación.' },
