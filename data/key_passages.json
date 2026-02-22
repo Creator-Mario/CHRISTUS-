@@ -3,122 +3,122 @@
     {
       "id": 1,
       "name": "Schöpfung und Ursprung",
-      "icon": "🌍"
+      "icon": "creation"
     },
     {
       "id": 2,
       "name": "Die Erzväter und Mütter Israels",
-      "icon": "👨‍👩‍👧‍👦"
+      "icon": "patriarchs"
     },
     {
       "id": 3,
       "name": "Der Auszug aus Ägypten und die Wüstenzeit",
-      "icon": "⛏️"
+      "icon": "exodus"
     },
     {
       "id": 4,
       "name": "Gesetz und Bund",
-      "icon": "📜"
+      "icon": "tablets"
     },
     {
       "id": 5,
       "name": "Einzug und Landnahme",
-      "icon": "⚔️"
+      "icon": "conquest"
     },
     {
       "id": 6,
       "name": "Die Zeit der Richter",
-      "icon": "⚖️"
+      "icon": "lamp"
     },
     {
       "id": 7,
       "name": "Könige und Prophetie in Israel",
-      "icon": "👑"
+      "icon": "crown"
     },
     {
       "id": 8,
       "name": "Die großen Propheten Elia und Elisa",
-      "icon": "🔥"
+      "icon": "fire"
     },
     {
       "id": 9,
       "name": "Psalmen: Gebete und Lieder",
-      "icon": "🎵"
+      "icon": "harp"
     },
     {
       "id": 10,
       "name": "Prophetische Bücher und Botschaft",
-      "icon": "📣"
+      "icon": "scroll"
     },
     {
       "id": 11,
       "name": "Jesus Christus: Geburt und Kindheit",
-      "icon": "⭐"
+      "icon": "star"
     },
     {
       "id": 12,
       "name": "Jesu Wirken: Taufe, Versuchung und Berufung",
-      "icon": "🕊️"
+      "icon": "dove"
     },
     {
       "id": 13,
       "name": "Die Bergpredigt",
-      "icon": "⛰️"
+      "icon": "mountain"
     },
     {
       "id": 14,
       "name": "Gleichnisse Jesu",
-      "icon": "🌱"
+      "icon": "wheat"
     },
     {
       "id": 15,
       "name": "Wunder und Heilungen",
-      "icon": "✨"
+      "icon": "fish"
     },
     {
       "id": 16,
       "name": "Passion und Auferstehung Jesu",
-      "icon": "✝️"
+      "icon": "cross"
     },
     {
       "id": 17,
       "name": "Die Apostelgeschichte und die Briefe",
-      "icon": "📬"
+      "icon": "flame"
     },
     {
       "id": 18,
       "name": "Die Offenbarung: Vollendung",
-      "icon": "🌅"
+      "icon": "lamb"
     },
     {
       "id": 19,
       "name": "Matthäus-Evangelium",
-      "icon": "📖"
+      "icon": "angel"
     },
     {
       "id": 20,
       "name": "Markus-Evangelium",
-      "icon": "📖"
+      "icon": "lion"
     },
     {
       "id": 21,
       "name": "Lukas-Evangelium",
-      "icon": "📖"
+      "icon": "ox"
     },
     {
       "id": 23,
       "name": "Der alte Bund",
-      "icon": "📜"
+      "icon": "old_covenant"
     },
     {
       "id": 24,
       "name": "Der neue Bund",
-      "icon": "✝️"
+      "icon": "chalice"
     },
     {
       "id": 22,
       "name": "Johannes-Evangelium",
-      "icon": "✡️"
+      "icon": "eagle"
     }
   ],
   "passages": [

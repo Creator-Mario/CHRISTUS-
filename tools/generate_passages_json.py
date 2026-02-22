@@ -18,7 +18,7 @@ OUTPUT = REPO_ROOT / "data" / "key_passages.json"
 # Book IDs follow the Elberfelder 1905 CSV column "Book Number".
 
 THEMES = [
-    (1, "Schöpfung und Ursprung", "🌍", [
+    (1, "Schöpfung und Ursprung", "creation", [
         ("Die Erschaffung der Welt",          1,  1,  1,  2,  4),
         ("Das Paradies",                       1,  2,  4,  2, 25),
         ("Der Sündenfall",                     1,  3,  1,  3, 24),
@@ -34,7 +34,7 @@ THEMES = [
         ("Christus, Erstgeborener der Schöpfung (Kol 1)",  51,  1, 15,  1, 20),
         ("Würdig bist du, Herr, Schöpfer aller Dinge",     66,  4,  1,  4, 11),
     ]),
-    (2, "Die Erzväter und Mütter Israels", "👨‍👩‍👧‍👦", [
+    (2, "Die Erzväter und Mütter Israels", "patriarchs", [
         ("Gottes Bund mit Abraham",            1, 12,  1, 12,  9),
         ("Gott verheißt Abraham einen Sohn",   1, 15,  1, 15,  6),
         ("Hagar und Ismael",                   1, 16,  1, 16, 16),
@@ -63,7 +63,7 @@ THEMES = [
         ("Glaubenshelden: Abraham bis Josef (Heb 11)",      58, 11,  1, 11, 22),
         ("Hagar und Sara – zwei Bünde (Gal 4,21-31)",      48,  4, 21,  4, 31),
     ]),
-    (3, "Der Auszug aus Ägypten und die Wüstenzeit", "⛏️", [
+    (3, "Der Auszug aus Ägypten und die Wüstenzeit", "exodus", [
         ("Moses Geburt und Berufung",                    2,  2,  1,  4, 17),
         ("Die zehn Plagen",                              2,  7, 14, 12, 30),
         ("Das Passa und der Auszug",                     2, 12,  1, 12, 42),
@@ -88,7 +88,7 @@ THEMES = [
         ("Rückblick auf den Exodus (Neh 9,9-25)",          16,  9,  9,  9, 25),
         ("Paulus über die Geschichte Israels (Apg 13)",    44, 13, 16, 13, 41),
     ]),
-    (4, "Gesetz und Bund", "📜", [
+    (4, "Gesetz und Bund", "tablets", [
         ("Das Hauptgebot",     5,  6,  4,  6,  9),
         ("Das Erlassjahr",     5, 15,  1, 15, 11),
         ("Das Sozialgesetz",   5, 24, 10, 24, 22),
@@ -105,7 +105,7 @@ THEMES = [
         ("Freiheit vom Gesetz (Gal 5,13-26)",              48,  5, 13,  5, 26),
         ("Das vollkommene Opfer (Heb 9,11-28)",            58,  9, 11,  9, 28),
     ]),
-    (5, "Einzug und Landnahme", "⚔️", [
+    (5, "Einzug und Landnahme", "conquest", [
         ("Die Berufung Josuas",             6,  1,  1,  1,  9),
         ("Der Durchzug durch den Jordan",   6,  3,  1,  4, 24),
         ("Die Eroberung von Jericho",       6,  6,  1,  6, 27),
@@ -118,7 +118,7 @@ THEMES = [
         ("Paulus über Richter und Könige (Apg 13,17-25)",  44, 13, 17, 13, 25),
         ("Die Rüstung Gottes (Eph 6,10-18)",               49,  6, 10,  6, 18),
     ]),
-    (6, "Die Zeit der Richter", "⚖️", [
+    (6, "Die Zeit der Richter", "lamp", [
         ("Die Berufung Gideons",                                  7,  6,  1,  6, 40),
         ("Simsons Geburt und Berufung",                           7, 13,  1, 13, 25),
         ("Simson und Delila",                                     7, 16,  1, 16, 31),
@@ -132,7 +132,7 @@ THEMES = [
         ("Israel verlässt den Herrn (Jer 2,1-13)",         24,  2,  1,  2, 13),
         ("Alle haben gesündigt (Röm 3,9-20)",              45,  3,  9,  3, 20),
     ]),
-    (7, "Könige und Prophetie in Israel", "👑", [
+    (7, "Könige und Prophetie in Israel", "crown", [
         ("Die Geburt Samuels",                     9,  1,  1,  1, 28),
         ("Die Berufung Samuels",                   9,  3,  1,  3, 21),
         ("Die Forderung nach einem König",         9,  8,  1,  8, 22),
@@ -158,7 +158,7 @@ THEMES = [
         ("Der gerechte Spross (Jer 23,1-8)",              24, 23,  1, 23,  8),
         ("Paulus über David als Zeuge Jesu (Apg 13)",    44, 13, 22, 13, 37),
     ]),
-    (8, "Die großen Propheten Elia und Elisa", "🔥", [
+    (8, "Die großen Propheten Elia und Elisa", "fire", [
         ("Elia am Bach Krit und bei der Witwe",   11, 17,  1, 17, 24),
         ("Das Gottesurteil auf dem Karmel",       11, 18, 20, 18, 46),
         ("Elia am Gottesberg Horeb",              11, 19,  1, 19, 18),
@@ -178,7 +178,7 @@ THEMES = [
         ("Der Rest: Elias Gebet (Röm 11,1-6)",            45, 11,  1, 11,  6),
         ("Elia als Vorbild des Beters (Jak 5,17-18)",     59,  5, 17,  5, 18),
     ]),
-    (9, "Psalmen: Gebete und Lieder", "🎵", [
+    (9, "Psalmen: Gebete und Lieder", "harp", [
         # ── Buch I (Ps 1–41) ────────────────────────────────────────────────
         ("Das Glück des Gerechten (Psalm 1)",                    19,  1,  1,  1,  6),
         ("Der Messias-König (Psalm 2)",                          19,  2,  1,  2, 12),
@@ -341,7 +341,7 @@ THEMES = [
         ("Der Lobgesang des Zacharias – Benedictus",             42,  1, 68,  1, 79),
         ("Der Lobgesang des Simeon – Nunc dimittis",             42,  2, 29,  2, 32),
     ]),
-    (10, "Prophetische Bücher und Botschaft", "📣", [
+    (10, "Prophetische Bücher und Botschaft", "scroll", [
         ("Die Berufung Jesajas",          23,  6,  1,  6, 13),
         ("Das Weinberglied",              23,  5,  1,  5,  7),
         ("Das Zeichen Immanuels",         23,  7, 10,  7, 17),
@@ -370,7 +370,7 @@ THEMES = [
         ("Der König kommt (Sach 9,9-17)",                 38,  9,  9,  9, 17),
         ("Der Bote des Bundes (Mal 3,1-7)",               39,  3,  1,  3,  7),
     ]),
-    (11, "Jesus Christus: Geburt und Kindheit", "⭐", [
+    (11, "Jesus Christus: Geburt und Kindheit", "star", [
         ("Der Stammbaum Jesu",                              40,  1,  1,  1, 17),
         ("Die Weisen aus dem Morgenland",                   40,  2,  1,  2, 12),
         ("Die Flucht nach Ägypten",                         40,  2, 13,  2, 23),
@@ -388,7 +388,7 @@ THEMES = [
         ("Christus wurde Mensch (Heb 2,14-18)",            58,  2, 14,  2, 18),
         ("Gott ist erschienen im Fleisch (1Tim 3,16)",     54,  3, 16,  3, 16),
     ]),
-    (12, "Jesu Wirken: Taufe, Versuchung und Berufung", "🕊️", [
+    (12, "Jesu Wirken: Taufe, Versuchung und Berufung", "dove", [
         ("Johannes der Täufer",              40,  3,  1,  3, 12),
         ("Die Taufe Jesu",                   40,  3, 13,  3, 17),
         ("Die Versuchung Jesu",              40,  4,  1,  4, 11),
@@ -407,7 +407,7 @@ THEMES = [
         ("Ich bin der Weg (Joh 14,1-14)",                 43, 14,  1, 14, 14),
         ("Kommt her zu mir (Mt 11,25-30)",                40, 11, 25, 11, 30),
     ]),
-    (13, "Die Bergpredigt", "⛰️", [
+    (13, "Die Bergpredigt", "mountain", [
         ("Die Seligpreisungen",                       40,  5,  1,  5, 12),
         ("Salz und Licht",                            40,  5, 13,  5, 16),
         ("Jesus und das Gesetz",                      40,  5, 17,  5, 20),
@@ -425,7 +425,7 @@ THEMES = [
         ("Weisheit von oben (Jak 3,13-18)",               59,  3, 13,  3, 18),
         ("Der neue Mensch (Eph 4,17-5,2)",                49,  4, 17,  5,  2),
     ]),
-    (14, "Gleichnisse Jesu", "🌱", [
+    (14, "Gleichnisse Jesu", "wheat", [
         ("Vom Sämann",                                   40, 13,  1, 13, 23),
         ("Vom Unkraut unter dem Weizen",                 40, 13, 24, 13, 43),
         ("Vom Senfkorn und Sauerteig",                   40, 13, 31, 13, 33),
@@ -452,7 +452,7 @@ THEMES = [
         ("Der Weinstock und die Reben (Joh 15,1-11)",    43, 15,  1, 15, 11),
         ("Vom bösen Weingärtner (Mk 12,1-12)",           41, 12,  1, 12, 12),
     ]),
-    (15, "Wunder und Heilungen", "✨", [
+    (15, "Wunder und Heilungen", "fish", [
         ("Die Stillung des Sturms",                                41,  4, 35,  4, 41),
         ("Die Heilung eines Gelähmten",                           41,  2,  1,  2, 12),
         ("Die Speisung der Fünftausend",                          40, 14, 13, 14, 21),
@@ -470,7 +470,7 @@ THEMES = [
         ("Petrus und Johannes heilen den Lahmen (Apg 3)", 44,  3,  1,  3, 10),
         ("Heilung durch Paulus in Lystra (Apg 14,8-18)",  44, 14,  8, 14, 18),
     ]),
-    (16, "Passion und Auferstehung Jesu", "✝️", [
+    (16, "Passion und Auferstehung Jesu", "cross", [
         ("Der Einzug in Jerusalem",               40, 21,  1, 21, 11),
         ("Die Tempelreinigung",                   40, 21, 12, 21, 17),
         ("Das Letzte Abendmahl",                  40, 26, 17, 26, 30),
@@ -494,7 +494,7 @@ THEMES = [
         ("Das Lamm ist würdig (Offb 5,1-14)",             66,  5,  1,  5, 14),
         ("Christus als Vorbild im Leiden (1Pet 2,21-25)", 60,  2, 21,  2, 25),
     ]),
-    (17, "Die Apostelgeschichte und die Briefe", "📬", [
+    (17, "Die Apostelgeschichte und die Briefe", "flame", [
         ("Die Ausgießung des Heiligen Geistes (Pfingsten)", 44,  2,  1,  2, 41),
         ("Die erste Gemeinde in Jerusalem",                44,  2, 42,  2, 47),
         ("Die Heilung des Lahmen",                         44,  3,  1,  3, 26),
@@ -536,7 +536,7 @@ THEMES = [
         ("Die Heilige Schrift (2Tim 3,14-17)",            55,  3, 14,  3, 17),
         ("Gottes Kinder (1Joh 3,1-24)",                   62,  3,  1,  3, 24),
     ]),
-    (18, "Die Offenbarung: Vollendung", "🌅", [
+    (18, "Die Offenbarung: Vollendung", "lamb", [
         ("Der Menschensohn",                        66,  1,  9,  1, 20),
         ("Die sieben Sendschreiben",                66,  2,  1,  3, 22),
         ("Der Thron Gottes und das Lamm",           66,  4,  1,  5, 14),
@@ -552,7 +552,7 @@ THEMES = [
         ("Die Wiederkunft Christi (1Thess 4,13-5,11)",    52,  4, 13,  5, 11),
         ("Der Tag des Herrn (2Pet 3,1-18)",               61,  3,  1,  3, 18),
     ]),
-    (19, "Matthäus-Evangelium", "📖", [
+    (19, "Matthäus-Evangelium", "angel", [
         # ── Matthäus (book 40, 28 Kapitel) ─────────────────────────────────
         ("Matthäus 1",  40,  1, 1,  1, 25),
         ("Matthäus 2",  40,  2, 1,  2, 23),
@@ -583,7 +583,7 @@ THEMES = [
         ("Matthäus 27", 40, 27, 1, 27, 66),
         ("Matthäus 28", 40, 28, 1, 28, 20),
     ]),
-    (20, "Markus-Evangelium", "📖", [
+    (20, "Markus-Evangelium", "lion", [
         # ── Markus (book 41, 16 Kapitel) ────────────────────────────────────
         ("Markus 1",  41,  1, 1,  1, 45),
         ("Markus 2",  41,  2, 1,  2, 28),
@@ -602,7 +602,7 @@ THEMES = [
         ("Markus 15", 41, 15, 1, 15, 47),
         ("Markus 16", 41, 16, 1, 16, 20),
     ]),
-    (21, "Lukas-Evangelium", "📖", [
+    (21, "Lukas-Evangelium", "ox", [
         # ── Lukas (book 42, 24 Kapitel) ─────────────────────────────────────
         ("Lukas 1",  42,  1, 1,  1, 80),
         ("Lukas 2",  42,  2, 1,  2, 52),
@@ -629,7 +629,7 @@ THEMES = [
         ("Lukas 23", 42, 23, 1, 23, 56),
         ("Lukas 24", 42, 24, 1, 24, 53),
     ]),
-    (23, "Der alte Bund", "📜", [
+    (23, "Der alte Bund", "old_covenant", [
         ("Gottes Bund mit Abraham (1 Mose 15)",       1, 15,  1, 15, 21),
         ("Bund der Beschneidung (1 Mose 17)",          1, 17,  1, 17, 27),
         ("Die Offenbarung am Sinai (2 Mose 19)",       2, 19,  1, 19, 25),
@@ -653,7 +653,7 @@ THEMES = [
         ("Der alte Bund vergänglich (Hebräer 8)",     58,  8,  1,  8, 13),
         ("Das Blut des Bundes (Hebräer 9)",           58,  9,  1,  9, 28),
     ]),
-    (24, "Der neue Bund", "✝️", [
+    (24, "Der neue Bund", "chalice", [
         ("Die Verheißung des neuen Bundes (Jer 31)",  24, 31, 31, 31, 34),
         ("Neues Herz und neuer Geist (Hesekiel 36)",  26, 36, 22, 36, 32),
         ("Die Einsetzung des Abendmahls (Mt 26)",     40, 26, 26, 26, 29),
@@ -673,7 +673,7 @@ THEMES = [
         ("Das neue Jerusalem (Offenbarung 21)",       66, 21,  1, 21, 27),
         ("Ich komme bald (Offenbarung 22)",           66, 22,  1, 22, 21),
     ]),
-    (22, "Johannes-Evangelium", "✡️", [
+    (22, "Johannes-Evangelium", "eagle", [
         # ── Johannes (book 43, 21 Kapitel) ──────────────────────────────────
         ("Johannes 1",  43,  1, 1,  1, 51),
         ("Johannes 2",  43,  2, 1,  2, 25),
