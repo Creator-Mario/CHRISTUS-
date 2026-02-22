@@ -497,6 +497,25 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     .home-tab-panel { display: none; }
     .home-tab-panel.active { display: block; }
 
+    /* ── Book button grid ── */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 8px; padding: 10px 10px 16px;
+    }
+    .book-btn {
+      background: var(--navy2); border: 1px solid var(--gold);
+      border-radius: 8px; padding: 8px 4px 7px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      color: var(--text1); text-align: center;
+      transition: background .12s, transform .1s;
+    }
+    .book-btn:hover, .book-btn:active { background: rgba(201,162,39,.18); transform: scale(1.04); }
+    .book-btn-num  { font-size: 10px; color: var(--gold); font-weight: 700; }
+    .book-btn-name { font-size: 11px; font-weight: 700; font-family: Georgia, serif;
+                     color: var(--gold-lt); line-height: 1.25; word-break: break-word; }
+    .book-btn-chs  { font-size: 10px; color: var(--text2); }
+
     /* ── Theme grid ── */
     #theme-grid {
       display: grid;
@@ -848,16 +867,16 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   </div>
   <!-- ── Big navigation tabs ── -->
   <div id="home-tabs">
-    <button class="home-tab active" id="tab-btn-bible"  onclick="switchHomeTab('bible')"  data-i18n="tab_bible">📖 Bibel</button>
-    <button class="home-tab"        id="tab-btn-themes" onclick="switchHomeTab('themes')" data-i18n="tab_themes">✝ Themen</button>
+    <button class="home-tab active" id="tab-btn-themes" onclick="switchHomeTab('themes')" data-i18n="tab_themes">✝ Themen</button>
+    <button class="home-tab"        id="tab-btn-bible"  onclick="switchHomeTab('bible')"  data-i18n="tab_bible">📖 Bibel</button>
   </div>
-  <!-- Bible tab: inline book list -->
-  <div class="home-tab-panel active" id="panel-bible">
-    <div id="home-book-list"></div>
-  </div>
-  <!-- Themes tab: theme grid -->
-  <div class="home-tab-panel" id="panel-themes">
+  <!-- Themes tab: theme grid (default) -->
+  <div class="home-tab-panel active" id="panel-themes">
     <div id="theme-grid"></div>
+  </div>
+  <!-- Bible tab: book button grid -->
+  <div class="home-tab-panel" id="panel-bible">
+    <div id="home-book-list"></div>
   </div>
   <div id="app-footer">
     <strong data-i18n="app_title">Buch des Dienstes zur Evangelisation</strong><br>
@@ -1447,7 +1466,7 @@ function hexFade(hex, a) {
 }
 
 // ── Home ──────────────────────────────────────────────────────
-let _homeTab = 'bible';
+let _homeTab = 'themes';
 function switchHomeTab(tab) {
   _homeTab = tab;
   document.getElementById('panel-bible').classList.toggle('active', tab === 'bible');
@@ -1480,33 +1499,31 @@ function renderHome() {
     };
   }
   // Update tab labels
-  const btnBible  = document.getElementById('tab-btn-bible');
   const btnThemes = document.getElementById('tab-btn-themes');
-  if (btnBible)  btnBible.textContent  = t('tab_bible');
+  const btnBible  = document.getElementById('tab-btn-bible');
   if (btnThemes) btnThemes.textContent = t('tab_themes');
+  if (btnBible)  btnBible.textContent  = t('tab_bible');
   // Render inline book list in Bible tab
   renderHomeBibleTab();
 }
 function renderHomeBibleTab() {
   const list = document.getElementById('home-book-list');
   if (!list || !BOOKS) return;
-  const AT_LABEL = '<div class="section-header">' + escHtml(t('at_label')) + '</div>';
-  const NT_LABEL = '<div class="section-header">' + escHtml(t('nt_label')) + '</div>';
-  list.innerHTML = AT_LABEL + Object.entries(BOOKS).map(([id, name]) => {
+  const AT_LABEL = '<div class="section-header" style="grid-column:1/-1">' + escHtml(t('at_label')) + '</div>';
+  const NT_LABEL = '<div class="section-header" style="grid-column:1/-1">' + escHtml(t('nt_label')) + '</div>';
+  let html = '<div class="book-grid">' + AT_LABEL;
+  Object.entries(BOOKS).forEach(([id, name]) => {
     const bookId = Number(id);
     const chs    = Object.keys(IDX[bookId] || {}).length;
-    const vs     = Object.values(IDX[bookId] || {}).reduce((s, a) => s + a.length, 0);
-    const divider = bookId === 40 ? NT_LABEL : '';
-    return divider +
-      `<div class="list-item" data-book="${id}">
-         <div class="avatar">${id}</div>
-         <div class="list-item-text">
-           <div class="list-item-title">${escHtml(name)}</div>
-           <div class="list-item-ref">${chs} ${t('chapters_unit')} \u00b7 ${vs} ${t('verses_unit')}</div>
-         </div>
-         <span style="color:var(--gold)">\u203a</span>
-       </div>`;
-  }).join('');
+    if (bookId === 40) html += NT_LABEL;
+    html += `<button class="book-btn" data-book="${bookId}">
+               <span class="book-btn-num">${bookId}</span>
+               <span class="book-btn-name">${escHtml(name)}</span>
+               <span class="book-btn-chs">${chs} ${t('chapters_unit')}</span>
+             </button>`;
+  });
+  html += '</div>';
+  list.innerHTML = html;
   list.onclick = e => {
     const el = e.target.closest('[data-book]');
     if (el) openBook(Number(el.dataset.book));
