@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRISTUS App - Main</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+    <h1 id="welcome">Willkommen</h1>
+    <p id="content">Hier ist der Hauptinhalt der App.</p>
+    <button onclick="goBack()">Zurück zur Sprachauswahl</button>
+
+    <script>
+        const lang = localStorage.getItem('selectedLanguage') || 'en';
+        const translations = {
+            en: { welcome: 'Welcome', content: 'This is the main content of the app.' },
+            es: { welcome: 'Bienvenido', content: 'Este es el contenido principal de la aplicación.' },
+            pt: { welcome: 'Bem-vindo', content: 'Este é o conteúdo principal do aplicativo.' }
+        };
+
+        document.getElementById('welcome').textContent = translations[lang].welcome;
+        document.getElementById('content').textContent = translations[lang].content;
+
+        function goBack() {
+            window.location.href = 'standalone.html';
+        }
+    </script>
+</body>
+</html>
