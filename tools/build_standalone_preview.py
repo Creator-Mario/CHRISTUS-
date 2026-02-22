@@ -918,6 +918,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <div id="home-tabs">
     <button class="home-tab active" id="tab-btn-themes" onclick="switchHomeTab('themes')" data-i18n="tab_themes">✝ Themen</button>
     <button class="home-tab"        id="tab-btn-bible"  onclick="switchHomeTab('bible')"  data-i18n="tab_bible">📖 Bibel</button>
+    <button class="home-tab"        id="tab-btn-notes"  onclick="switchHomeTab('notes')"  data-i18n="tab_notes">📝 Notizen</button>
   </div>
   <!-- Themes tab: theme grid (default) -->
   <div class="home-tab-panel active" id="panel-themes">
@@ -926,6 +927,10 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <!-- Bible tab: book button grid -->
   <div class="home-tab-panel" id="panel-bible">
     <div id="home-book-list"></div>
+  </div>
+  <!-- Notes tab: all comments grouped by theme -->
+  <div class="home-tab-panel" id="panel-notes">
+    <div id="notes-overview"></div>
   </div>
   <div id="app-footer">
     <strong data-i18n="app_title">Buch des Dienstes zur Evangelisation</strong><br>
@@ -1081,6 +1086,11 @@ const LANG = {
     notes_save:        'Speichern',
     notes_clear:       'Löschen',
     notes_saved:       '✔ gespeichert',
+    tab_notes:         '📝 Notizen',
+    notes_overview_empty: 'Noch keine Notizen vorhanden.\nFüge Kommentare in den Themen hinzu.',
+    notes_goto:        '→ Zur Stelle',
+    notes_delete:      '🗑 Löschen',
+    notes_export:      '📤 Alle Notizen exportieren',
     theme_names: {
       1:'Schöpfung und Ursprung',
       2:'Die Erzväter und Mütter Israels',
@@ -1183,6 +1193,11 @@ const LANG = {
     notes_save:        'Save',
     notes_clear:       'Clear',
     notes_saved:       '✔ saved',
+    tab_notes:         '📝 Notes',
+    notes_overview_empty: 'No notes yet.\nAdd comments in the Themes tab.',
+    notes_goto:        '→ Go to Passage',
+    notes_delete:      '🗑 Delete',
+    notes_export:      '📤 Export All Notes',
     theme_names: {
       1:'Creation and Origin',
       2:'Patriarchs and Matriarchs of Israel',
@@ -1338,6 +1353,11 @@ const LANG = {
     notes_save:        'Simpan',
     notes_clear:       'Hapus',
     notes_saved:       '✔ tersimpan',
+    tab_notes:         '📝 Catatan',
+    notes_overview_empty: 'Belum ada catatan.\nTambahkan komentar di tab Topik.',
+    notes_goto:        '→ Buka',
+    notes_delete:      '🗑 Hapus',
+    notes_export:      '📤 Ekspor Semua Catatan',
     theme_names: {
       1:'Penciptaan dan Asal Usul',
       2:'Bapa dan Ibu Israel',
@@ -1605,8 +1625,11 @@ function switchHomeTab(tab) {
   _homeTab = tab;
   document.getElementById('panel-bible').classList.toggle('active', tab === 'bible');
   document.getElementById('panel-themes').classList.toggle('active', tab === 'themes');
+  document.getElementById('panel-notes').classList.toggle('active', tab === 'notes');
   document.getElementById('tab-btn-bible').classList.toggle('active', tab === 'bible');
   document.getElementById('tab-btn-themes').classList.toggle('active', tab === 'themes');
+  document.getElementById('tab-btn-notes').classList.toggle('active', tab === 'notes');
+  if (tab === 'notes') renderNotesTab();
 }
 function renderHome() {
   const grid = document.getElementById('theme-grid');
@@ -1646,8 +1669,10 @@ function renderHome() {
   // Update tab labels
   const btnThemes = document.getElementById('tab-btn-themes');
   const btnBible  = document.getElementById('tab-btn-bible');
+  const btnNotes  = document.getElementById('tab-btn-notes');
   if (btnThemes) btnThemes.textContent = t('tab_themes');
   if (btnBible)  btnBible.textContent  = t('tab_bible');
+  if (btnNotes)  btnNotes.textContent  = t('tab_notes');
   // Render inline book list in Bible tab
   renderHomeBibleTab();
 }
@@ -1673,6 +1698,87 @@ function renderHomeBibleTab() {
     const el = e.target.closest('[data-book]');
     if (el) openBook(Number(el.dataset.book));
   };
+}
+
+// ── Notes overview ─────────────────────────────────────────────
+function renderNotesTab() {
+  const container = document.getElementById('notes-overview');
+  if (!container) return;
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('bde_notes_v1') || '{}'); } catch(e) {}
+  const keys = Object.keys(stored).filter(k => stored[k] && stored[k].trim());
+  if (!keys.length) {
+    container.innerHTML = '<p style="padding:24px 16px;color:var(--gold);white-space:pre-line;text-align:center">'
+      + escHtml(t('notes_overview_empty')) + '</p>';
+    return;
+  }
+  // Group by theme
+  const groups = {};
+  keys.forEach(pid => {
+    const p = PASSAGE_DATA.passages.find(pp => pp.id === Number(pid));
+    if (!p) return;
+    const th = PASSAGE_DATA.themes.find(t2 => t2.id === p.theme_id);
+    const groupName = th ? (tTheme(th.id) || th.name) : '—';
+    if (!groups[groupName]) groups[groupName] = [];
+    groups[groupName].push({p, note: stored[pid]});
+  });
+  let html = '';
+  // Export button
+  html += `<div style="padding:12px 16px 4px">
+    <button onclick="exportNotes()" style="background:rgba(201,162,39,.15);border:1px solid var(--gold);
+      color:var(--gold);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer">
+      ${escHtml(t('notes_export'))}
+    </button>
+  </div>`;
+  Object.entries(groups).forEach(([groupName, entries]) => {
+    html += `<div class="section-header" style="margin:12px 0 4px">${escHtml(groupName)}</div>`;
+    entries.forEach(({p, note}) => {
+      const preview = note.length > 120 ? note.slice(0,120) + '…' : note;
+      html += `<div class="list-item" style="align-items:flex-start;flex-direction:column;gap:6px;padding:12px 16px">
+        <div style="font-weight:600;color:var(--gold);font-size:14px">${escHtml(tPassage(p))}</div>
+        <div style="font-size:13px;color:#d4c9a0;white-space:pre-wrap;line-height:1.5">${escHtml(preview)}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button data-goto="${p.id}" style="background:var(--gold);color:var(--navy);
+            border:none;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer">
+            ${escHtml(t('notes_goto'))}
+          </button>
+          <button data-delnote="${p.id}" style="background:transparent;border:1px solid #c04;
+            color:#e06060;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer">
+            ${escHtml(t('notes_delete'))}
+          </button>
+        </div>
+      </div>`;
+    });
+  });
+  container.innerHTML = html;
+  container.onclick = e => {
+    const goBtn  = e.target.closest('[data-goto]');
+    const delBtn = e.target.closest('[data-delnote]');
+    if (goBtn)  { openPassage(Number(goBtn.dataset.goto)); }
+    if (delBtn) {
+      const pid = delBtn.dataset.delnote;
+      try { const n = JSON.parse(localStorage.getItem('bde_notes_v1')||'{}'); delete n[pid]; localStorage.setItem('bde_notes_v1', JSON.stringify(n)); } catch(e2){}
+      renderNotesTab();
+    }
+  };
+}
+function exportNotes() {
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('bde_notes_v1') || '{}'); } catch(e) {}
+  const lines = [];
+  Object.keys(stored).forEach(pid => {
+    if (!stored[pid] || !stored[pid].trim()) return;
+    const p = PASSAGE_DATA.passages.find(pp => pp.id === Number(pid));
+    const title = p ? tPassage(p) : 'Passage ' + pid;
+    lines.push('[' + title + ']\\n' + stored[pid] + '\\n');
+  });
+  if (!lines.length) return;
+  const blob = new Blob([lines.join('\\n')], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'BDE-Notizen.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 // ── Passage list ──────────────────────────────────────────────
