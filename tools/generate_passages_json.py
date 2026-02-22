@@ -24,6 +24,15 @@ THEMES = [
         ("Der Sündenfall",                     1,  3,  1,  3, 24),
         ("Kain und Abel",                      1,  4,  1,  4, 16),
         ("Die Sintflut und Noahs Bund",        1,  6,  5,  9, 17),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Hiob: Gott antwortet aus dem Sturm",             18, 38,  1, 42, 17),
+        ("Ps 104: Loblied auf den Schöpfer",               19,104,  1,104, 35),
+        ("Die Weisheit bei der Schöpfung (Spr 8,22-36)",   20,  8, 22,  8, 36),
+        ("Der Schöpfer wird nicht müde (Jes 40,12-31)",    23, 40, 12, 40, 31),
+        ("Im Anfang war das Wort (Joh 1,1-14)",            43,  1,  1,  1, 14),
+        ("Die Schöpfung harrt der Erlösung (Röm 8,18-25)", 45,  8, 18,  8, 25),
+        ("Christus, Erstgeborener der Schöpfung (Kol 1)",  51,  1, 15,  1, 20),
+        ("Würdig bist du, Herr, Schöpfer aller Dinge",     66,  4,  1,  4, 11),
     ]),
     (2, "Die Erzväter und Mütter Israels", "👨‍👩‍👧‍👦", [
         ("Gottes Bund mit Abraham",            1, 12,  1, 12,  9),
@@ -46,6 +55,13 @@ THEMES = [
         ("Josef und die Frau Potifars",        1, 39,  1, 39, 23),
         ("Josef deutet die Träume des Pharao", 1, 41,  1, 41, 40),
         ("Josefs Versöhnung mit seinen Brüdern", 1, 45, 1, 45, 28),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Der Turmbau zu Babel",                            1, 11,  1, 11,  9),
+        ("Jakob segnet Ephraim und Manasse",                1, 48,  1, 48, 22),
+        ("Der Segen Jakobs über seine Söhne",               1, 49,  1, 49, 33),
+        ("Abrahams Glaube als Vorbild (Röm 4)",            45,  4,  1,  4, 25),
+        ("Glaubenshelden: Abraham bis Josef (Heb 11)",      58, 11,  1, 11, 22),
+        ("Hagar und Sara – zwei Bünde (Gal 4,21-31)",      48,  4, 21,  4, 31),
     ]),
     (3, "Der Auszug aus Ägypten und die Wüstenzeit", "⛏️", [
         ("Moses Geburt und Berufung",                    2,  2,  1,  4, 17),
@@ -63,6 +79,14 @@ THEMES = [
         ("Der Aaronsche Segen",                          4,  6, 22,  6, 27),
         ("Die Kundschafter in Kanaan",                   4, 13,  1, 14, 45),
         ("Mose darf das Land nicht betreten",            5, 34,  1, 34, 12),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Die Väter in der Wüste (1Kor 10,1-13)",          46, 10,  1, 10, 13),
+        ("Moses Dienst und Christus (Heb 3,1-19)",         58,  3,  1,  3, 19),
+        ("Glaubensheld Mose (Heb 11,23-29)",               58, 11, 23, 11, 29),
+        ("Neuer Exodus (Jes 43,1-21)",                     23, 43,  1, 43, 21),
+        ("Das Brot des Lebens – Manna (Joh 6,31-51)",      43,  6, 31,  6, 51),
+        ("Rückblick auf den Exodus (Neh 9,9-25)",          16,  9,  9,  9, 25),
+        ("Paulus über die Geschichte Israels (Apg 13)",    44, 13, 16, 13, 41),
     ]),
     (4, "Gesetz und Bund", "📜", [
         ("Das Hauptgebot",     5,  6,  4,  6,  9),
@@ -70,6 +94,16 @@ THEMES = [
         ("Das Sozialgesetz",   5, 24, 10, 24, 22),
         ("Segen und Fluch",    5, 28,  1, 28, 68),
         ("Der neue Bund",     24, 31, 31, 31, 34),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Das Heiligkeitsgesetz (3Mo 19)",                  3, 19,  1, 19, 37),
+        ("Was Gott von dir fordert (5Mo 10,12-22)",         5, 10, 12, 10, 22),
+        ("Wahl zwischen Leben und Tod (5Mo 30)",            5, 30,  1, 30, 20),
+        ("Das größte Gebot (Mt 22,34-40)",                 40, 22, 34, 22, 40),
+        ("Das Gesetz und die Sünde (Röm 7,7-25)",          45,  7,  7,  7, 25),
+        ("Das Ende des Gesetzes ist Christus (Röm 10)",    45, 10,  1, 10, 13),
+        ("Das Gesetz und der Glaube (Gal 3)",              48,  3,  1,  3, 29),
+        ("Freiheit vom Gesetz (Gal 5,13-26)",              48,  5, 13,  5, 26),
+        ("Das vollkommene Opfer (Heb 9,11-28)",            58,  9, 11,  9, 28),
     ]),
     (5, "Einzug und Landnahme", "⚔️", [
         ("Die Berufung Josuas",             6,  1,  1,  1,  9),
@@ -77,6 +111,12 @@ THEMES = [
         ("Die Eroberung von Jericho",       6,  6,  1,  6, 27),
         ("Der Bundesschluss in Sichem",     6, 24,  1, 24, 28),
         ("Debora und Barak",                7,  4,  1,  5, 31),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Josua als Nachfolger Mose (4Mo 27,12-23)",        4, 27, 12, 27, 23),
+        ("Die Sonne bleibt stehen (Jos 10,1-27)",           6, 10,  1, 10, 27),
+        ("Die Ruhe Gottes (Heb 4,1-11)",                   58,  4,  1,  4, 11),
+        ("Paulus über Richter und Könige (Apg 13,17-25)",  44, 13, 17, 13, 25),
+        ("Die Rüstung Gottes (Eph 6,10-18)",               49,  6, 10,  6, 18),
     ]),
     (6, "Die Zeit der Richter", "⚖️", [
         ("Die Berufung Gideons",                                  7,  6,  1,  6, 40),
@@ -84,6 +124,13 @@ THEMES = [
         ("Simson und Delila",                                     7, 16,  1, 16, 31),
         ("Rut und Noomi",                                         8,  1,  1,  4, 22),
         ("Jeder tat, was recht war in seinen Augen",              7, 17,  6, 17,  6),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Das Schema der Richterzeit (Ri 2,6-3,6)",         7,  2,  6,  3,  6),
+        ("Jeftah und sein Gelübde (Ri 11,1-40)",            7, 11,  1, 11, 40),
+        ("Samuels Abschiedsrede (1Sam 12,1-25)",            9, 12,  1, 12, 25),
+        ("Glaubenshelden der Richterzeit (Heb 11,32-40)",  58, 11, 32, 11, 40),
+        ("Israel verlässt den Herrn (Jer 2,1-13)",         24,  2,  1,  2, 13),
+        ("Alle haben gesündigt (Röm 3,9-20)",              45,  3,  9,  3, 20),
     ]),
     (7, "Könige und Prophetie in Israel", "👑", [
         ("Die Geburt Samuels",                     9,  1,  1,  1, 28),
@@ -101,6 +148,15 @@ THEMES = [
         ("Der Tempelbau",                         11,  6,  1,  6, 38),
         ("Die Königin von Saba",                  11, 10,  1, 10, 13),
         ("Die Reichsteilung",                     11, 12,  1, 12, 33),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("David wird König über ganz Israel (2Sam 5)",    10,  5,  1,  5, 12),
+        ("Der Davidische Bund (2Sam 7,1-29)",             10,  7,  1,  7, 29),
+        ("Salomos Tempelweihe (1Kön 8,22-66)",           11,  8, 22,  8, 66),
+        ("Salomos Abfall (1Kön 11,1-43)",                11, 11,  1, 11, 43),
+        ("Gottes Antwort auf das Gebet (2Chr 7,12-22)",  14,  7, 12,  7, 22),
+        ("Der Fall Jerusalems (2Chr 36,1-23)",            14, 36,  1, 36, 23),
+        ("Der gerechte Spross (Jer 23,1-8)",              24, 23,  1, 23,  8),
+        ("Paulus über David als Zeuge Jesu (Apg 13)",    44, 13, 22, 13, 37),
     ]),
     (8, "Die großen Propheten Elia und Elisa", "🔥", [
         ("Elia am Bach Krit und bei der Witwe",   11, 17,  1, 17, 24),
@@ -113,6 +169,14 @@ THEMES = [
         ("Die Heilung Naamans",                   12,  5,  1,  5, 27),
         ("Jona flieht vor Gott",                  32,  1,  1,  1, 17),
         ("Jona in Ninive",                        32,  3,  1,  3, 10),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Elisa öffnet die Augen seines Dieners (2Kön 6)", 12,  6,  1,  6, 23),
+        ("Der Tod Elisas (2Kön 13,14-25)",                 12, 13, 14, 13, 25),
+        ("Elia wird wiederkommen (Mal 4,5-6)",             39,  4,  5,  4,  6),
+        ("Die Verklärung: Mose und Elia (Mt 17,1-13)",    40, 17,  1, 17, 13),
+        ("Jesus über Elia und Elisa (Lk 4,25-27)",        42,  4, 25,  4, 27),
+        ("Der Rest: Elias Gebet (Röm 11,1-6)",            45, 11,  1, 11,  6),
+        ("Elia als Vorbild des Beters (Jak 5,17-18)",     59,  5, 17,  5, 18),
     ]),
     (9, "Psalmen: Gebete und Lieder", "🎵", [
         # ── Buch I (Ps 1–41) ────────────────────────────────────────────────
@@ -293,6 +357,18 @@ THEMES = [
         ("Daniel in der Löwengrube",      27,  6,  1,  6, 29),
         ("Schwerter zu Pflugscharen",     33,  4,  1,  4,  5),
         ("Was der Herr von dir fordert",  33,  6,  8,  6,  8),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Die Blüte der Wüste (Jes 35)",                  23, 35,  1, 35, 10),
+        ("Fürchte dich nicht (Jes 41,10-20)",             23, 41, 10, 41, 20),
+        ("Du bist mein (Jes 43,1-7)",                     23, 43,  1, 43,  7),
+        ("Kommt her zu mir (Jes 55,1-13)",                23, 55,  1, 55, 13),
+        ("Das Jubeljahr des Herrn (Jes 61,1-11)",         23, 61,  1, 61, 11),
+        ("Ich kenne die Gedanken (Jer 29,11-14)",         24, 29, 11, 29, 14),
+        ("Neues Herz und neuer Geist (Hes 36,24-32)",     26, 36, 24, 36, 32),
+        ("Das Reich Gottes (Dan 2,44-49)",                27,  2, 44,  2, 49),
+        ("Aus Bethlehem (Mi 5,1-5)",                      33,  5,  1,  5,  5),
+        ("Der König kommt (Sach 9,9-17)",                 38,  9,  9,  9, 17),
+        ("Der Bote des Bundes (Mal 3,1-7)",               39,  3,  1,  3,  7),
     ]),
     (11, "Jesus Christus: Geburt und Kindheit", "⭐", [
         ("Der Stammbaum Jesu",                              40,  1,  1,  1, 17),
@@ -305,6 +381,12 @@ THEMES = [
         ("Die Geburt Jesu in Bethlehem",                    42,  2,  1,  2, 20),
         ("Die Beschneidung und Darstellung im Tempel",      42,  2, 21,  2, 40),
         ("Der zwölfjährige Jesus im Tempel",                42,  2, 41,  2, 52),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Josefs Traum – Jesus der Immanuel (Mt 1,18-25)", 40,  1, 18,  1, 25),
+        ("Der Prolog des Johannes (Joh 1,1-18)",           43,  1,  1,  1, 18),
+        ("Als die Zeit erfüllt war (Gal 4,4-7)",           48,  4,  4,  4,  7),
+        ("Christus wurde Mensch (Heb 2,14-18)",            58,  2, 14,  2, 18),
+        ("Gott ist erschienen im Fleisch (1Tim 3,16)",     54,  3, 16,  3, 16),
     ]),
     (12, "Jesu Wirken: Taufe, Versuchung und Berufung", "🕊️", [
         ("Johannes der Täufer",              40,  3,  1,  3, 12),
@@ -317,6 +399,13 @@ THEMES = [
         ("Die Samariterin am Brunnen",       43,  4,  1,  4, 42),
         ("Jesus in Nazareth",                42,  4, 16,  4, 30),
         ("Der Hauptmann von Kapernaum",      40,  8,  5,  8, 13),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Jesu Wirken in Galiläa (Mk 1,14-45)",           41,  1, 14,  1, 45),
+        ("Der wunderbare Fischzug (Lk 5,1-11)",           42,  5,  1,  5, 11),
+        ("Die Sünderin salbt Jesus (Lk 7,36-50)",         42,  7, 36,  7, 50),
+        ("Der gute Hirte (Joh 10,1-21)",                  43, 10,  1, 10, 21),
+        ("Ich bin der Weg (Joh 14,1-14)",                 43, 14,  1, 14, 14),
+        ("Kommt her zu mir (Mt 11,25-30)",                40, 11, 25, 11, 30),
     ]),
     (13, "Die Bergpredigt", "⛰️", [
         ("Die Seligpreisungen",                       40,  5,  1,  5, 12),
@@ -329,6 +418,12 @@ THEMES = [
         ("Von Schätzen im Himmel und Sorgen",         40,  6, 19,  6, 34),
         ("Vom Richten",                               40,  7,  1,  7,  6),
         ("Die Goldene Regel und der Hausbau",         40,  7, 12,  7, 27),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Von Töten und Versöhnen (Mt 5,21-26)",          40,  5, 21,  5, 26),
+        ("Die Feldrede des Lukas (Lk 6,17-49)",           42,  6, 17,  6, 49),
+        ("Das echte christliche Leben (Röm 12,9-21)",     45, 12,  9, 12, 21),
+        ("Weisheit von oben (Jak 3,13-18)",               59,  3, 13,  3, 18),
+        ("Der neue Mensch (Eph 4,17-5,2)",                49,  4, 17,  5,  2),
     ]),
     (14, "Gleichnisse Jesu", "🌱", [
         ("Vom Sämann",                                   40, 13,  1, 13, 23),
@@ -350,6 +445,12 @@ THEMES = [
         ("Vom Pharisäer und Zöllner",                    42, 18,  9, 18, 14),
         ("Vom großen Abendmahl",                         42, 14, 15, 14, 24),
         ("Vom Feigenbaum",                               42, 13,  6, 13,  9),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Das Gleichnis von der wachsenden Saat (Mk 4)", 41,  4, 26,  4, 29),
+        ("Der bittende Freund (Lk 11,5-13)",             42, 11,  5, 11, 13),
+        ("Die Minen (Lk 19,11-27)",                      42, 19, 11, 19, 27),
+        ("Der Weinstock und die Reben (Joh 15,1-11)",    43, 15,  1, 15, 11),
+        ("Vom bösen Weingärtner (Mk 12,1-12)",           41, 12,  1, 12, 12),
     ]),
     (15, "Wunder und Heilungen", "✨", [
         ("Die Stillung des Sturms",                                41,  4, 35,  4, 41),
@@ -362,6 +463,12 @@ THEMES = [
         ("Die Heilung des besessenen Geraseners",                 41,  5,  1,  5, 20),
         ("Die Heilung des Knechtes des Hauptmanns",               40,  8,  5,  8, 13),
         ("Die Heilung der gekrümmten Frau",                       42, 13, 10, 13, 17),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Die Heilung am Teich Bethesda (Joh 5,1-18)",   43,  5,  1,  5, 18),
+        ("Die Auferweckung des Jünglings zu Nain (Lk 7)", 42,  7, 11,  7, 17),
+        ("Die Heilung der zehn Aussätzigen (Lk 17)",      42, 17, 11, 17, 19),
+        ("Petrus und Johannes heilen den Lahmen (Apg 3)", 44,  3,  1,  3, 10),
+        ("Heilung durch Paulus in Lystra (Apg 14,8-18)",  44, 14,  8, 14, 18),
     ]),
     (16, "Passion und Auferstehung Jesu", "✝️", [
         ("Der Einzug in Jerusalem",               40, 21,  1, 21, 11),
@@ -379,6 +486,13 @@ THEMES = [
         ("Die Erscheinung vor Thomas",            43, 20, 24, 20, 29),
         ("Der Missionsbefehl",                    40, 28, 16, 28, 20),
         ("Die Himmelfahrt",                       44,  1,  6,  1, 11),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Das Hohepriesterliche Gebet (Joh 17)",          43, 17,  1, 17, 26),
+        ("Mitgestorben und auferstanden (Röm 6,1-11)",    45,  6,  1,  6, 11),
+        ("Das Wort vom Kreuz (1Kor 1,18-31)",             46,  1, 18,  1, 31),
+        ("Das vollkommene Opfer (Heb 10,1-25)",           58, 10,  1, 10, 25),
+        ("Das Lamm ist würdig (Offb 5,1-14)",             66,  5,  1,  5, 14),
+        ("Christus als Vorbild im Leiden (1Pet 2,21-25)", 60,  2, 21,  2, 25),
     ]),
     (17, "Die Apostelgeschichte und die Briefe", "📬", [
         ("Die Ausgießung des Heiligen Geistes (Pfingsten)", 44,  2,  1,  2, 41),
@@ -411,6 +525,16 @@ THEMES = [
         ("Gott ist Licht",                                 62,  1,  5,  2,  2),
         ("Das Geheimnis der Gottseligkeit",                54,  3, 16,  3, 16),
         ("Die Berufung des Timotheus",                     44, 16,  1, 16,  5),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Petrus und Johannes vor dem Rat (Apg 4,1-31)",  44,  4,  1,  4, 31),
+        ("Die Wahl der sieben Diakone (Apg 6,1-7)",       44,  6,  1,  6,  7),
+        ("Paulus und Silas in Philippi (Apg 16,6-40)",    44, 16,  6, 16, 40),
+        ("Paulus vor König Agrippa (Apg 26,1-32)",        44, 26,  1, 26, 32),
+        ("Das lebendige Opfer (Röm 12,1-21)",             45, 12,  1, 12, 21),
+        ("Aus Gnade errettet (Eph 2,1-22)",               49,  2,  1,  2, 22),
+        ("Das neue Leben (Kol 3,1-25)",                   51,  3,  1,  3, 25),
+        ("Die Heilige Schrift (2Tim 3,14-17)",            55,  3, 14,  3, 17),
+        ("Gottes Kinder (1Joh 3,1-24)",                   62,  3,  1,  3, 24),
     ]),
     (18, "Die Offenbarung: Vollendung", "🌅", [
         ("Der Menschensohn",                        66,  1,  9,  1, 20),
@@ -418,6 +542,15 @@ THEMES = [
         ("Der Thron Gottes und das Lamm",           66,  4,  1,  5, 14),
         ("Das neue Jerusalem",                      66, 21,  1, 22,  5),
         ("Der Ruf: Ja, ich komme bald",             66, 22,  6, 22, 21),
+        # ── Querverweise ────────────────────────────────────────────────────
+        ("Die sieben Siegel (Offb 6)",                    66,  6,  1,  6, 17),
+        ("Die große Schar vor dem Thron (Offb 7)",        66,  7,  1,  7, 17),
+        ("Die Frau und der Drache (Offb 12)",             66, 12,  1, 12, 17),
+        ("Das Hochzeitsfest des Lammes (Offb 19,1-10)",   66, 19,  1, 19, 10),
+        ("Das Tausendjährige Reich (Offb 20)",            66, 20,  1, 20, 15),
+        ("Neuer Himmel und neue Erde (Jes 65,17-25)",     23, 65, 17, 65, 25),
+        ("Die Wiederkunft Christi (1Thess 4,13-5,11)",    52,  4, 13,  5, 11),
+        ("Der Tag des Herrn (2Pet 3,1-18)",               61,  3,  1,  3, 18),
     ]),
     (19, "Matthäus-Evangelium", "📖", [
         # ── Matthäus (book 40, 28 Kapitel) ─────────────────────────────────
