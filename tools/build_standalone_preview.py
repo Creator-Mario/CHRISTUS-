@@ -1429,7 +1429,8 @@ function setLang(lang) {
   applyLang();
   // Reload Bible data for the selected language and re-render home
   if (ALL_DATA) { loadLangData(lang); renderHome(); }
-  // Splash is now visible (lang-screen was covering it)
+  // Go directly into the app — no second tap on "Zur Bibel" needed
+  closeSplash();
 }
 function changeLang() {
   try { localStorage.removeItem('bde_lang'); } catch(e) {}
