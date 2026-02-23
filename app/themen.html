@@ -152,24 +152,24 @@ button{font-family:inherit;cursor:pointer}
     <div class="td-nr" id="td-nr"></div>
 
     <div class="td-section" id="td-bibel-section">
-      <div class="td-section-label">&#128214; Bibelstelle</div>
+      <div class="td-section-label" data-i18n="themen_bibel_label">📖 Bibelstelle</div>
       <div id="td-bibel"></div>
     </div>
 
     <div class="td-section" id="td-qv-section">
-      <div class="td-section-label">&#128279; Querverweise</div>
+      <div class="td-section-label" data-i18n="themen_qv_label">🔗 Querverweise</div>
       <div id="td-qv"></div>
     </div>
 
     <div class="td-section" id="td-erkl-section">
-      <div class="td-section-label">&#128221; Erklärung</div>
+      <div class="td-section-label" data-i18n="themen_erkl_label">📝 Erklärung</div>
       <div class="td-erklaerung" id="td-erkl"></div>
     </div>
 
     <div class="td-nav">
-      <button class="td-nav-btn" id="td-btn-prev" onclick="prevTopic()">&#8592; voriges</button>
+      <button class="td-nav-btn" id="td-btn-prev" onclick="prevTopic()" data-i18n="themen_prev_btn">← voriges</button>
       <span class="td-nav-info" id="td-nav-info"></span>
-      <button class="td-nav-btn" id="td-btn-next" onclick="nextTopic()">nächstes &#8594;</button>
+      <button class="td-nav-btn" id="td-btn-next" onclick="nextTopic()" data-i18n="themen_next_btn">nächstes →</button>
     </div>
   </div>
 </div>
@@ -306,11 +306,11 @@ function renderThemen(topics) {
 
     if (!isFiltered) {
       if (isAT && !atShown) {
-        html += '<div class="testament-divider"><span class="testament-label">&#128220; Altes Testament</span></div>';
+        html += '<div class="testament-divider"><span class="testament-label">' + t('themen_ot_divider') + '</span></div>';
         atShown = true;
       }
       if (!isAT && !ntShown) {
-        html += '<div class="testament-divider"><span class="testament-label">&#10013; Neues Testament</span></div>';
+        html += '<div class="testament-divider"><span class="testament-label">' + t('themen_nt_divider') + '</span></div>';
         ntShown = true;
       }
     }
@@ -322,7 +322,7 @@ function renderThemen(topics) {
     html += '<button class="cat-acc-hdr' + (startOpen ? ' open' : '') + '" onclick=\'toggleCategory(' + JSON.stringify(cid) + ')\' id="hdr-' + cid + '" aria-expanded="' + (startOpen ? 'true' : 'false') + '">';
     html += '<span class="cat-badge">' + (isAT ? 'AT' : 'NT') + '</span>';
     html += '<span class="cat-name">' + esc(cat) + '</span>';
-    html += '<span class="cat-count">' + items.length + ' Themen</span>';
+    html += '<span class="cat-count">' + items.length + ' ' + t('themen_count_label') + '</span>';
     html += '<span class="cat-chev' + (startOpen ? ' open' : '') + '" id="chev-' + cid + '">&rsaquo;</span>';
     html += '</button>';
     html += '<div class="cat-body' + (startOpen ? ' open' : '') + '" id="body-' + cid + '">';
@@ -342,7 +342,7 @@ function renderThemen(topics) {
     html += '</div></div></div>';
   });
 
-  if (!html) html = '<div class="no-results" data-i18n="themen_no_results">Keine Themen gefunden.</div>';
+  if (!html) html = '<div class="no-results">' + t('themen_no_results') + '</div>';
   document.getElementById('themen-content').innerHTML = html;
 }
 
@@ -357,7 +357,7 @@ function openTopic(id) {
 
   document.getElementById('td-cat').textContent = t.thema;
   document.getElementById('td-title').textContent = t.titel;
-  document.getElementById('td-nr').textContent = 'Thema Nr. ' + t.id + ' · ' + t.thema;
+  document.getElementById('td-nr').textContent = window.t('themen_nr_prefix') + t.id + ' · ' + t.thema;
 
   // Bibelstelle
   var bSection = document.getElementById('td-bibel-section');
