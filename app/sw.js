@@ -1,35 +1,15 @@
 // CHRISTUS App v1.10 – Service Worker
 // Bump APP_VERSION on every release so the old cache is purged automatically.
-const APP_VERSION = '1.10.2';
+const APP_VERSION = '1.10.3';
 const CACHE_STATIC = 'christus-static-' + APP_VERSION;
 const CACHE_PAGES  = 'christus-pages-'  + APP_VERSION;
 
-// Static assets that rarely change – cache-first
-const STATIC_ASSETS = [
-  '/app/manifest.json',
-  '/Lernprogramm_Bibel.csv'
-];
-
-// HTML pages – network-first (fresh on every load, fallback to cache when offline)
-const HTML_PAGES = [
-  '/index.html',
-  '/app/login.html',
-  '/app/home.html',
-  '/app/learn.html',
-  '/app/settings.html'
-];
-
-// ── Install: pre-cache everything ────────────────────────────────────────────
+// ── Install: skip waiting immediately (no pre-caching to avoid path issues) ──
 self.addEventListener('install', e => {
-  e.waitUntil(
-    Promise.all([
-      caches.open(CACHE_STATIC).then(c => c.addAll(STATIC_ASSETS)),
-      caches.open(CACHE_PAGES).then(c => c.addAll(HTML_PAGES))
-    ]).then(() => self.skipWaiting())
-  );
+  e.waitUntil(self.skipWaiting());
 });
 
-// ── Activate: delete all old caches ──────────────────────────────────────────
+// ── Activate: delete all old caches and claim clients ────────────────────────
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -53,7 +33,7 @@ self.addEventListener('fetch', e => {
 
   const isHtml = e.request.headers.get('Accept')?.includes('text/html') ||
                  url.pathname.endsWith('.html') ||
-                 url.pathname === '/';
+                 url.pathname.endsWith('/');
 
   if (isHtml) {
     // Network-first: always try the network; fall back to cache when offline
@@ -61,15 +41,18 @@ self.addEventListener('fetch', e => {
       fetch(e.request)
         .then(resp => {
           if (resp && resp.status === 200) {
-            // Update the page cache with the fresh response
             caches.open(CACHE_PAGES).then(c => c.put(e.request, resp.clone()));
           }
           return resp;
         })
-        .catch(() => caches.match(e.request).then(cached => cached || caches.match('/app/home.html')))
+        .catch(() => caches.match(e.request).then(cached => {
+          if (cached) return cached;
+          // Last-resort fallback: return home page from cache
+          return caches.match(new URL('home.html', self.location).href);
+        }))
     );
   } else {
-    // Cache-first for static assets (CSS embedded in HTML, CSV, manifest, etc.)
+    // Cache-first for static assets (CSV, manifest, etc.)
     e.respondWith(
       caches.match(e.request).then(cached => {
         if (cached) return cached;

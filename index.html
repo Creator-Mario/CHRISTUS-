@@ -28,7 +28,7 @@
     <script>
         // Register Service Worker for offline support
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/app/sw.js').then(reg => {
+            navigator.serviceWorker.register('app/sw.js').then(reg => {
                 // When a new SW is installed and waiting, tell it to activate immediately
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;

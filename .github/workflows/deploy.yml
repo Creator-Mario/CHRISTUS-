@@ -29,14 +29,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Prepare site files
+        run: |
+          mkdir -p _site
+          cp -r app _site/
+          cp index.html _site/
+          cp language_selection.html _site/
+          cp Lernprogramm_Bibel.csv _site/
+          cp anleitung.html _site/ 2>/dev/null || true
+          cp DEPLOY.md _site/ 2>/dev/null || true
+          cp -r preview _site/ 2>/dev/null || true
+          touch _site/.nojekyll
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the entire repository root as the site
-          path: '.'
+          path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
