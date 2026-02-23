@@ -1,6 +1,6 @@
-// CHRISTUS App v1.15 – Service Worker
+// CHRISTUS App v1.15.1 – Service Worker
 // Bump APP_VERSION on every release so the old cache is purged automatically.
-const APP_VERSION = '1.15.0';
+const APP_VERSION = '1.15.1';
 const CACHE_STATIC = 'christus-static-' + APP_VERSION;
 const CACHE_PAGES  = 'christus-pages-'  + APP_VERSION;
 
@@ -22,10 +22,18 @@ const PRECACHE_URLS = [
 ];
 
 // ── Install: pre-cache core pages ────────────────────────────────────────────
+// Split large files (CSV) from core pages so a slow/failed CSV fetch never
+// prevents the core app from going offline. Core pages are cached atomically;
+// the CSV is cached as a best-effort addition.
+const CORE_URLS  = PRECACHE_URLS.filter(u => !u.endsWith('.csv'));
+const LARGE_URLS = PRECACHE_URLS.filter(u =>  u.endsWith('.csv'));
+
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_PAGES)
-      .then(cache => cache.addAll(PRECACHE_URLS))
+      .then(cache => cache.addAll(CORE_URLS)
+        .then(() => cache.addAll(LARGE_URLS).catch(err => console.warn('[SW] Large-file cache failed (CSV may not be offline yet):', err)))
+      )
     // No skipWaiting here: let the SW enter "waiting" so the update banner
     // on every app page can show. The user clicks "Jetzt aktualisieren" which
     // sends SKIP_WAITING (see message handler below), then the page reloads.

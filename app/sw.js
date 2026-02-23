@@ -1,8 +1,8 @@
-// CHRISTUS App v1.12 – Service Worker (moved to root)
+// CHRISTUS App v1.15.1 – Service Worker (moved to root)
 // This file is kept for backwards compatibility only.
 // The active Service Worker is now at ../sw.js (root scope).
 // Bump APP_VERSION on every release so the old cache is purged automatically.
-const APP_VERSION = '1.12.0';
+const APP_VERSION = '1.15.1';
 const CACHE_STATIC = 'christus-static-' + APP_VERSION;
 const CACHE_PAGES  = 'christus-pages-'  + APP_VERSION;
 
@@ -12,6 +12,8 @@ const PRECACHE_URLS = [
   './home.html',
   './login.html',
   './learn.html',
+  './bible.html',
+  './themen.html',
   './settings.html',
   './manifest.json',
   './translations.js',

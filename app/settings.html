@@ -128,7 +128,7 @@ button{font-family:inherit;cursor:pointer}
     <div class="section-header" data-i18n="app_section">App</div>
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="install_label">App installieren</div><div class="setting-sub" data-i18n="install_sub">App auf Gerät installieren (offline verfügbar)</div></div>
-      <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
+      <button class="setting-action" id="install-btn" style="display:none" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
     </div>
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status">Prüfe…</div></div>
@@ -145,7 +145,7 @@ button{font-family:inherit;cursor:pointer}
   </div>
 
   <div class="version-card">
-    <span class="v">v1.15</span>
+    <span class="v">v1.15.1</span>
     CHRISTUS – Glaubensbildung &amp; Nachfolge<br>
     Freikirchliche Theologische Grundbildung<br><br>
     <span style="font-size:.75rem">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
@@ -287,10 +287,11 @@ function doInstall() {
 
 // ── Service Worker status + update detection ─────────────────────────────────
 let pendingWorker = null;
+let isUpdating = false;
 function showUpdateBanner() { document.getElementById('update-banner').classList.add('visible'); }
 function dismissUpdate() { document.getElementById('update-banner').classList.remove('visible'); }
 function applyUpdate() {
-  if (pendingWorker) { pendingWorker.postMessage('SKIP_WAITING'); } else { window.location.reload(); }
+  if (pendingWorker) { isUpdating = true; pendingWorker.postMessage('SKIP_WAITING'); } else { window.location.reload(); }
 }
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../sw.js').then(reg => {
@@ -308,7 +309,7 @@ if ('serviceWorker' in navigator) {
     document.getElementById('sw-status').textContent = t('offline_inactive');
     document.getElementById('sw-badge').textContent = '❌';
   });
-  navigator.serviceWorker.addEventListener('controllerchange', () => { window.location.reload(); });
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (isUpdating) window.location.reload(); });
 } else {
   document.getElementById('sw-status').textContent = t('offline_unsupported');
   document.getElementById('sw-badge').textContent = '❌';

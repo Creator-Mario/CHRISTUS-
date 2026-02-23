@@ -52,24 +52,29 @@ button{font-family:inherit;cursor:pointer}
 .book-btn .b-name{font-size:.85rem;font-weight:700}
 .book-btn .b-info{font-size:.68rem;color:var(--muted)}
 
-/* Chapter grid */
-.chapter-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.chapter-icon{font-size:32px}
-.chapter-title{font-size:1.2rem;font-weight:700;color:var(--gold)}
-.chapter-sub{font-size:.78rem;color:var(--muted)}
-.chapter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:8px}
-.chapter-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;color:var(--text);font-size:.88rem;font-weight:700;text-align:center;transition:.2s;cursor:pointer}
-.chapter-btn:hover{border-color:var(--gold);background:var(--surface2);color:var(--gold)}
+/* Chapter jump bar */
+.ch-jump-bar{display:flex;gap:6px;flex-wrap:wrap;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.ch-jump-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;transition:.15s;min-width:36px;text-align:center}
+.ch-jump-btn:hover{border-color:var(--gold);color:var(--gold)}
+.ch-jump-btn.active{background:var(--gold);color:#1a1a2e;border-color:var(--gold)}
+
+/* Reader screen */
+.reader-header{display:flex;align-items:center;gap:12px;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.reader-book{font-size:1.2rem;font-weight:700;color:var(--gold)}
+.reader-sub{font-size:.78rem;color:var(--muted)}
+.reader-ch-nav{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:12px;border-top:1px solid var(--border);gap:8px}
+.ch-nav-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 18px;color:var(--text);font-size:.85rem;font-weight:700;cursor:pointer;transition:.2s;flex:1;text-align:center}
+.ch-nav-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--surface2)}
+.ch-nav-btn:disabled{opacity:.3;cursor:default}
+.ch-nav-btn:disabled:hover{border-color:var(--border);color:var(--text);background:var(--surface)}
+.ch-label{font-size:.8rem;color:var(--muted);text-align:center;flex-shrink:0}
 
 /* Verse list */
-.verse-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.verse-title{font-size:1.2rem;font-weight:700;color:var(--gold)}
-.verse-sub{font-size:.78rem;color:var(--muted)}
 .verse-list{list-style:none;padding:0}
 .verse-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,64,96,.5)}
 .verse-item:last-child{border-bottom:none}
 .verse-nr{color:var(--gold);font-size:.75rem;font-weight:700;min-width:28px;padding-top:3px;flex-shrink:0}
-.verse-text{font-size:.88rem;line-height:1.7;color:var(--text)}
+.verse-text{font-size:.92rem;line-height:1.8;color:var(--text)}
 
 /* Search results */
 .search-result-title{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px}
@@ -113,7 +118,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.15</span>
+  <span class="header-version">v1.15.1</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -144,28 +149,25 @@ button{font-family:inherit;cursor:pointer}
     <div class="copyright-bar" data-i18n="copyright_text">© Mario Reiner Denzer</div>
   </div>
 
-  <!-- Chapter overview -->
-  <div class="screen" id="screen-chapters">
-    <div class="chapter-header">
-      <span class="chapter-icon">&#128214;</span>
+  <!-- Reader screen (opens at Chapter 1 when a book is clicked) -->
+  <div class="screen" id="screen-reader">
+    <div class="reader-header">
+      <span style="font-size:28px">&#128214;</span>
       <div>
-        <div class="chapter-title" id="ch-book-title"></div>
-        <div class="chapter-sub" id="ch-book-sub"></div>
+        <div class="reader-book" id="reader-book-title"></div>
+        <div class="reader-sub" id="reader-book-sub"></div>
       </div>
     </div>
-    <p class="page-sub" data-i18n="bible_chapter">Kapitel wählen</p>
-    <div class="chapter-grid" id="chapter-grid"></div>
-  </div>
-
-  <!-- Verse view -->
-  <div class="screen" id="screen-verses">
-    <div class="verse-header">
-      <div>
-        <div class="verse-title" id="verse-title"></div>
-        <div class="verse-sub" id="verse-sub"></div>
-      </div>
-    </div>
+    <!-- Chapter jump bar -->
+    <div class="ch-jump-bar" id="ch-jump-bar"></div>
+    <!-- Verses -->
     <ul class="verse-list" id="verse-list"></ul>
+    <!-- Prev / Next chapter nav -->
+    <div class="reader-ch-nav">
+      <button class="ch-nav-btn" id="btn-prev-ch" onclick="prevChapter()">&#8592; voriges Kapitel</button>
+      <span class="ch-label" id="ch-label-center"></span>
+      <button class="ch-nav-btn" id="btn-next-ch" onclick="nextChapter()">nächstes Kapitel &#8594;</button>
+    </div>
   </div>
 
   <!-- Search results -->
@@ -319,10 +321,7 @@ function loadBible() {
       var paramChapter = params.get('chapter');
       if (paramBook && bibleData[paramBook]) {
         var ch = paramChapter ? parseInt(paramChapter, 10) : 1;
-        openBook(paramBook);
-        if (bibleData[paramBook][ch]) {
-          openChapter(ch);
-        }
+        openReader(paramBook, bibleData[paramBook][ch] ? ch : 1);
       } else {
         showBooks();
       }
@@ -342,6 +341,7 @@ function esc(s) {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
 }
 
 function updateBackBtn(show) {
@@ -369,7 +369,7 @@ function buildSections(sections, containerEl) {
     html += '<div class="book-grid">';
     secBooks.forEach(function(b) {
       var chapCount = Object.keys(bibleData[b]).length;
-      html += '<button class="book-btn" onclick="openBook(' + JSON.stringify(b) + ')">' +
+      html += '<button class="book-btn" onclick=\'openBook(' + JSON.stringify(b) + ')\'>' +
         '<span class="b-name">' + esc(displayName(b)) + '</span>' +
         '<span class="b-info">' + chapCount + ' Kapitel</span>' +
         '</button>';
@@ -389,43 +389,80 @@ function showBooks() {
   showScreen('books');
 }
 
+// ── Reader ────────────────────────────────────────────────────────────────────
 function openBook(bookName) {
+  // Open the book at Chapter 1 immediately — no intermediate chapter-grid screen
   currentBook = bookName;
-  navStack.push(showBooks);
+  navStack = [showBooks];
   updateBackBtn(true);
-
-  var chapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
-  document.getElementById('ch-book-title').textContent = displayName(bookName);
-  document.getElementById('ch-book-sub').textContent = chapters.length + t('bible_chapter_count');
-  document.getElementById('breadcrumb').textContent = displayName(bookName);
-
-  var html = '';
-  chapters.forEach(function(ch) {
-    html += '<button class="chapter-btn" onclick="openChapter(' + ch + ')">' + ch + '</button>';
-  });
-  document.getElementById('chapter-grid').innerHTML = html;
-  showScreen('chapters');
+  openReader(bookName, 1);
 }
 
-function openChapter(chapter) {
-  currentChapter = chapter;
-  navStack.push(function(){ openBook(currentBook); });
-  updateBackBtn(true);
+function openReader(bookName, chapter) {
+  try {
+    currentBook    = bookName;
+    currentChapter = chapter;
 
-  var verses = bibleData[currentBook][chapter];
-  var title = displayName(currentBook) + ' ' + chapter;
-  document.getElementById('verse-title').textContent = title;
-  document.getElementById('verse-sub').textContent = verses.length + t('bible_verse_count');
-  document.getElementById('breadcrumb').textContent = title;
+    var allChapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
+    var verses      = bibleData[bookName][chapter];
+    var bookDisplay = displayName(bookName);
+    var chIdx       = allChapters.indexOf(chapter);
 
-  var html = '';
-  verses.forEach(function(v) {
-    html += '<li class="verse-item">' +
-      '<span class="verse-nr">' + v.v + '</span>' +
-      '<span class="verse-text">' + esc(v.t) + '</span></li>';
-  });
-  document.getElementById('verse-list').innerHTML = html;
-  showScreen('verses');
+    // Header
+    document.getElementById('reader-book-title').textContent = bookDisplay;
+    document.getElementById('reader-book-sub').textContent =
+      allChapters.length + t('bible_chapter_count') + ' · Kapitel ' + chapter;
+    document.getElementById('breadcrumb').textContent = bookDisplay + ' ' + chapter;
+
+    // Chapter jump bar — numbered buttons, active one highlighted
+    var jumpHtml = '';
+    allChapters.forEach(function(ch) {
+      jumpHtml += '<button class="ch-jump-btn' + (ch === chapter ? ' active' : '') + '" onclick="openReader(' + JSON.stringify(bookName) + ',' + ch + ')">' + ch + '</button>';
+    });
+    document.getElementById('ch-jump-bar').innerHTML = jumpHtml;
+
+    // Verses
+    var verseHtml = '';
+    verses.forEach(function(v) {
+      verseHtml += '<li class="verse-item">' +
+        '<span class="verse-nr">' + v.v + '</span>' +
+        '<span class="verse-text">' + esc(v.t) + '</span></li>';
+    });
+    document.getElementById('verse-list').innerHTML = verseHtml;
+
+    // Prev / Next nav
+    var prevBtn = document.getElementById('btn-prev-ch');
+    var nextBtn = document.getElementById('btn-next-ch');
+    prevBtn.disabled = chIdx <= 0;
+    nextBtn.disabled = chIdx >= allChapters.length - 1;
+    document.getElementById('ch-label-center').textContent = 'Kapitel ' + chapter + ' / ' + allChapters.length;
+
+    showScreen('reader');
+
+    // Wait one frame for the DOM/layout to settle after innerHTML update,
+    // then scroll the active chapter-jump button into horizontal view.
+    setTimeout(function() {
+      var activeBtn = document.querySelector('.ch-jump-btn.active');
+      if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
+    }, 50);
+  } catch(e) {
+    console.error('openReader error:', e);
+    document.getElementById('verse-list').innerHTML =
+      '<li style="color:var(--red);padding:16px;list-style:none">' + t('bible_load_error') + ' (' + e.message + ')</li>';
+    showScreen('reader');
+  }
+}
+
+function prevChapter() {
+  var chapters = Object.keys(bibleData[currentBook]).map(Number).sort(function(a,b){return a-b;});
+  var idx = chapters.indexOf(currentChapter);
+  if (idx > 0) openReader(currentBook, chapters[idx - 1]);
+}
+
+function nextChapter() {
+  var chapters = Object.keys(bibleData[currentBook]).map(Number).sort(function(a,b){return a-b;});
+  var idx = chapters.indexOf(currentChapter);
+  if (idx < chapters.length - 1) openReader(currentBook, chapters[idx + 1]);
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
@@ -480,7 +517,7 @@ function doSearch() {
     var highlighted = r.text.replace(re, '\x00$1\x00');
     highlighted = esc(highlighted)
       .replace(/\x00([^\x00]*)\x00/g, '<mark>$1</mark>');
-    html += '<div class="result-card" onclick="openChapter_search(' + JSON.stringify(r.book) + ',' + r.chapter + ')">' +
+    html += '<div class="result-card" onclick=\'openChapter_search(' + JSON.stringify(r.book) + ',' + r.chapter + ')\'>' +
       '<div class="result-ref">' + esc(displayName(r.book)) + ' ' + r.chapter + ',' + r.verse + '</div>' +
       '<div class="result-text">' + highlighted + '</div></div>';
   });
@@ -490,7 +527,9 @@ function doSearch() {
 
 function openChapter_search(book, chapter) {
   currentBook = book;
-  openChapter(chapter);
+  navStack = [showBooks];
+  updateBackBtn(true);
+  openReader(book, chapter);
 }
 
 function clearSearch() {
@@ -514,10 +553,11 @@ else {
 
 // ── Service Worker update detection ──────────────────────────────────────────
 let pendingWorker = null;
+let isUpdating = false;
 function showUpdateBanner() { document.getElementById('update-banner').classList.add('visible'); }
 function dismissUpdate() { document.getElementById('update-banner').classList.remove('visible'); }
 function applyUpdate() {
-  if (pendingWorker) { pendingWorker.postMessage('SKIP_WAITING'); } else { window.location.reload(); }
+  if (pendingWorker) { isUpdating = true; pendingWorker.postMessage('SKIP_WAITING'); } else { window.location.reload(); }
 }
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../sw.js').then(reg => {
@@ -530,7 +570,7 @@ if ('serviceWorker' in navigator) {
       });
     });
   }).catch(err => console.warn('SW registration failed:', err));
-  navigator.serviceWorker.addEventListener('controllerchange', () => { window.location.reload(); });
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (isUpdating) window.location.reload(); });
 }
 </script>
 </body>

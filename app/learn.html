@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#f4d03f">
-<title>CHRISTUS v1.15 – Lernbereich</title>
+<title>CHRISTUS v1.15.1 – Lernbereich</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
@@ -93,7 +93,8 @@ a{color:var(--gold);text-decoration:none}
 .g-search{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-size:.9rem;margin-bottom:16px;outline:none;font-family:inherit}
 .g-search:focus{border-color:var(--gold)}
 .g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
-.g-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px}
+.g-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;cursor:pointer;transition:.2s}
+.g-card:hover{border-color:var(--gold);background:var(--surface2)}
 .g-card .term{font-weight:700;color:var(--gold);margin-bottom:3px;font-size:.85rem}
 .g-card .def{color:var(--muted);font-size:.78rem;line-height:1.4}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100}
@@ -118,7 +119,7 @@ a{color:var(--gold);text-decoration:none}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.15</span>
+  <span class="header-version">v1.15.1</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="learn_area">Lernbereich</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zur&#252;ck</button>
 </header>
@@ -386,7 +387,10 @@ function buildGlossary() {
 }
 function renderGlossary(terms) {
   document.getElementById('g-grid').innerHTML = terms.length ?
-    terms.map(term => '<div class="g-card"><div class="term">' + esc(term.term) + '</div><div class="def">' + t('modul_prefix') + ' ' + term.modules.join(', ') + '</div></div>').join('') :
+    terms.map(term => {
+      var clickAttr = term.modules.length > 0 ? ' onclick=\'openModule(' + JSON.stringify(term.modules[0]) + ')\'' : '';
+      return '<div class="g-card"' + clickAttr + '><div class="term">' + esc(term.term) + '</div><div class="def">' + t('modul_prefix') + ' ' + term.modules.join(', ') + '</div></div>';
+    }).join('') :
     '<p style="color:var(--muted)">' + t('no_terms') + '</p>';
 }
 function filterGlossary(q) {
@@ -416,10 +420,11 @@ if (autoScreen === 'glossary') { localStorage.removeItem('learn_screen'); setTim
 
 // ── Service Worker update detection ──────────────────────────────────────────
 let pendingWorker = null;
+let isUpdating = false;
 function showUpdateBanner() { document.getElementById('update-banner').classList.add('visible'); }
 function dismissUpdate() { document.getElementById('update-banner').classList.remove('visible'); }
 function applyUpdate() {
-  if (pendingWorker) { pendingWorker.postMessage('SKIP_WAITING'); } else { window.location.reload(); }
+  if (pendingWorker) { isUpdating = true; pendingWorker.postMessage('SKIP_WAITING'); } else { window.location.reload(); }
 }
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../sw.js').then(reg => {
@@ -432,7 +437,7 @@ if ('serviceWorker' in navigator) {
       });
     });
   }).catch(err => console.warn('SW registration failed:', err));
-  navigator.serviceWorker.addEventListener('controllerchange', () => { window.location.reload(); });
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (isUpdating) window.location.reload(); });
 }
 </script>
 </body>
