@@ -11,14 +11,18 @@
 <body>
     <h1 id="welcome">Willkommen</h1>
     <p id="content">Hier ist der Hauptinhalt der App.</p>
+    <div style="margin:24px 0;display:flex;flex-direction:column;gap:10px;align-items:center">
+        <a href="learn.html" style="display:inline-block;padding:12px 28px;background:#f4d03f;color:#1a1a2e;font-weight:700;border-radius:10px;text-decoration:none;font-size:1rem">📚 Lernbereich öffnen</a>
+    </div>
     <button onclick="goBack()">Zurück zur Sprachauswahl</button>
 
     <script>
         const lang = localStorage.getItem('selectedLanguage') || 'en';
         const translations = {
-            en: { welcome: 'Welcome', content: 'This is the main content of the app.' },
-            es: { welcome: 'Bienvenido', content: 'Este es el contenido principal de la aplicación.' },
-            pt: { welcome: 'Bem-vindo', content: 'Este é o conteúdo principal do aplicativo.' }
+            de: { welcome: 'Willkommen', content: 'Entdecke den Lernbereich mit 7 Kategorien und 42 Modulen.' },
+            en: { welcome: 'Welcome', content: 'Explore the learning area with 7 categories and 42 modules.' },
+            es: { welcome: 'Bienvenido', content: 'Explora el área de aprendizaje con 7 categorías y 42 módulos.' },
+            pt: { welcome: 'Bem-vindo', content: 'Explore a área de aprendizado com 7 categorias e 42 módulos.' }
         };
 
         document.getElementById('welcome').textContent = translations[lang].welcome;

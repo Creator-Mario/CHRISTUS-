@@ -1,25 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRISTUS App - Language Selection</title>
+    <title>CHRISTUS App - Sprachauswahl</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        .language-option { display: inline-block; margin: 10px; padding: 20px; border: 2px solid #ccc; cursor: pointer; }
-        .selected { border-color: #007bff; background-color: #e7f3ff; }
-        #continue-btn { display: none; margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        .container { text-align: center; padding: 40px 20px; max-width: 480px; width: 100%; }
+        .logo { font-size: 56px; margin-bottom: 12px; color: #f4d03f; }
+        h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: 3px; color: #f4d03f; margin-bottom: 8px; }
+        .subtitle { color: #a8b2c1; font-size: 0.9rem; margin-bottom: 36px; }
+        .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .language-option {
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 18px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .language-option:hover { background: rgba(244,208,63,0.12); border-color: #f4d03f; }
+        .language-option.selected { border-color: #f4d03f; background: rgba(244,208,63,0.18); color: #f4d03f; }
+        .language-option .flag { font-size: 28px; display: block; margin-bottom: 6px; }
+        #continue-btn {
+            display: none;
+            width: 100%;
+            padding: 14px;
+            background: #f4d03f;
+            color: #1a1a2e;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #continue-btn:hover { background: #e8c129; }
     </style>
 </head>
 <body>
-    <h1>Wählen Sie Ihre Sprache / Select Your Language</h1>
-    <div class="language-option" data-lang="en" onclick="selectLanguage('en')">English</div>
-    <div class="language-option" data-lang="es" onclick="selectLanguage('es')">Español</div>
-    <div class="language-option" data-lang="pt" onclick="selectLanguage('pt')">Português</div>
-    <button id="continue-btn" onclick="continueToApp()">Weiter / Continue</button>
+    <div class="container">
+        <div class="logo">✝</div>
+        <h1>CHRISTUS</h1>
+        <p class="subtitle">Wähle deine Sprache / Select your language</p>
+        <div class="lang-grid">
+            <div class="language-option" data-lang="de" onclick="selectLanguage('de')">
+                <span class="flag">🇩🇪</span>Deutsch
+            </div>
+            <div class="language-option" data-lang="en" onclick="selectLanguage('en')">
+                <span class="flag">🇬🇧</span>English
+            </div>
+            <div class="language-option" data-lang="es" onclick="selectLanguage('es')">
+                <span class="flag">🇪🇸</span>Español
+            </div>
+            <div class="language-option" data-lang="pt" onclick="selectLanguage('pt')">
+                <span class="flag">🇧🇷</span>Português
+            </div>
+        </div>
+        <button id="continue-btn" onclick="continueToApp()">Weiter →</button>
+    </div>
 
     <script>
         let selectedLang = null;
+
+        // Restore previously saved language preference, default to German
+        const savedLang = localStorage.getItem('selectedLanguage') || 'de';
+        selectLanguage(savedLang);
 
         function selectLanguage(lang) {
             selectedLang = lang;
@@ -31,7 +89,7 @@
         function continueToApp() {
             if (selectedLang) {
                 localStorage.setItem('selectedLanguage', selectedLang);
-                window.location.href = 'preview/main.html';
+                window.location.href = 'preview/standalone.html';
             }
         }
     </script>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CHRISTUS App – Deployment Anleitung</title>
+<style>
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#e6edf3;margin:0;padding:20px;min-height:100vh}
+  .container{max-width:680px;margin:0 auto;padding:20px}
+  h1{color:#f4d03f;font-size:1.8rem;margin-bottom:4px}
+  .subtitle{color:#8b949e;margin-bottom:32px}
+  .step{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin-bottom:20px}
+  .step-num{background:#f4d03f;color:#000;font-weight:700;font-size:.9rem;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px}
+  .step h2{margin:0 0 12px;font-size:1.1rem;color:#f4d03f}
+  .big-link{display:block;background:#238636;color:#fff;text-decoration:none;text-align:center;padding:16px 24px;border-radius:8px;font-size:1.1rem;font-weight:700;margin:16px 0;transition:background .2s}
+  .big-link:hover{background:#2ea043}
+  /* GitHub UI mock */
+  .gh-mock{background:#fff;color:#1f2328;border:1px solid #d0d7de;border-radius:8px;overflow:hidden;margin:16px 0;font-size:14px}
+  .gh-mock-header{background:#f6f8fa;border-bottom:1px solid #d0d7de;padding:10px 16px;font-weight:600;color:#1f2328;font-size:13px}
+  .gh-mock-body{padding:16px}
+  .gh-mock-body p{margin:0 0 12px;color:#656d76;font-size:13px}
+  .gh-btn-green{background:#1f883d;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;display:inline-block}
+  .arrow{font-size:1.8rem;text-align:center;color:#f4d03f;padding:8px 0}
+  .success-box{background:#0a3622;border:1px solid #238636;border-radius:8px;padding:16px;color:#3fb950;font-size:.95rem;margin-top:12px}
+  .success-box strong{color:#3fb950}
+  .warning{background:#1c2128;border:1px solid #f4d03f;border-radius:8px;padding:12px 16px;color:#e6edf3;font-size:.9rem;margin:12px 0}
+  .url-box{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px 16px;font-family:monospace;color:#79c0ff;word-break:break-all;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>✝ CHRISTUS App — Deployment</h1>
+  <p class="subtitle">Eine einzige Aktion, und deine App ist live.</p>
+
+  <div class="step">
+    <div class="step-num">SCHRITT 1 von 1</div>
+    <h2>Den Pull Request mergen</h2>
+    <p style="color:#8b949e;margin:0 0 12px">Alle neuen Dateien (Login, Lernbereich, 42 Module, Offline-Support) sind fertig und warten im PR. Klicke auf den grünen Link unten:</p>
+
+    <a class="big-link" href="https://github.com/Creator-Mario/CHRISTUS-/pull/5" target="_blank">
+      👉 Zum Pull Request #5 öffnen
+    </a>
+
+    <div class="arrow">↓</div>
+    <p style="color:#8b949e;font-size:.9rem;text-align:center;margin:0 0 8px">Scrolle auf der PR-Seite ganz nach unten, bis du diesen Bereich siehst:</p>
+
+    <!-- GitHub UI Mock -->
+    <div class="gh-mock">
+      <div class="gh-mock-header">✅ This branch has no conflicts with the base branch</div>
+      <div class="gh-mock-body">
+        <p>Merging can be performed automatically.</p>
+        <button class="gh-btn-green">Merge pull request</button>
+      </div>
+    </div>
+
+    <div class="arrow">↓</div>
+    <p style="color:#8b949e;font-size:.9rem;text-align:center;margin:0 0 8px">Nach dem Klick erscheint dieser Dialog — klicke "Confirm merge":</p>
+
+    <div class="gh-mock">
+      <div class="gh-mock-header">Merge pull request</div>
+      <div class="gh-mock-body">
+        <p>The changes from <strong>copilot/add-learning-modules</strong> will be merged into <strong>main</strong>.</p>
+        <button class="gh-btn-green">Confirm merge</button>
+      </div>
+    </div>
+
+    <div class="success-box">
+      ✅ <strong>Fertig!</strong> Die App ist jetzt unter deiner GitHub Pages URL live.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">DANACH</div>
+    <h2>Deine App URL</h2>
+    <div class="url-box">https://creator-mario.github.io/CHRISTUS-/</div>
+    <p style="color:#8b949e;font-size:.9rem;margin:8px 0 0">
+      ℹ️ Es kann 1–2 Minuten dauern bis GitHub Pages die neuen Dateien deployed hat. Falls die Seite noch die alte zeigt: Ctrl+Shift+R (Hard Refresh) drücken.
+    </p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">NEU IN v1.10</div>
+    <h2>Was dich erwartet</h2>
+    <ul style="color:#8b949e;line-height:1.8;padding-left:20px">
+      <li>🔐 Personalisierter Login (dein Name, kein Passwort nötig)</li>
+      <li>🏠 Dashboard mit persönlichem Fortschrittsbalken</li>
+      <li>📚 7 Kategorien · 42 Lernmodule · Theologische Grundbildung</li>
+      <li>📖 Jedes Modul: Fragestellung · Kernprinzip · Bibelarbeit · Zusammenfassung · Weiterdenken · Schlüsselbegriffe</li>
+      <li>📵 Offline-fähig (funktioniert ohne Internet nach erstem Besuch)</li>
+      <li>📱 Installierbar als App auf Handy &amp; PC</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

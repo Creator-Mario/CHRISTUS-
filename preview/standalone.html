@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRISTUS App</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        .logo {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            color: #f4d03f;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #a8b2c1;
+            margin-bottom: 48px;
+        }
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .nav-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 28px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-card:hover {
+            background: rgba(244, 208, 63, 0.15);
+            border-color: #f4d03f;
+            transform: translateY(-2px);
+        }
+        .nav-card .icon { font-size: 36px; }
+        .nav-card .label { font-size: 1rem; font-weight: 600; }
+        .nav-card .desc { font-size: 0.8rem; color: #a8b2c1; }
+        .nav-card.full-width {
+            grid-column: 1 / -1;
+        }
+        .version { font-size: 0.75rem; color: #555; margin-top: 24px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">✝</div>
+        <h1>CHRISTUS</h1>
+        <p class="subtitle">Christliche Glaubensbildung &amp; Nachfolge</p>
+
+        <div class="nav-grid">
+            <a href="learn.html" class="nav-card full-width">
+                <span class="icon">📚</span>
+                <span class="label">Lernbereich</span>
+                <span class="desc">7 Kategorien · 42 Module · Theologische Grundbildung</span>
+            </a>
+            <a href="main.html" class="nav-card">
+                <span class="icon">🏠</span>
+                <span class="label">Startseite</span>
+                <span class="desc">Hauptinhalt</span>
+            </a>
+            <a href="../language_selection.html" class="nav-card">
+                <span class="icon">🌍</span>
+                <span class="label">Sprache</span>
+                <span class="desc">Sprachauswahl</span>
+            </a>
+        </div>
+
+        <p class="version">CHRISTUS App · Glaubensbildung</p>
+    </div>
+</body>
+</html>
