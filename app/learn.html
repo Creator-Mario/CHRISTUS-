@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#f0c050">
-<title>CHRISTUS v1.17.1 – Lernbereich</title>
+<title>CHRISTUS v1.17.2 – Lernbereich</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
@@ -119,7 +119,7 @@ a{color:var(--gold);text-decoration:none}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.17.1</span>
+  <span class="header-version">v1.17.2</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="learn_area">Lernbereich</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zur&#252;ck</button>
 </header>
@@ -284,14 +284,14 @@ function goOverview() {
 function buildOverview() {
   const cats = {};
   MODULES.forEach(m => {
-    if (!cats[m.kategorie_nr]) cats[m.kategorie_nr] = { name: m.kategorie, modules: [] };
+    if (!cats[m.kategorie_nr]) cats[m.kategorie_nr] = { modules: [] };
     cats[m.kategorie_nr].modules.push(m);
   });
   document.getElementById('cat-grid').innerHTML = Object.entries(cats).map(([nr, cat]) => {
     const dc = cat.modules.filter(m => done.has(m.modul_nr)).length;
     return '<div class="cat-card" onclick="openCategory(\'' + nr + '\')">' +
       '<div class="cat-icon">' + (CAT_ICONS[nr] || '&#128204;') + '</div>' +
-      '<div class="cat-name">' + esc(cat.name) + '</div>' +
+      '<div class="cat-name">' + esc(t('cat_name_' + nr) || '') + '</div>' +
       '<div class="cat-sub">' + esc(catSub(nr)) + '</div>' +
       '<div class="cat-count">' + cat.modules.length + t('modules_count_suffix') + (dc > 0 ? ' &middot; ' + dc + ' &#10003;' : '') + '</div></div>';
   }).join('');
@@ -300,10 +300,11 @@ function buildOverview() {
 function openCategory(catNr) {
   navHistory = [goOverview];
   const mods = MODULES.filter(m => m.kategorie_nr === catNr);
-  document.getElementById('breadcrumb').innerHTML = t('nav_learn') + ' &rsaquo; <span>' + esc(mods[0].kategorie) + '</span>';
+  const catName = t('cat_name_' + catNr) || mods[0].kategorie;
+  document.getElementById('breadcrumb').innerHTML = t('nav_learn') + ' &rsaquo; <span>' + esc(catName) + '</span>';
   document.getElementById('cat-header').innerHTML =
     '<div class="cat-header-icon">' + (CAT_ICONS[catNr] || '&#128204;') + '</div>' +
-    '<div class="cat-header-text"><div class="cat-title">' + esc(mods[0].kategorie) + '</div>' +
+    '<div class="cat-header-text"><div class="cat-title">' + esc(catName) + '</div>' +
     '<div class="cat-subtitle">' + t('cat_prefix') + catNr + ' &middot; ' + esc(catSub(catNr)) + ' &middot; ' + mods.length + t('modules_count_suffix') + '</div></div>';
   document.getElementById('module-list').innerHTML = mods.map(m => {
     const isDone = done.has(m.modul_nr);
@@ -334,7 +335,7 @@ function openModule(nr) {
   }
   const sid = nr.replace('.','_');
   let html = '<div class="module-header">' +
-    '<div class="m-nr">' + t('modul_prefix') + ' ' + esc(m.modul_nr) + ' &middot; ' + esc(m.kategorie) + '</div>' +
+    '<div class="m-nr">' + t('modul_prefix') + ' ' + esc(m.modul_nr) + ' &middot; ' + esc(t('cat_name_' + m.kategorie_nr) || m.kategorie) + '</div>' +
     '<div class="m-title">' + esc(m.titel) + '</div>' +
     '<div class="m-frage">' + esc(m.fragestellung) + '</div></div>';
   html += sec(sid+'_frage', '&#10067;', t('sec_fragestellung'), t('sec_frage_tag'), '<p style="font-style:italic">' + esc(m.fragestellung) + '</p>');
