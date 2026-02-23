@@ -110,7 +110,49 @@
 
       // Language selection
       lang_select_subtitle: 'Wähle deine Sprache / Select your language',
-      lang_weiter: 'Weiter →'
+      lang_weiter: 'Weiter →',
+
+      // Bible reader
+      bible_label: 'Elberfelder Bibel',
+      bible_desc: 'Elberfelder 1905 · Vollständige Bibel',
+      nav_bible: 'Bibel',
+      bible_header: 'Elberfelder Bibel 1905',
+      bible_book: 'Buch wählen',
+      bible_chapter: 'Kapitel wählen',
+      bible_search_placeholder: 'Vers suchen…',
+      bible_loading: 'Bibel wird geladen…',
+      bible_load_error: 'Fehler beim Laden der Bibel.',
+      bible_search_empty: 'Keine Ergebnisse gefunden.',
+      bible_search_hint: 'Suchbegriff eingeben (mind. 3 Zeichen)',
+      bible_select_book: '← Buch wählen',
+      bible_select_chapter: '← Kapitel wählen',
+      bible_verse_count: ' Verse',
+      bible_chapter_count: ' Kapitel',
+      search_result_one: 'Ergebnis',
+      search_result_many: 'Ergebnisse',
+
+      // Themen
+      themen_label: 'Themen',
+      themen_desc: '7 Kategorien · Glaubensthemen',
+      nav_themen: 'Themen',
+      themen_header: 'Themen',
+      themen_sub: 'Alle Glaubensbereiche im Überblick',
+      themen_count_label: 'Themen',
+      themen_cat_label: 'Kategorien',
+      themen_search_placeholder: 'Thema suchen…',
+      themen_no_results: 'Keine Themen gefunden.',
+
+      // Install / Download
+      install_label: 'App installieren',
+      install_desc: 'Offline & webunabhängig nutzen',
+      install_btn: 'Installieren',
+      install_sub: 'App auf Gerät installieren (offline verfügbar)',
+      install_not_available: 'App kann im Browser bereits offline genutzt werden.',
+      install_already: 'App ist bereits installiert.',
+
+      // Copyright
+      copyright_text: '© Mario Reiner Denzer',
+      copyright_sub: 'Alle Rechte vorbehalten'
     },
     en: {
       // Navigation
@@ -221,7 +263,49 @@
 
       // Language selection
       lang_select_subtitle: 'Wähle deine Sprache / Select your language',
-      lang_weiter: 'Continue →'
+      lang_weiter: 'Continue →',
+
+      // Bible reader
+      bible_label: 'Elberfelder Bible',
+      bible_desc: 'Elberfelder 1905 · Complete Bible',
+      nav_bible: 'Bible',
+      bible_header: 'Elberfelder Bible 1905',
+      bible_book: 'Select Book',
+      bible_chapter: 'Select Chapter',
+      bible_search_placeholder: 'Search verse…',
+      bible_loading: 'Loading Bible…',
+      bible_load_error: 'Error loading the Bible.',
+      bible_search_empty: 'No results found.',
+      bible_search_hint: 'Enter search term (min. 3 characters)',
+      bible_select_book: '← Select book',
+      bible_select_chapter: '← Select chapter',
+      bible_verse_count: ' verses',
+      bible_chapter_count: ' chapters',
+      search_result_one: 'result',
+      search_result_many: 'results',
+
+      // Themen
+      themen_label: 'Topics',
+      themen_desc: '7 Categories · Faith Topics',
+      nav_themen: 'Topics',
+      themen_header: 'Topics',
+      themen_sub: 'Overview of all faith areas',
+      themen_count_label: 'Topics',
+      themen_cat_label: 'Categories',
+      themen_search_placeholder: 'Search topic…',
+      themen_no_results: 'No topics found.',
+
+      // Install / Download
+      install_label: 'Install App',
+      install_desc: 'Use offline & independently',
+      install_btn: 'Install',
+      install_sub: 'Install app on device (available offline)',
+      install_not_available: 'App can already be used offline in the browser.',
+      install_already: 'App is already installed.',
+
+      // Copyright
+      copyright_text: '© Mario Reiner Denzer',
+      copyright_sub: 'All rights reserved'
     }
   };
 
