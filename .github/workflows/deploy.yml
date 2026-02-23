@@ -28,6 +28,7 @@ jobs:
           # Copy all app files
           cp -r app _site/
           cp index.html _site/
+          cp sw.js _site/
           cp language_selection.html _site/
           cp Lernprogramm_Bibel.csv _site/
           [ -f anleitung.html ] && cp anleitung.html _site/ || true

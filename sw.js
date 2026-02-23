@@ -1,20 +1,21 @@
-// CHRISTUS App v1.12 – Service Worker (moved to root)
-// This file is kept for backwards compatibility only.
-// The active Service Worker is now at ../sw.js (root scope).
+// CHRISTUS App v1.12 – Service Worker
 // Bump APP_VERSION on every release so the old cache is purged automatically.
 const APP_VERSION = '1.12.0';
 const CACHE_STATIC = 'christus-static-' + APP_VERSION;
 const CACHE_PAGES  = 'christus-pages-'  + APP_VERSION;
 
 // Core app pages to pre-cache so the app works offline from the first visit.
-// Paths are relative to this SW location (scope: /app/).
+// Paths are relative to the SW location (root sw.js → scope covers everything).
 const PRECACHE_URLS = [
-  './home.html',
-  './login.html',
-  './learn.html',
-  './settings.html',
-  './manifest.json',
-  './translations.js',
+  './index.html',
+  './app/home.html',
+  './app/login.html',
+  './app/learn.html',
+  './app/settings.html',
+  './app/manifest.json',
+  './app/translations.js',
+  './app/icons/icon-192.png',
+  './app/icons/icon-512.png',
 ];
 
 // ── Install: pre-cache core pages, then activate immediately ─────────────────
@@ -58,14 +59,15 @@ self.addEventListener('fetch', e => {
       fetch(e.request)
         .then(resp => {
           if (resp && resp.status === 200) {
-            caches.open(CACHE_PAGES).then(c => c.put(e.request, resp.clone()));
+            const clone = resp.clone();
+            caches.open(CACHE_PAGES).then(c => c.put(e.request, clone)).catch(() => {});
           }
           return resp;
         })
         .catch(() => caches.match(e.request).then(cached => {
           if (cached) return cached;
-          // Last-resort fallback: return home page from cache
-          return caches.match(new URL('home.html', self.location).href);
+          // Last-resort fallback: return index page from cache
+          return caches.match(new URL('./index.html', self.location).href);
         }))
     );
   } else {
@@ -74,8 +76,9 @@ self.addEventListener('fetch', e => {
       caches.match(e.request).then(cached => {
         if (cached) return cached;
         return fetch(e.request).then(resp => {
-          if (resp && resp.status === 200 && resp.type !== 'opaque') {
-            caches.open(CACHE_STATIC).then(c => c.put(e.request, resp.clone()));
+          if (resp && resp.status === 200) {
+            const clone = resp.clone();
+            caches.open(CACHE_STATIC).then(c => c.put(e.request, clone)).catch(() => {});
           }
           return resp;
         }).catch(() => new Response('', { status: 503 }));
