@@ -40,6 +40,14 @@ button{font-family:inherit;cursor:pointer}
 .setting-action:hover{border-color:var(--gold);color:var(--gold)}
 .setting-action.danger{color:var(--red);border-color:rgba(231,76,60,.3)}
 .setting-action.danger:hover{border-color:var(--red);background:rgba(231,76,60,.1)}
+/* Inline change-password form */
+.change-pass-inline{padding:14px 18px;border-top:1px solid var(--border)}
+.change-pass-inline .form-group{margin-bottom:12px}
+.change-pass-inline label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px;font-weight:600}
+.change-pass-inline input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;color:var(--text);font-size:.9rem;outline:none;transition:.2s;font-family:inherit}
+.change-pass-inline input:focus{border-color:var(--gold)}
+.btn-save{width:100%;padding:11px;background:var(--gold);color:#1a1a2e;font-size:.9rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:4px;transition:.2s;cursor:pointer}
+.btn-save:hover{background:var(--gold2)}
 .lang-grid{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px}
 .lang-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:.85rem;cursor:pointer;transition:.2s}
 .lang-btn.active{border-color:var(--gold);background:rgba(244,208,63,.12);color:var(--gold);font-weight:700}
@@ -72,9 +80,27 @@ button{font-family:inherit;cursor:pointer}
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="username_setting">Benutzername</div><div class="setting-sub" id="username-display"></div></div>
     </div>
+    <div class="setting-row" id="email-row" style="display:none">
+      <div><div class="setting-label" data-i18n="email_setting">E-Mail</div><div class="setting-sub" id="email-display"></div></div>
+    </div>
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="progress_setting">Lernfortschritt</div><div class="setting-sub" id="prog-info"></div></div>
       <button class="setting-action danger" data-i18n="reset_btn" onclick="resetProgress()">Zurücksetzen</button>
+    </div>
+    <div class="setting-row" id="change-pass-row" style="display:none">
+      <div><div class="setting-label" data-i18n="change_password_label">Passwort ändern</div><div class="setting-sub" data-i18n="change_password_sub">Neues Passwort festlegen</div></div>
+      <button class="setting-action" data-i18n="change_password_btn" onclick="toggleChangePass()">Ändern</button>
+    </div>
+    <div class="change-pass-inline" id="change-pass-inline" style="display:none">
+      <div class="form-group">
+        <label for="s-new-pass" data-i18n="new_pass_label">Neues Passwort</label>
+        <input type="password" id="s-new-pass" data-i18n-placeholder="new_pass_placeholder" placeholder="Neues Passwort (min. 6 Zeichen)" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="s-new-pass2" data-i18n="confirm_pass_label">Passwort bestätigen</label>
+        <input type="password" id="s-new-pass2" data-i18n-placeholder="confirm_pass_placeholder" placeholder="Passwort wiederholen" autocomplete="new-password">
+      </div>
+      <button class="btn-save" onclick="doChangePassSettings()" data-i18n="save_pass_btn">Passwort speichern</button>
     </div>
   </div>
 
@@ -128,14 +154,27 @@ function showMsg(t, err) {
 function loadProfile() {
   const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
   if (!session) { window.location.href = 'login.html'; return; }
-  const name = session.name;
+  const name  = session.name;
+  const email = session.email || null;
   document.getElementById('big-avatar').textContent = name !== 'Gast' ? name.substring(0,2).toUpperCase() : '👤';
   document.getElementById('profile-name').textContent = name;
   document.getElementById('username-display').textContent = name;
 
+  // Show email for registered (non-guest) users
+  const emailRow = document.getElementById('email-row');
+  const emailEl  = document.getElementById('email-display');
+  if (email && emailEl) { emailEl.textContent = email; if (emailRow) emailRow.style.display = ''; }
+  else if (emailRow)    { emailRow.style.display = 'none'; }
+
+  // Show change-password row for non-guest users
+  const cpRow = document.getElementById('change-pass-row');
+  if (cpRow) cpRow.style.display = email ? '' : 'none';
+
   const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
-  if (users[name] && users[name].created) {
-    const d = new Date(users[name].created).toLocaleDateString('de');
+  // Look up by email (new format) or by name (legacy)
+  const userData = email ? users[email] : users[name];
+  if (userData && userData.created) {
+    const d = new Date(userData.created).toLocaleDateString('de');
     document.getElementById('profile-sub').textContent = t('member_since') + d;
   } else {
     document.getElementById('profile-sub').textContent = t('guest_mode');
@@ -146,6 +185,43 @@ function loadProfile() {
 
   const lang = localStorage.getItem('selectedLanguage') || 'de';
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+}
+
+function toggleChangePass() {
+  const inline = document.getElementById('change-pass-inline');
+  if (!inline) return;
+  inline.style.display = inline.style.display === 'none' ? '' : 'none';
+  if (inline.style.display === '') {
+    const f = document.getElementById('s-new-pass');
+    if (f) f.focus();
+  }
+}
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function doChangePassSettings() {
+  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+  if (!session || !session.email) { showMsg(t('err_session_expired'), true); return; }
+  const newPass  = document.getElementById('s-new-pass').value;
+  const newPass2 = document.getElementById('s-new-pass2').value;
+  if (!newPass || newPass.length < 6) { showMsg(t('err_pass_too_short'), true); return; }
+  if (newPass !== newPass2)           { showMsg(t('err_pass_mismatch'), true);   return; }
+  const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
+  const user  = users[session.email];
+  if (!user) { showMsg(t('err_session_expired'), true); return; }
+  user.password           = await hashPassword(newPass);
+  user.mustChangePassword = false;
+  localStorage.setItem('christus_users', JSON.stringify(users));
+  document.getElementById('s-new-pass').value  = '';
+  document.getElementById('s-new-pass2').value = '';
+  document.getElementById('change-pass-inline').style.display = 'none';
+  showMsg(t('msg_pass_changed'));
 }
 
 function setLang(lang) {
