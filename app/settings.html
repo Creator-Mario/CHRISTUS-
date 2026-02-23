@@ -128,7 +128,7 @@ button{font-family:inherit;cursor:pointer}
     <div class="section-header" data-i18n="app_section">App</div>
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="install_label">App installieren</div><div class="setting-sub" data-i18n="install_sub">App auf Gerät installieren (offline verfügbar)</div></div>
-      <button class="setting-action" id="install-btn" style="display:none" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
+      <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
     </div>
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status">Prüfe…</div></div>
@@ -336,16 +336,19 @@ function logout() {
 
 // PWA Install
 let deferredInstallPrompt = null;
+function updateInstallButtonState() {
+  const btn = document.getElementById('install-btn');
+  if (!btn) return;
+  btn.textContent = t('install_already');
+  btn.disabled = true;
+}
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  const btn = document.getElementById('install-btn');
-  if (btn) { btn.style.display = ''; }
 });
 window.addEventListener('appinstalled', () => {
   deferredInstallPrompt = null;
-  const btn = document.getElementById('install-btn');
-  if (btn) { btn.textContent = t('install_already'); btn.disabled = true; }
+  updateInstallButtonState();
 });
 function doInstall() {
   if (!deferredInstallPrompt) { showMsg(t('install_not_available')); return; }
@@ -385,6 +388,11 @@ if ('serviceWorker' in navigator) {
 
 applyLang();
 loadProfile();
+
+// If app is already installed (running in standalone / installed PWA mode), reflect that on the button
+if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+  updateInstallButtonState();
+}
 </script>
 
 <nav class="bottom-nav">
