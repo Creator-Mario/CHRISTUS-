@@ -138,7 +138,7 @@ input:focus{border-color:var(--gold)}
 </div>
 
 <script>
-var VERSION = '1.15';
+var VERSION = '1.15.0';
 var _pendingEmail = null; // email of user awaiting first-login password change
 
 function getUsers() {
@@ -332,6 +332,9 @@ function doGuest() {
 // Register Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../sw.js').catch(function() {});
+  navigator.serviceWorker.addEventListener('controllerchange', function() {
+    window.location.reload();
+  });
 }
 
 // Redirect if already logged in

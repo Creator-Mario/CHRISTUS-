@@ -12,6 +12,8 @@ const PRECACHE_URLS = [
   './home.html',
   './login.html',
   './learn.html',
+  './bible.html',
+  './themen.html',
   './settings.html',
   './manifest.json',
   './translations.js',
