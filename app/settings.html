@@ -149,7 +149,7 @@ button{font-family:inherit;cursor:pointer}
   </div>
 
   <div class="version-card">
-    <span class="v">v1.16.1</span>
+    <span class="v">v1.16.2</span>
     CHRISTUS – Glaubensbildung &amp; Nachfolge<br>
     Freikirchliche Theologische Grundbildung<br><br>
     <span style="font-size:.75rem">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
@@ -273,6 +273,14 @@ async function downloadOffline() {
   if (sub) sub.textContent = t('msg_download_started');
   showMsg(t('msg_download_started'));
 
+  // Guard: Cache Storage API requires a secure context (HTTPS or localhost)
+  if (!('caches' in window)) {
+    if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
+    if (sub) sub.textContent = t('download_offline_sub');
+    showMsg(t('msg_download_error'), true);
+    return;
+  }
+
   const OFFLINE_URLS = [
     '../index.html',
     './home.html',
@@ -289,17 +297,31 @@ async function downloadOffline() {
   ];
 
   try {
-    const cache = await caches.open('christus-offline-download');
+    // Find the SW's active pages cache so downloads are actually served offline.
+    // All URLs (HTML + static) go into the pages cache; caches.match() in the SW
+    // searches all caches, so non-HTML files stored here are also served offline.
+    // The stable fallback name 'christus-offline-v1' is preserved by sw.js activate.
+    const cacheKeys = await caches.keys();
+    // Sort matching caches so we always pick the newest version when multiple exist
+    const pageCaches = cacheKeys.filter(k => k.startsWith('christus-pages-')).sort();
+    const swPageCache = pageCaches[pageCaches.length - 1]; // newest = last alphabetically
+    const targetCache = await caches.open(swPageCache || 'christus-offline-v1');
+
     let ok = 0;
     for (const url of OFFLINE_URLS) {
       try {
         const resp = await fetch(url);
-        if (resp && resp.status === 200) { await cache.put(url, resp.clone()); ok++; }
-      } catch (e) { /* skip individual failures */ }
+        if (resp && resp.status === 200) {
+          await targetCache.put(url, resp.clone());
+          ok++;
+        }
+      } catch (e) { /* skip individual failures, e.g. CSV on slow connections */ }
     }
     if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
     if (sub) sub.textContent = t('download_offline_sub');
-    showMsg(ok === OFFLINE_URLS.length ? t('msg_download_done') : t('msg_download_partial') + ' (' + ok + '/' + OFFLINE_URLS.length + ')');
+    showMsg(ok === OFFLINE_URLS.length
+      ? t('msg_download_done')
+      : t('msg_download_partial') + ' (' + ok + '/' + OFFLINE_URLS.length + ')');
   } catch (e) {
     if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
     if (sub) sub.textContent = t('download_offline_sub');
