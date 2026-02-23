@@ -133,7 +133,7 @@
 
       // Themen
       themen_label: 'Themen',
-      themen_desc: '7 Kategorien · Glaubensthemen',
+      themen_desc: '270 Themen · 18 Kategorien',
       nav_themen: 'Themen',
       themen_header: 'Themen',
       themen_sub: 'Alle Glaubensbereiche im Überblick',
@@ -286,7 +286,7 @@
 
       // Themen
       themen_label: 'Topics',
-      themen_desc: '7 Categories · Faith Topics',
+      themen_desc: '270 Topics · 18 Categories',
       nav_themen: 'Topics',
       themen_header: 'Topics',
       themen_sub: 'Overview of all faith areas',
