@@ -14,6 +14,7 @@ const PRECACHE_URLS = [
   './app/settings.html',
   './app/bible.html',
   './app/themen.html',
+  './app/install.html',
   './app/manifest.json',
   './app/translations.js',
   './app/icons/icon-192.png',
