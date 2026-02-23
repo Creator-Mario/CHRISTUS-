@@ -1,82 +1,108 @@
-# 🚀 Anleitung: App veröffentlichen (PR mergen + GitHub Pages aktivieren)
-
-Diese Anleitung erklärt Schritt für Schritt, wie du die fertige App über GitHub Pages
-für alle Nutzer erreichbar machst.
+# 🚀 Anleitung: App veröffentlichen – 3 Schritte
 
 ---
 
-## Schritt 1 – Den Pull Request mergen
+## ⚠️ WARUM DIE APP NOCH ALT IST
 
-Der gesamte Code liegt im Branch `copilot/add-learning-modules` und muss in `main` gemergt werden.
+Der Pull Request (PR) ist noch im **Draft-Modus** (Entwurf).
+Im Draft-Modus ist der grüne „Merge"-Button **ausgeblendet**.
+Du musst zuerst den Draft-Modus deaktivieren.
 
-### 1a. Gehe zum Pull Request
+---
 
-Öffne diesen Link direkt im Browser:
+## Schritt 1 – Draft-Modus deaktivieren
 
+### 1a. Öffne diesen Link:
 ```
 https://github.com/Creator-Mario/CHRISTUS-/pull/5
 ```
 
-Du siehst eine Seite mit grünem Titel **„CHRISTUS v1.10: PWA with login…"**
+### 1b. Scrolle ganz nach UNTEN auf der Seite
 
-### 1b. Nach unten scrollen
-
-Scrolle ganz nach unten auf der Seite bis du einen großen grünen Button siehst:
+Am Ende der Seite siehst du NICHT den grünen Merge-Button,
+sondern stattdessen einen **grauen Button** mit der Aufschrift:
 
 ```
-[ Merge pull request ]
+┌─────────────────────────────────┐
+│  Ready for review               │  ← DIESEN BUTTON KLICKEN
+└─────────────────────────────────┘
 ```
 
-### 1c. Merge bestätigen
+Er befindet sich links neben dem Merge-Bereich und sieht so aus:
+- Grauer/weißer Hintergrund
+- Kleines Stift-Symbol davor
+- Text: **"Ready for review"**
 
-1. Klicke auf **„Merge pull request"** (grüner Button)
-2. Es erscheint ein Bestätigungsdialog – klicke auf **„Confirm merge"**
-3. ✅ Fertig – der Code ist jetzt in `main`!
+### 1c. Bestätige den Dialog
+
+Nach dem Klick erscheint ein kleines Popup:
+```
+┌────────────────────────────────────────────┐
+│  This pull request is still a work in      │
+│  progress. Do you want to mark it ready    │
+│  for review?                               │
+│                                            │
+│  [Cancel]  [Ready for review]              │ ← KLICK
+└────────────────────────────────────────────┘
+```
+
+Klicke auf **„Ready for review"** (grüner Button im Dialog).
 
 ---
 
-## Schritt 2 – GitHub Pages aktivieren
+## Schritt 2 – PR mergen
 
-Damit die App unter einer URL erreichbar ist, muss GitHub Pages einmalig eingerichtet werden.
-
-### 2a. Repository-Einstellungen öffnen
-
-Gehe zu deinem Repository:
-```
-https://github.com/Creator-Mario/CHRISTUS-
-```
-
-Klicke oben auf den Tab **„Settings"** (Zahnrad-Symbol, ganz rechts in der Tab-Leiste).
-
-### 2b. Pages-Einstellungen finden
-
-Im linken Menü unter **„Code and automation"** klicke auf **„Pages"**.
-
-### 2c. GitHub Pages einrichten
-
-Stelle folgendes ein:
-
-| Feld | Wert |
-|------|------|
-| Source | **Deploy from a branch** |
-| Branch | **main** |
-| Folder | **/ (root)** |
-
-Klicke auf **„Save"**.
-
-### 2d. Warte 1–2 Minuten
-
-GitHub baut die Seite automatisch. Du siehst oben eine grüne Box:
+Jetzt erscheint der grüne Merge-Button:
 
 ```
-✅  Your site is live at https://creator-mario.github.io/CHRISTUS-/
+┌─────────────────────────────────┐
+│  ✓ Merge pull request           │  ← KLICKEN
+└─────────────────────────────────┘
+```
+
+Danach:
+```
+┌─────────────────────────────────┐
+│  Confirm merge                  │  ← KLICKEN
+└─────────────────────────────────┘
+```
+
+✅ Fertig! Der Code ist jetzt in `main`.
+
+---
+
+## Schritt 3 – GitHub Pages auf GitHub Actions umstellen
+
+### 3a. Öffne diesen Link direkt:
+```
+https://github.com/Creator-Mario/CHRISTUS-/settings/pages
+```
+
+### 3b. Ändere die Source
+
+Du siehst:
+```
+Build and deployment
+Source: [Deploy from a branch ▼]
+```
+
+Klicke auf das Dropdown **„Deploy from a branch"** und wähle:
+```
+→ GitHub Actions
+```
+
+Klicke **Save**.
+
+### 3c. Warte 2 Minuten
+
+GitHub deployt automatisch. Du siehst dann:
+```
+✅ Your site is live at https://creator-mario.github.io/CHRISTUS-/
 ```
 
 ---
 
-## 🌐 Die App-URL
-
-Nach der Aktivierung ist die App dauerhaft erreichbar unter:
+## 🌐 Die App ist dann erreichbar unter:
 
 ```
 https://creator-mario.github.io/CHRISTUS-/
@@ -84,23 +110,15 @@ https://creator-mario.github.io/CHRISTUS-/
 
 ---
 
-## 📱 App auf dem Smartphone installieren (optional)
+## 📱 App auf Smartphone installieren
 
-Die App unterstützt PWA – sie kann wie eine echte App installiert werden:
+**Android (Chrome):** Menü (⋮) → „Zum Startbildschirm hinzufügen"
 
-**Android (Chrome):**
-1. App-URL im Browser öffnen
-2. Menü (drei Punkte oben rechts) → **„Zum Startbildschirm hinzufügen"**
-
-**iPhone (Safari):**
-1. App-URL in Safari öffnen
-2. Teilen-Symbol (Quadrat mit Pfeil nach oben) → **„Zum Home-Bildschirm"**
+**iPhone (Safari):** Teilen (□↑) → „Zum Home-Bildschirm"
 
 ---
 
 ## 🔄 Zukünftige Updates
 
-Wenn du in Zukunft Änderungen machst:
-1. Änderungen werden automatisch per Pull Request eingereicht
-2. Du mergst den PR wie in Schritt 1 beschrieben
-3. Alle Nutzer erhalten das Update automatisch beim nächsten App-Start
+Nach dem ersten Merge laufen alle zukünftigen Updates automatisch —
+du musst nur den PR mergen und GitHub Pages deployt von selbst.
