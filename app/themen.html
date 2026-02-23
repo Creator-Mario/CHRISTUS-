@@ -128,19 +128,50 @@ button{font-family:inherit;cursor:pointer}
 </header>
 
 <div class="main">
-  <div class="stats-row">
-    <div class="stat-card"><div class="stat-num">270</div><div class="stat-label" data-i18n="themen_count_label">Themen</div></div>
-    <div class="stat-card"><div class="stat-num">18</div><div class="stat-label" data-i18n="themen_cat_label">Kategorien</div></div>
-    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">AT</div></div>
-    <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">NT</div></div>
+  <!-- List view (stats + search + accordion) -->
+  <div id="themen-list-view">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">270</div><div class="stat-label" data-i18n="themen_count_label">Themen</div></div>
+      <div class="stat-card"><div class="stat-num">18</div><div class="stat-label" data-i18n="themen_cat_label">Kategorien</div></div>
+      <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">AT</div></div>
+      <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">NT</div></div>
+    </div>
+
+    <div class="search-bar">
+      <input class="search-input" type="text" id="search-input" data-i18n-placeholder="themen_search_placeholder" placeholder="Thema suchen&#8230;" oninput="filterThemen(this.value)">
+      <button class="clear-btn" id="clear-btn" onclick="clearSearch()" style="display:none">&#10005;</button>
+    </div>
+
+    <div id="themen-content"></div>
   </div>
 
-  <div class="search-bar">
-    <input class="search-input" type="text" id="search-input" data-i18n-placeholder="themen_search_placeholder" placeholder="Thema suchen&#8230;" oninput="filterThemen(this.value)">
-    <button class="clear-btn" id="clear-btn" onclick="clearSearch()" style="display:none">&#10005;</button>
-  </div>
+  <!-- Topic detail view -->
+  <div id="themen-detail-view" style="display:none">
+    <div class="td-cat" id="td-cat"></div>
+    <div class="td-title" id="td-title"></div>
+    <div class="td-nr" id="td-nr"></div>
 
-  <div id="themen-content"></div>
+    <div class="td-section" id="td-bibel-section">
+      <div class="td-section-label">&#128214; Bibelstelle</div>
+      <div id="td-bibel"></div>
+    </div>
+
+    <div class="td-section" id="td-qv-section">
+      <div class="td-section-label">&#128279; Querverweise</div>
+      <div id="td-qv"></div>
+    </div>
+
+    <div class="td-section" id="td-erkl-section">
+      <div class="td-section-label">&#128221; Erklärung</div>
+      <div class="td-erklaerung" id="td-erkl"></div>
+    </div>
+
+    <div class="td-nav">
+      <button class="td-nav-btn" id="td-btn-prev" onclick="prevTopic()">&#8592; voriges</button>
+      <span class="td-nav-info" id="td-nav-info"></span>
+      <button class="td-nav-btn" id="td-btn-next" onclick="nextTopic()">nächstes &#8594;</button>
+    </div>
+  </div>
 </div>
 
 <nav class="bottom-nav">
@@ -264,9 +295,7 @@ function renderThemen(topics) {
     groups[t.thema].push(t);
   });
 
-  // Determine if we're showing all topics (full view) or filtered
   var isFiltered = topics.length < THEMEN.length;
-
   var html = '';
   var atShown = false, ntShown = false;
   var catIdx = 0;
@@ -275,7 +304,6 @@ function renderThemen(topics) {
     var items = groups[cat];
     var isAT  = AT_CATS.has(cat);
 
-    // Insert AT/NT dividers only in full (unfiltered) view
     if (!isFiltered) {
       if (isAT && !atShown) {
         html += '<div class="testament-divider"><span class="testament-label">&#128220; Altes Testament</span></div>';
@@ -287,9 +315,9 @@ function renderThemen(topics) {
       }
     }
 
-    var catNum = catIdx++;           // catNum = 0,1,2… ; catIdx advances for next iteration
+    var catNum = catIdx++;
     var cid = 'cat-' + catNum;
-    var startOpen = (catNum === 0 || isFiltered); // first category opens by default
+    var startOpen = (catNum === 0 || isFiltered);
     html += '<div class="cat-section">';
     html += '<button class="cat-acc-hdr' + (startOpen ? ' open' : '') + '" onclick=\'toggleCategory(' + JSON.stringify(cid) + ')\' id="hdr-' + cid + '" aria-expanded="' + (startOpen ? 'true' : 'false') + '">';
     html += '<span class="cat-badge">' + (isAT ? 'AT' : 'NT') + '</span>';
@@ -301,31 +329,14 @@ function renderThemen(topics) {
     html += '<div class="topic-list">';
 
     items.forEach(function(t) {
-      var tid = 'topic-' + t.id;
+      // Topic rows are now clickable buttons that open the full detail view
       html += '<div class="topic-item">';
-      html += '<div class="topic-hdr" onclick=\'toggleTopic(' + JSON.stringify(tid) + ')\' id="hdr-' + tid + '">';
+      html += '<button class="topic-hdr" style="width:100%;text-align:left;background:none;border:none;padding:0" onclick=\'openTopic(' + t.id + ')\'>';
       html += '<span class="topic-nr">' + t.id + '</span>';
       html += '<span class="topic-title">' + esc(t.titel) + '</span>';
       html += '<span class="topic-ref">' + esc(t.bibelstelle) + '</span>';
-      html += '<span class="topic-chev" id="chev-' + tid + '">&rsaquo;</span>';
-      html += '</div>';
-      html += '<div class="topic-body" id="body-' + tid + '">';
-      if (t.bibelstelle) {
-        html += '<div class="topic-detail-row">';
-        html += '<span class="topic-detail-label">&#128214; Bibelstelle</span>';
-        html += '<span>' + makeBibleLinks(t.bibelstelle) + '</span>';
-        html += '</div>';
-      }
-      if (t.querverweise) {
-        html += '<div class="topic-detail-row">';
-        html += '<span class="topic-detail-label">&#128279; Querverweise</span>';
-        html += '<span>' + makeBibleLinks(t.querverweise) + '</span>';
-        html += '</div>';
-      }
-      if (t.erklaerung) {
-        html += '<div class="topic-erklaerung" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">' + esc(t.erklaerung) + '</div>';
-      }
-      html += '</div></div>';
+      html += '<span class="topic-chev">&rsaquo;</span>';
+      html += '</button></div>';
     });
 
     html += '</div></div></div>';
@@ -333,6 +344,83 @@ function renderThemen(topics) {
 
   if (!html) html = '<div class="no-results" data-i18n="themen_no_results">Keine Themen gefunden.</div>';
   document.getElementById('themen-content').innerHTML = html;
+}
+
+// ── Topic detail view ─────────────────────────────────────────────────────────
+var currentTopicId = null;
+var currentTopicList = THEMEN; // filtered or full list for prev/next nav
+
+function openTopic(id) {
+  var t = THEMEN.find(function(x){ return x.id === id; });
+  if (!t) return;
+  currentTopicId = id;
+
+  document.getElementById('td-cat').textContent = t.thema;
+  document.getElementById('td-title').textContent = t.titel;
+  document.getElementById('td-nr').textContent = 'Thema Nr. ' + t.id + ' · ' + t.thema;
+
+  // Bibelstelle
+  var bSection = document.getElementById('td-bibel-section');
+  if (t.bibelstelle) {
+    document.getElementById('td-bibel').innerHTML = makeBibleLinks(t.bibelstelle);
+    bSection.style.display = '';
+  } else {
+    bSection.style.display = 'none';
+  }
+
+  // Querverweise
+  var qSection = document.getElementById('td-qv-section');
+  if (t.querverweise) {
+    document.getElementById('td-qv').innerHTML = makeBibleLinks(t.querverweise);
+    qSection.style.display = '';
+  } else {
+    qSection.style.display = 'none';
+  }
+
+  // Erklärung
+  var eSection = document.getElementById('td-erkl-section');
+  if (t.erklaerung) {
+    document.getElementById('td-erkl').textContent = t.erklaerung;
+    eSection.style.display = '';
+  } else {
+    eSection.style.display = 'none';
+  }
+
+  // Prev / Next based on the active list (filtered or full)
+  var list = currentTopicList;
+  var idx  = list.findIndex(function(x){ return x.id === id; });
+  document.getElementById('td-btn-prev').disabled = idx <= 0;
+  document.getElementById('td-btn-next').disabled = idx >= list.length - 1;
+  document.getElementById('td-nav-info').textContent = (idx + 1) + ' / ' + list.length;
+
+  // Breadcrumb + back button
+  document.getElementById('breadcrumb').textContent = t.titel;
+  document.getElementById('backBtn').style.display = '';
+
+  // Switch views
+  document.getElementById('themen-list-view').style.display = 'none';
+  document.getElementById('themen-detail-view').style.display = '';
+  window.scrollTo(0, 0);
+}
+
+function showList() {
+  document.getElementById('themen-detail-view').style.display = 'none';
+  document.getElementById('themen-list-view').style.display = '';
+  document.getElementById('backBtn').style.display = 'none';
+  document.getElementById('breadcrumb').textContent = t('themen_header');
+  window.scrollTo(0, 0);
+}
+
+function prevTopic() {
+  var list = currentTopicList;
+  var idx  = list.findIndex(function(x){ return x.id === currentTopicId; });
+  if (idx > 0) openTopic(list[idx - 1].id);
+}
+
+function nextTopic() {
+  var list = currentTopicList;
+  var idx  = list.findIndex(function(x){ return x.id === currentTopicId; });
+  if (idx < list.length - 1) openTopic(list[idx + 1].id);
 }
 
 function toggleCategory(cid) {
@@ -365,6 +453,7 @@ function filterThemen(q) {
   document.getElementById('clear-btn').style.display = q.length > 0 ? '' : 'none';
   searchTimeout = setTimeout(function() {
     if (!q.trim()) {
+      currentTopicList = THEMEN;
       renderThemen(THEMEN);
       return;
     }
@@ -376,6 +465,7 @@ function filterThemen(q) {
              t.querverweise.toLowerCase().indexOf(qLow) !== -1 ||
              t.erklaerung.toLowerCase().indexOf(qLow) !== -1;
     });
+    currentTopicList = filtered;
     renderThemen(filtered);
   }, 250);
 }
@@ -383,6 +473,7 @@ function filterThemen(q) {
 function clearSearch() {
   document.getElementById('search-input').value = '';
   document.getElementById('clear-btn').style.display = 'none';
+  currentTopicList = THEMEN;
   renderThemen(THEMEN);
 }
 

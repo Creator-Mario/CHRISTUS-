@@ -439,7 +439,8 @@ function openReader(bookName, chapter) {
 
     showScreen('reader');
 
-    // Scroll the active chapter-jump button into view (without scrolling the page)
+    // Wait one frame for the DOM/layout to settle after innerHTML update,
+    // then scroll the active chapter-jump button into horizontal view.
     setTimeout(function() {
       var activeBtn = document.querySelector('.ch-jump-btn.active');
       if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
