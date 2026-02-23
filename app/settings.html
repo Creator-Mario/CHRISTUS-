@@ -114,6 +114,10 @@ button{font-family:inherit;cursor:pointer}
       </div>
       <button class="btn-save" onclick="doChangePassSettings()" data-i18n="save_pass_btn">Passwort speichern</button>
     </div>
+    <div class="setting-row" id="delete-account-row" style="display:none">
+      <div><div class="setting-label" data-i18n="delete_account_label">Konto löschen</div><div class="setting-sub" data-i18n="delete_account_sub">Konto und alle gespeicherten Daten dauerhaft entfernen</div></div>
+      <button class="setting-action danger" data-i18n="delete_account_btn" aria-label="Konto dauerhaft löschen" onclick="deleteAccount()">Konto löschen</button>
+    </div>
   </div>
 
   <div class="section">
@@ -194,6 +198,10 @@ function loadProfile() {
   // Show change-password row for non-guest users
   const cpRow = document.getElementById('change-pass-row');
   if (cpRow) cpRow.style.display = email ? '' : 'none';
+
+  // Show delete-account row for non-guest users
+  const delRow = document.getElementById('delete-account-row');
+  if (delRow) delRow.style.display = email ? '' : 'none';
 
   const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
   // Look up by email (new format) or by name (legacy: backwards-compat with old username-only accounts)
@@ -339,6 +347,24 @@ async function downloadOffline() {
 
 function logout() {
   localStorage.removeItem('christus_session');
+  window.location.href = 'login.html';
+}
+
+function deleteAccount() {
+  if (!confirm(t('delete_account_confirm'))) return;
+  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+  if (session && session.email) {
+    const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
+    delete users[session.email];
+    localStorage.setItem('christus_users', JSON.stringify(users));
+  }
+  // Clear all user-specific localStorage keys:
+  // christus_session  – login session
+  // christus_done     – completed module IDs
+  // christus_recent   – recently viewed modules
+  localStorage.removeItem('christus_session');
+  localStorage.removeItem('christus_done');
+  localStorage.removeItem('christus_recent');
   window.location.href = 'login.html';
 }
 
