@@ -11,7 +11,7 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
+  --bg:#0d1020;--surface:#17203a;--surface2:#1d2b46;--border:#2a3d66;
   --gold:#f4d03f;--gold2:#e8c129;--text:#e8eef4;--muted:#7a8fa8;
   --green:#2ecc71;--blue:#3498db;--red:#e74c3c;
   --radius:14px;--radius-sm:9px;
@@ -135,6 +135,10 @@ button{font-family:inherit;cursor:pointer}
       <span class="setting-value" id="sw-badge"></span>
     </div>
     <div class="setting-row">
+      <div><div class="setting-label" data-i18n="download_offline_label">Offline herunterladen</div><div class="setting-sub" id="download-sub" data-i18n="download_offline_sub">Alle Inhalte für die Offline-Nutzung speichern</div></div>
+      <button class="setting-action" id="download-btn" data-i18n="download_offline_btn" onclick="downloadOffline()">⬇ Herunterladen</button>
+    </div>
+    <div class="setting-row">
       <div><div class="setting-label" data-i18n="clear_cache_label">Cache leeren</div><div class="setting-sub" data-i18n="offline_reload_sub">App-Daten neu laden</div></div>
       <button class="setting-action" data-i18n="clear_cache_btn" onclick="clearCache()">Leeren</button>
     </div>
@@ -166,6 +170,7 @@ function showMsg(t, err) {
 function loadProfile() {
   const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
   if (!session) { window.location.href = 'login.html'; return; }
+  if (!session.email) { window.location.href = 'login.html'; return; }
   const name  = session.name;
   const email = session.email || null;
   document.getElementById('big-avatar').textContent = name !== 'Gast' ? name.substring(0,2).toUpperCase() : '👤';
@@ -261,6 +266,47 @@ function clearCache() {
   } else { showMsg(t('msg_no_cache')); }
 }
 
+async function downloadOffline() {
+  const btn = document.getElementById('download-btn');
+  const sub = document.getElementById('download-sub');
+  if (btn) { btn.disabled = true; btn.textContent = '…'; }
+  if (sub) sub.textContent = t('msg_download_started');
+  showMsg(t('msg_download_started'));
+
+  const OFFLINE_URLS = [
+    '../index.html',
+    './home.html',
+    './login.html',
+    './learn.html',
+    './settings.html',
+    './bible.html',
+    './themen.html',
+    './manifest.json',
+    './translations.js',
+    './icons/icon-192.png',
+    './icons/icon-512.png',
+    '../elberfelder_1905.csv',
+  ];
+
+  try {
+    const cache = await caches.open('christus-offline-download');
+    let ok = 0;
+    for (const url of OFFLINE_URLS) {
+      try {
+        const resp = await fetch(url);
+        if (resp && resp.status === 200) { await cache.put(url, resp.clone()); ok++; }
+      } catch (e) { /* skip individual failures */ }
+    }
+    if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
+    if (sub) sub.textContent = t('download_offline_sub');
+    showMsg(ok === OFFLINE_URLS.length ? t('msg_download_done') : t('msg_download_partial') + ' (' + ok + '/' + OFFLINE_URLS.length + ')');
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
+    if (sub) sub.textContent = t('download_offline_sub');
+    showMsg(t('msg_download_error'), true);
+  }
+}
+
 function logout() {
   localStorage.removeItem('christus_session');
   window.location.href = 'login.html';
@@ -323,7 +369,7 @@ loadProfile();
   <a href="home.html"><span class="ni">🏠</span><span data-i18n="nav_home">Start</span></a>
   <a href="learn.html"><span class="ni">📚</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html"><span class="ni">📖</span><span data-i18n="nav_bible">Bibel</span></a>
-  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">📘</span><span data-i18n="nav_glossary">Glossar</span></a>
+  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">📘</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
   <a href="settings.html" class="active"><span class="ni">⚙️</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
 </body>

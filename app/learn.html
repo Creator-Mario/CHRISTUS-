@@ -10,7 +10,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
+  --bg:#0d1020;--surface:#17203a;--surface2:#1d2b46;--border:#2a3d66;
   --gold:#f4d03f;--gold2:#e8c129;--text:#e8eef4;--muted:#7a8fa8;
   --green:#2ecc71;--blue:#3498db;--red:#e74c3c;
   --radius:14px;--radius-sm:9px;
@@ -146,7 +146,7 @@ a{color:var(--gold);text-decoration:none}
 </div>
 
 <div class="screen" id="screen-glossary">
-  <h1 class="page-title" id="glossary-title">&#128216; Glossar</h1>
+  <h1 class="page-title" id="glossary-title">&#128216; Themen Aufgaben</h1>
   <p class="page-sub" data-i18n="glossary_sub">Schl&#252;sselbegriffe aus allen Modulen</p>
   <input class="g-search" type="text" data-i18n-placeholder="search_placeholder" placeholder="Begriff suchen&#8230;" oninput="filterGlossary(this.value)" id="g-search">
   <div class="g-grid" id="g-grid"></div>
@@ -157,7 +157,7 @@ a{color:var(--gold);text-decoration:none}
   <a onclick="goOverview()" id="nav-learn" class="active"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
   <a href="themen.html"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
-  <a onclick="openGlossary()" id="nav-glossary"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Glossar</span></a>
+  <a onclick="openGlossary()" id="nav-glossary"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
   <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
 
@@ -168,6 +168,7 @@ const CAT_SUBS  = {"1": "Theologie", "2": "Praktische Nachfolge", "3": "Kirche &
 
 const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
 if (!session) { window.location.href = 'login.html'; }
+else if (!session.email) { window.location.href = 'login.html'; }
 
 let navHistory = [];
 let done = new Set(JSON.parse(localStorage.getItem('christus_done') || '[]'));

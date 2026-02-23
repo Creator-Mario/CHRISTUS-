@@ -10,7 +10,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
+  --bg:#0d1020;--surface:#17203a;--surface2:#1d2b46;--border:#2a3d66;
   --gold:#f4d03f;--gold2:#e8c129;--text:#e8eef4;--muted:#7a8fa8;
   --green:#2ecc71;--blue:#3498db;--red:#e74c3c;
   --radius:14px;--radius-sm:9px;
@@ -52,11 +52,34 @@ button{font-family:inherit;cursor:pointer}
 .book-btn .b-name{font-size:.85rem;font-weight:700}
 .book-btn .b-info{font-size:.68rem;color:var(--muted)}
 
+/* Chapter selection screen */
+.ch-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px;margin-bottom:16px}
+.ch-select-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 6px;color:var(--text);font-size:.95rem;font-weight:700;cursor:pointer;transition:.2s;text-align:center}
+.ch-select-btn:hover{border-color:var(--gold);background:var(--surface2);color:var(--gold)}
+
 /* Chapter jump bar */
 .ch-jump-bar{display:flex;gap:6px;flex-wrap:wrap;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:16px}
 .ch-jump-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;transition:.15s;min-width:36px;text-align:center}
 .ch-jump-btn:hover{border-color:var(--gold);color:var(--gold)}
 .ch-jump-btn.active{background:var(--gold);color:#1a1a2e;border-color:var(--gold)}
+
+/* Highlight toolbar */
+.hl-toolbar{display:flex;align-items:center;gap:8px;padding:8px 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px;flex-wrap:wrap}
+.hl-toolbar-label{font-size:.7rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;flex-shrink:0}
+.hl-btn{border:2px solid transparent;border-radius:6px;padding:5px 10px;font-size:.75rem;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.hl-btn.active{border-color:#fff!important}
+.hl-btn-yellow{background:rgba(255,224,0,.2);color:#ffe000;border-color:rgba(255,224,0,.4)}
+.hl-btn-green{background:rgba(57,255,20,.15);color:#39ff14;border-color:rgba(57,255,20,.35)}
+.hl-btn-red{background:rgba(255,50,80,.15);color:#ff4060;border-color:rgba(255,50,80,.35)}
+.hl-btn-erase{background:var(--surface2);border:1px solid var(--border)!important;color:var(--muted)}
+.hl-btn-erase.active{border-color:var(--gold)!important;color:var(--gold)}
+
+/* Highlighted verse items */
+.verse-item{cursor:default}
+.verse-item.hl-active{cursor:pointer}
+.verse-item.hl-yellow{background:rgba(255,224,0,.13);border-left:3px solid #ffe000;padding-left:8px}
+.verse-item.hl-green{background:rgba(57,255,20,.1);border-left:3px solid #39ff14;padding-left:8px}
+.verse-item.hl-red{background:rgba(255,50,80,.1);border-left:3px solid #ff4060;padding-left:8px}
 
 /* Reader screen */
 .reader-header{display:flex;align-items:center;gap:12px;margin-bottom:8px;padding-bottom:12px;border-bottom:1px solid var(--border)}
@@ -149,7 +172,20 @@ button{font-family:inherit;cursor:pointer}
     <div class="copyright-bar" data-i18n="copyright_text">© Mario Reiner Denzer</div>
   </div>
 
-  <!-- Reader screen (opens at Chapter 1 when a book is clicked) -->
+  <!-- Chapter selection screen -->
+  <div class="screen" id="screen-chapters">
+    <div class="reader-header">
+      <span style="font-size:28px">&#128214;</span>
+      <div>
+        <div class="reader-book" id="ch-select-book-title"></div>
+        <div class="reader-sub" id="ch-select-book-sub"></div>
+      </div>
+    </div>
+    <p class="page-sub" style="margin-bottom:12px">Kapitel wählen:</p>
+    <div class="ch-select-grid" id="ch-select-grid"></div>
+  </div>
+
+  <!-- Reader screen -->
   <div class="screen" id="screen-reader">
     <div class="reader-header">
       <span style="font-size:28px">&#128214;</span>
@@ -157,6 +193,14 @@ button{font-family:inherit;cursor:pointer}
         <div class="reader-book" id="reader-book-title"></div>
         <div class="reader-sub" id="reader-book-sub"></div>
       </div>
+    </div>
+    <!-- Highlight toolbar -->
+    <div class="hl-toolbar">
+      <span class="hl-toolbar-label">&#9998; Markieren:</span>
+      <button class="hl-btn hl-btn-yellow" id="hl-yellow" onclick="setHlColor('yellow')">&#11044; Neongelb</button>
+      <button class="hl-btn hl-btn-green" id="hl-green" onclick="setHlColor('green')">&#11044; Neongrün</button>
+      <button class="hl-btn hl-btn-red" id="hl-red" onclick="setHlColor('red')">&#11044; Neonrot</button>
+      <button class="hl-btn hl-btn-erase" id="hl-erase" onclick="setHlColor('erase')">&#10006; Löschen</button>
     </div>
     <!-- Chapter jump bar -->
     <div class="ch-jump-bar" id="ch-jump-bar"></div>
@@ -183,7 +227,7 @@ button{font-family:inherit;cursor:pointer}
   <a href="learn.html"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html" class="active"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
   <a href="themen.html"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
-  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Glossar</span></a>
+  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
   <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
 
@@ -196,6 +240,8 @@ var NT_BOOKS = new Set();
 var currentBook = null;
 var currentChapter = null;
 var navStack = [];
+var highlights = {};   // { "book|chapter|verse": "yellow"|"green"|"red" }
+var currentHlColor = null; // active highlight color or "erase" or null
 
 // ── Proper German display names (CSV name → display name) ─────────────────────
 var DISPLAY_NAMES = {
@@ -315,6 +361,7 @@ function loadBible() {
       var parsed = parseCSV(text);
       bibleData = parsed.data;
       bookList  = parsed.books;
+      highlights = JSON.parse(localStorage.getItem('christus_highlights') || '{}');
       // Check for URL params to open a specific book/chapter
       var params = new URLSearchParams(window.location.search);
       var paramBook    = params.get('book');
@@ -391,11 +438,31 @@ function showBooks() {
 
 // ── Reader ────────────────────────────────────────────────────────────────────
 function openBook(bookName) {
-  // Open the book at Chapter 1 immediately — no intermediate chapter-grid screen
+  // Show chapter selection screen so user can jump directly to any chapter
   currentBook = bookName;
   navStack = [showBooks];
   updateBackBtn(true);
-  openReader(bookName, 1);
+  showChapters(bookName);
+}
+
+function showChapters(bookName) {
+  var allChapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
+  var bookDisplay = displayName(bookName);
+  document.getElementById('ch-select-book-title').textContent = bookDisplay;
+  document.getElementById('ch-select-book-sub').textContent = allChapters.length + ' Kapitel';
+  document.getElementById('breadcrumb').textContent = bookDisplay + ' – Kapitel wählen';
+  var html = '';
+  allChapters.forEach(function(ch) {
+    html += '<button class="ch-select-btn" onclick=\'openChapterFromSelect(' + JSON.stringify(bookName) + ',' + ch + ')\'>' + ch + '</button>';
+  });
+  document.getElementById('ch-select-grid').innerHTML = html;
+  showScreen('chapters');
+}
+
+function openChapterFromSelect(bookName, chapter) {
+  navStack = [function(){ showChapters(bookName); }];
+  updateBackBtn(true);
+  openReader(bookName, chapter);
 }
 
 function openReader(bookName, chapter) {
@@ -424,7 +491,9 @@ function openReader(bookName, chapter) {
     // Verses
     var verseHtml = '';
     verses.forEach(function(v) {
-      verseHtml += '<li class="verse-item">' +
+      var hlKey = bookName + '|' + chapter + '|' + v.v;
+      var hlClass = highlights[hlKey] ? ' hl-' + highlights[hlKey] : '';
+      verseHtml += '<li class="verse-item' + hlClass + ' hl-active" onclick=\'toggleVerseHighlight(' + JSON.stringify(bookName) + ',' + chapter + ',' + v.v + ',this)\'>' +
         '<span class="verse-nr">' + v.v + '</span>' +
         '<span class="verse-text">' + esc(v.t) + '</span></li>';
     });
@@ -541,6 +610,35 @@ function clearSearch() {
 function clearSearchUI() {
   document.getElementById('search-input').value = '';
   document.getElementById('clear-btn').style.display = 'none';
+}
+
+// ── Highlighting ──────────────────────────────────────────────────────────────
+function setHlColor(color) {
+  currentHlColor = (currentHlColor === color) ? null : color;
+  ['yellow','green','red','erase'].forEach(function(c) {
+    var btn = document.getElementById('hl-' + c);
+    if (btn) btn.classList.toggle('active', currentHlColor === c);
+  });
+}
+
+function toggleVerseHighlight(bookName, chapter, verseNr, el) {
+  if (!currentHlColor) return;
+  var hlKey = bookName + '|' + chapter + '|' + verseNr;
+  if (currentHlColor === 'erase') {
+    delete highlights[hlKey];
+    el.classList.remove('hl-yellow','hl-green','hl-red');
+  } else {
+    // Toggle off if same color already applied
+    if (highlights[hlKey] === currentHlColor) {
+      delete highlights[hlKey];
+      el.classList.remove('hl-' + currentHlColor);
+    } else {
+      el.classList.remove('hl-yellow','hl-green','hl-red');
+      highlights[hlKey] = currentHlColor;
+      el.classList.add('hl-' + currentHlColor);
+    }
+  }
+  localStorage.setItem('christus_highlights', JSON.stringify(highlights));
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
