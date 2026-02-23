@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="theme-color" content="#f4d03f">
-    <title>CHRISTUS v1.13</title>
+    <title>CHRISTUS v1.15</title>
     <link rel="manifest" href="app/manifest.json">
     <style>
         body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#0f1923;color:#e8eef4;
@@ -22,27 +22,17 @@
     <div class="splash">
         <div class="logo">&#10013;</div>
         <div class="name">CHRISTUS</div>
-        <div class="ver">Version 1.13 &bull; Glaubensbildung &amp; Nachfolge</div>
+        <div class="ver">Version 1.15 &bull; Glaubensbildung &amp; Nachfolge</div>
         <div class="spinner"></div>
     </div>
     <script>
         // Register Service Worker for offline support
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').then(reg => {
-                // When a new SW is installed and waiting, tell it to activate immediately
-                reg.addEventListener('updatefound', () => {
-                    const newWorker = reg.installing;
-                    if (!newWorker) return;
-                    newWorker.addEventListener('statechange', () => {
-                        // New SW is installed & waiting – send SKIP_WAITING so it activates
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            newWorker.postMessage('SKIP_WAITING');
-                        }
-                    });
-                });
-            }).catch(err => console.warn('SW registration failed:', err));
+            navigator.serviceWorker.register('./sw.js')
+              .catch(err => console.warn('SW registration failed:', err));
 
-            // When SW controller changes (new SW took over), reload to get fresh pages
+            // When SW controller changes (new SW took over after user applied update),
+            // reload to get fresh pages. The update banner on app pages triggers this.
             navigator.serviceWorker.addEventListener('controllerchange', () => {
                 window.location.reload();
             });

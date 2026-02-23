@@ -1,53 +1,38 @@
-# 🚀 CHRISTUS App v1.12 — Update deployen
+# 🚀 CHRISTUS App v1.15 — ✅ Erfolgreich deployed!
 
-## ⚠️ Warum hat das Update nicht funktioniert?
+## 📍 Live-URL
 
-Das Update steckt im **Pull Request #6** und wurde noch **nicht** mit `main` zusammengeführt.
-Der Deploy-Workflow läuft **nur** wenn Änderungen auf `main` landen.
+👉 **https://creator-mario.github.io/CHRISTUS-/**
 
----
-
-## ✅ Ein Klick reicht: PR #6 mergen
-
-👉 **https://github.com/Creator-Mario/CHRISTUS-/pull/6**
-
-### So geht's:
-
-1. Öffne den Link oben
-2. Scrolle ganz nach unten zum grünen Button:
-   ```
-   [ Merge pull request ]
-   ```
-3. Klicke **"Confirm merge"**
-4. ✅ Fertig! Der Deploy startet in ~30 Sekunden automatisch.
+Die App läuft jetzt auf **Version 1.15**. Einfach die URL öffnen!
 
 ---
 
-## 🔄 Alternative: Manuell deployen (nach dem Merge)
+## ℹ️ Noch eine Genehmigung ausstehend
 
-Falls der automatische Deploy nicht startet:
+Es gibt noch einen ausstehenden Workflow-Lauf (nur eine Dokumentations-Änderung, nicht kritisch):
 
-1. Öffne: https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/237480510
-2. Klicke rechts auf **"Run workflow"**
-3. Branch = `main` lassen
-4. Grünen **"Run workflow"** Button klicken
+👉 **https://github.com/Creator-Mario/CHRISTUS-/actions/runs/22306341063**
 
----
-
-## 📍 Live-URL nach dem Deploy
-
-**https://creator-mario.github.io/CHRISTUS-/**
+Klicke auf **"Approve and run"** – oder ignoriere ihn, die App läuft bereits korrekt.
 
 ---
 
-## 📦 Was in v1.12 neu ist
+## 🔄 Zukünftige Updates
+
+Bei zukünftigen Änderungen:
+1. PR mergen → Deploy startet automatisch **ohne Genehmigung**
+2. Oder: https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy.yml → **"Run workflow"**
+
+---
+
+## 📦 Was in v1.15 neu ist
 
 | Änderung | Details |
 |----------|---------|
-| 📴 **Offline-Modus** | App läuft vollständig ohne Internet |
-| 📲 **Android/Desktop-Install** | Icons vorhanden, Manifest korrigiert |
-| 🌍 **Nur DE & EN** | Spanisch & Portugiesisch entfernt |
-| 🔤 **Vollständige EN-Übersetzung** | Gesamte App-Oberfläche übersetzt |
-| `sw.js` | Neuer Root-Service-Worker (vollständiger Scope) |
-| `app/translations.js` | Neue Übersetzungsdatei DE/EN |
-| `app/icons/` | Neue App-Icons für PWA-Install |
+| 🔢 **Version 1.15** | Alle Seiten auf v1.15 aktualisiert |
+| 🔔 **Update-Banner** | Sichtbar auf ALLEN App-Seiten (Home, Lernen, Bibel, Themen, Einstellungen) |
+| 🛠️ **Update-Mechanismus** | SW wartet jetzt korrekt im `waiting`-Zustand – Banner erscheint zuverlässig |
+| 📖 **Bibel AT/NT** | Altes und Neues Testament als Unterbereiche |
+| 🗂️ **Themen-Akkordeon** | Hierarchische Darstellung mit AT/NT-Trennern |
+| 🔐 **E-Mail-Auth** | Vorname/Nachname/E-Mail-Registrierung, OTP, Passwort-Änderung |
