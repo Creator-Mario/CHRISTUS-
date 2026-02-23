@@ -342,6 +342,7 @@ function esc(s) {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
 }
 
 function updateBackBtn(show) {
@@ -390,42 +391,56 @@ function showBooks() {
 }
 
 function openBook(bookName) {
-  currentBook = bookName;
-  navStack.push(showBooks);
-  updateBackBtn(true);
+  try {
+    currentBook = bookName;
+    navStack.push(showBooks);
+    updateBackBtn(true);
 
-  var chapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
-  document.getElementById('ch-book-title').textContent = displayName(bookName);
-  document.getElementById('ch-book-sub').textContent = chapters.length + t('bible_chapter_count');
-  document.getElementById('breadcrumb').textContent = displayName(bookName);
+    var chapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
+    document.getElementById('ch-book-title').textContent = displayName(bookName);
+    document.getElementById('ch-book-sub').textContent = chapters.length + t('bible_chapter_count');
+    document.getElementById('breadcrumb').textContent = displayName(bookName);
 
-  var html = '';
-  chapters.forEach(function(ch) {
-    html += '<button class="chapter-btn" onclick="openChapter(' + ch + ')">' + ch + '</button>';
-  });
-  document.getElementById('chapter-grid').innerHTML = html;
-  showScreen('chapters');
+    var html = '';
+    chapters.forEach(function(ch) {
+      html += '<button class="chapter-btn" onclick="openChapter(' + ch + ')">' + ch + '</button>';
+    });
+    document.getElementById('chapter-grid').innerHTML = html;
+    showScreen('chapters');
+  } catch(e) {
+    console.error('openBook error:', e);
+    document.getElementById('chapter-grid').innerHTML =
+      '<p style="color:var(--red);padding:16px">' + t('bible_load_error') + ' (' + e.message + ')</p>';
+    showScreen('chapters');
+  }
 }
 
 function openChapter(chapter) {
-  currentChapter = chapter;
-  navStack.push(function(){ openBook(currentBook); });
-  updateBackBtn(true);
+  try {
+    currentChapter = chapter;
+    navStack.push(function(){ openBook(currentBook); });
+    updateBackBtn(true);
 
-  var verses = bibleData[currentBook][chapter];
-  var title = displayName(currentBook) + ' ' + chapter;
-  document.getElementById('verse-title').textContent = title;
-  document.getElementById('verse-sub').textContent = verses.length + t('bible_verse_count');
-  document.getElementById('breadcrumb').textContent = title;
+    var verses = bibleData[currentBook][chapter];
+    var title = displayName(currentBook) + ' ' + chapter;
+    document.getElementById('verse-title').textContent = title;
+    document.getElementById('verse-sub').textContent = verses.length + t('bible_verse_count');
+    document.getElementById('breadcrumb').textContent = title;
 
-  var html = '';
-  verses.forEach(function(v) {
-    html += '<li class="verse-item">' +
-      '<span class="verse-nr">' + v.v + '</span>' +
-      '<span class="verse-text">' + esc(v.t) + '</span></li>';
-  });
-  document.getElementById('verse-list').innerHTML = html;
-  showScreen('verses');
+    var html = '';
+    verses.forEach(function(v) {
+      html += '<li class="verse-item">' +
+        '<span class="verse-nr">' + v.v + '</span>' +
+        '<span class="verse-text">' + esc(v.t) + '</span></li>';
+    });
+    document.getElementById('verse-list').innerHTML = html;
+    showScreen('verses');
+  } catch(e) {
+    console.error('openChapter error:', e);
+    document.getElementById('verse-list').innerHTML =
+      '<li style="color:var(--red);padding:16px;list-style:none">' + t('bible_load_error') + ' (' + e.message + ')</li>';
+    showScreen('verses');
+  }
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
