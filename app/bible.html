@@ -69,6 +69,13 @@ button{font-family:inherit;cursor:pointer}
 .ch-nav-btn:disabled:hover{border-color:var(--border);color:var(--text);background:var(--surface)}
 .ch-label{font-size:.8rem;color:var(--muted);text-align:center;flex-shrink:0}
 
+/* Verse list */
+.verse-list{list-style:none;padding:0}
+.verse-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,64,96,.5)}
+.verse-item:last-child{border-bottom:none}
+.verse-nr{color:var(--gold);font-size:.75rem;font-weight:700;min-width:28px;padding-top:3px;flex-shrink:0}
+.verse-text{font-size:.92rem;line-height:1.8;color:var(--text)}
+
 /* Search results */
 .search-result-title{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px}
 .search-result-sub{color:var(--muted);font-size:.78rem;margin-bottom:12px}
@@ -111,7 +118,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.15.0</span>
+  <span class="header-version">v1.15.1</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -314,10 +321,7 @@ function loadBible() {
       var paramChapter = params.get('chapter');
       if (paramBook && bibleData[paramBook]) {
         var ch = paramChapter ? parseInt(paramChapter, 10) : 1;
-        openBook(paramBook);
-        if (bibleData[paramBook][ch]) {
-          openChapter(ch);
-        }
+        openReader(paramBook, bibleData[paramBook][ch] ? ch : 1);
       } else {
         showBooks();
       }
@@ -522,7 +526,9 @@ function doSearch() {
 
 function openChapter_search(book, chapter) {
   currentBook = book;
-  openChapter(chapter);
+  navStack = [showBooks];
+  updateBackBtn(true);
+  openReader(book, chapter);
 }
 
 function clearSearch() {
