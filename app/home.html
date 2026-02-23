@@ -268,6 +268,7 @@ window.addEventListener('appinstalled', () => {
 
 // ── Service Worker update detection ──────────────────────────────────────────
 let pendingWorker = null;
+let isUpdating = false;
 
 function showUpdateBanner() {
   document.getElementById('update-banner').classList.add('visible');
@@ -278,6 +279,7 @@ function dismissUpdate() {
 function applyUpdate() {
   if (pendingWorker) {
     // Tell the waiting SW to take over, then reload
+    isUpdating = true;
     pendingWorker.postMessage('SKIP_WAITING');
   } else {
     window.location.reload();
@@ -304,9 +306,12 @@ if ('serviceWorker' in navigator) {
     });
   }).catch(err => console.warn('SW registration failed:', err));
 
-  // Reload when the new SW takes control
+  // Only reload after the user has explicitly clicked "Jetzt aktualisieren"
+  // (isUpdating=true). Without this guard, clients.claim() in the SW activate
+  // handler would fire controllerchange on first visit and reload the page
+  // before the update banner can ever be shown.
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    window.location.reload();
+    if (isUpdating) window.location.reload();
   });
 }
 </script>
