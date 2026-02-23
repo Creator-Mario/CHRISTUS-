@@ -196,6 +196,14 @@
       install_not_available: 'App kann im Browser bereits offline genutzt werden.',
       install_already: 'App ist bereits installiert.',
 
+      // Share
+      share_label: 'App teilen',
+      share_sub: 'Link zur App an andere weitergeben',
+      share_btn: '🔗 Teilen',
+      share_text: 'Schau dir diese christliche Glaubensbildungs-App an: ',
+      share_copied: 'Link kopiert! ✓',
+      share_not_supported: 'Link: https://creator-mario.github.io/CHRISTUS-/',
+
       // Copyright
       copyright_text: '© Mario Reiner Denzer',
       copyright_sub: 'Alle Rechte vorbehalten'
@@ -394,6 +402,14 @@
       install_sub: 'Install app on device (available offline)',
       install_not_available: 'App can already be used offline in the browser.',
       install_already: 'App is already installed.',
+
+      // Share
+      share_label: 'Share App',
+      share_sub: 'Send the app link to others',
+      share_btn: '🔗 Share',
+      share_text: 'Check out this Christian faith education app: ',
+      share_copied: 'Link copied! ✓',
+      share_not_supported: 'Link: https://creator-mario.github.io/CHRISTUS-/',
 
       // Copyright
       copyright_text: '© Mario Reiner Denzer',

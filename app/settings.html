@@ -127,6 +127,10 @@ button{font-family:inherit;cursor:pointer}
   <div class="section">
     <div class="section-header" data-i18n="app_section">App</div>
     <div class="setting-row">
+      <div><div class="setting-label" data-i18n="share_label">App teilen</div><div class="setting-sub" data-i18n="share_sub">Link zur App an andere weitergeben</div></div>
+      <button class="setting-action" id="share-btn" data-i18n="share_btn" onclick="shareApp()">🔗 Teilen</button>
+    </div>
+    <div class="setting-row">
       <div><div class="setting-label" data-i18n="install_label">App installieren</div><div class="setting-sub" data-i18n="install_sub">App auf Gerät installieren (offline verfügbar)</div></div>
       <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
     </div>
@@ -332,6 +336,21 @@ async function downloadOffline() {
 function logout() {
   localStorage.removeItem('christus_session');
   window.location.href = 'login.html';
+}
+
+function shareApp() {
+  var url = 'https://creator-mario.github.io/CHRISTUS-/';
+  var title = 'CHRISTUS – Glaubensbildung & Nachfolge';
+  var text = t('share_text');
+  if (navigator.share) {
+    navigator.share({ title: title, text: text, url: url }).catch(function() {});
+  } else if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function() {
+      showMsg(t('share_copied'));
+    }).catch(function() { showMsg(t('share_not_supported')); });
+  } else {
+    showMsg(t('share_not_supported'));
+  }
 }
 
 // PWA Install
