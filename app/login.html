@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f4d03f">
+<title>CHRISTUS – Anmelden</title>
+<link rel="manifest" href="manifest.json">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
+  --gold:#f4d03f;--gold2:#e8c129;--text:#e8eef4;--muted:#7a8fa8;
+  --green:#2ecc71;--blue:#3498db;--red:#e74c3c;
+  --radius:14px;--radius-sm:9px;
+}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+a{color:var(--gold);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.logo{text-align:center;font-size:52px;margin-bottom:8px}
+.app-name{text-align:center;font-size:1.8rem;font-weight:700;letter-spacing:3px;color:var(--gold);margin-bottom:4px}
+.version{text-align:center;font-size:.72rem;color:var(--muted);margin-bottom:28px}
+.tabs{display:flex;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px;gap:4px}
+.tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-size:.88rem;font-weight:600;border-radius:7px;transition:.2s}
+.tab.active{background:var(--gold);color:#1a1a2e}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px;font-weight:600}
+input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-size:.95rem;outline:none;transition:.2s;font-family:inherit}
+input:focus{border-color:var(--gold)}
+.btn-primary{width:100%;padding:13px;background:var(--gold);color:#1a1a2e;font-size:1rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:8px;transition:.2s}
+.btn-primary:hover{background:var(--gold2)}
+.divider{text-align:center;color:var(--muted);font-size:.8rem;margin:16px 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
+.divider::before{left:0}.divider::after{right:0}
+.profiles{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.profile-item{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer;transition:.2s}
+.profile-item:hover{border-color:var(--gold)}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#1a1a2e;flex-shrink:0}
+.profile-name{font-weight:600;font-size:.9rem}
+.profile-sub{font-size:.75rem;color:var(--muted)}
+.msg{font-size:.82rem;text-align:center;margin-top:10px;min-height:18px}
+.msg.error{color:var(--red)}
+.msg.success{color:var(--green)}
+.guest-btn{width:100%;padding:10px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:.88rem;border-radius:var(--radius-sm);margin-top:8px;transition:.2s}
+.guest-btn:hover{border-color:var(--gold);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">✝</div>
+  <div class="app-name">CHRISTUS</div>
+  <div class="version">Version 1.10 · Glaubensbildung &amp; Nachfolge</div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-login" onclick="showTab('login')">Anmelden</button>
+    <button class="tab" id="tab-register" onclick="showTab('register')">Registrieren</button>
+  </div>
+
+  <!-- LOGIN TAB -->
+  <div id="panel-login">
+    <div id="saved-profiles"></div>
+    <div id="login-divider" class="divider" style="display:none">oder manuell</div>
+    <div class="form-group">
+      <label for="login-name">Benutzername</label>
+      <input type="text" id="login-name" placeholder="Dein Name" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label for="login-pin">PIN (4-stellig)</label>
+      <input type="password" id="login-pin" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Anmelden →</button>
+    <div class="msg" id="login-msg"></div>
+    <button class="guest-btn" onclick="doGuest()">👤 Als Gast fortfahren</button>
+  </div>
+
+  <!-- REGISTER TAB -->
+  <div id="panel-register" style="display:none">
+    <div class="form-group">
+      <label for="reg-name">Benutzername</label>
+      <input type="text" id="reg-name" placeholder="Wie heißt du?" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label for="reg-pin">PIN wählen (4-stellig)</label>
+      <input type="password" id="reg-pin" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label for="reg-pin2">PIN bestätigen</label>
+      <input type="password" id="reg-pin2" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <button class="btn-primary" onclick="doRegister()">Konto erstellen →</button>
+    <div class="msg" id="reg-msg"></div>
+  </div>
+</div>
+
+<script>
+const VERSION = '1.10';
+
+function getUsers() {
+  return JSON.parse(localStorage.getItem('christus_users') || '{}');
+}
+function saveUsers(u) {
+  localStorage.setItem('christus_users', JSON.stringify(u));
+}
+function setSession(name) {
+  localStorage.setItem('christus_session', JSON.stringify({ name, time: Date.now() }));
+}
+
+function showTab(t) {
+  document.getElementById('panel-login').style.display = t === 'login' ? '' : 'none';
+  document.getElementById('panel-register').style.display = t === 'register' ? '' : 'none';
+  document.getElementById('tab-login').classList.toggle('active', t === 'login');
+  document.getElementById('tab-register').classList.toggle('active', t === 'register');
+}
+
+function renderProfiles() {
+  const users = getUsers();
+  const names = Object.keys(users);
+  const el = document.getElementById('saved-profiles');
+  const div = document.getElementById('login-divider');
+  if (names.length === 0) { el.innerHTML = ''; div.style.display = 'none'; return; }
+  div.style.display = '';
+  el.innerHTML = names.map(n => {
+    const initials = n.substring(0, 2).toUpperCase();
+    const last = users[n].lastLogin ? new Date(users[n].lastLogin).toLocaleDateString('de') : '';
+    return '<div class="profile-item" onclick="quickLogin(' + JSON.stringify(n) + ')">' +
+      '<div class="avatar">' + initials + '</div>' +
+      '<div><div class="profile-name">' + escHtml(n) + '</div>' +
+      '<div class="profile-sub">' + (last ? 'Zuletzt: ' + last : 'Tippe zum Anmelden') + '</div></div>' +
+      '</div>';
+  }).join('');
+}
+
+function quickLogin(name) {
+  document.getElementById('login-name').value = name;
+  document.getElementById('login-pin').focus();
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  const pin  = document.getElementById('login-pin').value.trim();
+  const msg  = document.getElementById('login-msg');
+  if (!name || !pin) { msg.className = 'msg error'; msg.textContent = 'Bitte alle Felder ausfüllen.'; return; }
+  const users = getUsers();
+  if (!users[name]) { msg.className = 'msg error'; msg.textContent = 'Benutzer nicht gefunden. Bitte registrieren.'; return; }
+  if (users[name].pin !== pin) { msg.className = 'msg error'; msg.textContent = 'Falsche PIN. Bitte erneut versuchen.'; return; }
+  users[name].lastLogin = Date.now();
+  saveUsers(users);
+  setSession(name);
+  msg.className = 'msg success'; msg.textContent = 'Willkommen zurück, ' + name + '!';
+  setTimeout(() => { window.location.href = 'home.html'; }, 600);
+}
+
+function doRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const pin  = document.getElementById('reg-pin').value.trim();
+  const pin2 = document.getElementById('reg-pin2').value.trim();
+  const msg  = document.getElementById('reg-msg');
+  if (!name || !pin || !pin2) { msg.className = 'msg error'; msg.textContent = 'Bitte alle Felder ausfüllen.'; return; }
+  if (!/^\d{4}$/.test(pin)) { msg.className = 'msg error'; msg.textContent = 'PIN muss genau 4 Ziffern enthalten.'; return; }
+  if (pin !== pin2) { msg.className = 'msg error'; msg.textContent = 'PINs stimmen nicht überein.'; return; }
+  const users = getUsers();
+  if (users[name]) { msg.className = 'msg error'; msg.textContent = 'Benutzername bereits vergeben.'; return; }
+  users[name] = { pin, created: Date.now(), lastLogin: Date.now(), progress: {} };
+  saveUsers(users);
+  setSession(name);
+  msg.className = 'msg success'; msg.textContent = 'Konto erstellt! Willkommen, ' + name + '!';
+  setTimeout(() => { window.location.href = 'home.html'; }, 700);
+}
+
+function doGuest() {
+  setSession('Gast');
+  window.location.href = 'home.html';
+}
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/app/sw.js').catch(() => {});
+}
+
+// Check active session
+const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+if (session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000)) {
+  window.location.href = 'home.html';
+}
+
+renderProfiles();
+</script>
+</body>
+</html>

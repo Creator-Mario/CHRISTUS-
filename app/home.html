@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f4d03f">
+<title>CHRISTUS – Startseite</title>
+<link rel="manifest" href="manifest.json">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
+  --gold:#f4d03f;--gold2:#e8c129;--text:#e8eef4;--muted:#7a8fa8;
+  --green:#2ecc71;--blue:#3498db;--red:#e74c3c;
+  --radius:14px;--radius-sm:9px;
+}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+a{color:var(--gold);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-logo{font-size:22px;color:var(--gold);font-weight:800;letter-spacing:2px}
+.header-version{font-size:.7rem;background:rgba(244,208,63,.15);color:var(--gold);padding:2px 7px;border-radius:10px}
+.avatar-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;font-size:14px;font-weight:700;color:#1a1a2e;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.main{padding:20px;max-width:700px;margin:0 auto;padding-bottom:80px}
+.greeting{margin-bottom:24px}
+.greeting-line{font-size:1.5rem;font-weight:700;margin-bottom:4px}
+.greeting-sub{font-size:.88rem;color:var(--muted)}
+.progress-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:24px}
+.progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-label span{font-size:.85rem;color:var(--muted)}
+.progress-label strong{font-size:.95rem;color:var(--gold)}
+.progress-bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:4px;transition:.4s}
+.progress-stats{display:flex;gap:16px;margin-top:12px}
+.prog-stat{text-align:center;flex:1}
+.prog-stat .n{font-size:1.3rem;font-weight:700;color:var(--gold)}
+.prog-stat .l{font-size:.72rem;color:var(--muted)}
+.section-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.action-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 16px;text-decoration:none;color:var(--text);transition:.2s;display:flex;flex-direction:column;align-items:flex-start;gap:8px;position:relative;overflow:hidden}
+.action-card::after{content:'›';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.4rem}
+.action-card:hover{border-color:var(--gold);background:var(--surface2);transform:translateY(-1px)}
+.action-card.primary{grid-column:1/-1;background:linear-gradient(135deg,#1e3a5f,#223044);border-color:#3a5f8a}
+.action-card.primary:hover{border-color:var(--gold)}
+.action-icon{font-size:28px}
+.action-label{font-weight:700;font-size:.95rem}
+.action-desc{font-size:.78rem;color:var(--muted)}
+.recent-section{margin-bottom:24px}
+.recent-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.recent-item:last-child{border-bottom:none}
+.recent-nr{background:rgba(244,208,63,.12);color:var(--gold);padding:3px 9px;border-radius:6px;font-size:.78rem;font-weight:700;min-width:40px;text-align:center}
+.recent-title{font-size:.88rem;font-weight:600}
+.recent-cat{font-size:.75rem;color:var(--muted)}
+.recent-btn{margin-left:auto;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;font-size:.78rem;cursor:pointer;transition:.2s;white-space:nowrap}
+.recent-btn:hover{border-color:var(--gold);color:var(--gold)}
+.empty-recent{color:var(--muted);font-size:.88rem;padding:12px 0}
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100}
+.bottom-nav a{flex:1;padding:10px 4px;text-align:center;font-size:.68rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;transition:.2s}
+.bottom-nav a .nav-icon{font-size:20px}
+.bottom-nav a.active,.bottom-nav a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="header-left">
+    <span style="font-size:22px">✝</span>
+    <span class="header-logo">CHRISTUS</span>
+    <span class="header-version">v1.10</span>
+  </div>
+  <button class="avatar-btn" id="avatar-btn" onclick="window.location.href='settings.html'" title="Profil & Einstellungen"></button>
+</header>
+
+<main class="main">
+  <div class="greeting">
+    <div class="greeting-line" id="greeting-line">Guten Tag!</div>
+    <div class="greeting-sub" id="greeting-sub">Willkommen in deiner Glaubensbildungs-App</div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Lernfortschritt</span>
+      <strong id="prog-pct">0%</strong>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="progress-stats">
+      <div class="prog-stat"><div class="n" id="prog-done">0</div><div class="l">Abgeschlossen</div></div>
+      <div class="prog-stat"><div class="n">42</div><div class="l">Module gesamt</div></div>
+      <div class="prog-stat"><div class="n" id="prog-remain">42</div><div class="l">Ausstehend</div></div>
+    </div>
+  </div>
+
+  <p class="section-title">Schnellzugriff</p>
+  <div class="action-grid">
+    <a href="learn.html" class="action-card primary">
+      <span class="action-icon">📚</span>
+      <span class="action-label">Lernbereich</span>
+      <span class="action-desc">7 Kategorien · 42 Module · Vollständige Glaubensbildung</span>
+    </a>
+    <a href="learn.html#glossary" class="action-card" onclick="localStorage.setItem('learn_screen','glossary')">
+      <span class="action-icon">📘</span>
+      <span class="action-label">Glossar</span>
+      <span class="action-desc">Schlüsselbegriffe</span>
+    </a>
+    <a href="settings.html" class="action-card">
+      <span class="action-icon">⚙️</span>
+      <span class="action-label">Einstellungen</span>
+      <span class="action-desc">Profil & Sprache</span>
+    </a>
+  </div>
+
+  <p class="section-title">Zuletzt bearbeitet</p>
+  <div id="recent-list"></div>
+</main>
+
+<nav class="bottom-nav">
+  <a href="home.html" class="active">
+    <span class="nav-icon">🏠</span><span>Start</span>
+  </a>
+  <a href="learn.html">
+    <span class="nav-icon">📚</span><span>Lernen</span>
+  </a>
+  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')">
+    <span class="nav-icon">📘</span><span>Glossar</span>
+  </a>
+  <a href="settings.html">
+    <span class="nav-icon">⚙️</span><span>Profil</span>
+  </a>
+</nav>
+
+<script>
+function greet(name) {
+  const h = new Date().getHours();
+  const time = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+  document.getElementById('greeting-line').textContent = time + (name && name !== 'Gast' ? ', ' + name + '!' : '!');
+  if (name && name !== 'Gast') {
+    document.getElementById('greeting-sub').textContent = 'Schön, dass du wieder da bist.';
+    document.getElementById('avatar-btn').textContent = name.substring(0,2).toUpperCase();
+  } else {
+    document.getElementById('avatar-btn').textContent = '👤';
+  }
+}
+
+function loadProgress() {
+  const done = new Set(JSON.parse(localStorage.getItem('christus_done') || '[]'));
+  const n = done.size; const total = 42; const pct = Math.round(n / total * 100);
+  document.getElementById('prog-done').textContent = n;
+  document.getElementById('prog-remain').textContent = total - n;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+function loadRecent() {
+  const recent = JSON.parse(localStorage.getItem('christus_recent') || '[]');
+  const el = document.getElementById('recent-list');
+  if (recent.length === 0) {
+    el.innerHTML = '<div class="empty-recent">Noch keine Module gestartet. Öffne den Lernbereich!</div>';
+    return;
+  }
+  el.innerHTML = recent.slice(0,4).map(m =>
+    '<div class="recent-item">' +
+    '<div class="recent-nr">' + m.nr + '</div>' +
+    '<div><div class="recent-title">' + m.title + '</div>' +
+    '<div class="recent-cat">' + m.cat + '</div></div>' +
+    '<button class="recent-btn" onclick=\'openModule(' + JSON.stringify(m.nr) + ')\'>Weiter →</button>' +
+    '</div>'
+  ).join('');
+}
+
+function openModule(nr) {
+  localStorage.setItem('learn_open_module', nr);
+  window.location.href = 'learn.html';
+}
+
+// Init
+const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+if (!session) { window.location.href = 'login.html'; }
+else {
+  greet(session.name);
+  loadProgress();
+  loadRecent();
+}
+</script>
+</body>
+</html>
