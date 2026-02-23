@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#f4d03f">
 <title>CHRISTUS v1.10 – Lernbereich</title>
 <link rel="manifest" href="manifest.json">
+<script src="translations.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -106,19 +107,19 @@ a{color:var(--gold);text-decoration:none}
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
   <span class="header-version">v1.10</span>
-  <span class="breadcrumb" id="breadcrumb">Lernbereich</span>
-  <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none">&#8592; Zur&#252;ck</button>
+  <span class="breadcrumb" id="breadcrumb" data-i18n="learn_area">Lernbereich</span>
+  <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zur&#252;ck</button>
 </header>
 
 <div class="screen active" id="screen-overview">
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Kategorien</div></div>
-    <div class="stat-card"><div class="stat-num">42</div><div class="stat-label">Module</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-done">0</div><div class="stat-label">Fertig</div></div>
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label" data-i18n="categories_label">Kategorien</div></div>
+    <div class="stat-card"><div class="stat-num">42</div><div class="stat-label" data-i18n="modules_label">Module</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-done">0</div><div class="stat-label" data-i18n="done_label">Fertig</div></div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-  <h1 class="page-title">&#128218; Lernbereich</h1>
-  <p class="page-sub">W&#228;hle eine Kategorie</p>
+  <h1 class="page-title" id="learn-title">&#128218; Lernbereich</h1>
+  <p class="page-sub" data-i18n="choose_cat">W&#228;hle eine Kategorie</p>
   <div class="cat-grid" id="cat-grid"></div>
 </div>
 
@@ -132,17 +133,17 @@ a{color:var(--gold);text-decoration:none}
 </div>
 
 <div class="screen" id="screen-glossary">
-  <h1 class="page-title">&#128216; Glossar</h1>
-  <p class="page-sub">Schl&#252;sselbegriffe aus allen Modulen</p>
-  <input class="g-search" type="text" placeholder="Begriff suchen&#8230;" oninput="filterGlossary(this.value)" id="g-search">
+  <h1 class="page-title" id="glossary-title">&#128216; Glossar</h1>
+  <p class="page-sub" data-i18n="glossary_sub">Schl&#252;sselbegriffe aus allen Modulen</p>
+  <input class="g-search" type="text" data-i18n-placeholder="search_placeholder" placeholder="Begriff suchen&#8230;" oninput="filterGlossary(this.value)" id="g-search">
   <div class="g-grid" id="g-grid"></div>
 </div>
 
 <nav class="bottom-nav">
-  <a href="home.html"><span class="ni">&#127968;</span><span>Start</span></a>
-  <a onclick="goOverview()" id="nav-learn" class="active"><span class="ni">&#128218;</span><span>Lernen</span></a>
-  <a onclick="openGlossary()" id="nav-glossary"><span class="ni">&#128216;</span><span>Glossar</span></a>
-  <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span>Profil</span></a>
+  <a href="home.html"><span class="ni">&#127968;</span><span data-i18n="nav_home">Start</span></a>
+  <a onclick="goOverview()" id="nav-learn" class="active"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
+  <a onclick="openGlossary()" id="nav-glossary"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Glossar</span></a>
+  <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
 
 <script>
@@ -182,7 +183,7 @@ function showScreen(name) {
 function goBack() { if (navHistory.length) navHistory.pop()(); }
 function goOverview() {
   navHistory = [];
-  document.getElementById('breadcrumb').textContent = 'Lernbereich';
+  document.getElementById('breadcrumb').textContent = t('learn_area');
   buildOverview();
   showScreen('overview');
 }
@@ -198,18 +199,18 @@ function buildOverview() {
       '<div class="cat-icon">' + (CAT_ICONS[nr] || '&#128204;') + '</div>' +
       '<div class="cat-name">' + esc(cat.name) + '</div>' +
       '<div class="cat-sub">' + esc(CAT_SUBS[nr] || '') + '</div>' +
-      '<div class="cat-count">' + cat.modules.length + ' Module' + (dc > 0 ? ' &middot; ' + dc + ' &#10003;' : '') + '</div></div>';
+      '<div class="cat-count">' + cat.modules.length + t('modules_count_suffix') + (dc > 0 ? ' &middot; ' + dc + ' &#10003;' : '') + '</div></div>';
   }).join('');
   updateStats();
 }
 function openCategory(catNr) {
   navHistory = [goOverview];
   const mods = MODULES.filter(m => m.kategorie_nr === catNr);
-  document.getElementById('breadcrumb').innerHTML = 'Lernen &rsaquo; <span>' + esc(mods[0].kategorie) + '</span>';
+  document.getElementById('breadcrumb').innerHTML = t('nav_learn') + ' &rsaquo; <span>' + esc(mods[0].kategorie) + '</span>';
   document.getElementById('cat-header').innerHTML =
     '<div class="cat-header-icon">' + (CAT_ICONS[catNr] || '&#128204;') + '</div>' +
     '<div class="cat-header-text"><div class="cat-title">' + esc(mods[0].kategorie) + '</div>' +
-    '<div class="cat-subtitle">Kat. ' + catNr + ' &middot; ' + esc(CAT_SUBS[catNr] || '') + ' &middot; ' + mods.length + ' Module</div></div>';
+    '<div class="cat-subtitle">' + t('cat_prefix') + catNr + ' &middot; ' + esc(CAT_SUBS[catNr] || '') + ' &middot; ' + mods.length + t('modules_count_suffix') + '</div></div>';
   document.getElementById('module-list').innerHTML = mods.map(m => {
     const isDone = done.has(m.modul_nr);
     return '<div class="module-item" onclick="openModule(\'' + m.modul_nr + '\')">' +
@@ -225,12 +226,12 @@ function openModule(nr) {
   if (!m) return;
   navHistory = [() => openCategory(m.kategorie_nr)];
   localStorage.setItem('_last_module', nr);
-  document.getElementById('breadcrumb').innerHTML = 'Kat. ' + m.kategorie_nr + ' &rsaquo; <span>' + esc(m.modul_nr) + '</span>';
+  document.getElementById('breadcrumb').innerHTML = t('cat_prefix') + m.kategorie_nr + ' &rsaquo; <span>' + esc(m.modul_nr) + '</span>';
   const recent = JSON.parse(localStorage.getItem('christus_recent') || '[]').filter(r => r.nr !== nr);
   recent.unshift({ nr: m.modul_nr, title: m.titel, cat: m.kategorie });
   localStorage.setItem('christus_recent', JSON.stringify(recent.slice(0,8)));
   const sk = m.schluesselbegriffe.split(',').map(s => s.trim()).filter(Boolean);
-  const qs = m.weiterdenken.split('?').map(s => { const t = s.trim(); return t ? t + '?' : ''; }).filter(s => s.length > 2);
+  const qs = m.weiterdenken.split('?').map(s => { const q = s.trim(); return q ? q + '?' : ''; }).filter(s => s.length > 2);
   function sec(id, icon, label, tag, body) {
     return '<div class="section"><div class="sec-hdr" onclick="toggleSec(\'' + id + '\')" id="hdr-' + id + '">' +
       '<span class="sec-icon">' + icon + '</span><span class="sec-label">' + label + '</span>' +
@@ -239,29 +240,29 @@ function openModule(nr) {
   }
   const sid = nr.replace('.','_');
   let html = '<div class="module-header">' +
-    '<div class="m-nr">Modul ' + esc(m.modul_nr) + ' &middot; ' + esc(m.kategorie) + '</div>' +
+    '<div class="m-nr">' + t('modul_prefix') + ' ' + esc(m.modul_nr) + ' &middot; ' + esc(m.kategorie) + '</div>' +
     '<div class="m-title">' + esc(m.titel) + '</div>' +
     '<div class="m-frage">' + esc(m.fragestellung) + '</div></div>';
-  html += sec(sid+'_frage', '&#10067;', 'Fragestellung', 'Einstieg', '<p style="font-style:italic">' + esc(m.fragestellung) + '</p>');
-  html += sec(sid+'_kern', '&#128273;', 'Kernprinzip', 'Einf&uuml;hrung', nl2p(m.kernprinzip));
+  html += sec(sid+'_frage', '&#10067;', t('sec_fragestellung'), t('sec_frage_tag'), '<p style="font-style:italic">' + esc(m.fragestellung) + '</p>');
+  html += sec(sid+'_kern', '&#128273;', t('sec_kern'), t('sec_kern_tag'), nl2p(m.kernprinzip));
   let bibelH = '<ul class="bible-list">' + m.bibelstellen.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>';
   if (m.uebersetzungen.length) {
-    bibelH += '<h4 style="margin:12px 0 8px;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Begriffe &amp; &Uuml;bersetzungen</h4>';
+    bibelH += '<h4 style="margin:12px 0 8px;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px">' + t('terms_translations') + '</h4>';
     bibelH += '<ul class="begriffe-list">' + m.uebersetzungen.map(u => '<li>' + esc(u) + '</li>').join('') + '</ul>';
   }
-  html += sec(sid+'_bibel', '&#128214;', 'Bibelarbeit', 'Textarbeit', bibelH);
-  html += sec(sid+'_zusammen', '&#128221;', 'Zusammenfassung', 'Freikirchliche Perspektive', nl2p(m.zusammenfassung));
+  html += sec(sid+'_bibel', '&#128214;', t('sec_bibel'), t('sec_bibel_tag'), bibelH);
+  html += sec(sid+'_zusammen', '&#128221;', t('sec_zusammen'), t('sec_zusammen_tag'), nl2p(m.zusammenfassung));
   if (m.querverweise.length) {
-    html += sec(sid+'_qv', '&#128279;', 'Querverweise', 'Vernetzung',
+    html += sec(sid+'_qv', '&#128279;', t('sec_qv'), t('sec_qv_tag'),
       '<ul class="qv-list">' + m.querverweise.map(q => '<li>' + esc(q) + '</li>').join('') + '</ul>');
   }
-  html += sec(sid+'_weiter', '&#128173;', 'Weiterdenken', 'Vertiefung',
+  html += sec(sid+'_weiter', '&#128173;', t('sec_weiter'), t('sec_weiter_tag'),
     '<ul class="q-list">' + qs.map(q => '<li>' + esc(q) + '</li>').join('') + '</ul>');
-  html += sec(sid+'_sk', '&#127991;&#65039;', 'Schl&uuml;sselbegriffe', 'Glossar',
-    '<div class="sk-tags">' + sk.map(t => '<span class="sk-tag" onclick="openGlossaryTerm(\'' + t.replace(/\'/g,'&#39;') + '\')">' + esc(t) + '</span>').join('') + '</div>');
+  html += sec(sid+'_sk', '&#127991;&#65039;', t('sec_sk'), t('sec_sk_tag'),
+    '<div class="sk-tags">' + sk.map(term => '<span class="sk-tag" onclick="openGlossaryTerm(\'' + term.replace(/\'/g,'&#39;') + '\')">' + esc(term) + '</span>').join('') + '</div>');
   const isDone = done.has(nr);
   html += '<button class="done-btn ' + (isDone ? 'done' : '') + '" onclick="toggleDone(\'' + nr + '\')">'  +
-    (isDone ? '&#10003; Abgeschlossen' : 'Als abgeschlossen markieren') + '</button>';
+    (isDone ? t('mark_undone_btn') : t('mark_done_btn')) + '</button>';
   document.getElementById('module-content').innerHTML = html;
   toggleSec(sid + '_kern');
   showScreen('module');
@@ -293,26 +294,29 @@ function buildGlossary() {
 }
 function renderGlossary(terms) {
   document.getElementById('g-grid').innerHTML = terms.length ?
-    terms.map(t => '<div class="g-card"><div class="term">' + esc(t.term) + '</div><div class="def">Modul ' + t.modules.join(', ') + '</div></div>').join('') :
-    '<p style="color:var(--muted)">Keine Begriffe gefunden.</p>';
+    terms.map(term => '<div class="g-card"><div class="term">' + esc(term.term) + '</div><div class="def">' + t('modul_prefix') + ' ' + term.modules.join(', ') + '</div></div>').join('') :
+    '<p style="color:var(--muted)">' + t('no_terms') + '</p>';
 }
 function filterGlossary(q) {
-  renderGlossary(allTerms.filter(t => t.term.toLowerCase().includes(q.toLowerCase())));
+  renderGlossary(allTerms.filter(term => term.term.toLowerCase().includes(q.toLowerCase())));
 }
 function openGlossary() {
   navHistory = [goOverview];
-  document.getElementById('breadcrumb').textContent = 'Glossar';
+  document.getElementById('breadcrumb').textContent = t('glossary_area');
   showScreen('glossary');
 }
 function openGlossaryTerm(term) {
   navHistory = [() => { const last = localStorage.getItem('_last_module'); if (last) openModule(last); else goOverview(); }];
-  document.getElementById('breadcrumb').textContent = 'Glossar';
+  document.getElementById('breadcrumb').textContent = t('glossary_area');
   document.getElementById('g-search').value = term;
   filterGlossary(term);
   showScreen('glossary');
 }
 buildOverview();
 buildGlossary();
+applyLang();
+document.getElementById('learn-title').textContent = '📚 ' + t('learn_area');
+document.getElementById('glossary-title').textContent = '📖 ' + t('glossary_area');
 const autoOpen = localStorage.getItem('learn_open_module');
 if (autoOpen) { localStorage.removeItem('learn_open_module'); setTimeout(() => openModule(autoOpen), 50); }
 const autoScreen = localStorage.getItem('learn_screen');

@@ -1,12 +1,27 @@
-// CHRISTUS App v1.10 – Service Worker
+// CHRISTUS App v1.11 – Service Worker
 // Bump APP_VERSION on every release so the old cache is purged automatically.
-const APP_VERSION = '1.10.3';
+const APP_VERSION = '1.11.0';
 const CACHE_STATIC = 'christus-static-' + APP_VERSION;
 const CACHE_PAGES  = 'christus-pages-'  + APP_VERSION;
 
-// ── Install: skip waiting immediately (no pre-caching to avoid path issues) ──
+// Core app pages to pre-cache so the app works offline from the first visit.
+// Paths are relative to the SW location (/app/sw.js → scope /app/).
+const PRECACHE_URLS = [
+  './home.html',
+  './login.html',
+  './learn.html',
+  './settings.html',
+  './manifest.json',
+  './translations.js',
+];
+
+// ── Install: pre-cache core pages, then activate immediately ─────────────────
 self.addEventListener('install', e => {
-  e.waitUntil(self.skipWaiting());
+  e.waitUntil(
+    caches.open(CACHE_PAGES)
+      .then(cache => cache.addAll(PRECACHE_URLS))
+      .then(() => self.skipWaiting())
+  );
 });
 
 // ── Activate: delete all old caches and claim clients ────────────────────────
