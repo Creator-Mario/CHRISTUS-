@@ -45,20 +45,6 @@ button{font-family:inherit;cursor:pointer}
 .version-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--muted);font-size:.82rem}
 .version-card .v{font-size:1.4rem;font-weight:700;color:var(--gold);display:block;margin-bottom:4px}
 .msg{font-size:.82rem;text-align:center;margin-top:8px;min-height:18px;color:var(--green)}
-/* PIN DIALOG */
-.pin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-.pin-overlay.open{display:flex}
-.pin-dialog{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;max-width:340px;width:100%}
-.pin-dialog h3{font-size:1rem;margin-bottom:16px;color:var(--gold)}
-.pin-dialog input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-size:1rem;outline:none;margin-bottom:10px;font-family:inherit;letter-spacing:4px;text-align:center}
-.pin-dialog input:focus{border-color:var(--gold)}
-.pin-dialog-btns{display:flex;gap:8px;margin-top:4px}
-.pin-dialog-btns button{flex:1;padding:10px;border-radius:var(--radius-sm);font-size:.88rem;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit}
-.btn-cancel{background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
-.btn-cancel:hover{border-color:var(--border);color:var(--text)}
-.btn-save{background:var(--gold);border:none;color:#1a1a2e}
-.btn-save:hover{background:var(--gold2)}
-.pin-err{font-size:.78rem;color:var(--red);min-height:16px;margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -80,10 +66,6 @@ button{font-family:inherit;cursor:pointer}
     <div class="section-header">Konto</div>
     <div class="setting-row">
       <div><div class="setting-label">Benutzername</div><div class="setting-sub" id="username-display"></div></div>
-    </div>
-    <div class="setting-row">
-      <div><div class="setting-label">PIN ändern</div><div class="setting-sub">Neuen 4-stelligen PIN setzen</div></div>
-      <button class="setting-action" onclick="changePin()">Ändern</button>
     </div>
     <div class="setting-row">
       <div><div class="setting-label">Lernfortschritt</div><div class="setting-sub" id="prog-info"></div></div>
@@ -126,20 +108,6 @@ button{font-family:inherit;cursor:pointer}
   <div class="msg" id="msg"></div>
 </main>
 
-<!-- PIN change dialog -->
-<div class="pin-overlay" id="pin-overlay">
-  <div class="pin-dialog">
-    <h3>🔒 PIN ändern</h3>
-    <input type="password" id="pin-new" placeholder="Neuer PIN" maxlength="4" inputmode="numeric" autocomplete="new-password">
-    <input type="password" id="pin-new2" placeholder="PIN bestätigen" maxlength="4" inputmode="numeric" autocomplete="new-password">
-    <div class="pin-err" id="pin-err"></div>
-    <div class="pin-dialog-btns">
-      <button class="btn-cancel" onclick="closePinDialog()">Abbrechen</button>
-      <button class="btn-save" onclick="savePinDialog()">Speichern</button>
-    </div>
-  </div>
-</div>
-
 <script>
 function showMsg(t, err) {
   const m = document.getElementById('msg');
@@ -175,33 +143,6 @@ function setLang(lang) {
   localStorage.setItem('selectedLanguage', lang);
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
   showMsg('Sprache gespeichert.');
-}
-
-function changePin() {
-  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
-  if (!session || session.name === 'Gast') { showMsg('Im Gast-Modus nicht möglich.', true); return; }
-  document.getElementById('pin-new').value = '';
-  document.getElementById('pin-new2').value = '';
-  document.getElementById('pin-err').textContent = '';
-  document.getElementById('pin-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('pin-new').focus(), 50);
-}
-function closePinDialog() {
-  document.getElementById('pin-overlay').classList.remove('open');
-}
-function savePinDialog() {
-  const p1 = document.getElementById('pin-new').value.trim();
-  const p2 = document.getElementById('pin-new2').value.trim();
-  const errEl = document.getElementById('pin-err');
-  if (!/^\d{4}$/.test(p1)) { errEl.textContent = 'PIN muss genau 4 Ziffern sein.'; return; }
-  if (p1 !== p2) { errEl.textContent = 'PINs stimmen nicht überein.'; return; }
-  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
-  const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
-  if (!users[session.name]) { errEl.textContent = 'Benutzer nicht gefunden.'; return; }
-  users[session.name].pin = p1;
-  localStorage.setItem('christus_users', JSON.stringify(users));
-  closePinDialog();
-  showMsg('PIN erfolgreich geändert!');
 }
 
 function resetProgress() {

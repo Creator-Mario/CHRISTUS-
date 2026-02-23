@@ -68,10 +68,6 @@ input:focus{border-color:var(--gold)}
       <label for="login-name">Benutzername</label>
       <input type="text" id="login-name" placeholder="Dein Name" autocomplete="username">
     </div>
-    <div class="form-group">
-      <label for="login-pin">PIN (4-stellig)</label>
-      <input type="password" id="login-pin" placeholder="••••" maxlength="4" inputmode="numeric">
-    </div>
     <button class="btn-primary" onclick="doLogin()">Anmelden →</button>
     <div class="msg" id="login-msg"></div>
     <button class="guest-btn" onclick="doGuest()">👤 Als Gast fortfahren</button>
@@ -82,14 +78,6 @@ input:focus{border-color:var(--gold)}
     <div class="form-group">
       <label for="reg-name">Benutzername</label>
       <input type="text" id="reg-name" placeholder="Wie heißt du?" autocomplete="username">
-    </div>
-    <div class="form-group">
-      <label for="reg-pin">PIN wählen (4-stellig)</label>
-      <input type="password" id="reg-pin" placeholder="••••" maxlength="4" inputmode="numeric">
-    </div>
-    <div class="form-group">
-      <label for="reg-pin2">PIN bestätigen</label>
-      <input type="password" id="reg-pin2" placeholder="••••" maxlength="4" inputmode="numeric">
     </div>
     <button class="btn-primary" onclick="doRegister()">Konto erstellen →</button>
     <div class="msg" id="reg-msg"></div>
@@ -135,8 +123,12 @@ function renderProfiles() {
 }
 
 function quickLogin(name) {
-  document.getElementById('login-name').value = name;
-  document.getElementById('login-pin').focus();
+  // Tap on a saved profile → log in immediately without re-entering name
+  const users = getUsers();
+  users[name].lastLogin = Date.now();
+  saveUsers(users);
+  setSession(name);
+  window.location.href = 'home.html';
 }
 
 function escHtml(s) {
@@ -145,12 +137,10 @@ function escHtml(s) {
 
 function doLogin() {
   const name = document.getElementById('login-name').value.trim();
-  const pin  = document.getElementById('login-pin').value.trim();
   const msg  = document.getElementById('login-msg');
-  if (!name || !pin) { msg.className = 'msg error'; msg.textContent = 'Bitte alle Felder ausfüllen.'; return; }
+  if (!name) { msg.className = 'msg error'; msg.textContent = 'Bitte gib deinen Namen ein.'; return; }
   const users = getUsers();
   if (!users[name]) { msg.className = 'msg error'; msg.textContent = 'Benutzer nicht gefunden. Bitte registrieren.'; return; }
-  if (users[name].pin !== pin) { msg.className = 'msg error'; msg.textContent = 'Falsche PIN. Bitte erneut versuchen.'; return; }
   users[name].lastLogin = Date.now();
   saveUsers(users);
   setSession(name);
@@ -160,15 +150,11 @@ function doLogin() {
 
 function doRegister() {
   const name = document.getElementById('reg-name').value.trim();
-  const pin  = document.getElementById('reg-pin').value.trim();
-  const pin2 = document.getElementById('reg-pin2').value.trim();
   const msg  = document.getElementById('reg-msg');
-  if (!name || !pin || !pin2) { msg.className = 'msg error'; msg.textContent = 'Bitte alle Felder ausfüllen.'; return; }
-  if (!/^\d{4}$/.test(pin)) { msg.className = 'msg error'; msg.textContent = 'PIN muss genau 4 Ziffern enthalten.'; return; }
-  if (pin !== pin2) { msg.className = 'msg error'; msg.textContent = 'PINs stimmen nicht überein.'; return; }
+  if (!name) { msg.className = 'msg error'; msg.textContent = 'Bitte gib deinen Namen ein.'; return; }
   const users = getUsers();
   if (users[name]) { msg.className = 'msg error'; msg.textContent = 'Benutzername bereits vergeben.'; return; }
-  users[name] = { pin, created: Date.now(), lastLogin: Date.now(), progress: {} };
+  users[name] = { created: Date.now(), lastLogin: Date.now(), progress: {} };
   saveUsers(users);
   setSession(name);
   msg.className = 'msg success'; msg.textContent = 'Konto erstellt! Willkommen, ' + name + '!';

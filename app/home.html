@@ -62,9 +62,24 @@ button{font-family:inherit;cursor:pointer}
 .bottom-nav a{flex:1;padding:10px 4px;text-align:center;font-size:.68rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;transition:.2s}
 .bottom-nav a .nav-icon{font-size:20px}
 .bottom-nav a.active,.bottom-nav a:hover{color:var(--gold)}
+/* UPDATE BANNER */
+.update-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:#1a3a5f;border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s ease;font-size:.85rem}
+.update-banner.visible{transform:translateY(0)}
+.update-banner .upd-text{flex:1;color:var(--text)}
+.update-banner .upd-text strong{color:var(--gold)}
+.update-btn{background:var(--gold);color:#1a1a2e;border:none;border-radius:7px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s}
+.update-btn:hover{background:var(--gold2)}
+.update-dismiss{background:transparent;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:2px 6px;line-height:1}
 </style>
 </head>
 <body>
+<!-- Update available banner (hidden until SW detects new version) -->
+<div class="update-banner" id="update-banner">
+  <span class="upd-text">&#128260; <strong>Update verfügbar!</strong> Neue Version der App bereit.</span>
+  <button class="update-btn" onclick="applyUpdate()">Jetzt aktualisieren</button>
+  <button class="update-dismiss" onclick="dismissUpdate()" title="Schließen">&#10005;</button>
+</div>
+
 <header class="app-header">
   <div class="header-left">
     <span style="font-size:22px">✝</span>
@@ -182,6 +197,50 @@ else {
   greet(session.name);
   loadProgress();
   loadRecent();
+}
+
+// ── Service Worker update detection ──────────────────────────────────────────
+let pendingWorker = null;
+
+function showUpdateBanner() {
+  document.getElementById('update-banner').classList.add('visible');
+}
+function dismissUpdate() {
+  document.getElementById('update-banner').classList.remove('visible');
+}
+function applyUpdate() {
+  if (pendingWorker) {
+    // Tell the waiting SW to take over, then reload
+    pendingWorker.postMessage('SKIP_WAITING');
+  } else {
+    window.location.reload();
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/app/sw.js').then(reg => {
+    // A new SW is already waiting when the page opens
+    if (reg.waiting) {
+      pendingWorker = reg.waiting;
+      showUpdateBanner();
+    }
+    // A new SW installs while the page is open
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      if (!newWorker) return;
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          pendingWorker = newWorker;
+          showUpdateBanner();
+        }
+      });
+    });
+  }).catch(err => console.warn('SW registration failed:', err));
+
+  // Reload when the new SW takes control
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
 }
 </script>
 </body>

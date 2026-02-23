@@ -28,7 +28,24 @@
     <script>
         // Register Service Worker for offline support
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/app/sw.js').catch(() => {});
+            navigator.serviceWorker.register('/app/sw.js').then(reg => {
+                // When a new SW is installed and waiting, tell it to activate immediately
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    if (!newWorker) return;
+                    newWorker.addEventListener('statechange', () => {
+                        // New SW is installed & waiting – send SKIP_WAITING so it activates
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            newWorker.postMessage('SKIP_WAITING');
+                        }
+                    });
+                });
+            }).catch(err => console.warn('SW registration failed:', err));
+
+            // When SW controller changes (new SW took over), reload to get fresh pages
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+            });
         }
         // Route: active session → home, else → login
         const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
