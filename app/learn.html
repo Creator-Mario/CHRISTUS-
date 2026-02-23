@@ -143,6 +143,7 @@ a{color:var(--gold);text-decoration:none}
   <a href="home.html"><span class="ni">&#127968;</span><span data-i18n="nav_home">Start</span></a>
   <a onclick="goOverview()" id="nav-learn" class="active"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
+  <a href="themen.html"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
   <a onclick="openGlossary()" id="nav-glossary"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Glossar</span></a>
   <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
@@ -168,6 +169,64 @@ function updateStats() {
 }
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── Bible reference → bible.html URL ─────────────────────────────────────────
+const BOOK_MAP_LEARN = {
+  '1. mose':'1 Mose','2. mose':'2 Mose','3. mose':'3 Mose','4. mose':'4 Mose','5. mose':'5 Mose',
+  'josua':'Josua','richter':'Richter','rut':'Rut','ruth':'Rut',
+  '1. samuel':'1 Samuel','2. samuel':'2 Samuel',
+  '1. könige':'1 Koenige','2. könige':'2 Koenige',
+  '1. chronik':'1 Chronik','2. chronik':'2 Chronik',
+  'esra':'Esra','nehemia':'Nehemia','ester':'Ester','esther':'Ester',
+  'hiob':'Job','job':'Job',
+  'psalm':'Psalm','psalmen':'Psalm',
+  'sprüche':'Sprueche','prediger':'Prediger','hohelied':'Hohelied',
+  'jesaja':'Jesaja','jeremia':'Jeremia','klagelieder':'Klagelieder',
+  'hesekiel':'Hesekiel','daniel':'Daniel','hosea':'Hosea','joel':'Joel','amos':'Amos',
+  'obadja':'Obadja','jona':'Jona','micha':'Mica','mica':'Mica',
+  'nahum':'Nahum','habakuk':'Habakuk','zephanja':'Zephanja',
+  'haggai':'Haggai','sacharja':'Sacharja','maleachi':'Maleachi',
+  'matthäus':'Matthaeus','markus':'Markus','lukas':'Lukas','johannes':'Johannes',
+  'apostelgeschichte':'Apostelgeschichte',
+  'römer':'Roemers','roemer':'Roemers',
+  '1. korinther':'1 Korinther','2. korinther':'2 Korinther',
+  'galater':'Galater','epheser':'Epheser','philipper':'Philipper','kolosser':'Kolosser',
+  '1. thessalonicher':'1 Thessalonicher','2. thessalonicher':'2 Thessalonicher',
+  '1. timotheus':'1 Timotheus','2. timotheus':'2 Timotheus',
+  'titus':'Titus','philemon':'Philemon','hebräer':'Hebraeer',
+  'jakobus':'Jakobus',
+  '1. petrus':'1 Petrus','2. petrus':'2 Petrus',
+  '1. johannes':'1 Johannes','2. johannes':'2 Johannes','3. johannes':'3 Johannes',
+  'judas':'Judas','offenbarung':'Offenbarung'
+};
+
+function parseBibleRefLearn(refStr) {
+  const s = refStr.trim();
+  let m = s.match(/^((?:\d+\.\s*)?[A-Za-zÄÖÜäöüß]+(?:\s+[A-Za-zÄÖÜäöüß]+)?)\s+(\d+)[,;:]/);
+  if (!m) m = s.match(/^((?:\d+\.\s*)?[A-Za-zÄÖÜäöüß]+(?:\s+[A-Za-zÄÖÜäöüß]+)?)\s+(\d+)$/);
+  if (!m) return null;
+  const csvBook = BOOK_MAP_LEARN[m[1].trim().toLowerCase()];
+  if (!csvBook) return null;
+  return { book: csvBook, chapter: parseInt(m[2], 10) };
+}
+
+function bibleHref(refStr) {
+  const p = parseBibleRefLearn(refStr);
+  if (!p) return null;
+  return 'bible.html?book=' + encodeURIComponent(p.book) + '&chapter=' + p.chapter;
+}
+
+function bibelListItem(b) {
+  // Try to extract the reference part (before the first ':')
+  const colonIdx = b.indexOf(':');
+  const ref = colonIdx > 0 ? b.substring(0, colonIdx).trim() : b;
+  const rest = colonIdx > 0 ? b.substring(colonIdx) : '';
+  const url = bibleHref(ref);
+  if (url) {
+    return '<li><a href="' + esc(url) + '" style="color:var(--gold);font-weight:700;text-decoration:none" title="In Bibel öffnen">&#128214; ' + esc(ref) + '</a>' + esc(rest) + '</li>';
+  }
+  return '<li>' + esc(b) + '</li>';
 }
 function nl2p(s) {
   const parts = s.split('\n').filter(l => l.trim());
@@ -246,7 +305,7 @@ function openModule(nr) {
     '<div class="m-frage">' + esc(m.fragestellung) + '</div></div>';
   html += sec(sid+'_frage', '&#10067;', t('sec_fragestellung'), t('sec_frage_tag'), '<p style="font-style:italic">' + esc(m.fragestellung) + '</p>');
   html += sec(sid+'_kern', '&#128273;', t('sec_kern'), t('sec_kern_tag'), nl2p(m.kernprinzip));
-  let bibelH = '<ul class="bible-list">' + m.bibelstellen.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>';
+  let bibelH = '<ul class="bible-list">' + m.bibelstellen.map(b => bibelListItem(b)).join('') + '</ul>';
   if (m.uebersetzungen.length) {
     bibelH += '<h4 style="margin:12px 0 8px;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px">' + t('terms_translations') + '</h4>';
     bibelH += '<ul class="begriffe-list">' + m.uebersetzungen.map(u => '<li>' + esc(u) + '</li>').join('') + '</ul>';
@@ -255,7 +314,7 @@ function openModule(nr) {
   html += sec(sid+'_zusammen', '&#128221;', t('sec_zusammen'), t('sec_zusammen_tag'), nl2p(m.zusammenfassung));
   if (m.querverweise.length) {
     html += sec(sid+'_qv', '&#128279;', t('sec_qv'), t('sec_qv_tag'),
-      '<ul class="qv-list">' + m.querverweise.map(q => '<li>' + esc(q) + '</li>').join('') + '</ul>');
+      '<ul class="qv-list">' + m.querverweise.map(q => { const url = bibleHref(q); return url ? '<li><a href="' + esc(url) + '" style="color:var(--gold);text-decoration:none">&#128214; ' + esc(q) + '</a></li>' : '<li>' + esc(q) + '</li>'; }).join('') + '</ul>');
   }
   html += sec(sid+'_weiter', '&#128173;', t('sec_weiter'), t('sec_weiter_tag'),
     '<ul class="q-list">' + qs.map(q => '<li>' + esc(q) + '</li>').join('') + '</ul>');

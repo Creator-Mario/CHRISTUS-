@@ -264,7 +264,19 @@ function loadBible() {
       var parsed = parseCSV(text);
       bibleData = parsed.data;
       bookList  = parsed.books;
-      showBooks();
+      // Check for URL params to open a specific book/chapter
+      var params = new URLSearchParams(window.location.search);
+      var paramBook    = params.get('book');
+      var paramChapter = params.get('chapter');
+      if (paramBook && bibleData[paramBook]) {
+        var ch = paramChapter ? parseInt(paramChapter, 10) : 1;
+        openBook(paramBook);
+        if (bibleData[paramBook][ch]) {
+          openChapter(ch);
+        }
+      } else {
+        showBooks();
+      }
     })
     .catch(function(err) {
       console.error('Bible load error:', err);

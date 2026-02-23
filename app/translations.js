@@ -137,6 +137,10 @@
       nav_themen: 'Themen',
       themen_header: 'Themen',
       themen_sub: 'Alle Glaubensbereiche im Überblick',
+      themen_count_label: 'Themen',
+      themen_cat_label: 'Kategorien',
+      themen_search_placeholder: 'Thema suchen…',
+      themen_no_results: 'Keine Themen gefunden.',
 
       // Install / Download
       install_label: 'App installieren',
@@ -286,6 +290,10 @@
       nav_themen: 'Topics',
       themen_header: 'Topics',
       themen_sub: 'Overview of all faith areas',
+      themen_count_label: 'Topics',
+      themen_cat_label: 'Categories',
+      themen_search_placeholder: 'Search topic…',
+      themen_no_results: 'No topics found.',
 
       // Install / Download
       install_label: 'Install App',
