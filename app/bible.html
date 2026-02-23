@@ -90,7 +90,10 @@ button{font-family:inherit;cursor:pointer}
 .ch-nav-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--surface2)}
 .ch-nav-btn:disabled{opacity:.3;cursor:default}
 .ch-nav-btn:disabled:hover{border-color:var(--border);color:var(--text);background:var(--surface)}
-.ch-label{font-size:.8rem;color:var(--muted);text-align:center;flex-shrink:0}
+.ch-label{font-size:.8rem;color:var(--muted);text-align:center;flex-shrink:0;background:none;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;padding:6px 12px;transition:.15s}
+.ch-label:hover{color:var(--gold);border-color:var(--gold);background:var(--surface2)}
+.reader-header.clickable{cursor:pointer}
+.reader-header.clickable:hover .reader-book{color:var(--gold2)}
 
 /* Verse list */
 .verse-list{list-style:none;padding:0}
@@ -219,7 +222,7 @@ button{font-family:inherit;cursor:pointer}
     <!-- Prev / Next chapter nav -->
     <div class="reader-ch-nav">
       <button class="ch-nav-btn" id="btn-prev-ch" onclick="prevChapter()">&#8592; voriges Kapitel</button>
-      <span class="ch-label" id="ch-label-center"></span>
+      <button class="ch-label" id="ch-label-center" onclick="gotoChapterSelect()" title="Kapitel wählen"></button>
       <button class="ch-nav-btn" id="btn-next-ch" onclick="nextChapter()">nächstes Kapitel &#8594;</button>
     </div>
   </div>
@@ -237,7 +240,7 @@ button{font-family:inherit;cursor:pointer}
   <a href="learn.html" onclick="navGuard(event)"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html" class="active"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
   <a href="themen.html" onclick="navGuard(event)"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
-  <a href="learn.html" onclick="navGuard(event)&&localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
+  <a href="learn.html" onclick="if(navGuard(event))localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
   <a href="settings.html" onclick="navGuard(event)"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
 
@@ -527,6 +530,13 @@ function openReader(bookName, chapter) {
     nextBtn.disabled = chIdx >= allChapters.length - 1;
     document.getElementById('ch-label-center').textContent = 'Kapitel ' + chapter + ' / ' + allChapters.length;
 
+    // Make the reader header clickable to open chapter selection
+    var readerHdr = document.querySelector('#screen-reader .reader-header');
+    if (readerHdr) {
+      readerHdr.classList.add('clickable');
+      readerHdr.onclick = function() { gotoChapterSelect(); };
+    }
+
     showScreen('reader');
 
     // Wait one frame for the DOM/layout to settle after innerHTML update,
@@ -553,6 +563,12 @@ function nextChapter() {
   var chapters = Object.keys(bibleData[currentBook]).map(Number).sort(function(a,b){return a-b;});
   var idx = chapters.indexOf(currentChapter);
   if (idx < chapters.length - 1) openReader(currentBook, chapters[idx + 1]);
+}
+
+function gotoChapterSelect() {
+  navStack = [showBooks];
+  updateBackBtn(true);
+  showChapters(currentBook);
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
