@@ -2,6 +2,15 @@
 (function () {
   var TRANS = {
     de: {
+      // App identity
+      app_name: 'Jesus Christus',
+      app_tagline: 'Retter & Kompass',
+      app_description: 'Dein täglicher Begleiter im Glauben – verständlich, inspirierend.',
+      app_creator: '© Mario Reiner Denzer',
+      app_rights: 'Alle Rechte vorbehalten',
+      lang_de: '🇩🇪 Deutsch',
+      lang_en: '🇬🇧 English',
+
       // Navigation
       nav_home: 'Start',
       nav_learn: 'Lernen',
@@ -140,6 +149,13 @@
       modul_prefix: 'Modul',
       cat_prefix: 'Kat. ',
       modules_count_suffix: ' Module',
+      cat_sub_1: 'Theologie',
+      cat_sub_2: 'Praktische Nachfolge',
+      cat_sub_3: 'Kirche & Beziehungen',
+      cat_sub_4: 'Ethik & Gesellschaft',
+      cat_sub_5: 'Kirchengeschichte',
+      cat_sub_6: 'Spezialthemen',
+      cat_sub_7: 'Lobpreis & Anbetung',
       sec_fragestellung: 'Fragestellung',
       sec_frage_tag: 'Einstieg',
       sec_kern: 'Kernprinzip',
@@ -277,6 +293,15 @@
       copyright_sub: 'Alle Rechte vorbehalten'
     },
     en: {
+      // App identity
+      app_name: 'Jesus Christ',
+      app_tagline: 'Saviour & Compass',
+      app_description: 'Your daily companion in faith – clear, inspiring.',
+      app_creator: '© Mario Reiner Denzer',
+      app_rights: 'All rights reserved',
+      lang_de: '🇩🇪 Deutsch',
+      lang_en: '🇬🇧 English',
+
       // Navigation
       nav_home: 'Home',
       nav_learn: 'Learn',
@@ -415,6 +440,13 @@
       modul_prefix: 'Module',
       cat_prefix: 'Cat. ',
       modules_count_suffix: ' Modules',
+      cat_sub_1: 'Theology',
+      cat_sub_2: 'Practical Discipleship',
+      cat_sub_3: 'Church & Relationships',
+      cat_sub_4: 'Ethics & Society',
+      cat_sub_5: 'Church History',
+      cat_sub_6: 'Special Topics',
+      cat_sub_7: 'Praise & Worship',
       sec_fragestellung: 'Question',
       sec_frage_tag: 'Introduction',
       sec_kern: 'Core Principle',

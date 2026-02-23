@@ -10,12 +10,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
+  --bg:#0e0b1e;--surface:#15112e;--surface2:#1d1840;--border:#302668;
   --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
-body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -10%,rgba(120,60,220,.22) 0%,transparent 60%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 
@@ -154,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.17.0</span>
+  <span class="header-version">v1.17.1</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
