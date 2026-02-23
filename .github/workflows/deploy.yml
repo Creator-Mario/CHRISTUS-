@@ -4,51 +4,47 @@ on:
   push:
     branches:
       - main
-      - copilot/add-learning-modules   # deploy from PR branch until merged
-  workflow_dispatch:                    # allow manual trigger from GitHub UI
+      - copilot/add-learning-modules
+  workflow_dispatch:
 
-# Allow only one concurrent deployment
 concurrency:
-  group: pages
+  group: gh-pages-deploy
   cancel-in-progress: true
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
+    name: Build and deploy to gh-pages branch
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Prepare site files
+      - name: Build site
         run: |
           mkdir -p _site
+          # Copy all app files
           cp -r app _site/
           cp index.html _site/
           cp language_selection.html _site/
           cp Lernprogramm_Bibel.csv _site/
-          cp anleitung.html _site/ 2>/dev/null || true
-          cp DEPLOY.md _site/ 2>/dev/null || true
+          [ -f anleitung.html ] && cp anleitung.html _site/ || true
+          [ -f DEPLOY.md ] && cp DEPLOY.md _site/ || true
           cp -r preview _site/ 2>/dev/null || true
+          # Disable Jekyll so files are served as-is
           touch _site/.nojekyll
 
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '_site'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy to gh-pages branch
+        run: |
+          cd _site
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy CHRISTUS v1.10 [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+          git push --force \
+            "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
+            HEAD:gh-pages
