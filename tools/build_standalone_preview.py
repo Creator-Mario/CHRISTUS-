@@ -698,6 +698,55 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     .lang-flag { font-size: 40px; }
     .lang-name { font-size: 14px; font-weight: 700; color: var(--gold-lt); }
 
+    /* ── PIN Login screen ── */
+    #pin-screen {
+      position: fixed; inset: 0; z-index: 1002;
+      background: linear-gradient(160deg, #08121c 0%, #1a2f45 60%, #0d1b2a 100%);
+      display: none; flex-direction: column; align-items: center;
+      justify-content: center; padding: 32px 24px; text-align: center; gap: 14px;
+    }
+    #pin-screen.visible { display: flex; }
+    .pin-icon { font-size: 48px; color: var(--gold); margin-bottom: 4px; }
+    .pin-title { font-family: Georgia,serif; font-size: 18px; color: var(--gold-lt); font-weight: 700; }
+    .pin-subtitle { font-size: 13px; color: #8ab0cc; }
+    .pin-dots {
+      display: flex; gap: 14px; margin: 18px 0 8px;
+    }
+    .pin-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid var(--gold); background: transparent;
+      transition: background .15s;
+    }
+    .pin-dot.filled { background: var(--gold); }
+    .pin-pad {
+      display: grid; grid-template-columns: repeat(3, 72px);
+      gap: 12px; margin-top: 8px;
+    }
+    .pin-btn {
+      height: 68px; border-radius: 12px;
+      background: rgba(255,255,255,.07); border: 1.5px solid rgba(201,162,39,.25);
+      color: #fff; font-size: 22px; font-weight: 700; cursor: pointer;
+      font-family: 'Segoe UI',sans-serif;
+      transition: background .12s, border-color .12s, transform .1s;
+    }
+    .pin-btn:active { background: rgba(201,162,39,.2); border-color: var(--gold); transform: scale(.95); }
+    .pin-btn.del-btn { font-size: 18px; color: var(--gold); }
+    .pin-btn.ok-btn  { background: var(--gold); color: #0d1b2a; border-color: var(--gold); }
+    .pin-btn.ok-btn:active { background: #a07c18; }
+    #pin-error { font-size: 13px; color: #e06060; min-height: 18px; transition: opacity .3s; }
+    #pin-forgot { margin-top: 16px; font-size: 12px; color: #6090b0; cursor: pointer; text-decoration: underline; }
+    .pin-screen-info { font-size: 11px; color: #506070; max-width: 260px; line-height: 1.5; }
+    /* Lock icon on Notizen tab when locked */
+    #tab-btn-notes.locked::after { content: ' 🔒'; font-size: 11px; }
+    #tab-btn-notes.unlocked::after { content: ' 🔓'; font-size: 11px; }
+    /* Logout btn in notes tab */
+    #notes-logout-btn {
+      font-size: 12px; background: transparent; border: 1px solid rgba(201,162,39,.4);
+      color: var(--gold); border-radius: 16px; padding: 5px 12px; cursor: pointer;
+      margin: 10px 16px 0;
+    }
+    #notes-logout-btn:active { background: rgba(201,162,39,.1); }
+
     /* ── Notes / Comments area ── */
     #passage-notes {
       margin: 20px 16px 8px; background: rgba(201,162,39,.06);
@@ -773,6 +822,36 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       <span class="lang-name">Bahasa Indonesia</span>
     </button>
   </div>
+</div>
+
+<!-- ── PIN Login screen ────────────────────────────────────── -->
+<div id="pin-screen" role="dialog" aria-modal="true" aria-label="PIN eingeben">
+  <div class="pin-icon">🔐</div>
+  <div class="pin-title" id="pin-screen-title" data-i18n="pin_title">Privater Bereich</div>
+  <div class="pin-subtitle" id="pin-screen-sub" data-i18n="pin_subtitle">Bitte PIN eingeben</div>
+  <div class="pin-dots" id="pin-dots">
+    <div class="pin-dot" id="dot0"></div>
+    <div class="pin-dot" id="dot1"></div>
+    <div class="pin-dot" id="dot2"></div>
+    <div class="pin-dot" id="dot3"></div>
+  </div>
+  <div id="pin-error"></div>
+  <div class="pin-pad">
+    <button class="pin-btn" onclick="pinDigit(1)">1</button>
+    <button class="pin-btn" onclick="pinDigit(2)">2</button>
+    <button class="pin-btn" onclick="pinDigit(3)">3</button>
+    <button class="pin-btn" onclick="pinDigit(4)">4</button>
+    <button class="pin-btn" onclick="pinDigit(5)">5</button>
+    <button class="pin-btn" onclick="pinDigit(6)">6</button>
+    <button class="pin-btn" onclick="pinDigit(7)">7</button>
+    <button class="pin-btn" onclick="pinDigit(8)">8</button>
+    <button class="pin-btn" onclick="pinDigit(9)">9</button>
+    <button class="pin-btn pin-btn-cancel" id="pin-cancel-btn" onclick="closePinScreen()">✕</button>
+    <button class="pin-btn" onclick="pinDigit(0)">0</button>
+    <button class="pin-btn del-btn" onclick="pinDelete()">⌫</button>
+  </div>
+  <div id="pin-forgot" onclick="pinForgot()" data-i18n="pin_forgot">PIN vergessen?</div>
+  <div class="pin-screen-info" id="pin-info"></div>
 </div>
 
 <!-- ── Splash cover ─────────────────────────────────────────── -->
@@ -918,7 +997,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <div id="home-tabs">
     <button class="home-tab active" id="tab-btn-themes" onclick="switchHomeTab('themes')" data-i18n="tab_themes">✝ Themen</button>
     <button class="home-tab"        id="tab-btn-bible"  onclick="switchHomeTab('bible')"  data-i18n="tab_bible">📖 Bibel</button>
-    <button class="home-tab"        id="tab-btn-notes"  onclick="switchHomeTab('notes')"  data-i18n="tab_notes">📝 Notizen</button>
+    <button class="home-tab locked" id="tab-btn-notes"  onclick="switchHomeTab('notes')"  data-i18n="tab_notes">📝 Notizen</button>
   </div>
   <!-- Themes tab: theme grid (default) -->
   <div class="home-tab-panel active" id="panel-themes">
@@ -930,6 +1009,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   </div>
   <!-- Notes tab: all comments grouped by theme -->
   <div class="home-tab-panel" id="panel-notes">
+    <button id="notes-logout-btn" onclick="notesLogout()" style="display:none" data-i18n="pin_logout">🔒 Abmelden</button>
     <div id="notes-overview"></div>
   </div>
   <div id="app-footer">
@@ -1091,6 +1171,21 @@ const LANG = {
     notes_goto:        '→ Zur Stelle',
     notes_delete:      '🗑 Löschen',
     notes_export:      '📤 Alle Notizen exportieren',
+    pin_title:         '🔐 Privater Bereich',
+    pin_subtitle:      'Bitte PIN eingeben (4 Stellen)',
+    pin_setup_title:   '🔐 PIN festlegen',
+    pin_setup_sub:     'Wähle einen 4-stelligen PIN für deinen privaten Bereich',
+    pin_confirm_sub:   'PIN wiederholen zur Bestätigung',
+    pin_mismatch:      '❌ PINs stimmen nicht überein – bitte erneut versuchen',
+    pin_wrong:         '❌ Falscher PIN',
+    pin_forgot:        'PIN vergessen?',
+    pin_forgot_warn:   '⚠️ Wenn du deinen PIN zurücksetzt, werden alle gespeicherten Notizen unwiderruflich gelöscht. Fortfahren?',
+    pin_reset_done:    '🔓 PIN wurde zurückgesetzt.',
+    pin_logout:        '🔒 Abmelden',
+    pin_locked_msg:    '🔒 Notizen sind mit PIN geschützt.\nTippe auf das Tab um dich anzumelden.',
+    pin_cancel:        'Abbrechen',
+    pin_info_setup:    '🔒 Dein privater Bereich wird mit AES-256 verschlüsselt. Nur du kennst den PIN.',
+    pin_info_enter:    '🔒 Deine Notizen sind verschlüsselt gespeichert.',
     theme_names: {
       1:'Schöpfung und Ursprung',
       2:'Die Erzväter und Mütter Israels',
@@ -1198,6 +1293,21 @@ const LANG = {
     notes_goto:        '→ Go to Passage',
     notes_delete:      '🗑 Delete',
     notes_export:      '📤 Export All Notes',
+    pin_title:         '🔐 Private Area',
+    pin_subtitle:      'Please enter your PIN (4 digits)',
+    pin_setup_title:   '🔐 Set up PIN',
+    pin_setup_sub:     'Choose a 4-digit PIN for your private area',
+    pin_confirm_sub:   'Repeat PIN to confirm',
+    pin_mismatch:      '❌ PINs do not match – please try again',
+    pin_wrong:         '❌ Incorrect PIN',
+    pin_forgot:        'Forgot PIN?',
+    pin_forgot_warn:   '⚠️ Resetting your PIN will permanently delete all saved notes. Continue?',
+    pin_reset_done:    '🔓 PIN has been reset.',
+    pin_logout:        '🔒 Log out',
+    pin_locked_msg:    '🔒 Notes are PIN-protected.\nTap the tab to sign in.',
+    pin_cancel:        'Cancel',
+    pin_info_setup:    '🔒 Your private area is encrypted with AES-256. Only you know the PIN.',
+    pin_info_enter:    '🔒 Your notes are stored encrypted.',
     theme_names: {
       1:'Creation and Origin',
       2:'Patriarchs and Matriarchs of Israel',
@@ -1358,6 +1468,21 @@ const LANG = {
     notes_goto:        '→ Buka',
     notes_delete:      '🗑 Hapus',
     notes_export:      '📤 Ekspor Semua Catatan',
+    pin_title:         '🔐 Area Pribadi',
+    pin_subtitle:      'Masukkan PIN Anda (4 digit)',
+    pin_setup_title:   '🔐 Buat PIN',
+    pin_setup_sub:     'Pilih PIN 4 digit untuk area pribadi Anda',
+    pin_confirm_sub:   'Ulangi PIN untuk konfirmasi',
+    pin_mismatch:      '❌ PIN tidak cocok – silakan coba lagi',
+    pin_wrong:         '❌ PIN salah',
+    pin_forgot:        'Lupa PIN?',
+    pin_forgot_warn:   '⚠️ Mengatur ulang PIN akan menghapus semua catatan secara permanen. Lanjutkan?',
+    pin_reset_done:    '🔓 PIN telah diatur ulang.',
+    pin_logout:        '🔒 Keluar',
+    pin_locked_msg:    '🔒 Catatan dilindungi PIN.\nKetuk tab untuk masuk.',
+    pin_cancel:        'Batal',
+    pin_info_setup:    '🔒 Area pribadi Anda dienkripsi dengan AES-256. Hanya Anda yang tahu PIN-nya.',
+    pin_info_enter:    '🔒 Catatan Anda disimpan dalam bentuk terenkripsi.',
     theme_names: {
       1:'Penciptaan dan Asal Usul',
       2:'Bapa dan Ibu Israel',
@@ -1631,6 +1756,7 @@ function hexFade(hex, a) {
 // ── Home ──────────────────────────────────────────────────────
 let _homeTab = 'themes';
 function switchHomeTab(tab) {
+  if (tab === 'notes' && !requirePin()) return;  // PIN gate
   _homeTab = tab;
   document.getElementById('panel-bible').classList.toggle('active', tab === 'bible');
   document.getElementById('panel-themes').classList.toggle('active', tab === 'themes');
@@ -1713,8 +1839,20 @@ function renderHomeBibleTab() {
 function renderNotesTab() {
   const container = document.getElementById('notes-overview');
   if (!container) return;
-  let stored = {};
-  try { stored = JSON.parse(localStorage.getItem('bde_notes_v1') || '{}'); } catch(e) {}
+  // Show locked state if not authenticated
+  if (!_pinSessionKey) {
+    container.innerHTML = '<p style="padding:32px 16px;color:var(--gold);white-space:pre-line;text-align:center;font-size:14px">'
+      + escHtml(t('pin_locked_msg')) + '</p>';
+    document.getElementById('tab-btn-notes').classList.add('locked');
+    document.getElementById('tab-btn-notes').classList.remove('unlocked');
+    document.getElementById('notes-logout-btn').style.display = 'none';
+    return;
+  }
+  document.getElementById('tab-btn-notes').classList.remove('locked');
+  document.getElementById('tab-btn-notes').classList.add('unlocked');
+  document.getElementById('notes-logout-btn').style.display = 'block';
+  // Async load from encrypted store
+  _getNotesStore().then(stored => {
   const keys = Object.keys(stored).filter(k => stored[k] && stored[k].trim());
   if (!keys.length) {
     container.innerHTML = '<p style="padding:24px 16px;color:var(--gold);white-space:pre-line;text-align:center">'
@@ -1766,28 +1904,28 @@ function renderNotesTab() {
     if (goBtn)  { openPassage(Number(goBtn.dataset.goto)); }
     if (delBtn) {
       const pid = delBtn.dataset.delnote;
-      try { const n = JSON.parse(localStorage.getItem('bde_notes_v1')||'{}'); delete n[pid]; localStorage.setItem('bde_notes_v1', JSON.stringify(n)); } catch(e2){}
-      renderNotesTab();
+      _getNotesStore().then(n => { delete n[pid]; return _saveNotesStore(n); }).then(() => renderNotesTab());
     }
   };
+  }); // end _getNotesStore().then
 }
 function exportNotes() {
-  let stored = {};
-  try { stored = JSON.parse(localStorage.getItem('bde_notes_v1') || '{}'); } catch(e) {}
-  const lines = [];
-  Object.keys(stored).forEach(pid => {
-    if (!stored[pid] || !stored[pid].trim()) return;
-    const p = PASSAGE_DATA.passages.find(pp => pp.id === Number(pid));
-    const title = p ? tPassage(p) : 'Passage ' + pid;
-    lines.push('[' + title + ']\\n' + stored[pid] + '\\n');
+  _getNotesStore().then(stored => {
+    const lines = [];
+    Object.keys(stored).forEach(pid => {
+      if (!stored[pid] || !stored[pid].trim()) return;
+      const p = PASSAGE_DATA.passages.find(pp => pp.id === Number(pid));
+      const title = p ? tPassage(p) : 'Passage ' + pid;
+      lines.push('[' + title + ']\\n' + stored[pid] + '\\n');
+    });
+    if (!lines.length) return;
+    const blob = new Blob([lines.join('\\n')], {type:'text/plain;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'BDE-Notizen.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
   });
-  if (!lines.length) return;
-  const blob = new Blob([lines.join('\\n')], {type:'text/plain;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'BDE-Notizen.txt';
-  a.click();
-  URL.revokeObjectURL(a.href);
 }
 
 // ── Passage list ──────────────────────────────────────────────
@@ -2190,8 +2328,241 @@ document.addEventListener('click', function(e) {
   }
 });
 
+// ── PIN Login / Private Area ──────────────────────────────────
+// Uses Web Crypto API: PBKDF2 key derivation + AES-GCM encryption
+// Notes are stored encrypted in localStorage under 'bde_notes_enc'
+// Session key is kept only in memory → auto-logout on page reload
+const PIN_SALT_KEY  = 'bde_pin_salt';   // random 16-byte salt (hex)
+const PIN_VERIF_KEY = 'bde_pin_verif';  // AES-GCM encrypted canary (to verify PIN)
+const NOTES_ENC_KEY = 'bde_notes_enc';  // AES-GCM encrypted notes JSON
+
+let _pinSessionKey = null;   // CryptoKey in memory (null = logged out)
+let _pinMode       = null;   // 'setup' | 'enter' | 'confirm'
+let _pinFirst      = '';     // first PIN entry (for setup confirmation)
+let _pinCurrent    = '';     // digits entered so far
+
+// ── Crypto helpers ────────────────────────────────────────────
+async function _pinDeriveKey(pin, saltHex) {
+  const enc     = new TextEncoder();
+  const keyMat  = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
+  const salt    = new Uint8Array(saltHex.match(/.{2}/g).map(b => parseInt(b,16)));
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:200000, hash:'SHA-256' },
+    keyMat,
+    { name:'AES-GCM', length:256 },
+    false,
+    ['encrypt','decrypt']
+  );
+}
+async function _pinEncrypt(key, plainText) {
+  const iv  = crypto.getRandomValues(new Uint8Array(12));
+  const enc = new TextEncoder();
+  const ct  = await crypto.subtle.encrypt({name:'AES-GCM',iv}, key, enc.encode(plainText));
+  const buf = new Uint8Array(ct);
+  const combined = new Uint8Array(12 + buf.length);
+  combined.set(iv); combined.set(buf, 12);
+  return btoa(String.fromCharCode(...combined));
+}
+async function _pinDecrypt(key, b64) {
+  const combined = new Uint8Array(atob(b64).split('').map(c=>c.charCodeAt(0)));
+  const iv  = combined.slice(0,12);
+  const ct  = combined.slice(12);
+  const pt  = await crypto.subtle.decrypt({name:'AES-GCM',iv}, key, ct);
+  return new TextDecoder().decode(pt);
+}
+function _pinRandHex(bytes) {
+  return Array.from(crypto.getRandomValues(new Uint8Array(bytes)))
+              .map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// ── PIN screen UI helpers ─────────────────────────────────────
+function _pinUpdateDots() {
+  for (let i=0;i<4;i++) {
+    document.getElementById('dot'+i).classList.toggle('filled', i < _pinCurrent.length);
+  }
+}
+function _pinSetError(msg) {
+  const el = document.getElementById('pin-error');
+  if (el) el.textContent = msg;
+}
+
+// ── Open PIN screen ───────────────────────────────────────────
+function openPinScreen(mode) {
+  _pinMode    = mode;
+  _pinCurrent = '';
+  _pinFirst   = '';
+  _pinUpdateDots();
+  _pinSetError('');
+
+  const screen   = document.getElementById('pin-screen');
+  const title    = document.getElementById('pin-screen-title');
+  const sub      = document.getElementById('pin-screen-sub');
+  const info     = document.getElementById('pin-info');
+  const cancelBtn= document.getElementById('pin-cancel-btn');
+  const forgotEl = document.getElementById('pin-forgot');
+
+  if (mode === 'setup') {
+    title.textContent = t('pin_setup_title');
+    sub.textContent   = t('pin_setup_sub');
+    info.textContent  = t('pin_info_setup');
+    forgotEl.style.display = 'none';
+    cancelBtn.style.visibility = localStorage.getItem(PIN_SALT_KEY) ? 'visible' : 'hidden';
+  } else {
+    title.textContent = t('pin_title');
+    sub.textContent   = t('pin_subtitle');
+    info.textContent  = t('pin_info_enter');
+    forgotEl.style.display = 'block';
+    cancelBtn.style.visibility = 'visible';
+  }
+  screen.classList.add('visible');
+}
+function closePinScreen() {
+  document.getElementById('pin-screen').classList.remove('visible');
+  _pinCurrent = '';
+  _pinFirst   = '';
+  _pinMode    = null;
+}
+
+// ── PIN digit input ───────────────────────────────────────────
+function pinDigit(d) {
+  if (_pinCurrent.length >= 4) return;
+  _pinCurrent += d;
+  _pinUpdateDots();
+  if (_pinCurrent.length === 4) {
+    setTimeout(_pinSubmit, 80);
+  }
+}
+function pinDelete() {
+  _pinCurrent = _pinCurrent.slice(0,-1);
+  _pinUpdateDots();
+  _pinSetError('');
+}
+async function _pinSubmit() {
+  const pin = _pinCurrent;
+  _pinCurrent = '';
+  _pinUpdateDots();
+  _pinSetError('');
+
+  if (_pinMode === 'setup') {
+    // First entry: store it and ask for confirmation
+    _pinFirst = pin;
+    _pinMode  = 'confirm';
+    const sub = document.getElementById('pin-screen-sub');
+    if (sub) sub.textContent = t('pin_confirm_sub');
+    return;
+  }
+
+  if (_pinMode === 'confirm') {
+    if (pin !== _pinFirst) {
+      _pinSetError(t('pin_mismatch'));
+      _pinFirst   = '';
+      _pinMode    = 'setup';
+      const sub = document.getElementById('pin-screen-sub');
+      if (sub) sub.textContent = t('pin_setup_sub');
+      return;
+    }
+    // PINs match → derive key, store salt + verif
+    try {
+      const saltHex = _pinRandHex(16);
+      localStorage.setItem(PIN_SALT_KEY, saltHex);
+      const key   = await _pinDeriveKey(pin, saltHex);
+      const verif = await _pinEncrypt(key, 'BDE_PIN_OK');
+      localStorage.setItem(PIN_VERIF_KEY, verif);
+      // Migrate any existing plaintext notes → encrypted
+      const oldNotes = localStorage.getItem('bde_notes_v1');
+      if (oldNotes) {
+        const enc = await _pinEncrypt(key, oldNotes);
+        localStorage.setItem(NOTES_ENC_KEY, enc);
+        localStorage.removeItem('bde_notes_v1');
+      }
+      _pinSessionKey = key;
+      closePinScreen();
+      document.getElementById('tab-btn-notes').classList.remove('locked');
+      document.getElementById('tab-btn-notes').classList.add('unlocked');
+      document.getElementById('notes-logout-btn').style.display = 'block';
+      renderNotesTab();
+    } catch(e) { _pinSetError('Crypto-Fehler: ' + e.message); }
+    return;
+  }
+
+  if (_pinMode === 'enter') {
+    try {
+      const saltHex = localStorage.getItem(PIN_SALT_KEY);
+      if (!saltHex) { closePinScreen(); return; }
+      const key   = await _pinDeriveKey(pin, saltHex);
+      const verif = localStorage.getItem(PIN_VERIF_KEY);
+      await _pinDecrypt(key, verif);   // throws if wrong PIN
+      _pinSessionKey = key;
+      closePinScreen();
+      document.getElementById('tab-btn-notes').classList.remove('locked');
+      document.getElementById('tab-btn-notes').classList.add('unlocked');
+      document.getElementById('notes-logout-btn').style.display = 'block';
+      renderNotesTab();
+    } catch(e) {
+      _pinSetError(t('pin_wrong'));
+    }
+    return;
+  }
+}
+
+// ── PIN forgot / reset ────────────────────────────────────────
+function pinForgot() {
+  if (!confirm(t('pin_forgot_warn'))) return;
+  localStorage.removeItem(PIN_SALT_KEY);
+  localStorage.removeItem(PIN_VERIF_KEY);
+  localStorage.removeItem(NOTES_ENC_KEY);
+  localStorage.removeItem('bde_notes_v1');
+  _pinSessionKey = null;
+  _pinSetError('');
+  alert(t('pin_reset_done'));
+  closePinScreen();
+  // Now set up a new PIN
+  openPinScreen('setup');
+}
+
+// ── Notes logout ──────────────────────────────────────────────
+function notesLogout() {
+  _pinSessionKey = null;
+  document.getElementById('tab-btn-notes').classList.add('locked');
+  document.getElementById('tab-btn-notes').classList.remove('unlocked');
+  document.getElementById('notes-logout-btn').style.display = 'none';
+  renderNotesTab();
+}
+
+// ── Encrypted notes read/write ────────────────────────────────
+async function _getNotesStore() {
+  if (!_pinSessionKey) return {};
+  const enc = localStorage.getItem(NOTES_ENC_KEY);
+  if (!enc) return {};
+  try {
+    const plain = await _pinDecrypt(_pinSessionKey, enc);
+    return JSON.parse(plain);
+  } catch(e) { return {}; }
+}
+async function _saveNotesStore(store) {
+  if (!_pinSessionKey) return;
+  const plain = JSON.stringify(store);
+  const enc   = await _pinEncrypt(_pinSessionKey, plain);
+  localStorage.setItem(NOTES_ENC_KEY, enc);
+}
+
+// ── Switch to notes tab: require PIN ─────────────────────────
+function requirePin() {
+  const hasSalt = !!localStorage.getItem(PIN_SALT_KEY);
+  if (_pinSessionKey) {
+    // already unlocked
+    return true;
+  }
+  if (hasSalt) {
+    openPinScreen('enter');
+  } else {
+    openPinScreen('setup');
+  }
+  return false;
+}
+
 // ── Notes / Comments ──────────────────────────────────────────
-const NOTES_KEY = 'bde_notes_v1';
+// NOTE: NOTES_ENC_KEY is defined in the PIN section above
 let   _currentNotesPid = null;
 let   _notesSaveTimer  = null;
 
@@ -2199,10 +2570,7 @@ function loadNotes(passageId) {
   _currentNotesPid = passageId;
   var ta = document.getElementById('notes-textarea');
   if (!ta) return;
-  var store = {};
-  try { store = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) {}
-  ta.value = store[passageId] || '';
-  // Update placeholder and save-indicator from current lang
+  // Update placeholder and labels
   ta.placeholder = t('notes_placeholder');
   var heading = document.querySelector('#passage-notes .notes-heading [data-i18n="notes_title"]');
   if (heading) heading.textContent = t('notes_title');
@@ -2211,30 +2579,38 @@ function loadNotes(passageId) {
   if (saveBtn)  saveBtn.textContent  = t('notes_save');
   if (clearBtn) clearBtn.textContent = t('notes_clear');
   hideSavedIndicator();
+  // Show notes section only if logged in; else hide
+  const passNotes = document.getElementById('passage-notes');
+  if (!_pinSessionKey) {
+    if (passNotes) passNotes.style.display = 'none';
+    return;
+  }
+  if (passNotes) passNotes.style.display = '';
+  _getNotesStore().then(store => {
+    if (ta) ta.value = store[passageId] || '';
+  });
 }
 
 function saveNotes() {
-  if (_currentNotesPid === null) return;
+  if (_currentNotesPid === null || !_pinSessionKey) return;
   var ta = document.getElementById('notes-textarea');
   if (!ta) return;
-  var store = {};
-  try { store = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) {}
   var text = ta.value.trim();
-  if (text) { store[_currentNotesPid] = ta.value; }
-  else      { delete store[_currentNotesPid]; }
-  try { localStorage.setItem(NOTES_KEY, JSON.stringify(store)); } catch(e) {}
-  showSavedIndicator();
+  _getNotesStore().then(store => {
+    if (text) { store[_currentNotesPid] = ta.value; }
+    else      { delete store[_currentNotesPid]; }
+    return _saveNotesStore(store);
+  }).then(() => showSavedIndicator());
 }
 
 function clearNotes() {
-  if (_currentNotesPid === null) return;
+  if (_currentNotesPid === null || !_pinSessionKey) return;
   var ta = document.getElementById('notes-textarea');
   if (ta) ta.value = '';
-  var store = {};
-  try { store = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch(e) {}
-  delete store[_currentNotesPid];
-  try { localStorage.setItem(NOTES_KEY, JSON.stringify(store)); } catch(e) {}
-  hideSavedIndicator();
+  _getNotesStore().then(store => {
+    delete store[_currentNotesPid];
+    return _saveNotesStore(store);
+  }).then(() => hideSavedIndicator());
 }
 
 function showSavedIndicator() {
