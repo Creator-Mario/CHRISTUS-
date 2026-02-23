@@ -1,6 +1,6 @@
-// CHRISTUS App v1.15.1 – Service Worker
+// CHRISTUS App v1.16.2 – Service Worker
 // Bump APP_VERSION on every release so the old cache is purged automatically.
-const APP_VERSION = '1.15.1';
+const APP_VERSION = '1.16.2';
 const CACHE_STATIC = 'christus-static-' + APP_VERSION;
 const CACHE_PAGES  = 'christus-pages-'  + APP_VERSION;
 
@@ -48,7 +48,8 @@ self.addEventListener('activate', e => {
     caches.keys().then(keys =>
       Promise.all(
         keys
-          .filter(k => k !== CACHE_STATIC && k !== CACHE_PAGES)
+          // Keep current versioned caches and the stable user-download cache
+          .filter(k => k !== CACHE_STATIC && k !== CACHE_PAGES && k !== 'christus-offline-v1')
           .map(k => caches.delete(k))
       )
     ).then(() => self.clients.claim())

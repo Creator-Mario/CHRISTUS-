@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#f4d03f">
+<meta name="theme-color" content="#f0c050">
 <title>CHRISTUS – Startseite</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
@@ -11,20 +11,20 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
-  --gold:#f4d03f;--gold2:#e8c129;--text:#e8eef4;--muted:#7a8fa8;
-  --green:#2ecc71;--blue:#3498db;--red:#e74c3c;
+  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
+  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
+  --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
-body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 
 .app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .header-left{display:flex;align-items:center;gap:10px}
 .header-logo{font-size:22px;color:var(--gold);font-weight:800;letter-spacing:2px}
-.header-version{font-size:.7rem;background:rgba(244,208,63,.15);color:var(--gold);padding:2px 7px;border-radius:10px}
-.avatar-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;font-size:14px;font-weight:700;color:#1a1a2e;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.header-version{font-size:.7rem;background:rgba(240,192,80,.15);color:var(--gold);padding:2px 7px;border-radius:10px}
+.avatar-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;font-size:14px;font-weight:700;color:#0f1028;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .main{padding:20px;max-width:700px;margin:0 auto;padding-bottom:80px}
 .greeting{margin-bottom:24px}
 .greeting-line{font-size:1.5rem;font-weight:700;margin-bottom:4px}
@@ -44,7 +44,7 @@ button{font-family:inherit;cursor:pointer}
 .action-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 16px;text-decoration:none;color:var(--text);transition:.2s;display:flex;flex-direction:column;align-items:flex-start;gap:8px;position:relative;overflow:hidden}
 .action-card::after{content:'›';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.4rem}
 .action-card:hover{border-color:var(--gold);background:var(--surface2);transform:translateY(-1px)}
-.action-card.primary{grid-column:1/-1;background:linear-gradient(135deg,#1e3a5f,#223044);border-color:#3a5f8a}
+.action-card.primary{grid-column:1/-1;background:linear-gradient(135deg,#1a1e4a,#1f2358);border-color:#343882}
 .action-card.primary:hover{border-color:var(--gold)}
 .action-icon{font-size:28px}
 .action-label{font-weight:700;font-size:.95rem}
@@ -52,7 +52,7 @@ button{font-family:inherit;cursor:pointer}
 .recent-section{margin-bottom:24px}
 .recent-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
 .recent-item:last-child{border-bottom:none}
-.recent-nr{background:rgba(244,208,63,.12);color:var(--gold);padding:3px 9px;border-radius:6px;font-size:.78rem;font-weight:700;min-width:40px;text-align:center}
+.recent-nr{background:rgba(240,192,80,.12);color:var(--gold);padding:3px 9px;border-radius:6px;font-size:.78rem;font-weight:700;min-width:40px;text-align:center}
 .recent-title{font-size:.88rem;font-weight:600}
 .recent-cat{font-size:.75rem;color:var(--muted)}
 .recent-btn{margin-left:auto;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;font-size:.78rem;cursor:pointer;transition:.2s;white-space:nowrap}
@@ -69,14 +69,14 @@ button{font-family:inherit;cursor:pointer}
 .install-banner .install-info{flex:1}
 .install-banner .install-info .install-title{font-weight:700;font-size:.9rem}
 .install-banner .install-info .install-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
-.install-banner .inst-btn{background:var(--gold);color:#1a1a2e;border:none;border-radius:7px;padding:8px 16px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s;flex-shrink:0}
+.install-banner .inst-btn{background:var(--gold);color:#0f1028;border:none;border-radius:7px;padding:8px 16px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s;flex-shrink:0}
 .install-banner .inst-btn:hover{background:var(--gold2)}
 .install-banner .inst-dismiss{background:transparent;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:2px 6px;line-height:1}
-.update-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:#1a3a5f;border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s ease;font-size:.85rem}
+.update-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:#1c1d48;border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s ease;font-size:.85rem}
 .update-banner.visible{transform:translateY(0)}
 .update-banner .upd-text{flex:1;color:var(--text)}
 .update-banner .upd-text strong{color:var(--gold)}
-.update-btn{background:var(--gold);color:#1a1a2e;border:none;border-radius:7px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s}
+.update-btn{background:var(--gold);color:#0f1028;border:none;border-radius:7px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s}
 .update-btn:hover{background:var(--gold2)}
 .update-dismiss{background:transparent;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:2px 6px;line-height:1}
 </style>
@@ -104,7 +104,7 @@ button{font-family:inherit;cursor:pointer}
   <div class="header-left">
     <span style="font-size:22px">✝</span>
     <span class="header-logo">CHRISTUS</span>
-    <span class="header-version">v1.15.1</span>
+    <span class="header-version">v1.16.2</span>
   </div>
   <button class="avatar-btn" id="avatar-btn" onclick="window.location.href='settings.html'" title="Profil & Einstellungen"></button>
 </header>
@@ -147,7 +147,7 @@ button{font-family:inherit;cursor:pointer}
     </a>
     <a href="learn.html#glossary" class="action-card" onclick="localStorage.setItem('learn_screen','glossary')">
       <span class="action-icon">📘</span>
-      <span class="action-label" data-i18n="glossary_label">Glossar</span>
+      <span class="action-label" data-i18n="glossary_label">Themen Aufgaben</span>
       <span class="action-desc" data-i18n="glossary_desc">Schlüsselbegriffe</span>
     </a>
     <a href="settings.html" class="action-card">
@@ -175,7 +175,7 @@ button{font-family:inherit;cursor:pointer}
     <span class="nav-icon">🗂️</span><span data-i18n="nav_themen">Themen</span>
   </a>
   <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')">
-    <span class="nav-icon">📘</span><span data-i18n="nav_glossary">Glossar</span>
+    <span class="nav-icon">📘</span><span data-i18n="nav_glossary">Themen Aufgaben</span>
   </a>
   <a href="settings.html">
     <span class="nav-icon">⚙️</span><span data-i18n="nav_profile">Profil</span>
@@ -229,6 +229,7 @@ function openModule(nr) {
 // Init
 const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
 if (!session) { window.location.href = 'login.html'; }
+else if (!session.email) { window.location.href = 'bible.html'; }
 else {
   applyLang();
   greet(session.name);

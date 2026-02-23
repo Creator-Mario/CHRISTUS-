@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="theme-color" content="#f4d03f">
-    <title>CHRISTUS v1.15.0</title>
+    <meta name="theme-color" content="#f0c050">
+    <title>CHRISTUS v1.16.2</title>
     <link rel="manifest" href="app/manifest.json">
     <style>
-        body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#0f1923;color:#e8eef4;
+        body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#0f1028;color:#ede8ff;
              display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
         .splash{text-align:center;padding:40px 20px}
-        .logo{font-size:64px;color:#f4d03f;margin-bottom:12px}
-        .name{font-size:2rem;font-weight:700;letter-spacing:4px;color:#f4d03f;margin-bottom:4px}
-        .ver{font-size:.78rem;color:#7a8fa8;margin-bottom:32px}
-        .spinner{width:32px;height:32px;border:3px solid #2d4060;border-top-color:#f4d03f;
+        .logo{font-size:64px;color:#f0c050;margin-bottom:12px}
+        .name{font-size:2rem;font-weight:700;letter-spacing:4px;color:#f0c050;margin-bottom:4px}
+        .ver{font-size:.78rem;color:#9890c0;margin-bottom:32px}
+        .spinner{width:32px;height:32px;border:3px solid #36387a;border-top-color:#f0c050;
                  border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
         @keyframes spin{to{transform:rotate(360deg)}}
     </style>
@@ -22,7 +22,7 @@
     <div class="splash">
         <div class="logo">&#10013;</div>
         <div class="name">CHRISTUS</div>
-        <div class="ver">Version 1.15.0 &bull; Glaubensbildung &amp; Nachfolge</div>
+        <div class="ver">Version 1.16.2 &bull; Glaubensbildung &amp; Nachfolge</div>
         <div class="spinner"></div>
     </div>
     <script>
@@ -37,10 +37,12 @@
                 window.location.reload();
             });
         }
-        // Route: active session → home, else → login
+        // Route: registered user → home, guest → bible, no session → login
         const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
-        const dest = (session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000))
-            ? 'app/home.html' : 'app/login.html';
+        const valid = session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000);
+        const dest = valid
+            ? (session.email ? 'app/home.html' : 'app/bible.html')
+            : 'app/login.html';
         setTimeout(() => { window.location.href = dest; }, 300);
     </script>
 </body>

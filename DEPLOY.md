@@ -1,38 +1,39 @@
-# 🚀 CHRISTUS App v1.15 — ✅ Erfolgreich deployed!
+# 🚀 CHRISTUS App v1.16.2 — ⏳ Genehmigung erforderlich!
 
-## 📍 Live-URL
+## ⚠️ Einmalige Genehmigung notwendig
 
-👉 **https://creator-mario.github.io/CHRISTUS-/**
+Der Deploy-Workflow wurde automatisch gestartet, wartet aber auf deine Genehmigung:
 
-Die App läuft jetzt auf **Version 1.15**. Einfach die URL öffnen!
+👉 **[Jetzt genehmigen und deployen](https://github.com/Creator-Mario/CHRISTUS-/actions/runs/22313857889)**
+
+Klicke auf **"Approve and run"** → Deploy läuft automatisch durch.
 
 ---
 
-## ℹ️ Noch eine Genehmigung ausstehend
+## 📍 Live-URL (nach Genehmigung)
 
-Es gibt noch einen ausstehenden Workflow-Lauf (nur eine Dokumentations-Änderung, nicht kritisch):
+👉 **https://creator-mario.github.io/CHRISTUS-/**
 
-👉 **https://github.com/Creator-Mario/CHRISTUS-/actions/runs/22306341063**
-
-Klicke auf **"Approve and run"** – oder ignoriere ihn, die App läuft bereits korrekt.
+Die App läuft dann auf **Version 1.16.2**.
 
 ---
 
 ## 🔄 Zukünftige Updates
 
-Bei zukünftigen Änderungen:
-1. PR mergen → Deploy startet automatisch **ohne Genehmigung**
+Nach dieser Genehmigung laufen alle weiteren Deploys von diesem Branch **ohne Genehmigung**:
+1. Änderung pushen → Deploy startet automatisch
 2. Oder: https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy.yml → **"Run workflow"**
 
 ---
 
-## 📦 Was in v1.15 neu ist
+## 📦 Was in v1.16.2 neu ist
 
 | Änderung | Details |
 |----------|---------|
-| 🔢 **Version 1.15** | Alle Seiten auf v1.15 aktualisiert |
-| 🔔 **Update-Banner** | Sichtbar auf ALLEN App-Seiten (Home, Lernen, Bibel, Themen, Einstellungen) |
-| 🛠️ **Update-Mechanismus** | SW wartet jetzt korrekt im `waiting`-Zustand – Banner erscheint zuverlässig |
-| 📖 **Bibel AT/NT** | Altes und Neues Testament als Unterbereiche |
-| 🗂️ **Themen-Akkordeon** | Hierarchische Darstellung mit AT/NT-Trennern |
-| 🔐 **E-Mail-Auth** | Vorname/Nachname/E-Mail-Registrierung, OTP, Passwort-Änderung |
+| 📖 **Bibel Kapitelauswahl** | Nach Buch-Auswahl erscheint ein Kapitel-Raster – direkt zu jedem Kapitel springen (z.B. 1. Mose Kapitel 40) |
+| 🖊️ **Markierfunktion** | Verse markieren mit Neongelb, Neongrün, Neonrot – gespeichert im localStorage |
+| 🔒 **Gastzugang** | Gäste landen direkt in der Bibel – alle anderen Seiten nur für registrierte Nutzer |
+| 🎨 **Spirituelles Farbschema** | Tiefes Mitternachts-Indigo, warmes Kerzenlicht-Gold, weiches Lavendel-Weiß |
+| 📲 **Offline-Download repariert** | "⬇ Herunterladen" schreibt jetzt in den aktiven SW-Cache |
+| 🗂️ **Glossar → Themen Aufgaben** | Navigation und alle Labels umbenannt |
+| 🔢 **Version 1.16.2** | Alle Seiten und SW aktualisiert |
