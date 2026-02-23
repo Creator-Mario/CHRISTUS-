@@ -128,6 +128,8 @@
       bible_select_chapter: '← Kapitel wählen',
       bible_verse_count: ' Verse',
       bible_chapter_count: ' Kapitel',
+      search_result_one: 'Ergebnis',
+      search_result_many: 'Ergebnisse',
 
       // Themen
       themen_label: 'Themen',
@@ -275,6 +277,8 @@
       bible_select_chapter: '← Select chapter',
       bible_verse_count: ' verses',
       bible_chapter_count: ' chapters',
+      search_result_one: 'result',
+      search_result_many: 'results',
 
       // Themen
       themen_label: 'Topics',

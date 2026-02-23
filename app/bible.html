@@ -165,6 +165,7 @@ button{font-family:inherit;cursor:pointer}
   <a href="home.html"><span class="ni">&#127968;</span><span data-i18n="nav_home">Start</span></a>
   <a href="learn.html"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html" class="active"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
+  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Glossar</span></a>
   <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
 
@@ -185,12 +186,18 @@ function parseCSV(text) {
   var data = {};
   var books = [];
   var bookNrMap = {}; // bookName → bookNr
+  var headerFound = false;
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i].trim();
     if (!line) continue;
-    // Skip header/comment lines
-    if (line.startsWith('"Elberfelder') || line.startsWith('"This') || line.startsWith('"Verse ID')) continue;
+    // Find and skip the data header row
+    if (!headerFound) {
+      if (line.indexOf('"Verse ID"') !== -1 || line.indexOf('Verse ID') !== -1) {
+        headerFound = true;
+      }
+      continue;
+    }
 
     // Simple CSV parsing: split on commas but respect quoted fields
     var cols = splitCSVLine(line);
@@ -380,7 +387,7 @@ function doSearch() {
   var subEl   = document.getElementById('search-sub');
   var resEl   = document.getElementById('search-results');
   titleEl.textContent = '"' + q + '"';
-  subEl.textContent   = results.length + ' ' + (results.length === 1 ? 'Ergebnis' : 'Ergebnisse');
+  subEl.textContent   = results.length + ' ' + (results.length === 1 ? t('search_result_one') : t('search_result_many'));
 
   if (results.length === 0) {
     resEl.innerHTML = '<div class="no-results">' + t('bible_search_empty') + '</div>';
@@ -388,11 +395,15 @@ function doSearch() {
     return;
   }
 
-  var escaped = esc(q);
-  var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  // Build regex once outside the loop; escape special regex chars in query
+  var escapedQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  var re = new RegExp('(' + escapedQ + ')', 'gi');
   var html = '';
   results.slice(0,200).forEach(function(r) {
-    var highlighted = esc(r.text).replace(re, '<mark>$1</mark>');
+    // Highlight before escaping: replace matches with a placeholder, escape, then restore
+    var highlighted = r.text.replace(re, '\x00$1\x00');
+    highlighted = esc(highlighted)
+      .replace(/\x00([^\x00]*)\x00/g, '<mark>$1</mark>');
     html += '<div class="result-card" onclick="openChapter_search(' + JSON.stringify(r.book) + ',' + r.chapter + ')">' +
       '<div class="result-ref">' + esc(r.book) + ' ' + r.chapter + ',' + r.verse + '</div>' +
       '<div class="result-text">' + highlighted + '</div></div>';
