@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f4d03f">
+<title>CHRISTUS – Elberfelder Bibel</title>
+<link rel="manifest" href="manifest.json">
+<script src="translations.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
+  --gold:#f4d03f;--gold2:#e8c129;--text:#e8eef4;--muted:#7a8fa8;
+  --green:#2ecc71;--blue:#3498db;--red:#e74c3c;
+  --radius:14px;--radius-sm:9px;
+}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+a{color:var(--gold);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+.header-logo{font-size:.9rem;font-weight:700;color:var(--gold);letter-spacing:1px}
+.header-version{font-size:.65rem;background:rgba(244,208,63,.15);color:var(--gold);padding:1px 6px;border-radius:8px}
+.breadcrumb{flex:1;font-size:.8rem;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.back-btn{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 12px;color:var(--text);cursor:pointer;font-size:.8rem;transition:.2s;white-space:nowrap}
+.back-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+.main{padding:16px;max-width:860px;margin:0 auto;padding-bottom:80px}
+
+/* Search bar */
+.search-bar{display:flex;gap:8px;margin-bottom:16px}
+.search-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-size:.9rem;outline:none;font-family:inherit;transition:.2s}
+.search-input:focus{border-color:var(--gold)}
+.search-btn{background:var(--gold);color:#1a1a2e;border:none;border-radius:var(--radius-sm);padding:10px 16px;font-weight:700;font-size:.85rem;transition:.2s;white-space:nowrap}
+.search-btn:hover{background:var(--gold2)}
+.clear-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--muted);font-size:.85rem;transition:.2s}
+.clear-btn:hover{border-color:var(--gold);color:var(--text)}
+
+/* Screen system */
+.screen{display:none}
+.screen.active{display:block}
+
+/* Book grid */
+.page-title{font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+.page-sub{color:var(--muted);font-size:.82rem;margin-bottom:16px}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:16px 0 8px}
+.book-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.book-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);text-align:left;font-size:.85rem;font-weight:600;transition:.2s;cursor:pointer}
+.book-btn:hover{border-color:var(--gold);background:var(--surface2);color:var(--gold)}
+
+/* Chapter grid */
+.chapter-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.chapter-icon{font-size:32px}
+.chapter-title{font-size:1.2rem;font-weight:700;color:var(--gold)}
+.chapter-sub{font-size:.78rem;color:var(--muted)}
+.chapter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:8px}
+.chapter-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;color:var(--text);font-size:.88rem;font-weight:700;text-align:center;transition:.2s;cursor:pointer}
+.chapter-btn:hover{border-color:var(--gold);background:var(--surface2);color:var(--gold)}
+
+/* Verse list */
+.verse-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.verse-title{font-size:1.2rem;font-weight:700;color:var(--gold)}
+.verse-sub{font-size:.78rem;color:var(--muted)}
+.verse-list{list-style:none;padding:0}
+.verse-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,64,96,.5)}
+.verse-item:last-child{border-bottom:none}
+.verse-nr{color:var(--gold);font-size:.75rem;font-weight:700;min-width:28px;padding-top:3px;flex-shrink:0}
+.verse-text{font-size:.88rem;line-height:1.7;color:var(--text)}
+
+/* Search results */
+.search-result-title{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+.search-result-sub{color:var(--muted);font-size:.78rem;margin-bottom:12px}
+.search-results{display:flex;flex-direction:column;gap:8px}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;cursor:pointer;transition:.2s}
+.result-card:hover{border-color:var(--gold);background:var(--surface2)}
+.result-ref{color:var(--gold);font-size:.78rem;font-weight:700;margin-bottom:4px}
+.result-text{font-size:.85rem;line-height:1.6}
+.result-text mark{background:rgba(244,208,63,.25);color:var(--gold);border-radius:3px;padding:0 2px}
+.no-results{color:var(--muted);font-size:.88rem;padding:20px 0}
+
+/* Loading */
+.loading{text-align:center;padding:40px 20px;color:var(--muted)}
+.spinner{width:32px;height:32px;border:3px solid var(--surface2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Copyright notice */
+.copyright-bar{text-align:center;font-size:.72rem;color:var(--muted);margin-top:20px;padding-top:12px;border-top:1px solid var(--border)}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100}
+.bottom-nav a{flex:1;padding:9px 4px;text-align:center;font-size:.65rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;transition:.2s;cursor:pointer}
+.bottom-nav a .ni{font-size:19px}
+.bottom-nav a.active,.bottom-nav a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <span style="font-size:18px">&#10013;</span>
+  <span class="header-logo">CHRISTUS</span>
+  <span class="header-version">v1.13</span>
+  <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
+  <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
+</header>
+
+<div class="main">
+  <div class="search-bar">
+    <input class="search-input" type="text" id="search-input" data-i18n-placeholder="bible_search_placeholder" placeholder="Vers suchen…" oninput="onSearchInput(this.value)">
+    <button class="search-btn" onclick="doSearch()" data-i18n="bible_search_btn">&#128269;</button>
+    <button class="clear-btn" id="clear-btn" onclick="clearSearch()" style="display:none">&#10005;</button>
+  </div>
+
+  <!-- Loading screen -->
+  <div class="screen active" id="screen-loading">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div data-i18n="bible_loading">Bibel wird geladen…</div>
+    </div>
+  </div>
+
+  <!-- Book overview -->
+  <div class="screen" id="screen-books">
+    <h1 class="page-title" data-i18n="bible_header">&#128214; Elberfelder Bibel 1905</h1>
+    <p class="page-sub" data-i18n="bible_book">Buch wählen</p>
+    <p class="section-label">Altes Testament</p>
+    <div class="book-grid" id="ot-grid"></div>
+    <p class="section-label">Neues Testament</p>
+    <div class="book-grid" id="nt-grid"></div>
+    <div class="copyright-bar" data-i18n="copyright_text">© Mario Reiner Denzer</div>
+  </div>
+
+  <!-- Chapter overview -->
+  <div class="screen" id="screen-chapters">
+    <div class="chapter-header">
+      <span class="chapter-icon">&#128214;</span>
+      <div>
+        <div class="chapter-title" id="ch-book-title"></div>
+        <div class="chapter-sub" id="ch-book-sub"></div>
+      </div>
+    </div>
+    <p class="page-sub" data-i18n="bible_chapter">Kapitel wählen</p>
+    <div class="chapter-grid" id="chapter-grid"></div>
+  </div>
+
+  <!-- Verse view -->
+  <div class="screen" id="screen-verses">
+    <div class="verse-header">
+      <div>
+        <div class="verse-title" id="verse-title"></div>
+        <div class="verse-sub" id="verse-sub"></div>
+      </div>
+    </div>
+    <ul class="verse-list" id="verse-list"></ul>
+  </div>
+
+  <!-- Search results -->
+  <div class="screen" id="screen-search">
+    <div class="search-result-title" id="search-title"></div>
+    <div class="search-result-sub" id="search-sub"></div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="home.html"><span class="ni">&#127968;</span><span data-i18n="nav_home">Start</span></a>
+  <a href="learn.html"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
+  <a href="bible.html" class="active"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
+  <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
+</nav>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+// OT = Genesis … Maleachi (book numbers 1–39), NT = Matthäus … Offenbarung (40–66)
+// We derive NT threshold from data.
+var bibleData = null;  // { bookName: [ { chapter, verse, text } ] }
+var bookList = [];     // ordered list of book names
+var NT_BOOKS = new Set();
+var currentBook = null;
+var currentChapter = null;
+var navStack = [];
+
+// ── CSV Parser ────────────────────────────────────────────────────────────────
+function parseCSV(text) {
+  var lines = text.split('\n');
+  var data = {};
+  var books = [];
+  var bookNrMap = {}; // bookName → bookNr
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (!line) continue;
+    // Skip header/comment lines
+    if (line.startsWith('"Elberfelder') || line.startsWith('"This') || line.startsWith('"Verse ID')) continue;
+
+    // Simple CSV parsing: split on commas but respect quoted fields
+    var cols = splitCSVLine(line);
+    if (cols.length < 6) continue;
+    var bookName = cols[1];
+    var bookNr   = parseInt(cols[2], 10);
+    var chapter  = parseInt(cols[3], 10);
+    var verse    = parseInt(cols[4], 10);
+    var verseText = cols[5];
+    if (!bookName || isNaN(bookNr) || isNaN(chapter) || isNaN(verse)) continue;
+
+    if (!data[bookName]) {
+      data[bookName] = {};
+      books.push({ name: bookName, nr: bookNr });
+      bookNrMap[bookName] = bookNr;
+    }
+    if (!data[bookName][chapter]) data[bookName][chapter] = [];
+    data[bookName][chapter].push({ v: verse, t: verseText });
+  }
+
+  // Sort books by bookNr
+  books.sort(function(a,b){ return a.nr - b.nr; });
+
+  // NT = books with nr >= 40 (Matthew = 40 in standard Bible numbering)
+  var ntThreshold = 40;
+  books.forEach(function(b) {
+    if (b.nr >= ntThreshold) NT_BOOKS.add(b.name);
+  });
+
+  return { data: data, books: books.map(function(b){ return b.name; }) };
+}
+
+function splitCSVLine(line) {
+  var result = [];
+  var inQuote = false;
+  var field = '';
+  for (var i = 0; i < line.length; i++) {
+    var c = line[i];
+    if (c === '"') {
+      if (inQuote && i + 1 < line.length && line[i+1] === '"') {
+        field += '"'; i++;
+      } else {
+        inQuote = !inQuote;
+      }
+    } else if (c === ',' && !inQuote) {
+      result.push(field);
+      field = '';
+    } else {
+      field += c;
+    }
+  }
+  result.push(field);
+  return result;
+}
+
+// ── Load CSV ──────────────────────────────────────────────────────────────────
+function loadBible() {
+  fetch('../elberfelder_1905.csv')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(function(text) {
+      var parsed = parseCSV(text);
+      bibleData = parsed.data;
+      bookList  = parsed.books;
+      showBooks();
+    })
+    .catch(function(err) {
+      console.error('Bible load error:', err);
+      document.getElementById('screen-loading').innerHTML =
+        '<div class="loading" style="color:var(--red)">' + t('bible_load_error') + '</div>';
+    });
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('screen-' + id).classList.add('active');
+}
+
+function updateBackBtn(show) {
+  document.getElementById('backBtn').style.display = show ? '' : 'none';
+}
+
+function goBack() {
+  if (navStack.length > 0) {
+    var fn = navStack.pop();
+    fn();
+  } else {
+    showBooks();
+  }
+  updateBackBtn(navStack.length > 0);
+}
+
+// ── Screens ───────────────────────────────────────────────────────────────────
+function showBooks() {
+  navStack = [];
+  updateBackBtn(false);
+  clearSearchUI();
+  document.getElementById('breadcrumb').textContent = t('bible_header');
+
+  var otHtml = '', ntHtml = '';
+  bookList.forEach(function(b) {
+    var btn = '<button class="book-btn" onclick="openBook(' + JSON.stringify(b) + ')">' + esc(b) + '</button>';
+    if (NT_BOOKS.has(b)) ntHtml += btn; else otHtml += btn;
+  });
+  document.getElementById('ot-grid').innerHTML = otHtml;
+  document.getElementById('nt-grid').innerHTML = ntHtml;
+  showScreen('books');
+}
+
+function openBook(bookName) {
+  currentBook = bookName;
+  navStack.push(showBooks);
+  updateBackBtn(true);
+
+  var chapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
+  document.getElementById('ch-book-title').textContent = bookName;
+  document.getElementById('ch-book-sub').textContent = chapters.length + t('bible_chapter_count');
+  document.getElementById('breadcrumb').textContent = bookName;
+
+  var html = '';
+  chapters.forEach(function(ch) {
+    html += '<button class="chapter-btn" onclick="openChapter(' + ch + ')">' + ch + '</button>';
+  });
+  document.getElementById('chapter-grid').innerHTML = html;
+  showScreen('chapters');
+}
+
+function openChapter(chapter) {
+  currentChapter = chapter;
+  navStack.push(function(){ openBook(currentBook); });
+  updateBackBtn(true);
+
+  var verses = bibleData[currentBook][chapter];
+  document.getElementById('verse-title').textContent = currentBook + ' ' + chapter;
+  document.getElementById('verse-sub').textContent = verses.length + t('bible_verse_count');
+  document.getElementById('breadcrumb').textContent = currentBook + ' ' + chapter;
+
+  var html = '';
+  verses.forEach(function(v) {
+    html += '<li class="verse-item">' +
+      '<span class="verse-nr">' + v.v + '</span>' +
+      '<span class="verse-text">' + esc(v.t) + '</span></li>';
+  });
+  document.getElementById('verse-list').innerHTML = html;
+  showScreen('verses');
+}
+
+// ── Search ────────────────────────────────────────────────────────────────────
+var searchTimeout = null;
+
+function onSearchInput(val) {
+  clearTimeout(searchTimeout);
+  document.getElementById('clear-btn').style.display = val.length > 0 ? '' : 'none';
+  if (val.length >= 3) {
+    searchTimeout = setTimeout(function(){ doSearch(); }, 400);
+  } else if (val.length === 0) {
+    if (bibleData) showBooks();
+  }
+}
+
+function doSearch() {
+  var q = document.getElementById('search-input').value.trim();
+  if (!bibleData || q.length < 3) return;
+  navStack = [];
+  updateBackBtn(false);
+
+  var qLower = q.toLowerCase();
+  var results = [];
+  bookList.forEach(function(book) {
+    Object.keys(bibleData[book]).forEach(function(ch) {
+      bibleData[book][ch].forEach(function(v) {
+        if (v.t.toLowerCase().indexOf(qLower) !== -1) {
+          results.push({ book: book, chapter: parseInt(ch,10), verse: v.v, text: v.t });
+        }
+      });
+    });
+  });
+
+  var titleEl = document.getElementById('search-title');
+  var subEl   = document.getElementById('search-sub');
+  var resEl   = document.getElementById('search-results');
+  titleEl.textContent = '"' + q + '"';
+  subEl.textContent   = results.length + ' ' + (results.length === 1 ? 'Ergebnis' : 'Ergebnisse');
+
+  if (results.length === 0) {
+    resEl.innerHTML = '<div class="no-results">' + t('bible_search_empty') + '</div>';
+    showScreen('search');
+    return;
+  }
+
+  var escaped = esc(q);
+  var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  var html = '';
+  results.slice(0,200).forEach(function(r) {
+    var highlighted = esc(r.text).replace(re, '<mark>$1</mark>');
+    html += '<div class="result-card" onclick="openChapter_search(' + JSON.stringify(r.book) + ',' + r.chapter + ')">' +
+      '<div class="result-ref">' + esc(r.book) + ' ' + r.chapter + ',' + r.verse + '</div>' +
+      '<div class="result-text">' + highlighted + '</div></div>';
+  });
+  resEl.innerHTML = html;
+  showScreen('search');
+}
+
+function openChapter_search(book, chapter) {
+  currentBook = book;
+  openChapter(chapter);
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('clear-btn').style.display = 'none';
+  if (bibleData) showBooks();
+}
+
+function clearSearchUI() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('clear-btn').style.display = 'none';
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+var session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+if (!session) { window.location.href = 'login.html'; }
+else {
+  applyLang();
+  loadBible();
+}
+</script>
+</body>
+</html>

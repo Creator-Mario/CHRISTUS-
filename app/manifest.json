@@ -1,8 +1,8 @@
 {
   "name": "CHRISTUS – Glaubensbildung",
   "short_name": "CHRISTUS",
-  "description": "Christliche Glaubensbildung & Nachfolge – Version 1.12",
-  "version": "1.12",
+  "description": "Christliche Glaubensbildung & Nachfolge – Version 1.13",
+  "version": "1.13",
   "start_url": "../index.html",
   "scope": "../",
   "display": "standalone",
