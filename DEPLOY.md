@@ -1,50 +1,53 @@
-# 🚀 CHRISTUS App v1.10 — Deployment
+# 🚀 CHRISTUS App v1.12 — Update deployen
 
-Die App ist fertig und wartet nur noch auf diesen **einen Schritt** von dir.
+## ⚠️ Warum hat das Update nicht funktioniert?
 
----
-
-## ✅ Alles was du tun musst: Den PR mergen
-
-**Direktlink:** 👉 https://github.com/Creator-Mario/CHRISTUS-/pull/5
-
-### Schritt-für-Schritt:
-
-1. Öffne den obigen Link
-2. Scrolle ganz nach unten bis du den **grünen Button** siehst:
-
-```
-┌─────────────────────────────────────────────────────┐
-│  ✅ This branch has no conflicts with the base branch │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│  [  Merge pull request  ]   ← Diesen Button klicken  │
-│                                                     │
-└─────────────────────────────────────────────────────┘
-```
-
-3. Klicke dann **"Confirm merge"**
-4. Fertig! ✨
+Das Update steckt im **Pull Request #6** und wurde noch **nicht** mit `main` zusammengeführt.
+Der Deploy-Workflow läuft **nur** wenn Änderungen auf `main` landen.
 
 ---
 
-## Was danach passiert (automatisch):
+## ✅ Ein Klick reicht: PR #6 mergen
 
-- GitHub Pages (bereits auf `main` gesetzt) zeigt sofort die neue App
-- Der Deploy-Workflow läuft automatisch beim nächsten Push auf `main`
-- Die App ist erreichbar unter: **https://creator-mario.github.io/CHRISTUS-/**
+👉 **https://github.com/Creator-Mario/CHRISTUS-/pull/6**
+
+### So geht's:
+
+1. Öffne den Link oben
+2. Scrolle ganz nach unten zum grünen Button:
+   ```
+   [ Merge pull request ]
+   ```
+3. Klicke **"Confirm merge"**
+4. ✅ Fertig! Der Deploy startet in ~30 Sekunden automatisch.
 
 ---
 
-## Was in v1.10 enthalten ist:
+## 🔄 Alternative: Manuell deployen (nach dem Merge)
 
-| Datei | Funktion |
-|-------|---------|
-| `index.html` | Splash-Screen, SW-Registrierung, Session-Routing |
-| `app/login.html` | Personalisierter Login (Name, kein PIN) |
-| `app/home.html` | Dashboard mit Fortschrittsbalken |
-| `app/learn.html` | 7 Kategorien × 42 Module Lernbereich |
-| `app/settings.html` | Profil, Sprache, Offline-Status |
-| `app/sw.js` | Service Worker für Offline-Betrieb |
-| `app/manifest.json` | PWA-Manifest (installierbar) |
+Falls der automatische Deploy nicht startet:
 
+1. Öffne: https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/237480510
+2. Klicke rechts auf **"Run workflow"**
+3. Branch = `main` lassen
+4. Grünen **"Run workflow"** Button klicken
+
+---
+
+## 📍 Live-URL nach dem Deploy
+
+**https://creator-mario.github.io/CHRISTUS-/**
+
+---
+
+## 📦 Was in v1.12 neu ist
+
+| Änderung | Details |
+|----------|---------|
+| 📴 **Offline-Modus** | App läuft vollständig ohne Internet |
+| 📲 **Android/Desktop-Install** | Icons vorhanden, Manifest korrigiert |
+| 🌍 **Nur DE & EN** | Spanisch & Portugiesisch entfernt |
+| 🔤 **Vollständige EN-Übersetzung** | Gesamte App-Oberfläche übersetzt |
+| `sw.js` | Neuer Root-Service-Worker (vollständiger Scope) |
+| `app/translations.js` | Neue Übersetzungsdatei DE/EN |
+| `app/icons/` | Neue App-Icons für PWA-Install |

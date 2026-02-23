@@ -49,12 +49,13 @@
         }
         #continue-btn:hover { background: #e8c129; }
     </style>
+    <script src="app/translations.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="logo">✝</div>
         <h1>CHRISTUS</h1>
-        <p class="subtitle">Wähle deine Sprache / Select your language</p>
+        <p class="subtitle" id="lang-subtitle">Wähle deine Sprache / Select your language</p>
         <div class="lang-grid">
             <div class="language-option" data-lang="de" onclick="selectLanguage('de')">
                 <span class="flag">🇩🇪</span>Deutsch
@@ -62,14 +63,8 @@
             <div class="language-option" data-lang="en" onclick="selectLanguage('en')">
                 <span class="flag">🇬🇧</span>English
             </div>
-            <div class="language-option" data-lang="es" onclick="selectLanguage('es')">
-                <span class="flag">🇪🇸</span>Español
-            </div>
-            <div class="language-option" data-lang="pt" onclick="selectLanguage('pt')">
-                <span class="flag">🇧🇷</span>Português
-            </div>
         </div>
-        <button id="continue-btn" onclick="continueToApp()">Weiter →</button>
+        <button id="continue-btn" onclick="continueToApp()" data-i18n="lang_weiter">Weiter →</button>
     </div>
 
     <script>
@@ -81,14 +76,15 @@
 
         function selectLanguage(lang) {
             selectedLang = lang;
+            localStorage.setItem('selectedLanguage', lang);
             document.querySelectorAll('.language-option').forEach(el => el.classList.remove('selected'));
             document.querySelector(`[data-lang="${lang}"]`).classList.add('selected');
             document.getElementById('continue-btn').style.display = 'block';
+            document.getElementById('continue-btn').textContent = window.t('lang_weiter');
         }
 
         function continueToApp() {
             if (selectedLang) {
-                localStorage.setItem('selectedLanguage', selectedLang);
                 window.location.href = 'preview/standalone.html';
             }
         }

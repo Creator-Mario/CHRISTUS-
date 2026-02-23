@@ -28,6 +28,7 @@ jobs:
           # Copy all app files
           cp -r app _site/
           cp index.html _site/
+          cp sw.js _site/
           cp language_selection.html _site/
           cp Lernprogramm_Bibel.csv _site/
           [ -f anleitung.html ] && cp anleitung.html _site/ || true
@@ -43,7 +44,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Deploy CHRISTUS v1.10 [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+          git commit -m "Deploy CHRISTUS v1.12 [$(date -u +'%Y-%m-%d %H:%M UTC')]"
           git push --force \
             "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
             HEAD:gh-pages

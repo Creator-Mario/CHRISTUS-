@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#f4d03f">
 <title>CHRISTUS – Einstellungen</title>
 <link rel="manifest" href="manifest.json">
+<script src="translations.js"></script>
 <style>
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -49,8 +50,8 @@ button{font-family:inherit;cursor:pointer}
 </head>
 <body>
 <header class="app-header">
-  <button class="back-btn" onclick="window.location.href='home.html'">← Zurück</button>
-  <span class="header-title">Einstellungen</span>
+  <button class="back-btn" data-i18n="back" onclick="window.location.href='home.html'">← Zurück</button>
+  <span class="header-title" data-i18n="settings_header">Einstellungen</span>
 </header>
 
 <main class="main">
@@ -63,39 +64,37 @@ button{font-family:inherit;cursor:pointer}
   </div>
 
   <div class="section">
-    <div class="section-header">Konto</div>
+    <div class="section-header" data-i18n="account_section">Konto</div>
     <div class="setting-row">
-      <div><div class="setting-label">Benutzername</div><div class="setting-sub" id="username-display"></div></div>
+      <div><div class="setting-label" data-i18n="username_setting">Benutzername</div><div class="setting-sub" id="username-display"></div></div>
     </div>
     <div class="setting-row">
-      <div><div class="setting-label">Lernfortschritt</div><div class="setting-sub" id="prog-info"></div></div>
-      <button class="setting-action danger" onclick="resetProgress()">Zurücksetzen</button>
+      <div><div class="setting-label" data-i18n="progress_setting">Lernfortschritt</div><div class="setting-sub" id="prog-info"></div></div>
+      <button class="setting-action danger" data-i18n="reset_btn" onclick="resetProgress()">Zurücksetzen</button>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-header">Sprache</div>
+    <div class="section-header" data-i18n="lang_section">Sprache</div>
     <div class="lang-grid">
       <button class="lang-btn" data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</button>
       <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
-      <button class="lang-btn" data-lang="es" onclick="setLang('es')">🇪🇸 Español</button>
-      <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">🇧🇷 Português</button>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-header">App</div>
+    <div class="section-header" data-i18n="app_section">App</div>
     <div class="setting-row">
-      <div><div class="setting-label">Offline-Modus</div><div class="setting-sub" id="sw-status">Prüfe…</div></div>
+      <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status">Prüfe…</div></div>
       <span class="setting-value" id="sw-badge"></span>
     </div>
     <div class="setting-row">
-      <div><div class="setting-label">Cache leeren</div><div class="setting-sub">App-Daten neu laden</div></div>
-      <button class="setting-action" onclick="clearCache()">Leeren</button>
+      <div><div class="setting-label" data-i18n="clear_cache_label">Cache leeren</div><div class="setting-sub" data-i18n="offline_reload_sub">App-Daten neu laden</div></div>
+      <button class="setting-action" data-i18n="clear_cache_btn" onclick="clearCache()">Leeren</button>
     </div>
     <div class="setting-row">
-      <div><div class="setting-label">Abmelden</div><div class="setting-sub">Session beenden</div></div>
-      <button class="setting-action danger" onclick="logout()">Abmelden</button>
+      <div><div class="setting-label" data-i18n="logout_label">Abmelden</div><div class="setting-sub" data-i18n="logout_sub">Session beenden</div></div>
+      <button class="setting-action danger" data-i18n="logout_btn" onclick="logout()">Abmelden</button>
     </div>
   </div>
 
@@ -127,13 +126,13 @@ function loadProfile() {
   const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
   if (users[name] && users[name].created) {
     const d = new Date(users[name].created).toLocaleDateString('de');
-    document.getElementById('profile-sub').textContent = 'Mitglied seit ' + d;
+    document.getElementById('profile-sub').textContent = t('member_since') + d;
   } else {
-    document.getElementById('profile-sub').textContent = 'Gast-Modus';
+    document.getElementById('profile-sub').textContent = t('guest_mode');
   }
 
   const done = JSON.parse(localStorage.getItem('christus_done') || '[]').length;
-  document.getElementById('prog-info').textContent = done + ' von 42 Modulen abgeschlossen';
+  document.getElementById('prog-info').textContent = done + ' ' + t('modules_done_suffix');
 
   const lang = localStorage.getItem('selectedLanguage') || 'de';
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
@@ -142,24 +141,26 @@ function loadProfile() {
 function setLang(lang) {
   localStorage.setItem('selectedLanguage', lang);
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-  showMsg('Sprache gespeichert.');
+  applyLang();
+  loadProfile();
+  showMsg(t('msg_lang_saved'));
 }
 
 function resetProgress() {
-  if (!confirm('Lernfortschritt wirklich zurücksetzen?')) return;
+  if (!confirm(t('reset_confirm'))) return;
   localStorage.removeItem('christus_done');
   localStorage.removeItem('christus_recent');
-  showMsg('Fortschritt zurückgesetzt.');
+  showMsg(t('msg_progress_reset'));
   loadProfile();
 }
 
 function clearCache() {
   if ('caches' in window) {
     caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() => {
-      showMsg('Cache geleert. App wird neu geladen…');
+      showMsg(t('msg_cache_cleared'));
       setTimeout(() => window.location.reload(true), 1500);
     });
-  } else { showMsg('Kein Cache vorhanden.'); }
+  } else { showMsg(t('msg_no_cache')); }
 }
 
 function logout() {
@@ -169,15 +170,16 @@ function logout() {
 
 // SW status
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistration('/app/sw.js').then(reg => {
-    document.getElementById('sw-status').textContent = reg ? 'Aktiv – App ist offline verfügbar' : 'Nicht registriert';
+  navigator.serviceWorker.getRegistration().then(reg => {
+    document.getElementById('sw-status').textContent = reg ? t('offline_active') : t('offline_inactive');
     document.getElementById('sw-badge').textContent = reg ? '✅' : '❌';
   });
 } else {
-  document.getElementById('sw-status').textContent = 'Nicht unterstützt';
+  document.getElementById('sw-status').textContent = t('offline_unsupported');
   document.getElementById('sw-badge').textContent = '❌';
 }
 
+applyLang();
 loadProfile();
 </script>
 </body>

@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#f4d03f">
 <title>CHRISTUS – Anmelden</title>
 <link rel="manifest" href="manifest.json">
+<script src="translations.js"></script>
 <style>
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -56,30 +57,30 @@ input:focus{border-color:var(--gold)}
   <div class="version">Version 1.10 · Glaubensbildung &amp; Nachfolge</div>
 
   <div class="tabs">
-    <button class="tab active" id="tab-login" onclick="showTab('login')">Anmelden</button>
-    <button class="tab" id="tab-register" onclick="showTab('register')">Registrieren</button>
+    <button class="tab active" id="tab-login" onclick="showTab('login')" data-i18n="login_tab">Anmelden</button>
+    <button class="tab" id="tab-register" onclick="showTab('register')" data-i18n="register_tab">Registrieren</button>
   </div>
 
   <!-- LOGIN TAB -->
   <div id="panel-login">
     <div id="saved-profiles"></div>
-    <div id="login-divider" class="divider" style="display:none">oder manuell</div>
+    <div id="login-divider" class="divider" style="display:none" data-i18n="manual_divider">oder manuell</div>
     <div class="form-group">
-      <label for="login-name">Benutzername</label>
-      <input type="text" id="login-name" placeholder="Dein Name" autocomplete="username">
+      <label for="login-name" data-i18n="username_label">Benutzername</label>
+      <input type="text" id="login-name" data-i18n-placeholder="username_placeholder" placeholder="Dein Name" autocomplete="username">
     </div>
-    <button class="btn-primary" onclick="doLogin()">Anmelden →</button>
+    <button class="btn-primary" onclick="doLogin()" data-i18n="login_btn">Anmelden →</button>
     <div class="msg" id="login-msg"></div>
-    <button class="guest-btn" onclick="doGuest()">👤 Als Gast fortfahren</button>
+    <button class="guest-btn" onclick="doGuest()" data-i18n="guest_btn">👤 Als Gast fortfahren</button>
   </div>
 
   <!-- REGISTER TAB -->
   <div id="panel-register" style="display:none">
     <div class="form-group">
-      <label for="reg-name">Benutzername</label>
-      <input type="text" id="reg-name" placeholder="Wie heißt du?" autocomplete="username">
+      <label for="reg-name" data-i18n="username_label">Benutzername</label>
+      <input type="text" id="reg-name" data-i18n-placeholder="reg_placeholder" placeholder="Wie heißt du?" autocomplete="username">
     </div>
-    <button class="btn-primary" onclick="doRegister()">Konto erstellen →</button>
+    <button class="btn-primary" onclick="doRegister()" data-i18n="register_btn">Konto erstellen →</button>
     <div class="msg" id="reg-msg"></div>
   </div>
 </div>
@@ -117,7 +118,7 @@ function renderProfiles() {
     return '<div class="profile-item" onclick="quickLogin(' + JSON.stringify(n) + ')">' +
       '<div class="avatar">' + initials + '</div>' +
       '<div><div class="profile-name">' + escHtml(n) + '</div>' +
-      '<div class="profile-sub">' + (last ? 'Zuletzt: ' + last : 'Tippe zum Anmelden') + '</div></div>' +
+      '<div class="profile-sub">' + (last ? t('last_login_prefix') + last : t('tap_to_login')) + '</div></div>' +
       '</div>';
   }).join('');
 }
@@ -138,26 +139,26 @@ function escHtml(s) {
 function doLogin() {
   const name = document.getElementById('login-name').value.trim();
   const msg  = document.getElementById('login-msg');
-  if (!name) { msg.className = 'msg error'; msg.textContent = 'Bitte gib deinen Namen ein.'; return; }
+  if (!name) { msg.className = 'msg error'; msg.textContent = t('err_enter_name'); return; }
   const users = getUsers();
-  if (!users[name]) { msg.className = 'msg error'; msg.textContent = 'Benutzer nicht gefunden. Bitte registrieren.'; return; }
+  if (!users[name]) { msg.className = 'msg error'; msg.textContent = t('err_user_not_found'); return; }
   users[name].lastLogin = Date.now();
   saveUsers(users);
   setSession(name);
-  msg.className = 'msg success'; msg.textContent = 'Willkommen zurück, ' + name + '!';
+  msg.className = 'msg success'; msg.textContent = t('msg_welcome_back') + name + '!';
   setTimeout(() => { window.location.href = 'home.html'; }, 600);
 }
 
 function doRegister() {
   const name = document.getElementById('reg-name').value.trim();
   const msg  = document.getElementById('reg-msg');
-  if (!name) { msg.className = 'msg error'; msg.textContent = 'Bitte gib deinen Namen ein.'; return; }
+  if (!name) { msg.className = 'msg error'; msg.textContent = t('err_enter_name'); return; }
   const users = getUsers();
-  if (users[name]) { msg.className = 'msg error'; msg.textContent = 'Benutzername bereits vergeben.'; return; }
+  if (users[name]) { msg.className = 'msg error'; msg.textContent = t('err_name_taken'); return; }
   users[name] = { created: Date.now(), lastLogin: Date.now(), progress: {} };
   saveUsers(users);
   setSession(name);
-  msg.className = 'msg success'; msg.textContent = 'Konto erstellt! Willkommen, ' + name + '!';
+  msg.className = 'msg success'; msg.textContent = t('msg_account_created') + name + '!';
   setTimeout(() => { window.location.href = 'home.html'; }, 700);
 }
 
@@ -168,7 +169,7 @@ function doGuest() {
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/app/sw.js').catch(() => {});
+  navigator.serviceWorker.register('../sw.js').catch(() => {});
 }
 
 // Check active session
@@ -177,6 +178,7 @@ if (session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000)) {
   window.location.href = 'home.html';
 }
 
+applyLang();
 renderProfiles();
 </script>
 </body>
