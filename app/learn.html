@@ -194,7 +194,7 @@ function buildOverview() {
   });
   document.getElementById('cat-grid').innerHTML = Object.entries(cats).map(([nr, cat]) => {
     const dc = cat.modules.filter(m => done.has(m.modul_nr)).length;
-    return '<div class="cat-card" onclick="openCategory(' + JSON.stringify(nr) + ')">' +
+    return '<div class="cat-card" onclick="openCategory(\'' + nr + '\')">' +
       '<div class="cat-icon">' + (CAT_ICONS[nr] || '&#128204;') + '</div>' +
       '<div class="cat-name">' + esc(cat.name) + '</div>' +
       '<div class="cat-sub">' + esc(CAT_SUBS[nr] || '') + '</div>' +
@@ -212,7 +212,7 @@ function openCategory(catNr) {
     '<div class="cat-subtitle">Kat. ' + catNr + ' &middot; ' + esc(CAT_SUBS[catNr] || '') + ' &middot; ' + mods.length + ' Module</div></div>';
   document.getElementById('module-list').innerHTML = mods.map(m => {
     const isDone = done.has(m.modul_nr);
-    return '<div class="module-item" onclick="openModule(' + JSON.stringify(m.modul_nr) + ')">' +
+    return '<div class="module-item" onclick="openModule(\'' + m.modul_nr + '\')">' +
       '<div class="module-nr">' + esc(m.modul_nr) + '</div>' +
       '<div><div class="module-title">' + esc(m.titel) + (isDone ? ' <span class="done-badge">&#10003;</span>' : '') + '</div>' +
       '<div class="module-frage">' + esc(m.fragestellung.substring(0,85)) + (m.fragestellung.length > 85 ? '&hellip;' : '') + '</div></div>' +
@@ -258,7 +258,7 @@ function openModule(nr) {
   html += sec(sid+'_weiter', '&#128173;', 'Weiterdenken', 'Vertiefung',
     '<ul class="q-list">' + qs.map(q => '<li>' + esc(q) + '</li>').join('') + '</ul>');
   html += sec(sid+'_sk', '&#127991;&#65039;', 'Schl&uuml;sselbegriffe', 'Glossar',
-    '<div class="sk-tags">' + sk.map(t => '<span class="sk-tag" onclick="openGlossaryTerm(' + JSON.stringify(t) + ')">' + esc(t) + '</span>').join('') + '</div>');
+    '<div class="sk-tags">' + sk.map(t => '<span class="sk-tag" onclick="openGlossaryTerm(\'' + t.replace(/\'/g,'&#39;') + '\')">' + esc(t) + '</span>').join('') + '</div>');
   const isDone = done.has(nr);
   html += '<button class="done-btn ' + (isDone ? 'done' : '') + '" onclick="toggleDone(' + JSON.stringify(nr) + ')">' +
     (isDone ? '&#10003; Abgeschlossen' : 'Als abgeschlossen markieren') + '</button>';
