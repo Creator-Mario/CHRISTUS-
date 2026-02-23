@@ -260,7 +260,7 @@ function openModule(nr) {
   html += sec(sid+'_sk', '&#127991;&#65039;', 'Schl&uuml;sselbegriffe', 'Glossar',
     '<div class="sk-tags">' + sk.map(t => '<span class="sk-tag" onclick="openGlossaryTerm(\'' + t.replace(/\'/g,'&#39;') + '\')">' + esc(t) + '</span>').join('') + '</div>');
   const isDone = done.has(nr);
-  html += '<button class="done-btn ' + (isDone ? 'done' : '') + '" onclick="toggleDone(' + JSON.stringify(nr) + ')">' +
+  html += '<button class="done-btn ' + (isDone ? 'done' : '') + '" onclick="toggleDone(\'' + nr + '\')">'  +
     (isDone ? '&#10003; Abgeschlossen' : 'Als abgeschlossen markieren') + '</button>';
   document.getElementById('module-content').innerHTML = html;
   toggleSec(sid + '_kern');
