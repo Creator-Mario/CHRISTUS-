@@ -171,7 +171,7 @@ function loadProfile() {
   if (cpRow) cpRow.style.display = email ? '' : 'none';
 
   const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
-  // Look up by email (new format) or by name (legacy)
+  // Look up by email (new format) or by name (legacy: backwards-compat with old username-only accounts)
   const userData = email ? users[email] : users[name];
   if (userData && userData.created) {
     const d = new Date(userData.created).toLocaleDateString('de');
