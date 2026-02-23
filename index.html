@@ -37,12 +37,10 @@
                 window.location.reload();
             });
         }
-        // Route: registered user → home, guest → bible, no session → login
+        // Route: registered user with valid session → home, everyone else → login
         const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
-        const valid = session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000);
-        const dest = valid
-            ? (session.email ? 'app/home.html' : 'app/bible.html')
-            : 'app/login.html';
+        const valid = session && session.email && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000);
+        const dest = valid ? 'app/home.html' : 'app/login.html';
         setTimeout(() => { window.location.href = dest; }, 300);
     </script>
 </body>
