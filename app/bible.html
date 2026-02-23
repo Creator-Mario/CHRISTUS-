@@ -369,7 +369,7 @@ function buildSections(sections, containerEl) {
     html += '<div class="book-grid">';
     secBooks.forEach(function(b) {
       var chapCount = Object.keys(bibleData[b]).length;
-      html += '<button class="book-btn" onclick="openBook(' + JSON.stringify(b) + ')">' +
+      html += '<button class="book-btn" onclick=\'openBook(' + JSON.stringify(b) + ')\'>' +
         '<span class="b-name">' + esc(displayName(b)) + '</span>' +
         '<span class="b-info">' + chapCount + ' Kapitel</span>' +
         '</button>';
@@ -480,7 +480,7 @@ function doSearch() {
     var highlighted = r.text.replace(re, '\x00$1\x00');
     highlighted = esc(highlighted)
       .replace(/\x00([^\x00]*)\x00/g, '<mark>$1</mark>');
-    html += '<div class="result-card" onclick="openChapter_search(' + JSON.stringify(r.book) + ',' + r.chapter + ')">' +
+    html += '<div class="result-card" onclick=\'openChapter_search(' + JSON.stringify(r.book) + ',' + r.chapter + ')\'>' +
       '<div class="result-ref">' + esc(displayName(r.book)) + ' ' + r.chapter + ',' + r.verse + '</div>' +
       '<div class="result-text">' + highlighted + '</div></div>';
   });
