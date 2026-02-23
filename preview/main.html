@@ -19,9 +19,10 @@
     <script>
         const lang = localStorage.getItem('selectedLanguage') || 'en';
         const translations = {
-            en: { welcome: 'Welcome', content: 'This is the main content of the app.' },
-            es: { welcome: 'Bienvenido', content: 'Este es el contenido principal de la aplicación.' },
-            pt: { welcome: 'Bem-vindo', content: 'Este é o conteúdo principal do aplicativo.' }
+            de: { welcome: 'Willkommen', content: 'Entdecke den Lernbereich mit 7 Kategorien und 42 Modulen.' },
+            en: { welcome: 'Welcome', content: 'Explore the learning area with 7 categories and 42 modules.' },
+            es: { welcome: 'Bienvenido', content: 'Explora el área de aprendizaje con 7 categorías y 42 módulos.' },
+            pt: { welcome: 'Bem-vindo', content: 'Explore a área de aprendizado com 7 categorias e 42 módulos.' }
         };
 
         document.getElementById('welcome').textContent = translations[lang].welcome;
