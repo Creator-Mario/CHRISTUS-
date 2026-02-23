@@ -37,29 +37,41 @@ button{font-family:inherit;cursor:pointer}
 .clear-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--muted);font-size:.85rem;transition:.2s;cursor:pointer}
 .clear-btn:hover{border-color:var(--gold);color:var(--text)}
 
-/* Category header */
-.cat-section{margin-bottom:24px}
-.cat-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:10px}
+/* Category accordion */
+.cat-section{margin-bottom:12px}
+.cat-acc-hdr{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;text-align:left;transition:.2s;user-select:none}
+.cat-acc-hdr:hover,.cat-acc-hdr.open{border-color:var(--gold);background:var(--surface2)}
+.cat-badge{background:rgba(244,208,63,.15);color:var(--gold);font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0;letter-spacing:.5px}
+.cat-name{font-size:.95rem;font-weight:700;flex:1;color:var(--text)}
+.cat-count{font-size:.75rem;color:var(--muted);flex-shrink:0}
+.cat-chev{color:var(--muted);font-size:.85rem;transition:transform .2s;flex-shrink:0}
+.cat-chev.open{transform:rotate(90deg)}
+.cat-body{display:none;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:8px;background:var(--bg)}
+.cat-body.open{display:block}
+
+/* Testament divider */
+.testament-divider{display:flex;align-items:center;gap:10px;margin:20px 0 12px}
+.testament-divider::before,.testament-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.testament-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--gold);white-space:nowrap;padding:4px 12px;background:rgba(244,208,63,.1);border:1px solid rgba(244,208,63,.25);border-radius:10px}
 
 /* Topic list */
-.topic-list{display:flex;flex-direction:column;gap:8px}
-.topic-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.topic-hdr{padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;user-select:none;transition:.2s}
+.topic-list{display:flex;flex-direction:column;gap:6px}
+.topic-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.topic-hdr{padding:11px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;user-select:none;transition:.2s}
 .topic-hdr:hover{background:var(--surface2)}
 .topic-hdr.open{border-bottom:1px solid var(--border)}
-.topic-nr{background:rgba(244,208,63,.12);color:var(--gold);padding:2px 8px;border-radius:6px;font-size:.72rem;font-weight:700;flex-shrink:0}
-.topic-title{font-weight:700;font-size:.88rem;flex:1}
-.topic-ref{font-size:.75rem;color:var(--muted);flex-shrink:0;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.topic-chev{color:var(--muted);font-size:.8rem;transition:.2s;flex-shrink:0}
+.topic-nr{background:rgba(244,208,63,.12);color:var(--gold);padding:2px 7px;border-radius:6px;font-size:.7rem;font-weight:700;flex-shrink:0}
+.topic-title{font-weight:700;font-size:.86rem;flex:1}
+.topic-ref{font-size:.73rem;color:var(--muted);flex-shrink:0;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topic-chev{color:var(--muted);font-size:.78rem;transition:.2s;flex-shrink:0}
 .topic-chev.open{transform:rotate(90deg)}
-.topic-body{padding:12px 16px;display:none;font-size:.86rem;line-height:1.7}
+.topic-body{padding:12px 14px;display:none;font-size:.85rem;line-height:1.7}
 .topic-body.open{display:block}
 .topic-detail-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:baseline}
-.topic-detail-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);flex-shrink:0;min-width:90px}
-.topic-bibel-link{color:var(--gold);background:rgba(244,208,63,.1);border:1px solid rgba(244,208,63,.25);border-radius:6px;padding:2px 8px;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-block;margin-bottom:2px}
+.topic-detail-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);flex-shrink:0;min-width:88px}
+.topic-bibel-link{color:var(--gold);background:rgba(244,208,63,.1);border:1px solid rgba(244,208,63,.25);border-radius:6px;padding:2px 8px;font-size:.77rem;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-block;margin-bottom:2px}
 .topic-bibel-link:hover{background:rgba(244,208,63,.2);border-color:var(--gold)}
-.topic-qv{color:var(--muted);font-size:.82rem}
-.topic-erklaerung{color:var(--text);font-size:.85rem;line-height:1.7}
+.topic-erklaerung{color:var(--text);font-size:.84rem;line-height:1.7}
 
 /* Stats row */
 .stats-row{display:flex;gap:10px;margin-bottom:16px}
@@ -89,6 +101,8 @@ button{font-family:inherit;cursor:pointer}
   <div class="stats-row">
     <div class="stat-card"><div class="stat-num">270</div><div class="stat-label" data-i18n="themen_count_label">Themen</div></div>
     <div class="stat-card"><div class="stat-num">18</div><div class="stat-label" data-i18n="themen_cat_label">Kategorien</div></div>
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">AT</div></div>
+    <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">NT</div></div>
   </div>
 
   <div class="search-bar">
@@ -104,6 +118,7 @@ button{font-family:inherit;cursor:pointer}
   <a href="learn.html"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
   <a href="themen.html" class="active"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
+  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Glossar</span></a>
   <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
 
@@ -196,8 +211,22 @@ function esc(s) {
 }
 
 // ── Render ────────────────────────────────────────────────────────────────────
+// Categories 1–10 are AT, 11–18 are NT (by order of appearance in data)
+var AT_CATS = new Set([
+  'Schöpfung und Ursprung',
+  'Die Erzväter und Mütter Israels',
+  'Der Auszug aus Ägypten und die Wüstenzeit',
+  'Gesetz und Bund',
+  'Einzug und Landnahme',
+  'Die Zeit der Richter',
+  'Könige und Prophetie in Israel',
+  'Die großen Propheten Elia und Elisa',
+  'Psalmen: Gebete und Lieder',
+  'Prophetische Bücher und Botschaft'
+]);
+
 function renderThemen(topics) {
-  // Group by thema
+  // Group by thema, preserving original order
   var groups = {};
   var order = [];
   topics.forEach(function(t) {
@@ -205,12 +234,42 @@ function renderThemen(topics) {
     groups[t.thema].push(t);
   });
 
+  // Determine if we're showing all topics (full view) or filtered
+  var isFiltered = topics.length < THEMEN.length;
+
   var html = '';
+  var atShown = false, ntShown = false;
+  var catIdx = 0;
+
   order.forEach(function(cat) {
     var items = groups[cat];
+    var isAT  = AT_CATS.has(cat);
+
+    // Insert AT/NT dividers only in full (unfiltered) view
+    if (!isFiltered) {
+      if (isAT && !atShown) {
+        html += '<div class="testament-divider"><span class="testament-label">&#128220; Altes Testament</span></div>';
+        atShown = true;
+      }
+      if (!isAT && !ntShown) {
+        html += '<div class="testament-divider"><span class="testament-label">&#10013; Neues Testament</span></div>';
+        ntShown = true;
+      }
+    }
+
+    var catNum = catIdx++;           // catNum = 0,1,2… ; catIdx advances for next iteration
+    var cid = 'cat-' + catNum;
+    var startOpen = (catNum === 0 || isFiltered); // first category opens by default
     html += '<div class="cat-section">';
-    html += '<div class="cat-title">' + esc(cat) + ' <span style="opacity:.6">(' + items.length + ')</span></div>';
+    html += '<button class="cat-acc-hdr' + (startOpen ? ' open' : '') + '" onclick="toggleCategory(' + JSON.stringify(cid) + ')" id="hdr-' + cid + '" aria-expanded="' + (startOpen ? 'true' : 'false') + '">';
+    html += '<span class="cat-badge">' + (isAT ? 'AT' : 'NT') + '</span>';
+    html += '<span class="cat-name">' + esc(cat) + '</span>';
+    html += '<span class="cat-count">' + items.length + ' Themen</span>';
+    html += '<span class="cat-chev' + (startOpen ? ' open' : '') + '" id="chev-' + cid + '">&rsaquo;</span>';
+    html += '</button>';
+    html += '<div class="cat-body' + (startOpen ? ' open' : '') + '" id="body-' + cid + '">';
     html += '<div class="topic-list">';
+
     items.forEach(function(t) {
       var tid = 'topic-' + t.id;
       html += '<div class="topic-item">';
@@ -221,31 +280,41 @@ function renderThemen(topics) {
       html += '<span class="topic-chev" id="chev-' + tid + '">&rsaquo;</span>';
       html += '</div>';
       html += '<div class="topic-body" id="body-' + tid + '">';
-      // Bibelstelle
       if (t.bibelstelle) {
         html += '<div class="topic-detail-row">';
         html += '<span class="topic-detail-label">&#128214; Bibelstelle</span>';
         html += '<span>' + makeBibleLinks(t.bibelstelle) + '</span>';
         html += '</div>';
       }
-      // Querverweise
       if (t.querverweise) {
         html += '<div class="topic-detail-row">';
         html += '<span class="topic-detail-label">&#128279; Querverweise</span>';
         html += '<span>' + makeBibleLinks(t.querverweise) + '</span>';
         html += '</div>';
       }
-      // Erklärung
       if (t.erklaerung) {
         html += '<div class="topic-erklaerung" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">' + esc(t.erklaerung) + '</div>';
       }
       html += '</div></div>';
     });
-    html += '</div></div>';
+
+    html += '</div></div></div>';
   });
 
   if (!html) html = '<div class="no-results" data-i18n="themen_no_results">Keine Themen gefunden.</div>';
   document.getElementById('themen-content').innerHTML = html;
+}
+
+function toggleCategory(cid) {
+  var body = document.getElementById('body-' + cid);
+  var chev = document.getElementById('chev-' + cid);
+  var hdr  = document.getElementById('hdr-'  + cid);
+  if (!body) return;
+  var open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  chev.classList.toggle('open', !open);
+  hdr.classList.toggle('open', !open);
+  hdr.setAttribute('aria-expanded', String(!open));
 }
 
 function toggleTopic(tid) {

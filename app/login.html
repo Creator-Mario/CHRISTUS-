@@ -8,7 +8,6 @@
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
-
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0f1923;--surface:#1a2636;--surface2:#223044;--border:#2d4060;
@@ -19,74 +18,128 @@
 body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
-
 body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .logo{text-align:center;font-size:52px;margin-bottom:8px}
 .app-name{text-align:center;font-size:1.8rem;font-weight:700;letter-spacing:3px;color:var(--gold);margin-bottom:4px}
 .version{text-align:center;font-size:.72rem;color:var(--muted);margin-bottom:28px}
 .tabs{display:flex;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px;gap:4px}
-.tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-size:.88rem;font-weight:600;border-radius:7px;transition:.2s}
+.tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-size:.88rem;font-weight:600;border-radius:7px;transition:.2s;cursor:pointer}
 .tab.active{background:var(--gold);color:#1a1a2e}
 .form-group{margin-bottom:16px}
 label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px;font-weight:600}
 input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-size:.95rem;outline:none;transition:.2s;font-family:inherit}
 input:focus{border-color:var(--gold)}
-.btn-primary{width:100%;padding:13px;background:var(--gold);color:#1a1a2e;font-size:1rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:8px;transition:.2s}
+.btn-primary{width:100%;padding:13px;background:var(--gold);color:#1a1a2e;font-size:1rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:8px;transition:.2s;cursor:pointer}
 .btn-primary:hover{background:var(--gold2)}
 .divider{text-align:center;color:var(--muted);font-size:.8rem;margin:16px 0;position:relative}
 .divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
 .divider::before{left:0}.divider::after{right:0}
-.profiles{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.profile-item{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer;transition:.2s}
+.profile-item{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer;transition:.2s;margin-bottom:8px}
 .profile-item:hover{border-color:var(--gold)}
-.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#1a1a2e;flex-shrink:0}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#1a1a2e;flex-shrink:0}
 .profile-name{font-weight:600;font-size:.9rem}
 .profile-sub{font-size:.75rem;color:var(--muted)}
 .msg{font-size:.82rem;text-align:center;margin-top:10px;min-height:18px}
 .msg.error{color:var(--red)}
 .msg.success{color:var(--green)}
-.guest-btn{width:100%;padding:10px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:.88rem;border-radius:var(--radius-sm);margin-top:8px;transition:.2s}
+.guest-btn{width:100%;padding:10px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:.88rem;border-radius:var(--radius-sm);margin-top:8px;transition:.2s;cursor:pointer}
 .guest-btn:hover{border-color:var(--gold);color:var(--text)}
+/* OTP panel */
+.info-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px}
+.info-icon{font-size:38px;margin-bottom:8px}
+.info-title{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:6px}
+.info-sub{font-size:.82rem;color:var(--muted);margin-bottom:8px}
+.info-email{font-size:.82rem;color:var(--text);margin-bottom:10px;word-break:break-all}
+.otp-code{font-size:1.9rem;font-weight:700;letter-spacing:5px;color:var(--gold);background:rgba(244,208,63,.1);border:2px dashed var(--gold);border-radius:var(--radius-sm);padding:12px 16px;margin:10px 0;font-family:monospace;user-select:all}
+.otp-warning{font-size:.78rem;color:var(--red);margin-top:8px;padding:8px 10px;background:rgba(231,76,60,.1);border-radius:6px;text-align:left}
+.otp-note{font-size:.72rem;color:var(--muted);margin-top:8px;font-style:italic}
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="logo">✝</div>
+  <div class="logo">&#10013;</div>
   <div class="app-name">CHRISTUS</div>
-  <div class="version">Version 1.13 · Glaubensbildung &amp; Nachfolge</div>
+  <div class="version">Version 1.13 &middot; Glaubensbildung &amp; Nachfolge</div>
 
-  <div class="tabs">
+  <!-- Tab bar (hidden for OTP / change-pass panels) -->
+  <div class="tabs" id="main-tabs">
     <button class="tab active" id="tab-login" onclick="showTab('login')" data-i18n="login_tab">Anmelden</button>
     <button class="tab" id="tab-register" onclick="showTab('register')" data-i18n="register_tab">Registrieren</button>
   </div>
 
-  <!-- LOGIN TAB -->
+  <!-- LOGIN PANEL -->
   <div id="panel-login">
     <div id="saved-profiles"></div>
     <div id="login-divider" class="divider" style="display:none" data-i18n="manual_divider">oder manuell</div>
     <div class="form-group">
-      <label for="login-name" data-i18n="username_label">Benutzername</label>
-      <input type="text" id="login-name" data-i18n-placeholder="username_placeholder" placeholder="Dein Name" autocomplete="username">
+      <label for="login-email" data-i18n="email_label">E-Mail</label>
+      <input type="email" id="login-email" data-i18n-placeholder="email_placeholder" placeholder="deine@email.de" autocomplete="email">
     </div>
-    <button class="btn-primary" onclick="doLogin()" data-i18n="login_btn">Anmelden →</button>
+    <div class="form-group">
+      <label for="login-pass" data-i18n="password_label">Passwort</label>
+      <input type="password" id="login-pass" data-i18n-placeholder="password_placeholder" placeholder="Dein Passwort" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" onclick="doLogin()" data-i18n="login_btn">Anmelden &#8594;</button>
     <div class="msg" id="login-msg"></div>
-    <button class="guest-btn" onclick="doGuest()" data-i18n="guest_btn">👤 Als Gast fortfahren</button>
+    <button class="guest-btn" onclick="doGuest()" data-i18n="guest_btn">&#128100; Als Gast fortfahren</button>
   </div>
 
-  <!-- REGISTER TAB -->
+  <!-- REGISTER PANEL -->
   <div id="panel-register" style="display:none">
     <div class="form-group">
-      <label for="reg-name" data-i18n="username_label">Benutzername</label>
-      <input type="text" id="reg-name" data-i18n-placeholder="reg_placeholder" placeholder="Wie heißt du?" autocomplete="username">
+      <label for="reg-vorname" data-i18n="vorname_label">Vorname</label>
+      <input type="text" id="reg-vorname" data-i18n-placeholder="reg_vorname_placeholder" placeholder="Dein Vorname" autocomplete="given-name">
     </div>
-    <button class="btn-primary" onclick="doRegister()" data-i18n="register_btn">Konto erstellen →</button>
+    <div class="form-group">
+      <label for="reg-nachname" data-i18n="nachname_label">Nachname</label>
+      <input type="text" id="reg-nachname" data-i18n-placeholder="reg_nachname_placeholder" placeholder="Dein Nachname" autocomplete="family-name">
+    </div>
+    <div class="form-group">
+      <label for="reg-email" data-i18n="email_label">E-Mail</label>
+      <input type="email" id="reg-email" data-i18n-placeholder="email_placeholder" placeholder="deine@email.de" autocomplete="email" onkeydown="if(event.key==='Enter')doRegister()">
+    </div>
+    <button class="btn-primary" onclick="doRegister()" data-i18n="register_btn">Konto erstellen &#8594;</button>
     <div class="msg" id="reg-msg"></div>
+  </div>
+
+  <!-- OTP PANEL (shown after successful registration) -->
+  <div id="panel-otp" style="display:none">
+    <div class="info-box">
+      <div class="info-icon">&#128231;</div>
+      <div class="info-title" data-i18n="otp_title">Einmalpasswort</div>
+      <div class="info-sub" data-i18n="otp_subtitle">Ihr Konto wurde angelegt. Bitte notieren Sie Ihr Einmalpasswort:</div>
+      <div class="info-email" id="otp-email-display"></div>
+      <div class="otp-code" id="otp-display"></div>
+      <div class="otp-warning" data-i18n="otp_warning">&#9888;&#65039; Sie werden beim ersten Login aufgefordert, dieses Passwort zu &#228;ndern.</div>
+      <div class="otp-note" data-i18n="otp_note">(In einer realen Umgebung wird dieses Passwort per E-Mail gesendet.)</div>
+    </div>
+    <button class="btn-primary" onclick="showTab('login')" data-i18n="otp_to_login">Zum Anmelden &#8594;</button>
+  </div>
+
+  <!-- CHANGE PASSWORD PANEL (shown on first login with OTP) -->
+  <div id="panel-change-pass" style="display:none">
+    <div class="info-box">
+      <div class="info-icon">&#128274;</div>
+      <div class="info-title" data-i18n="change_pass_title">Passwort &#228;ndern</div>
+      <div class="info-sub" data-i18n="change_pass_sub">Einmalpasswort erkannt. Bitte setzen Sie jetzt Ihr pers&#246;nliches Passwort.</div>
+    </div>
+    <div class="form-group">
+      <label for="new-pass" data-i18n="new_pass_label">Neues Passwort</label>
+      <input type="password" id="new-pass" data-i18n-placeholder="new_pass_placeholder" placeholder="Neues Passwort (min. 6 Zeichen)" autocomplete="new-password">
+    </div>
+    <div class="form-group">
+      <label for="new-pass2" data-i18n="confirm_pass_label">Passwort best&#228;tigen</label>
+      <input type="password" id="new-pass2" data-i18n-placeholder="confirm_pass_placeholder" placeholder="Passwort wiederholen" autocomplete="new-password" onkeydown="if(event.key==='Enter')doChangePassword()">
+    </div>
+    <button class="btn-primary" onclick="doChangePassword()" data-i18n="change_pass_btn">Passwort setzen &amp; Konto aktivieren &#8594;</button>
+    <div class="msg" id="change-pass-msg"></div>
   </div>
 </div>
 
 <script>
-const VERSION = '1.13';
+var VERSION = '1.13';
+var _pendingEmail = null; // email of user awaiting first-login password change
 
 function getUsers() {
   return JSON.parse(localStorage.getItem('christus_users') || '{}');
@@ -94,86 +147,195 @@ function getUsers() {
 function saveUsers(u) {
   localStorage.setItem('christus_users', JSON.stringify(u));
 }
-function setSession(name) {
-  localStorage.setItem('christus_session', JSON.stringify({ name, time: Date.now() }));
+function setSession(name, email) {
+  localStorage.setItem('christus_session', JSON.stringify({ name: name, email: email, time: Date.now() }));
 }
 
-function showTab(t) {
-  document.getElementById('panel-login').style.display = t === 'login' ? '' : 'none';
-  document.getElementById('panel-register').style.display = t === 'register' ? '' : 'none';
-  document.getElementById('tab-login').classList.toggle('active', t === 'login');
-  document.getElementById('tab-register').classList.toggle('active', t === 'register');
+function generateOTP() {
+  // Exclude ambiguous characters (0/O, 1/l/I) so the OTP is easy to read and type
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  var arr = new Uint8Array(8);
+  crypto.getRandomValues(arr);
+  return Array.from(arr).map(function(b) { return chars[b % chars.length]; }).join('');
 }
 
-function renderProfiles() {
-  const users = getUsers();
-  const names = Object.keys(users);
-  const el = document.getElementById('saved-profiles');
-  const div = document.getElementById('login-divider');
-  if (names.length === 0) { el.innerHTML = ''; div.style.display = 'none'; return; }
-  div.style.display = '';
-  el.innerHTML = names.map(n => {
-    const initials = n.substring(0, 2).toUpperCase();
-    const last = users[n].lastLogin ? new Date(users[n].lastLogin).toLocaleDateString('de') : '';
-    return '<div class="profile-item" onclick="quickLogin(' + JSON.stringify(n) + ')">' +
-      '<div class="avatar">' + initials + '</div>' +
-      '<div><div class="profile-name">' + escHtml(n) + '</div>' +
-      '<div class="profile-sub">' + (last ? t('last_login_prefix') + last : t('tap_to_login')) + '</div></div>' +
-      '</div>';
-  }).join('');
+function validateEmail(email) {
+  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
 }
 
-function quickLogin(name) {
-  // Tap on a saved profile → log in immediately without re-entering name
-  const users = getUsers();
-  users[name].lastLogin = Date.now();
-  saveUsers(users);
-  setSession(name);
-  window.location.href = 'home.html';
+async function hashPassword(password) {
+  var encoder = new TextEncoder();
+  var data = encoder.encode(password);
+  var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  var hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+function showTab(tab) {
+  ['login', 'register', 'otp', 'change-pass'].forEach(function(p) {
+    var el = document.getElementById('panel-' + p);
+    if (el) el.style.display = 'none';
+  });
+  var panel = document.getElementById('panel-' + tab);
+  if (panel) panel.style.display = '';
+
+  // Tab buttons only apply to login / register
+  var tabs = document.getElementById('main-tabs');
+  if (tab === 'otp' || tab === 'change-pass') {
+    if (tabs) tabs.style.display = 'none';
+  } else {
+    if (tabs) tabs.style.display = '';
+    var tabLogin    = document.getElementById('tab-login');
+    var tabRegister = document.getElementById('tab-register');
+    if (tabLogin)    tabLogin.classList.toggle('active', tab === 'login');
+    if (tabRegister) tabRegister.classList.toggle('active', tab === 'register');
+  }
 }
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-function doLogin() {
-  const name = document.getElementById('login-name').value.trim();
-  const msg  = document.getElementById('login-msg');
-  if (!name) { msg.className = 'msg error'; msg.textContent = t('err_enter_name'); return; }
-  const users = getUsers();
-  if (!users[name]) { msg.className = 'msg error'; msg.textContent = t('err_user_not_found'); return; }
-  users[name].lastLogin = Date.now();
-  saveUsers(users);
-  setSession(name);
-  msg.className = 'msg success'; msg.textContent = t('msg_welcome_back') + name + '!';
-  setTimeout(() => { window.location.href = 'home.html'; }, 600);
+// ── Saved-profile quick login ─────────────────────────────────────────────────
+function renderProfiles() {
+  var users = getUsers();
+  var emails = Object.keys(users).filter(function(k) {
+    return users[k].activated && users[k].email;
+  });
+  var el  = document.getElementById('saved-profiles');
+  var div = document.getElementById('login-divider');
+  if (emails.length === 0) { el.innerHTML = ''; if (div) div.style.display = 'none'; return; }
+  if (div) div.style.display = '';
+  el.innerHTML = emails.map(function(email) {
+    var u = users[email];
+    var name = ((u.vorname || '') + ' ' + (u.nachname || '')).trim() || email;
+    var initials = (((u.vorname || '?')[0]) + ((u.nachname || '?')[0])).toUpperCase();
+    var last = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('de') : '';
+    return '<div class="profile-item" onclick="quickLogin(' + JSON.stringify(email) + ')">' +
+      '<div class="avatar">' + escHtml(initials) + '</div>' +
+      '<div><div class="profile-name">' + escHtml(name) + '</div>' +
+      '<div class="profile-sub">' + (last ? t('last_login_prefix') + last : t('tap_to_login')) + '</div></div>' +
+      '</div>';
+  }).join('');
 }
 
-function doRegister() {
-  const name = document.getElementById('reg-name').value.trim();
-  const msg  = document.getElementById('reg-msg');
-  if (!name) { msg.className = 'msg error'; msg.textContent = t('err_enter_name'); return; }
-  const users = getUsers();
-  if (users[name]) { msg.className = 'msg error'; msg.textContent = t('err_name_taken'); return; }
-  users[name] = { created: Date.now(), lastLogin: Date.now(), progress: {} };
+function quickLogin(email) {
+  var users = getUsers();
+  var user  = users[email];
+  if (!user || !user.activated) return;
+  user.lastLogin = Date.now();
   saveUsers(users);
-  setSession(name);
-  msg.className = 'msg success'; msg.textContent = t('msg_account_created') + name + '!';
-  setTimeout(() => { window.location.href = 'home.html'; }, 700);
+  var name = ((user.vorname || '') + ' ' + (user.nachname || '')).trim() || email;
+  setSession(name, email);
+  window.location.href = 'home.html';
 }
 
+// ── Login ─────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  var email = document.getElementById('login-email').value.trim().toLowerCase();
+  var pass  = document.getElementById('login-pass').value;
+  var msg   = document.getElementById('login-msg');
+
+  if (!email) { msg.className = 'msg error'; msg.textContent = t('err_enter_email'); return; }
+  if (!pass)  { msg.className = 'msg error'; msg.textContent = t('err_enter_password'); return; }
+
+  var users = getUsers();
+  var user  = users[email];
+  if (!user) { msg.className = 'msg error'; msg.textContent = t('err_user_not_found'); return; }
+
+  var hashedPass = await hashPassword(pass);
+  if (user.password !== hashedPass) { msg.className = 'msg error'; msg.textContent = t('err_wrong_password'); return; }
+
+  // First login with OTP: force password change
+  if (user.mustChangePassword) {
+    _pendingEmail = email;
+    showTab('change-pass');
+    return;
+  }
+
+  user.lastLogin = Date.now();
+  saveUsers(users);
+  var name = ((user.vorname || '') + ' ' + (user.nachname || '')).trim() || email;
+  setSession(name, email);
+  msg.className = 'msg success';
+  msg.textContent = t('msg_welcome_back') + name + '!';
+  setTimeout(function() { window.location.href = 'home.html'; }, 600);
+}
+
+// ── Register ──────────────────────────────────────────────────────────────────
+async function doRegister() {
+  var vorname  = document.getElementById('reg-vorname').value.trim();
+  var nachname = document.getElementById('reg-nachname').value.trim();
+  var email    = document.getElementById('reg-email').value.trim().toLowerCase();
+  var msg      = document.getElementById('reg-msg');
+
+  if (!vorname)                        { msg.className = 'msg error'; msg.textContent = t('err_enter_vorname');      return; }
+  if (!nachname)                       { msg.className = 'msg error'; msg.textContent = t('err_enter_nachname');     return; }
+  if (!email || !validateEmail(email)) { msg.className = 'msg error'; msg.textContent = t('err_enter_email_valid'); return; }
+
+  var users = getUsers();
+  if (users[email]) { msg.className = 'msg error'; msg.textContent = t('err_email_taken'); return; }
+
+  var otp     = generateOTP();
+  var otpHash = await hashPassword(otp);
+  users[email] = {
+    vorname: vorname,
+    nachname: nachname,
+    email: email,
+    password: otpHash,
+    mustChangePassword: true,
+    activated: false,
+    created: Date.now(),
+    lastLogin: null
+  };
+  saveUsers(users);
+
+  document.getElementById('otp-display').textContent = otp;
+  document.getElementById('otp-email-display').textContent = t('otp_sent_to') + email;
+  showTab('otp');
+}
+
+// ── First-login password change ───────────────────────────────────────────────
+async function doChangePassword() {
+  var newPass  = document.getElementById('new-pass').value;
+  var newPass2 = document.getElementById('new-pass2').value;
+  var msg      = document.getElementById('change-pass-msg');
+
+  if (!newPass || newPass.length < 6) { msg.className = 'msg error'; msg.textContent = t('err_pass_too_short'); return; }
+  if (newPass !== newPass2)           { msg.className = 'msg error'; msg.textContent = t('err_pass_mismatch');   return; }
+
+  var users = getUsers();
+  var user  = users[_pendingEmail];
+  if (!user) { msg.className = 'msg error'; msg.textContent = t('err_session_expired'); return; }
+
+  user.password           = await hashPassword(newPass);
+  user.mustChangePassword = false;
+  user.activated          = true;
+  user.lastLogin          = Date.now();
+  saveUsers(users);
+
+  var name = ((user.vorname || '') + ' ' + (user.nachname || '')).trim() || _pendingEmail;
+  setSession(name, _pendingEmail);
+  _pendingEmail = null;
+
+  msg.className = 'msg success';
+  msg.textContent = t('msg_account_activated') + name + '!';
+  setTimeout(function() { window.location.href = 'home.html'; }, 800);
+}
+
+// ── Guest ─────────────────────────────────────────────────────────────────────
 function doGuest() {
-  setSession('Gast');
+  setSession('Gast', null);
   window.location.href = 'home.html';
 }
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('../sw.js').catch(() => {});
+  navigator.serviceWorker.register('../sw.js').catch(function() {});
 }
 
-// Check active session
-const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+// Redirect if already logged in
+var session = JSON.parse(localStorage.getItem('christus_session') || 'null');
 if (session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000)) {
   window.location.href = 'home.html';
 }

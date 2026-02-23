@@ -45,9 +45,12 @@ button{font-family:inherit;cursor:pointer}
 .page-title{font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:4px}
 .page-sub{color:var(--muted);font-size:.82rem;margin-bottom:16px}
 .section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:16px 0 8px}
-.book-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.book-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);text-align:left;font-size:.85rem;font-weight:600;transition:.2s;cursor:pointer}
+.subsection-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);opacity:.7;margin:14px 0 6px;padding-left:2px}
+.book-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:4px}
+.book-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);text-align:left;font-size:.85rem;font-weight:600;transition:.2s;cursor:pointer;display:flex;flex-direction:column;gap:2px}
 .book-btn:hover{border-color:var(--gold);background:var(--surface2);color:var(--gold)}
+.book-btn .b-name{font-size:.85rem;font-weight:700}
+.book-btn .b-info{font-size:.68rem;color:var(--muted)}
 
 /* Chapter grid */
 .chapter-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
@@ -122,10 +125,10 @@ button{font-family:inherit;cursor:pointer}
   <div class="screen" id="screen-books">
     <h1 class="page-title" data-i18n="bible_header">&#128214; Elberfelder Bibel 1905</h1>
     <p class="page-sub" data-i18n="bible_book">Buch wählen</p>
-    <p class="section-label">Altes Testament</p>
-    <div class="book-grid" id="ot-grid"></div>
-    <p class="section-label">Neues Testament</p>
-    <div class="book-grid" id="nt-grid"></div>
+    <p class="section-label">&#9997; Altes Testament</p>
+    <div id="ot-sections"></div>
+    <p class="section-label" style="margin-top:20px">&#10013; Neues Testament</p>
+    <div id="nt-sections"></div>
     <div class="copyright-bar" data-i18n="copyright_text">© Mario Reiner Denzer</div>
   </div>
 
@@ -165,6 +168,7 @@ button{font-family:inherit;cursor:pointer}
   <a href="home.html"><span class="ni">&#127968;</span><span data-i18n="nav_home">Start</span></a>
   <a href="learn.html"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html" class="active"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
+  <a href="themen.html"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
   <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Glossar</span></a>
   <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
@@ -172,13 +176,46 @@ button{font-family:inherit;cursor:pointer}
 <script>
 // ── Data ─────────────────────────────────────────────────────────────────────
 // OT = Genesis … Maleachi (book numbers 1–39), NT = Matthäus … Offenbarung (40–66)
-// We derive NT threshold from data.
 var bibleData = null;  // { bookName: [ { chapter, verse, text } ] }
-var bookList = [];     // ordered list of book names
+var bookList = [];     // ordered list of book names (CSV keys)
 var NT_BOOKS = new Set();
 var currentBook = null;
 var currentChapter = null;
 var navStack = [];
+
+// ── Proper German display names (CSV name → display name) ─────────────────────
+var DISPLAY_NAMES = {
+  '1 Mose':'1. Mose','2 Mose':'2. Mose','3 Mose':'3. Mose','4 Mose':'4. Mose','5 Mose':'5. Mose',
+  '1 Samuel':'1. Samuel','2 Samuel':'2. Samuel',
+  '1 Koenige':'1. Könige','2 Koenige':'2. Könige',
+  '1 Chronik':'1. Chronik','2 Chronik':'2. Chronik',
+  'Job':'Hiob','Sprueche':'Sprüche','Mica':'Micha',
+  'Matthaeus':'Matthäus',
+  'Roemers':'Römer',
+  '1 Korinther':'1. Korinther','2 Korinther':'2. Korinther',
+  '1 Thessalonicher':'1. Thessalonicher','2 Thessalonicher':'2. Thessalonicher',
+  '1 Timotheus':'1. Timotheus','2 Timotheus':'2. Timotheus',
+  '1 Petrus':'1. Petrus','2 Petrus':'2. Petrus',
+  '1 Johannes':'1. Johannes','2 Johannes':'2. Johannes','3 Johannes':'3. Johannes',
+  'Hebraeer':'Hebräer'
+};
+function displayName(csvName) { return DISPLAY_NAMES[csvName] || csvName; }
+
+// ── AT / NT sub-sections ──────────────────────────────────────────────────────
+var AT_SECTIONS = [
+  { label:'Pentateuch',       books:['1 Mose','2 Mose','3 Mose','4 Mose','5 Mose'] },
+  { label:'Geschichtsbücher', books:['Josua','Richter','Rut','1 Samuel','2 Samuel','1 Koenige','2 Koenige','1 Chronik','2 Chronik','Esra','Nehemia','Ester'] },
+  { label:'Poetische Bücher', books:['Job','Psalm','Sprueche','Prediger','Hohelied'] },
+  { label:'Große Propheten',  books:['Jesaja','Jeremia','Klagelieder','Hesekiel','Daniel'] },
+  { label:'Kleine Propheten', books:['Hosea','Joel','Amos','Obadja','Jona','Mica','Nahum','Habakuk','Zephanja','Haggai','Sacharja','Maleachi'] }
+];
+var NT_SECTIONS = [
+  { label:'Evangelien',          books:['Matthaeus','Markus','Lukas','Johannes'] },
+  { label:'Apostelgeschichte',   books:['Apostelgeschichte'] },
+  { label:'Paulusbriefe',        books:['Roemers','1 Korinther','2 Korinther','Galater','Epheser','Philipper','Kolosser','1 Thessalonicher','2 Thessalonicher','1 Timotheus','2 Timotheus','Titus','Philemon'] },
+  { label:'Allgemeine Briefe',   books:['Hebraeer','Jakobus','1 Petrus','2 Petrus','1 Johannes','2 Johannes','3 Johannes','Judas'] },
+  { label:'Prophetie',           books:['Offenbarung'] }
+];
 
 // ── CSV Parser ────────────────────────────────────────────────────────────────
 function parseCSV(text) {
@@ -310,19 +347,33 @@ function goBack() {
 }
 
 // ── Screens ───────────────────────────────────────────────────────────────────
+function buildSections(sections, containerEl) {
+  var html = '';
+  sections.forEach(function(sec) {
+    // Only show sections that have at least one book loaded in the CSV
+    var secBooks = sec.books.filter(function(b) { return bibleData[b]; });
+    if (!secBooks.length) return;
+    html += '<p class="subsection-label">' + esc(sec.label) + '</p>';
+    html += '<div class="book-grid">';
+    secBooks.forEach(function(b) {
+      var chapCount = Object.keys(bibleData[b]).length;
+      html += '<button class="book-btn" onclick="openBook(' + JSON.stringify(b) + ')">' +
+        '<span class="b-name">' + esc(displayName(b)) + '</span>' +
+        '<span class="b-info">' + chapCount + ' Kapitel</span>' +
+        '</button>';
+    });
+    html += '</div>';
+  });
+  containerEl.innerHTML = html;
+}
+
 function showBooks() {
   navStack = [];
   updateBackBtn(false);
   clearSearchUI();
   document.getElementById('breadcrumb').textContent = t('bible_header');
-
-  var otHtml = '', ntHtml = '';
-  bookList.forEach(function(b) {
-    var btn = '<button class="book-btn" onclick="openBook(' + JSON.stringify(b) + ')">' + esc(b) + '</button>';
-    if (NT_BOOKS.has(b)) ntHtml += btn; else otHtml += btn;
-  });
-  document.getElementById('ot-grid').innerHTML = otHtml;
-  document.getElementById('nt-grid').innerHTML = ntHtml;
+  buildSections(AT_SECTIONS, document.getElementById('ot-sections'));
+  buildSections(NT_SECTIONS, document.getElementById('nt-sections'));
   showScreen('books');
 }
 
@@ -332,9 +383,9 @@ function openBook(bookName) {
   updateBackBtn(true);
 
   var chapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
-  document.getElementById('ch-book-title').textContent = bookName;
+  document.getElementById('ch-book-title').textContent = displayName(bookName);
   document.getElementById('ch-book-sub').textContent = chapters.length + t('bible_chapter_count');
-  document.getElementById('breadcrumb').textContent = bookName;
+  document.getElementById('breadcrumb').textContent = displayName(bookName);
 
   var html = '';
   chapters.forEach(function(ch) {
@@ -350,9 +401,10 @@ function openChapter(chapter) {
   updateBackBtn(true);
 
   var verses = bibleData[currentBook][chapter];
-  document.getElementById('verse-title').textContent = currentBook + ' ' + chapter;
+  var title = displayName(currentBook) + ' ' + chapter;
+  document.getElementById('verse-title').textContent = title;
   document.getElementById('verse-sub').textContent = verses.length + t('bible_verse_count');
-  document.getElementById('breadcrumb').textContent = currentBook + ' ' + chapter;
+  document.getElementById('breadcrumb').textContent = title;
 
   var html = '';
   verses.forEach(function(v) {
@@ -417,7 +469,7 @@ function doSearch() {
     highlighted = esc(highlighted)
       .replace(/\x00([^\x00]*)\x00/g, '<mark>$1</mark>');
     html += '<div class="result-card" onclick="openChapter_search(' + JSON.stringify(r.book) + ',' + r.chapter + ')">' +
-      '<div class="result-ref">' + esc(r.book) + ' ' + r.chapter + ',' + r.verse + '</div>' +
+      '<div class="result-ref">' + esc(displayName(r.book)) + ' ' + r.chapter + ',' + r.verse + '</div>' +
       '<div class="result-text">' + highlighted + '</div></div>';
   });
   resEl.innerHTML = html;
