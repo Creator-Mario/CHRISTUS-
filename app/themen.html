@@ -355,6 +355,7 @@ function filterThemen(q) {
       return t.titel.toLowerCase().indexOf(qLow) !== -1 ||
              t.thema.toLowerCase().indexOf(qLow) !== -1 ||
              t.bibelstelle.toLowerCase().indexOf(qLow) !== -1 ||
+             t.querverweise.toLowerCase().indexOf(qLow) !== -1 ||
              t.erklaerung.toLowerCase().indexOf(qLow) !== -1;
     });
     renderThemen(filtered);
