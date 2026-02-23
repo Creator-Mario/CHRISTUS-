@@ -1,124 +1,50 @@
-# 🚀 Anleitung: App veröffentlichen – 3 Schritte
+# 🚀 CHRISTUS App v1.10 — Deployment
+
+Die App ist fertig und wartet nur noch auf diesen **einen Schritt** von dir.
 
 ---
 
-## ⚠️ WARUM DIE APP NOCH ALT IST
+## ✅ Alles was du tun musst: Den PR mergen
 
-Der Pull Request (PR) ist noch im **Draft-Modus** (Entwurf).
-Im Draft-Modus ist der grüne „Merge"-Button **ausgeblendet**.
-Du musst zuerst den Draft-Modus deaktivieren.
+**Direktlink:** 👉 https://github.com/Creator-Mario/CHRISTUS-/pull/5
+
+### Schritt-für-Schritt:
+
+1. Öffne den obigen Link
+2. Scrolle ganz nach unten bis du den **grünen Button** siehst:
+
+```
+┌─────────────────────────────────────────────────────┐
+│  ✅ This branch has no conflicts with the base branch │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│  [  Merge pull request  ]   ← Diesen Button klicken  │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+```
+
+3. Klicke dann **"Confirm merge"**
+4. Fertig! ✨
 
 ---
 
-## Schritt 1 – Draft-Modus deaktivieren
+## Was danach passiert (automatisch):
 
-### 1a. Öffne diesen Link:
-```
-https://github.com/Creator-Mario/CHRISTUS-/pull/5
-```
-
-### 1b. Scrolle ganz nach UNTEN auf der Seite
-
-Am Ende der Seite siehst du NICHT den grünen Merge-Button,
-sondern stattdessen einen **grauen Button** mit der Aufschrift:
-
-```
-┌─────────────────────────────────┐
-│  Ready for review               │  ← DIESEN BUTTON KLICKEN
-└─────────────────────────────────┘
-```
-
-Er befindet sich links neben dem Merge-Bereich und sieht so aus:
-- Grauer/weißer Hintergrund
-- Kleines Stift-Symbol davor
-- Text: **"Ready for review"**
-
-### 1c. Bestätige den Dialog
-
-Nach dem Klick erscheint ein kleines Popup:
-```
-┌────────────────────────────────────────────┐
-│  This pull request is still a work in      │
-│  progress. Do you want to mark it ready    │
-│  for review?                               │
-│                                            │
-│  [Cancel]  [Ready for review]              │ ← KLICK
-└────────────────────────────────────────────┘
-```
-
-Klicke auf **„Ready for review"** (grüner Button im Dialog).
+- GitHub Pages (bereits auf `main` gesetzt) zeigt sofort die neue App
+- Der Deploy-Workflow läuft automatisch beim nächsten Push auf `main`
+- Die App ist erreichbar unter: **https://creator-mario.github.io/CHRISTUS-/**
 
 ---
 
-## Schritt 2 – PR mergen
+## Was in v1.10 enthalten ist:
 
-Jetzt erscheint der grüne Merge-Button:
+| Datei | Funktion |
+|-------|---------|
+| `index.html` | Splash-Screen, SW-Registrierung, Session-Routing |
+| `app/login.html` | Personalisierter Login (Name, kein PIN) |
+| `app/home.html` | Dashboard mit Fortschrittsbalken |
+| `app/learn.html` | 7 Kategorien × 42 Module Lernbereich |
+| `app/settings.html` | Profil, Sprache, Offline-Status |
+| `app/sw.js` | Service Worker für Offline-Betrieb |
+| `app/manifest.json` | PWA-Manifest (installierbar) |
 
-```
-┌─────────────────────────────────┐
-│  ✓ Merge pull request           │  ← KLICKEN
-└─────────────────────────────────┘
-```
-
-Danach:
-```
-┌─────────────────────────────────┐
-│  Confirm merge                  │  ← KLICKEN
-└─────────────────────────────────┘
-```
-
-✅ Fertig! Der Code ist jetzt in `main`.
-
----
-
-## Schritt 3 – GitHub Pages auf GitHub Actions umstellen
-
-### 3a. Öffne diesen Link direkt:
-```
-https://github.com/Creator-Mario/CHRISTUS-/settings/pages
-```
-
-### 3b. Ändere die Source
-
-Du siehst:
-```
-Build and deployment
-Source: [Deploy from a branch ▼]
-```
-
-Klicke auf das Dropdown **„Deploy from a branch"** und wähle:
-```
-→ GitHub Actions
-```
-
-Klicke **Save**.
-
-### 3c. Warte 2 Minuten
-
-GitHub deployt automatisch. Du siehst dann:
-```
-✅ Your site is live at https://creator-mario.github.io/CHRISTUS-/
-```
-
----
-
-## 🌐 Die App ist dann erreichbar unter:
-
-```
-https://creator-mario.github.io/CHRISTUS-/
-```
-
----
-
-## 📱 App auf Smartphone installieren
-
-**Android (Chrome):** Menü (⋮) → „Zum Startbildschirm hinzufügen"
-
-**iPhone (Safari):** Teilen (□↑) → „Zum Home-Bildschirm"
-
----
-
-## 🔄 Zukünftige Updates
-
-Nach dem ersten Merge laufen alle zukünftigen Updates automatisch —
-du musst nur den PR mergen und GitHub Pages deployt von selbst.

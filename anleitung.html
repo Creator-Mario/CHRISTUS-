@@ -2,228 +2,96 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Anleitung – Draft → Merge</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CHRISTUS App – Deployment Anleitung</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0d1117; color: #e6edf3; padding: 24px 16px; }
-h1 { font-size: 1.5rem; color: #f4d03f; margin-bottom: 8px; }
-.subtitle { color: #8b949e; margin-bottom: 32px; font-size: .95rem; }
-.step { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin-bottom: 28px; }
-.step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.step-num { background: #f4d03f; color: #0d1117; font-weight: 800; font-size: 1rem; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.step-title { font-size: 1.1rem; font-weight: 700; color: #f4d03f; }
-.url-box { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px 14px; font-family: monospace; font-size: .9rem; color: #58a6ff; margin-bottom: 14px; word-break: break-all; }
-.url-box a { color: #58a6ff; }
-.label { font-size: .82rem; color: #8b949e; margin-bottom: 6px; margin-top: 12px; }
-/* ── GitHub mockup styles ── */
-.gh-window { background: #ffffff; border-radius: 8px; overflow: hidden; border: 2px solid #30363d; color: #24292f; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-.gh-bar { background: #24292f; padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
-.gh-bar-dot { width: 12px; height: 12px; border-radius: 50%; }
-.gh-bar-url { background: #444; color: #ccc; font-size: .78rem; border-radius: 4px; padding: 3px 8px; flex: 1; font-family: monospace; }
-.gh-body { padding: 16px; }
-.gh-pr-title { font-size: 1rem; font-weight: 600; color: #24292f; margin-bottom: 6px; }
-.gh-draft-badge { display: inline-block; background: #6e7781; color: #fff; font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-right: 6px; vertical-align: middle; }
-.gh-divider { border: none; border-top: 1px solid #d0d7de; margin: 12px 0; }
-.gh-merge-box { border: 1px solid #d0d7de; border-radius: 8px; overflow: hidden; margin-top: 12px; }
-.gh-merge-box-head { background: #f6f8fa; padding: 10px 14px; font-size: .85rem; color: #57606a; border-bottom: 1px solid #d0d7de; }
-.gh-merge-box-body { padding: 14px; background: #fff; }
-.gh-ready-btn { background: #f6f8fa; border: 1px solid rgba(31,35,40,.15); color: #24292f; font-size: .82rem; font-weight: 600; padding: 6px 14px; border-radius: 6px; cursor: pointer; display: inline-block; }
-.gh-btn-green { background: #2da44e; border: 1px solid rgba(31,35,40,.15); color: #fff; font-size: .88rem; font-weight: 600; padding: 8px 18px; border-radius: 6px; cursor: pointer; display: inline-block; }
-.gh-btn-gray { background: #f6f8fa; border: 1px solid rgba(31,35,40,.15); color: #24292f; font-size: .88rem; padding: 8px 14px; border-radius: 6px; display: inline-block; }
-.arrow { font-size: 2rem; text-align: center; margin: 8px 0; color: #f4d03f; }
-.highlight-box { border: 3px solid #ff6b6b; border-radius: 6px; display: inline-block; padding: 2px; position: relative; }
-.highlight-box::after { content: "← HIER KLICKEN"; position: absolute; right: -130px; top: 50%; transform: translateY(-50%); background: #ff6b6b; color: white; font-size: .72rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
-.highlight-box-green { border: 3px solid #2ea043; border-radius: 6px; display: inline-block; padding: 2px; position: relative; }
-.highlight-box-green::after { content: "← HIER KLICKEN"; position: absolute; right: -130px; top: 50%; transform: translateY(-50%); background: #2ea043; color: white; font-size: .72rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
-.note { background: #1c2128; border-left: 4px solid #f4d03f; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: .88rem; margin-top: 12px; color: #c9d1d9; }
-.success { background: #1c2128; border-left: 4px solid #2ea043; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: .88rem; margin-top: 12px; }
-.gh-pages-source { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; padding: 12px; margin-top: 8px; }
-.gh-dropdown { display: inline-block; background: #fff; border: 1px solid #d0d7de; border-radius: 6px; padding: 5px 28px 5px 10px; font-size: .85rem; color: #24292f; position: relative; }
-.gh-dropdown::after { content: "▾"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); }
-.gh-option-selected { background: #ddf4ff; border: 1px solid #54aeff; border-radius: 4px; padding: 6px 10px; font-size: .85rem; color: #0969da; display: inline-block; margin-top: 6px; }
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#e6edf3;margin:0;padding:20px;min-height:100vh}
+  .container{max-width:680px;margin:0 auto;padding:20px}
+  h1{color:#f4d03f;font-size:1.8rem;margin-bottom:4px}
+  .subtitle{color:#8b949e;margin-bottom:32px}
+  .step{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin-bottom:20px}
+  .step-num{background:#f4d03f;color:#000;font-weight:700;font-size:.9rem;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:12px}
+  .step h2{margin:0 0 12px;font-size:1.1rem;color:#f4d03f}
+  .big-link{display:block;background:#238636;color:#fff;text-decoration:none;text-align:center;padding:16px 24px;border-radius:8px;font-size:1.1rem;font-weight:700;margin:16px 0;transition:background .2s}
+  .big-link:hover{background:#2ea043}
+  /* GitHub UI mock */
+  .gh-mock{background:#fff;color:#1f2328;border:1px solid #d0d7de;border-radius:8px;overflow:hidden;margin:16px 0;font-size:14px}
+  .gh-mock-header{background:#f6f8fa;border-bottom:1px solid #d0d7de;padding:10px 16px;font-weight:600;color:#1f2328;font-size:13px}
+  .gh-mock-body{padding:16px}
+  .gh-mock-body p{margin:0 0 12px;color:#656d76;font-size:13px}
+  .gh-btn-green{background:#1f883d;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;display:inline-block}
+  .arrow{font-size:1.8rem;text-align:center;color:#f4d03f;padding:8px 0}
+  .success-box{background:#0a3622;border:1px solid #238636;border-radius:8px;padding:16px;color:#3fb950;font-size:.95rem;margin-top:12px}
+  .success-box strong{color:#3fb950}
+  .warning{background:#1c2128;border:1px solid #f4d03f;border-radius:8px;padding:12px 16px;color:#e6edf3;font-size:.9rem;margin:12px 0}
+  .url-box{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:12px 16px;font-family:monospace;color:#79c0ff;word-break:break-all;margin:12px 0}
 </style>
 </head>
 <body>
+<div class="container">
 
-<h1>📱 Schritt-für-Schritt Anleitung</h1>
-<p class="subtitle">Wie du den PR aus dem Draft-Modus bringst und die App live schaltest</p>
+  <h1>✝ CHRISTUS App — Deployment</h1>
+  <p class="subtitle">Eine einzige Aktion, und deine App ist live.</p>
 
-<!-- STEP 1 -->
-<div class="step">
-  <div class="step-header">
-    <div class="step-num">1</div>
-    <div class="step-title">Öffne den Pull Request</div>
-  </div>
-  <p class="label">Kopiere diesen Link und öffne ihn im Browser:</p>
-  <div class="url-box"><a href="https://github.com/Creator-Mario/CHRISTUS-/pull/5" target="_blank">https://github.com/Creator-Mario/CHRISTUS-/pull/5</a></div>
+  <div class="step">
+    <div class="step-num">SCHRITT 1 von 1</div>
+    <h2>Den Pull Request mergen</h2>
+    <p style="color:#8b949e;margin:0 0 12px">Alle neuen Dateien (Login, Lernbereich, 42 Module, Offline-Support) sind fertig und warten im PR. Klicke auf den grünen Link unten:</p>
 
-  <p class="label">So sieht die Seite oben aus:</p>
-  <div class="gh-window">
-    <div class="gh-bar">
-      <div class="gh-bar-dot" style="background:#ff5f57"></div>
-      <div class="gh-bar-dot" style="background:#febc2e"></div>
-      <div class="gh-bar-dot" style="background:#28c840"></div>
-      <div class="gh-bar-url">github.com/Creator-Mario/CHRISTUS-/pull/5</div>
-    </div>
-    <div class="gh-body">
-      <div class="gh-pr-title">
-        <span class="gh-draft-badge">Draft</span>
-        CHRISTUS v1.10: PWA restructure…
-      </div>
-      <div style="font-size:.8rem;color:#57606a;margin-top:4px">copilot wants to merge 11 commits into main</div>
-    </div>
-  </div>
-  <div class="note">Du siehst oben den grauen „Draft"-Badge. Das ist der Entwurf-Modus.</div>
-</div>
+    <a class="big-link" href="https://github.com/Creator-Mario/CHRISTUS-/pull/5" target="_blank">
+      👉 Zum Pull Request #5 öffnen
+    </a>
 
-<!-- STEP 2 -->
-<div class="step">
-  <div class="step-header">
-    <div class="step-num">2</div>
-    <div class="step-title">Scrolle ganz nach UNTEN auf der Seite</div>
-  </div>
-  <p class="label">Scrolle bis zum Ende der Seite. Du siehst diesen Bereich:</p>
+    <div class="arrow">↓</div>
+    <p style="color:#8b949e;font-size:.9rem;text-align:center;margin:0 0 8px">Scrolle auf der PR-Seite ganz nach unten, bis du diesen Bereich siehst:</p>
 
-  <div class="gh-window">
-    <div class="gh-bar">
-      <div class="gh-bar-dot" style="background:#ff5f57"></div>
-      <div class="gh-bar-dot" style="background:#febc2e"></div>
-      <div class="gh-bar-dot" style="background:#28c840"></div>
-      <div class="gh-bar-url">github.com/Creator-Mario/CHRISTUS-/pull/5 — ganz unten</div>
-    </div>
-    <div class="gh-body">
-      <div class="gh-merge-box">
-        <div class="gh-merge-box-head">⚠ This pull request is still a work in progress</div>
-        <div class="gh-merge-box-body">
-          <p style="font-size:.85rem;color:#57606a;margin-bottom:12px">Draft pull requests cannot be merged.</p>
-          <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap">
-            <div class="highlight-box"><div class="gh-ready-btn">🖊 Ready for review</div></div>
-            <div style="width:90px"></div>
-          </div>
-        </div>
+    <!-- GitHub UI Mock -->
+    <div class="gh-mock">
+      <div class="gh-mock-header">✅ This branch has no conflicts with the base branch</div>
+      <div class="gh-mock-body">
+        <p>Merging can be performed automatically.</p>
+        <button class="gh-btn-green">Merge pull request</button>
       </div>
     </div>
-  </div>
-  <div class="note">Der Button heißt <strong>„Ready for review"</strong> und ist grau/weiß. Er steht LINKS unten. Klicke ihn an.</div>
-</div>
 
-<!-- STEP 3 -->
-<div class="step">
-  <div class="step-header">
-    <div class="step-num">3</div>
-    <div class="step-title">Bestätige den Dialog</div>
-  </div>
-  <p class="label">Nach dem Klick erscheint ein kleines Popup-Fenster:</p>
+    <div class="arrow">↓</div>
+    <p style="color:#8b949e;font-size:.9rem;text-align:center;margin:0 0 8px">Nach dem Klick erscheint dieser Dialog — klicke "Confirm merge":</p>
 
-  <div class="gh-window" style="max-width:380px">
-    <div class="gh-bar">
-      <div class="gh-bar-dot" style="background:#ff5f57"></div>
-      <div class="gh-bar-dot" style="background:#febc2e"></div>
-      <div class="gh-bar-dot" style="background:#28c840"></div>
-      <div class="gh-bar-url">Popup-Dialog</div>
-    </div>
-    <div class="gh-body">
-      <p style="font-size:.9rem;font-weight:600;color:#24292f;margin-bottom:8px">Ready for review?</p>
-      <p style="font-size:.82rem;color:#57606a;margin-bottom:16px">This will allow reviewers to review and merge this pull request.</p>
-      <div style="display:flex;gap:8px">
-        <div class="gh-btn-gray">Cancel</div>
-        <div style="width:20px"></div>
-        <div class="highlight-box-green" style="margin-left:20px"><div class="gh-btn-green">Ready for review</div></div>
-        <div style="width:90px"></div>
+    <div class="gh-mock">
+      <div class="gh-mock-header">Merge pull request</div>
+      <div class="gh-mock-body">
+        <p>The changes from <strong>copilot/add-learning-modules</strong> will be merged into <strong>main</strong>.</p>
+        <button class="gh-btn-green">Confirm merge</button>
       </div>
     </div>
+
+    <div class="success-box">
+      ✅ <strong>Fertig!</strong> Die App ist jetzt unter deiner GitHub Pages URL live.
+    </div>
   </div>
-  <div class="note">Klicke auf den <strong>grünen Button „Ready for review"</strong> im Popup.</div>
+
+  <div class="step">
+    <div class="step-num">DANACH</div>
+    <h2>Deine App URL</h2>
+    <div class="url-box">https://creator-mario.github.io/CHRISTUS-/</div>
+    <p style="color:#8b949e;font-size:.9rem;margin:8px 0 0">
+      ℹ️ Es kann 1–2 Minuten dauern bis GitHub Pages die neuen Dateien deployed hat. Falls die Seite noch die alte zeigt: Ctrl+Shift+R (Hard Refresh) drücken.
+    </p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">NEU IN v1.10</div>
+    <h2>Was dich erwartet</h2>
+    <ul style="color:#8b949e;line-height:1.8;padding-left:20px">
+      <li>🔐 Personalisierter Login (dein Name, kein Passwort nötig)</li>
+      <li>🏠 Dashboard mit persönlichem Fortschrittsbalken</li>
+      <li>📚 7 Kategorien · 42 Lernmodule · Theologische Grundbildung</li>
+      <li>📖 Jedes Modul: Fragestellung · Kernprinzip · Bibelarbeit · Zusammenfassung · Weiterdenken · Schlüsselbegriffe</li>
+      <li>📵 Offline-fähig (funktioniert ohne Internet nach erstem Besuch)</li>
+      <li>📱 Installierbar als App auf Handy &amp; PC</li>
+    </ul>
+  </div>
+
 </div>
-
-<!-- STEP 4 -->
-<div class="step">
-  <div class="step-header">
-    <div class="step-num">4</div>
-    <div class="step-title">Jetzt den grünen Merge-Button klicken</div>
-  </div>
-  <p class="label">Nach dem Schritt 3 siehst du jetzt den grünen Merge-Button:</p>
-
-  <div class="gh-window">
-    <div class="gh-bar">
-      <div class="gh-bar-dot" style="background:#ff5f57"></div>
-      <div class="gh-bar-dot" style="background:#febc2e"></div>
-      <div class="gh-bar-dot" style="background:#28c840"></div>
-      <div class="gh-bar-url">github.com/Creator-Mario/CHRISTUS-/pull/5 — ganz unten</div>
-    </div>
-    <div class="gh-body">
-      <div class="gh-merge-box">
-        <div class="gh-merge-box-head" style="background:#dafbe1;color:#1a7f37">✓ This branch has no conflicts with the base branch</div>
-        <div class="gh-merge-box-body">
-          <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap">
-            <div class="highlight-box-green"><div class="gh-btn-green">✓ Merge pull request</div></div>
-            <div style="width:90px"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow">↓</div>
-
-  <div class="gh-window" style="max-width:420px">
-    <div class="gh-bar">
-      <div class="gh-bar-dot" style="background:#ff5f57"></div>
-      <div class="gh-bar-dot" style="background:#febc2e"></div>
-      <div class="gh-bar-dot" style="background:#28c840"></div>
-      <div class="gh-bar-url">Bestätigung</div>
-    </div>
-    <div class="gh-body">
-      <div class="highlight-box-green" style="margin-top:8px"><div class="gh-btn-green">Confirm merge</div></div>
-      <div style="width:90px;display:inline-block"></div>
-    </div>
-  </div>
-  <div class="note">Erst <strong>„Merge pull request"</strong> klicken → dann <strong>„Confirm merge"</strong> klicken.</div>
-</div>
-
-<!-- STEP 5 -->
-<div class="step">
-  <div class="step-header">
-    <div class="step-num">5</div>
-    <div class="step-title">GitHub Pages auf GitHub Actions umstellen</div>
-  </div>
-  <p class="label">Öffne diesen Link:</p>
-  <div class="url-box"><a href="https://github.com/Creator-Mario/CHRISTUS-/settings/pages" target="_blank">https://github.com/Creator-Mario/CHRISTUS-/settings/pages</a></div>
-
-  <p class="label">Du siehst diese Einstellung:</p>
-  <div class="gh-window">
-    <div class="gh-bar">
-      <div class="gh-bar-dot" style="background:#ff5f57"></div>
-      <div class="gh-bar-dot" style="background:#febc2e"></div>
-      <div class="gh-bar-dot" style="background:#28c840"></div>
-      <div class="gh-bar-url">github.com/Creator-Mario/CHRISTUS-/settings/pages</div>
-    </div>
-    <div class="gh-body">
-      <p style="font-weight:600;margin-bottom:8px">Build and deployment</p>
-      <p style="font-size:.82rem;color:#57606a;margin-bottom:6px">Source</p>
-      <div class="gh-pages-source">
-        <p style="font-size:.82rem;color:#57606a;margin-bottom:6px">Aktuell eingestellt:</p>
-        <div class="gh-dropdown">Deploy from a branch</div>
-        <p style="font-size:.82rem;color:#57606a;margin:10px 0 6px">Ändern auf:</p>
-        <div class="highlight-box"><div class="gh-option-selected">⚡ GitHub Actions</div></div>
-        <div style="width:100px;display:inline-block"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="success">✅ Klicke das Dropdown, wähle <strong>„GitHub Actions"</strong>, klicke <strong>„Save"</strong>.</div>
-</div>
-
-<!-- DONE -->
-<div class="step" style="border-color:#2ea043">
-  <div class="step-header">
-    <div class="step-num" style="background:#2ea043;color:#fff">✓</div>
-    <div class="step-title" style="color:#2ea043">Fertig! Die App ist live.</div>
-  </div>
-  <p style="font-size:.95rem;margin-bottom:12px">Nach 2–3 Minuten ist die App erreichbar unter:</p>
-  <div class="url-box" style="font-size:1rem"><a href="https://creator-mario.github.io/CHRISTUS-/" target="_blank">https://creator-mario.github.io/CHRISTUS-/</a></div>
-</div>
-
 </body>
 </html>
