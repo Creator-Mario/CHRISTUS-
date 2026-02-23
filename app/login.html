@@ -211,7 +211,7 @@ function renderProfiles() {
     var name = ((u.vorname || '') + ' ' + (u.nachname || '')).trim() || email;
     var initials = (((u.vorname || '?')[0]) + ((u.nachname || '?')[0])).toUpperCase();
     var last = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('de') : '';
-    return '<div class="profile-item" onclick="quickLogin(' + JSON.stringify(email) + ')">' +
+    return '<div class="profile-item" onclick=\'quickLogin(' + JSON.stringify(email) + ')\'>' +
       '<div class="avatar">' + escHtml(initials) + '</div>' +
       '<div><div class="profile-name">' + escHtml(name) + '</div>' +
       '<div class="profile-sub">' + (last ? t('last_login_prefix') + last : t('tap_to_login')) + '</div></div>' +
