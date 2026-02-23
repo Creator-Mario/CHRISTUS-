@@ -60,7 +60,7 @@ input:focus{border-color:var(--gold)}
 <div class="card">
   <div class="logo">&#10013;</div>
   <div class="app-name">CHRISTUS</div>
-  <div class="version">Version 1.15.0 &middot; Glaubensbildung &amp; Nachfolge</div>
+  <div class="version">Version 1.16.0 &middot; Glaubensbildung &amp; Nachfolge</div>
 
   <!-- Tab bar (hidden for OTP / change-pass panels) -->
   <div class="tabs" id="main-tabs">
@@ -138,7 +138,7 @@ input:focus{border-color:var(--gold)}
 </div>
 
 <script>
-var VERSION = '1.15.0';
+var VERSION = '1.16.0';
 var _pendingEmail = null; // email of user awaiting first-login password change
 
 function getUsers() {
@@ -337,9 +337,9 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Redirect if already logged in
+// Redirect only registered (non-guest) users who already have a valid session
 var session = JSON.parse(localStorage.getItem('christus_session') || 'null');
-if (session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000)) {
+if (session && session.email && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000)) {
   window.location.href = 'home.html';
 }
 

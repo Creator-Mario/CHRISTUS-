@@ -104,7 +104,7 @@ button{font-family:inherit;cursor:pointer}
   <div class="header-left">
     <span style="font-size:22px">✝</span>
     <span class="header-logo">CHRISTUS</span>
-    <span class="header-version">v1.15.1</span>
+    <span class="header-version">v1.16.0</span>
   </div>
   <button class="avatar-btn" id="avatar-btn" onclick="window.location.href='settings.html'" title="Profil & Einstellungen"></button>
 </header>
@@ -229,7 +229,7 @@ function openModule(nr) {
 // Init
 const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
 if (!session) { window.location.href = 'login.html'; }
-else if (!session.email) { window.location.href = 'login.html'; }
+else if (!session.email) { window.location.href = 'bible.html'; }
 else {
   applyLang();
   greet(session.name);

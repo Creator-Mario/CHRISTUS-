@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="theme-color" content="#f4d03f">
-    <title>CHRISTUS v1.15.0</title>
+    <title>CHRISTUS v1.16.0</title>
     <link rel="manifest" href="app/manifest.json">
     <style>
         body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#0f1923;color:#e8eef4;
@@ -22,7 +22,7 @@
     <div class="splash">
         <div class="logo">&#10013;</div>
         <div class="name">CHRISTUS</div>
-        <div class="ver">Version 1.15.0 &bull; Glaubensbildung &amp; Nachfolge</div>
+        <div class="ver">Version 1.16.0 &bull; Glaubensbildung &amp; Nachfolge</div>
         <div class="spinner"></div>
     </div>
     <script>
@@ -37,10 +37,12 @@
                 window.location.reload();
             });
         }
-        // Route: active session → home, else → login
+        // Route: registered user → home, guest → bible, no session → login
         const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
-        const dest = (session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000))
-            ? 'app/home.html' : 'app/login.html';
+        const valid = session && (Date.now() - session.time < 7 * 24 * 60 * 60 * 1000);
+        const dest = valid
+            ? (session.email ? 'app/home.html' : 'app/bible.html')
+            : 'app/login.html';
         setTimeout(() => { window.location.href = dest; }, 300);
     </script>
 </body>

@@ -149,7 +149,7 @@ button{font-family:inherit;cursor:pointer}
   </div>
 
   <div class="version-card">
-    <span class="v">v1.15.1</span>
+    <span class="v">v1.16.0</span>
     CHRISTUS – Glaubensbildung &amp; Nachfolge<br>
     Freikirchliche Theologische Grundbildung<br><br>
     <span style="font-size:.75rem">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
@@ -170,7 +170,7 @@ function showMsg(t, err) {
 function loadProfile() {
   const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
   if (!session) { window.location.href = 'login.html'; return; }
-  if (!session.email) { window.location.href = 'login.html'; return; }
+  if (!session.email) { window.location.href = 'bible.html'; return; }
   const name  = session.name;
   const email = session.email || null;
   document.getElementById('big-avatar').textContent = name !== 'Gast' ? name.substring(0,2).toUpperCase() : '👤';
