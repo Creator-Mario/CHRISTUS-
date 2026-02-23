@@ -21,12 +21,16 @@ const PRECACHE_URLS = [
   './elberfelder_1905.csv',
 ];
 
-// ── Install: pre-cache core pages, then activate immediately ─────────────────
+// ── Install: pre-cache core pages ────────────────────────────────────────────
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_PAGES)
       .then(cache => cache.addAll(PRECACHE_URLS))
-      .then(() => self.skipWaiting())
+    // No skipWaiting here: let the SW enter "waiting" so the update banner
+    // on every app page can show. The user clicks "Jetzt aktualisieren" which
+    // sends SKIP_WAITING (see message handler below), then the page reloads.
+    // On first install there is no existing controller, so the browser activates
+    // the SW automatically without needing skipWaiting().
   );
 });
 
