@@ -90,7 +90,10 @@ button{font-family:inherit;cursor:pointer}
 .ch-nav-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--surface2)}
 .ch-nav-btn:disabled{opacity:.3;cursor:default}
 .ch-nav-btn:disabled:hover{border-color:var(--border);color:var(--text);background:var(--surface)}
-.ch-label{font-size:.8rem;color:var(--muted);text-align:center;flex-shrink:0}
+.ch-label{font-size:.8rem;color:var(--muted);text-align:center;flex-shrink:0;background:none;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-family:inherit;padding:6px 12px;transition:.15s}
+.ch-label:hover{color:var(--gold);border-color:var(--gold);background:var(--surface2)}
+.reader-header.clickable{cursor:pointer}
+.reader-header.clickable:hover .reader-book{color:var(--gold2)}
 
 /* Verse list */
 .verse-list{list-style:none;padding:0}
@@ -123,6 +126,16 @@ button{font-family:inherit;cursor:pointer}
 .bottom-nav a{flex:1;padding:9px 4px;text-align:center;font-size:.65rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;transition:.2s;cursor:pointer}
 .bottom-nav a .ni{font-size:19px}
 .bottom-nav a.active,.bottom-nav a:hover{color:var(--gold)}
+/* Guest register modal */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px}
+.modal-box{background:var(--surface);border:1px solid var(--gold);border-radius:var(--radius);padding:32px 28px;max-width:360px;width:100%;text-align:center}
+.modal-icon{font-size:48px;margin-bottom:12px}
+.modal-title{font-size:1.2rem;font-weight:700;color:var(--gold);margin-bottom:8px}
+.modal-text{font-size:.88rem;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.modal-btn-primary{width:100%;padding:12px;background:var(--gold);color:#0f1028;font-size:.95rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-bottom:10px;cursor:pointer;transition:.2s}
+.modal-btn-primary:hover{background:var(--gold2)}
+.modal-btn-secondary{width:100%;padding:10px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:.85rem;border-radius:var(--radius-sm);cursor:pointer;transition:.2s}
+.modal-btn-secondary:hover{border-color:var(--gold);color:var(--text)}
 .update-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:#1c1d48;border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s ease;font-size:.85rem}
 .update-banner.visible{transform:translateY(0)}
 .update-banner .upd-text{flex:1;color:var(--text)}
@@ -141,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.16.2</span>
+  <span class="header-version">v1.16.3</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -209,7 +222,7 @@ button{font-family:inherit;cursor:pointer}
     <!-- Prev / Next chapter nav -->
     <div class="reader-ch-nav">
       <button class="ch-nav-btn" id="btn-prev-ch" onclick="prevChapter()">&#8592; voriges Kapitel</button>
-      <span class="ch-label" id="ch-label-center"></span>
+      <button class="ch-label" id="ch-label-center" onclick="gotoChapterSelect()" title="Kapitel wählen"></button>
       <button class="ch-nav-btn" id="btn-next-ch" onclick="nextChapter()">nächstes Kapitel &#8594;</button>
     </div>
   </div>
@@ -223,13 +236,24 @@ button{font-family:inherit;cursor:pointer}
 </div>
 
 <nav class="bottom-nav">
-  <a href="home.html"><span class="ni">&#127968;</span><span data-i18n="nav_home">Start</span></a>
-  <a href="learn.html"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
+  <a href="home.html" onclick="navGuard(event)"><span class="ni">&#127968;</span><span data-i18n="nav_home">Start</span></a>
+  <a href="learn.html" onclick="navGuard(event)"><span class="ni">&#128218;</span><span data-i18n="nav_learn">Lernen</span></a>
   <a href="bible.html" class="active"><span class="ni">&#128214;</span><span data-i18n="nav_bible">Bibel</span></a>
-  <a href="themen.html"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
-  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
-  <a href="settings.html"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
+  <a href="themen.html" onclick="navGuard(event)"><span class="ni">&#128195;</span><span data-i18n="nav_themen">Themen</span></a>
+  <a href="learn.html" onclick="if(navGuard(event))localStorage.setItem('learn_screen','glossary')"><span class="ni">&#128216;</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
+  <a href="settings.html" onclick="navGuard(event)"><span class="ni">&#9881;&#65039;</span><span data-i18n="nav_profile">Profil</span></a>
 </nav>
+
+<!-- Guest register modal -->
+<div class="modal-overlay" id="register-modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-icon">&#128274;</div>
+    <div class="modal-title">Anmeldung erforderlich</div>
+    <div class="modal-text">Diese Funktion ist nur für registrierte Benutzer verfügbar. Bitte registriere dich oder melde dich an, um alle Funktionen zu nutzen.</div>
+    <button class="modal-btn-primary" onclick="window.location.href='login.html'">Jetzt registrieren / anmelden &#8594;</button>
+    <button class="modal-btn-secondary" onclick="document.getElementById('register-modal').style.display='none'">Schließen</button>
+  </div>
+</div>
 
 <script>
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -506,6 +530,13 @@ function openReader(bookName, chapter) {
     nextBtn.disabled = chIdx >= allChapters.length - 1;
     document.getElementById('ch-label-center').textContent = 'Kapitel ' + chapter + ' / ' + allChapters.length;
 
+    // Make the reader header clickable to open chapter selection
+    var readerHdr = document.querySelector('#screen-reader .reader-header');
+    if (readerHdr) {
+      readerHdr.classList.add('clickable');
+      readerHdr.onclick = function() { gotoChapterSelect(); };
+    }
+
     showScreen('reader');
 
     // Wait one frame for the DOM/layout to settle after innerHTML update,
@@ -532,6 +563,12 @@ function nextChapter() {
   var chapters = Object.keys(bibleData[currentBook]).map(Number).sort(function(a,b){return a-b;});
   var idx = chapters.indexOf(currentChapter);
   if (idx < chapters.length - 1) openReader(currentBook, chapters[idx + 1]);
+}
+
+function gotoChapterSelect() {
+  navStack = [showBooks];
+  updateBackBtn(true);
+  showChapters(currentBook);
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
@@ -647,6 +684,15 @@ if (!session) { window.location.href = 'login.html'; }
 else {
   applyLang();
   loadBible();
+}
+
+function navGuard(e) {
+  if (!session || !session.email) {
+    e.preventDefault();
+    document.getElementById('register-modal').style.display = 'flex';
+    return false;
+  }
+  return true;
 }
 
 // ── Service Worker update detection ──────────────────────────────────────────
