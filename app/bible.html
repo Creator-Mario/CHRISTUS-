@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#e8bc58">
+<meta name="theme-color" content="#f0c050">
 <title>CHRISTUS – Elberfelder Bibel</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0e1428;--surface:#172040;--surface2:#1e2a52;--border:#2e4278;
-  --gold:#e8bc58;--gold2:#d4a238;--text:#f0eef8;--muted:#8a9cbd;
+  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
+  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
@@ -21,7 +21,7 @@ button{font-family:inherit;cursor:pointer}
 
 .app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
 .header-logo{font-size:.9rem;font-weight:700;color:var(--gold);letter-spacing:1px}
-.header-version{font-size:.65rem;background:rgba(232,188,88,.15);color:var(--gold);padding:1px 6px;border-radius:8px}
+.header-version{font-size:.65rem;background:rgba(240,192,80,.15);color:var(--gold);padding:1px 6px;border-radius:8px}
 .breadcrumb{flex:1;font-size:.8rem;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .back-btn{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 12px;color:var(--text);cursor:pointer;font-size:.8rem;transition:.2s;white-space:nowrap}
 .back-btn:hover{border-color:var(--gold);color:var(--gold)}
@@ -32,7 +32,7 @@ button{font-family:inherit;cursor:pointer}
 .search-bar{display:flex;gap:8px;margin-bottom:16px}
 .search-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-size:.9rem;outline:none;font-family:inherit;transition:.2s}
 .search-input:focus{border-color:var(--gold)}
-.search-btn{background:var(--gold);color:#1a1a2e;border:none;border-radius:var(--radius-sm);padding:10px 16px;font-weight:700;font-size:.85rem;transition:.2s;white-space:nowrap}
+.search-btn{background:var(--gold);color:#0f1028;border:none;border-radius:var(--radius-sm);padding:10px 16px;font-weight:700;font-size:.85rem;transition:.2s;white-space:nowrap}
 .search-btn:hover{background:var(--gold2)}
 .clear-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--muted);font-size:.85rem;transition:.2s}
 .clear-btn:hover{border-color:var(--gold);color:var(--text)}
@@ -45,12 +45,12 @@ button{font-family:inherit;cursor:pointer}
 .page-title{font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:4px}
 .page-sub{color:var(--muted);font-size:.82rem;margin-bottom:16px}
 .section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:16px 0 8px}
-.subsection-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);opacity:.7;margin:14px 0 6px;padding-left:2px}
+.subsection-label{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);opacity:.7;margin:14px 0 6px;padding-left:2px}
 .book-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:4px}
-.book-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);text-align:left;font-size:.85rem;font-weight:600;transition:.2s;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.book-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);text-align:left;font-size:.88rem;font-weight:600;transition:.2s;cursor:pointer;display:flex;flex-direction:column;gap:2px}
 .book-btn:hover{border-color:var(--gold);background:var(--surface2);color:var(--gold)}
-.book-btn .b-name{font-size:.85rem;font-weight:700}
-.book-btn .b-info{font-size:.68rem;color:var(--muted)}
+.book-btn .b-name{font-size:.88rem;font-weight:700}
+.book-btn .b-info{font-size:.73rem;color:var(--muted)}
 
 /* Chapter selection screen */
 .ch-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px;margin-bottom:16px}
@@ -61,7 +61,7 @@ button{font-family:inherit;cursor:pointer}
 .ch-jump-bar{display:flex;gap:6px;flex-wrap:wrap;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:16px}
 .ch-jump-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;transition:.15s;min-width:36px;text-align:center}
 .ch-jump-btn:hover{border-color:var(--gold);color:var(--gold)}
-.ch-jump-btn.active{background:var(--gold);color:#1a1a2e;border-color:var(--gold)}
+.ch-jump-btn.active{background:var(--gold);color:#0f1028;border-color:var(--gold)}
 
 /* Highlight toolbar */
 .hl-toolbar{display:flex;align-items:center;gap:8px;padding:8px 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px;flex-wrap:wrap}
@@ -107,7 +107,7 @@ button{font-family:inherit;cursor:pointer}
 .result-card:hover{border-color:var(--gold);background:var(--surface2)}
 .result-ref{color:var(--gold);font-size:.78rem;font-weight:700;margin-bottom:4px}
 .result-text{font-size:.85rem;line-height:1.6}
-.result-text mark{background:rgba(232,188,88,.25);color:var(--gold);border-radius:3px;padding:0 2px}
+.result-text mark{background:rgba(240,192,80,.25);color:var(--gold);border-radius:3px;padding:0 2px}
 .no-results{color:var(--muted);font-size:.88rem;padding:20px 0}
 
 /* Loading */
@@ -123,11 +123,11 @@ button{font-family:inherit;cursor:pointer}
 .bottom-nav a{flex:1;padding:9px 4px;text-align:center;font-size:.65rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;transition:.2s;cursor:pointer}
 .bottom-nav a .ni{font-size:19px}
 .bottom-nav a.active,.bottom-nav a:hover{color:var(--gold)}
-.update-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:#162050;border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s ease;font-size:.85rem}
+.update-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:#1c1d48;border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s ease;font-size:.85rem}
 .update-banner.visible{transform:translateY(0)}
 .update-banner .upd-text{flex:1;color:var(--text)}
 .update-banner .upd-text strong{color:var(--gold)}
-.update-btn{background:var(--gold);color:#1a1a2e;border:none;border-radius:7px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s}
+.update-btn{background:var(--gold);color:#0f1028;border:none;border-radius:7px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s}
 .update-btn:hover{background:var(--gold2)}
 .update-dismiss{background:transparent;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:2px 6px;line-height:1}
 </style>
@@ -141,7 +141,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.16.0</span>
+  <span class="header-version">v1.16.1</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>

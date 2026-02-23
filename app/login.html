@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#e8bc58">
+<meta name="theme-color" content="#f0c050">
 <title>CHRISTUS – Anmelden</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0e1428;--surface:#172040;--surface2:#1e2a52;--border:#2e4278;
-  --gold:#e8bc58;--gold2:#d4a238;--text:#f0eef8;--muted:#8a9cbd;
+  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
+  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
@@ -25,19 +25,19 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;pad
 .version{text-align:center;font-size:.72rem;color:var(--muted);margin-bottom:28px}
 .tabs{display:flex;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px;gap:4px}
 .tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-size:.88rem;font-weight:600;border-radius:7px;transition:.2s;cursor:pointer}
-.tab.active{background:var(--gold);color:#1a1a2e}
+.tab.active{background:var(--gold);color:#0f1028}
 .form-group{margin-bottom:16px}
 label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px;font-weight:600}
 input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-size:.95rem;outline:none;transition:.2s;font-family:inherit}
 input:focus{border-color:var(--gold)}
-.btn-primary{width:100%;padding:13px;background:var(--gold);color:#1a1a2e;font-size:1rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:8px;transition:.2s;cursor:pointer}
+.btn-primary{width:100%;padding:13px;background:var(--gold);color:#0f1028;font-size:1rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:8px;transition:.2s;cursor:pointer}
 .btn-primary:hover{background:var(--gold2)}
 .divider{text-align:center;color:var(--muted);font-size:.8rem;margin:16px 0;position:relative}
 .divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
 .divider::before{left:0}.divider::after{right:0}
 .profile-item{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer;transition:.2s;margin-bottom:8px}
 .profile-item:hover{border-color:var(--gold)}
-.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#1a1a2e;flex-shrink:0}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#0f1028;flex-shrink:0}
 .profile-name{font-weight:600;font-size:.9rem}
 .profile-sub{font-size:.75rem;color:var(--muted)}
 .msg{font-size:.82rem;text-align:center;margin-top:10px;min-height:18px}
@@ -51,7 +51,7 @@ input:focus{border-color:var(--gold)}
 .info-title{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:6px}
 .info-sub{font-size:.82rem;color:var(--muted);margin-bottom:8px}
 .info-email{font-size:.82rem;color:var(--text);margin-bottom:10px;word-break:break-all}
-.otp-code{font-size:1.9rem;font-weight:700;letter-spacing:5px;color:var(--gold);background:rgba(232,188,88,.1);border:2px dashed var(--gold);border-radius:var(--radius-sm);padding:12px 16px;margin:10px 0;font-family:monospace;user-select:all}
+.otp-code{font-size:1.9rem;font-weight:700;letter-spacing:5px;color:var(--gold);background:rgba(240,192,80,.1);border:2px dashed var(--gold);border-radius:var(--radius-sm);padding:12px 16px;margin:10px 0;font-family:monospace;user-select:all}
 .otp-warning{font-size:.78rem;color:var(--red);margin-top:8px;padding:8px 10px;background:rgba(231,76,60,.1);border-radius:6px;text-align:left}
 .otp-note{font-size:.72rem;color:var(--muted);margin-top:8px;font-style:italic}
 </style>
@@ -60,7 +60,7 @@ input:focus{border-color:var(--gold)}
 <div class="card">
   <div class="logo">&#10013;</div>
   <div class="app-name">CHRISTUS</div>
-  <div class="version">Version 1.16.0 &middot; Glaubensbildung &amp; Nachfolge</div>
+  <div class="version">Version 1.16.1 &middot; Glaubensbildung &amp; Nachfolge</div>
 
   <!-- Tab bar (hidden for OTP / change-pass panels) -->
   <div class="tabs" id="main-tabs">
@@ -138,7 +138,7 @@ input:focus{border-color:var(--gold)}
 </div>
 
 <script>
-var VERSION = '1.16.0';
+var VERSION = '1.16.1';
 var _pendingEmail = null; // email of user awaiting first-login password change
 
 function getUsers() {
