@@ -1,37 +1,28 @@
-# 🚀 CHRISTUS App v1.15 — Deploy-Status
-
-## ⚠️ Eine Aktion erforderlich – 1 Klick reicht!
-
-GitHub verlangt deine Genehmigung, bevor die App aktualisiert werden kann.
-
-### 👉 Schritt 1: Workflow genehmigen
-
-1. Öffne: **https://github.com/Creator-Mario/CHRISTUS-/actions/runs/22306300978**
-2. Klicke auf den gelben **"Review pending deployments"** oder **"Approve and run"** Button
-3. ✅ Fertig! Der Deploy startet sofort (~30 Sekunden)
-
-**ODER** – noch einfacher:
-
-### 👉 Schritt 2 (Alternative): PR mergen
-
-1. Öffne: **https://github.com/Creator-Mario/CHRISTUS-/pull/9**
-2. Scrolle ganz nach unten → Klicke **"Merge pull request"** → **"Confirm merge"**
-3. ✅ Deploy startet automatisch nach dem Merge
-
----
+# 🚀 CHRISTUS App v1.15 — ✅ Erfolgreich deployed!
 
 ## 📍 Live-URL
 
-**https://creator-mario.github.io/CHRISTUS-/**
+👉 **https://creator-mario.github.io/CHRISTUS-/**
+
+Die App läuft jetzt auf **Version 1.15**. Einfach die URL öffnen!
 
 ---
 
-## 🔄 Manuell deployen (falls nötig)
+## ℹ️ Noch eine Genehmigung ausstehend
 
-1. Öffne: https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy.yml
-2. Klicke rechts auf **"Run workflow"**
-3. Branch: `copilot/update-sende` oder `main` wählen
-4. Grünen **"Run workflow"** Button klicken
+Es gibt noch einen ausstehenden Workflow-Lauf (nur eine Dokumentations-Änderung, nicht kritisch):
+
+👉 **https://github.com/Creator-Mario/CHRISTUS-/actions/runs/22306341063**
+
+Klicke auf **"Approve and run"** – oder ignoriere ihn, die App läuft bereits korrekt.
+
+---
+
+## 🔄 Zukünftige Updates
+
+Bei zukünftigen Änderungen:
+1. PR mergen → Deploy startet automatisch **ohne Genehmigung**
+2. Oder: https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deploy.yml → **"Run workflow"**
 
 ---
 
