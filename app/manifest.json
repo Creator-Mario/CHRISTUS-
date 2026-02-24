@@ -1,8 +1,8 @@
 {
   "name": "Jesus Christus – Retter & Kompass",
   "short_name": "JC Kompass",
-  "description": "Dein täglicher Begleiter im Glauben – verständlich, inspirierend. Version 1.17.8",
-  "version": "1.17.8",
+  "description": "Dein täglicher Begleiter im Glauben – verständlich, inspirierend. Version 1.17.9",
+  "version": "1.17.9",
   "start_url": "../index.html",
   "scope": "../",
   "display": "standalone",
