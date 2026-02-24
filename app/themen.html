@@ -117,7 +117,7 @@ button{font-family:inherit;cursor:pointer}
 <div class="update-banner" id="update-banner">
   <span class="upd-text" data-i18n="update_text">&#128260; <strong>Update verfügbar!</strong> Neue Version der App bereit.</span>
   <button class="update-btn" data-i18n="update_btn" onclick="applyUpdate()">Jetzt aktualisieren</button>
-  <button class="update-dismiss" onclick="dismissUpdate()" title="Schließen">&#10005;</button>
+  <button class="update-dismiss" onclick="dismissUpdate()" data-i18n-title="close">&#10005;</button>
 </div>
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
@@ -361,7 +361,7 @@ function renderThemen(topics) {
       html += '<div class="topic-item">';
       html += '<button class="topic-hdr" style="width:100%;text-align:left;background:none;border:none;padding:0" onclick=\'openTopic(' + t.id + ')\'>';
       html += '<span class="topic-nr">' + t.id + '</span>';
-      html += '<span class="topic-title">' + esc(t.titel) + '</span>';
+      html += '<span class="topic-title">' + esc(lang === 'en' && t.en_titel ? t.en_titel : t.titel) + '</span>';
       html += '<span class="topic-ref">' + esc(t.bibelstelle) + '</span>';
       html += '<span class="topic-chev">&rsaquo;</span>';
       html += '</button></div>';

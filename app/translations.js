@@ -372,7 +372,12 @@
 
       // Copyright
       copyright_text: '© Mario Reiner Denzer',
-      copyright_sub: 'Alle Rechte vorbehalten'
+      copyright_sub: 'Alle Rechte vorbehalten',
+
+      // UI actions
+      close: 'Schließen',
+      bible_open_passage: 'In Bibel öffnen',
+      status_checking: 'Prüfe\u2026'
     },
     en: {
       // App identity
@@ -745,7 +750,12 @@
 
       // Copyright
       copyright_text: '© Mario Reiner Denzer',
-      copyright_sub: 'All rights reserved'
+      copyright_sub: 'All rights reserved',
+
+      // UI actions
+      close: 'Close',
+      bible_open_passage: 'Open in Bible',
+      status_checking: 'Checking\u2026'
     }
   };
 
@@ -764,6 +774,10 @@
     document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
       var v = window.t(el.dataset.i18nPlaceholder);
       if (v != null) el.placeholder = v;
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+      var v = window.t(el.dataset.i18nTitle);
+      if (v != null) el.title = v;
     });
   };
 }());

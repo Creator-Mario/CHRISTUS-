@@ -71,7 +71,7 @@ button{font-family:inherit;cursor:pointer}
 <div class="update-banner" id="update-banner">
   <span class="upd-text" data-i18n="update_text">&#128260; <strong>Update verfügbar!</strong> Neue Version der App bereit.</span>
   <button class="update-btn" data-i18n="update_btn" onclick="applyUpdate()">Jetzt aktualisieren</button>
-  <button class="update-dismiss" onclick="dismissUpdate()" title="Schließen">&#10005;</button>
+  <button class="update-dismiss" onclick="dismissUpdate()" data-i18n-title="close">&#10005;</button>
 </div>
 <header class="app-header">
   <button class="back-btn" data-i18n="back" onclick="window.location.href='home.html'">← Zurück</button>
@@ -143,7 +143,7 @@ button{font-family:inherit;cursor:pointer}
       <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
     </div>
     <div class="setting-row">
-      <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status">Prüfe…</div></div>
+      <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status" data-i18n="status_checking">Prüfe…</div></div>
       <span class="setting-value" id="sw-badge"></span>
     </div>
     <div class="setting-row">
