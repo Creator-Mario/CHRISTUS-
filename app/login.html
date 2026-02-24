@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#f0c050">
-<title>CHRISTUS – Anmelden</title>
+<title>Jesus Christus – Retter &amp; Kompass</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
@@ -18,11 +18,24 @@
 body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
-body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
-.logo{text-align:center;font-size:52px;margin-bottom:8px}
-.app-name{text-align:center;font-size:1.8rem;font-weight:700;letter-spacing:3px;color:var(--gold);margin-bottom:4px}
-.version{text-align:center;font-size:.72rem;color:var(--muted);margin-bottom:28px}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+
+/* Language picker bar */
+.lang-bar{display:flex;gap:8px;margin-bottom:18px;justify-content:center}
+.lang-pick{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:.8rem;cursor:pointer;transition:.2s}
+.lang-pick.active{background:var(--gold);color:#0f1028;border-color:var(--gold);font-weight:700}
+.lang-pick:hover:not(.active){border-color:var(--gold);color:var(--text)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;width:100%;max-width:420px;box-shadow:0 24px 72px rgba(0,0,0,.5),0 0 0 1px rgba(240,192,80,.06)}
+
+/* Header branding */
+.logo-wrap{text-align:center;margin-bottom:12px}
+.logo-cross{font-size:52px;line-height:1;filter:drop-shadow(0 0 16px rgba(240,192,80,.4))}
+.app-name{text-align:center;font-size:1.6rem;font-weight:800;letter-spacing:2px;color:var(--gold);margin-bottom:2px}
+.app-tagline{text-align:center;font-size:.95rem;font-weight:600;color:rgba(240,192,80,.75);letter-spacing:1.5px;margin-bottom:8px}
+.app-description{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:4px;line-height:1.5}
+.version-line{text-align:center;font-size:.7rem;color:rgba(152,144,192,.6);margin-bottom:24px}
+
 .tabs{display:flex;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px;gap:4px}
 .tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-size:.88rem;font-weight:600;border-radius:7px;transition:.2s;cursor:pointer}
 .tab.active{background:var(--gold);color:#0f1028}
@@ -30,8 +43,8 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;pad
 label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px;font-weight:600}
 input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-size:.95rem;outline:none;transition:.2s;font-family:inherit}
 input:focus{border-color:var(--gold)}
-.btn-primary{width:100%;padding:13px;background:var(--gold);color:#0f1028;font-size:1rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:8px;transition:.2s;cursor:pointer}
-.btn-primary:hover{background:var(--gold2)}
+.btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0f1028;font-size:1rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:8px;transition:.2s;cursor:pointer}
+.btn-primary:hover{opacity:.9}
 .divider{text-align:center;color:var(--muted);font-size:.8rem;margin:16px 0;position:relative}
 .divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
 .divider::before{left:0}.divider::after{right:0}
@@ -45,6 +58,7 @@ input:focus{border-color:var(--gold)}
 .msg.success{color:var(--green)}
 .guest-btn{width:100%;padding:10px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:.88rem;border-radius:var(--radius-sm);margin-top:8px;transition:.2s;cursor:pointer}
 .guest-btn:hover{border-color:var(--gold);color:var(--text)}
+.copyright-line{text-align:center;font-size:.68rem;color:rgba(152,144,192,.5);margin-top:14px}
 /* OTP panel */
 .info-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px}
 .info-icon{font-size:38px;margin-bottom:8px}
@@ -57,10 +71,22 @@ input:focus{border-color:var(--gold)}
 </style>
 </head>
 <body>
+
+<!-- Language picker (above card) -->
+<div class="lang-bar">
+  <button class="lang-pick" id="lpick-de" onclick="pickLang('de')" data-i18n="lang_de">🇩🇪 Deutsch</button>
+  <button class="lang-pick" id="lpick-en" onclick="pickLang('en')" data-i18n="lang_en">🇬🇧 English</button>
+</div>
+
 <div class="card">
-  <div class="logo">&#10013;</div>
-  <div class="app-name">CHRISTUS</div>
-  <div class="version">Version 1.16.4 &middot; Glaubensbildung &amp; Nachfolge</div>
+  <!-- Branding header -->
+  <div class="logo-wrap">
+    <div class="logo-cross">&#10013;</div>
+  </div>
+  <div class="app-name" data-i18n="app_name">Jesus Christus</div>
+  <div class="app-tagline" data-i18n="app_tagline">Retter &amp; Kompass</div>
+  <div class="app-description" data-i18n="app_description">Dein täglicher Begleiter im Glauben – verständlich, inspirierend.</div>
+  <div class="version-line">v1.17.4</div>
 
   <!-- Tab bar (hidden for OTP / change-pass panels) -->
   <div class="tabs" id="main-tabs">
@@ -135,11 +161,28 @@ input:focus{border-color:var(--gold)}
     <button class="btn-primary" onclick="doChangePassword()" data-i18n="change_pass_btn">Passwort setzen &amp; Konto aktivieren &#8594;</button>
     <div class="msg" id="change-pass-msg"></div>
   </div>
+
+  <div class="copyright-line" data-i18n="app_creator">© Mario Reiner Denzer</div>
 </div>
 
 <script>
 var VERSION = '1.17.4';
 var _pendingEmail = null; // email of user awaiting first-login password change
+
+function pickLang(lang) {
+  localStorage.setItem('selectedLanguage', lang);
+  applyLang();
+  renderProfiles();
+  updateLangPicker();
+}
+
+function updateLangPicker() {
+  var lang = localStorage.getItem('selectedLanguage') || 'de';
+  ['de', 'en'].forEach(function(l) {
+    var btn = document.getElementById('lpick-' + l);
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+}
 
 function getUsers() {
   return JSON.parse(localStorage.getItem('christus_users') || '{}');
@@ -344,6 +387,7 @@ if (session && session.email && (Date.now() - session.time < 7 * 24 * 60 * 60 * 
 }
 
 applyLang();
+updateLangPicker();
 renderProfiles();
 </script>
 </body>

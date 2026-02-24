@@ -114,6 +114,10 @@ button{font-family:inherit;cursor:pointer}
       </div>
       <button class="btn-save" onclick="doChangePassSettings()" data-i18n="save_pass_btn">Passwort speichern</button>
     </div>
+    <div class="setting-row" id="delete-account-row" style="display:none">
+      <div><div class="setting-label" data-i18n="delete_account_label">Konto löschen</div><div class="setting-sub" data-i18n="delete_account_sub">Konto und alle gespeicherten Daten dauerhaft entfernen</div></div>
+      <button class="setting-action danger" data-i18n="delete_account_btn" aria-label="Konto dauerhaft löschen" onclick="deleteAccount()">Konto löschen</button>
+    </div>
   </div>
 
   <div class="section">
@@ -126,6 +130,18 @@ button{font-family:inherit;cursor:pointer}
 
   <div class="section">
     <div class="section-header" data-i18n="app_section">App</div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="share_label">App teilen</div><div class="setting-sub" data-i18n="share_sub">Link zur App an andere weitergeben</div></div>
+      <button class="setting-action" id="share-btn" data-i18n="share_btn" onclick="shareApp()">🔗 Teilen</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="dist_guide_btn">📋 Anleitung zur Weitergabe</div><div class="setting-sub" data-i18n="dist_guide_sub">QR-Code, Link &amp; Schritt-für-Schritt-Anleitung</div></div>
+      <button class="setting-action" onclick="window.location.href='install.html'" data-i18n="dist_open_btn">Öffnen</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="install_label">App installieren</div><div class="setting-sub" data-i18n="install_sub">App auf Gerät installieren (offline verfügbar)</div></div>
+      <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
+    </div>
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status">Prüfe…</div></div>
       <span class="setting-value" id="sw-badge"></span>
@@ -141,26 +157,6 @@ button{font-family:inherit;cursor:pointer}
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="logout_label">Abmelden</div><div class="setting-sub" data-i18n="logout_sub">Session beenden</div></div>
       <button class="setting-action danger" data-i18n="logout_btn" onclick="logout()">Abmelden</button>
-    </div>
-    <div class="setting-row" id="delete-account-row" style="display:none">
-      <div><div class="setting-label" data-i18n="delete_account_label">Konto löschen</div><div class="setting-sub" data-i18n="delete_account_sub">Konto und alle gespeicherten Daten dauerhaft entfernen</div></div>
-      <button class="setting-action danger" data-i18n="delete_account_btn" onclick="deleteAccount()">Konto löschen</button>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header" data-i18n="share_section">Weitergabe</div>
-    <div class="setting-row">
-      <div><div class="setting-label" data-i18n="share_label">App teilen</div><div class="setting-sub" data-i18n="share_sub">Link zur App an andere weitergeben</div></div>
-      <button class="setting-action" id="share-btn" data-i18n="share_btn" onclick="shareApp()">🔗 Teilen</button>
-    </div>
-    <div class="setting-row">
-      <div><div class="setting-label" data-i18n="dist_guide_btn">📋 Anleitung zur Weitergabe</div><div class="setting-sub" data-i18n="dist_guide_sub">QR-Code, Link &amp; Schritt-für-Schritt-Anleitung</div></div>
-      <button class="setting-action" onclick="window.location.href='install.html'" data-i18n="dist_open_btn">Öffnen</button>
-    </div>
-    <div class="setting-row">
-      <div><div class="setting-label" data-i18n="install_label">App installieren</div><div class="setting-sub" data-i18n="install_sub">App auf Gerät installieren (offline verfügbar)</div></div>
-      <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
     </div>
   </div>
 
@@ -203,6 +199,10 @@ function loadProfile() {
   const cpRow = document.getElementById('change-pass-row');
   if (cpRow) cpRow.style.display = email ? '' : 'none';
 
+  // Show delete-account row for non-guest users
+  const delRow = document.getElementById('delete-account-row');
+  if (delRow) delRow.style.display = email ? '' : 'none';
+
   const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
   // Look up by email (new format) or by name (legacy: backwards-compat with old username-only accounts)
   const userData = email ? users[email] : users[name];
@@ -215,10 +215,6 @@ function loadProfile() {
 
   const done = JSON.parse(localStorage.getItem('christus_done') || '[]').length;
   document.getElementById('prog-info').textContent = done + ' ' + t('modules_done_suffix');
-
-  // Show delete-account row for non-guest users
-  const delRow = document.getElementById('delete-account-row');
-  if (delRow) delRow.style.display = email ? '' : 'none';
 
   const lang = localStorage.getItem('selectedLanguage') || 'de';
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
