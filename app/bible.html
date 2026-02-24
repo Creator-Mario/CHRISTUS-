@@ -154,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.17.4</span>
+  <span class="header-version">v1.17.10</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -328,6 +328,28 @@ var NT_SECTIONS = [
   { label:'bible_sec_general', books:['Hebraeer','Jakobus','1 Petrus','2 Petrus','1 Johannes','2 Johannes','3 Johannes','Judas'] },
   { label:'bible_sec_prophecy',books:['Offenbarung'] }
 ];
+var AT_SECTIONS_EN = [
+  { label:'bible_sec_pentateuch',    books:['Genesis','Exodus','Leviticus','Numbers','Deuteronomy'] },
+  { label:'bible_sec_history',       books:['Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther'] },
+  { label:'bible_sec_poetry',        books:['Job','Psalms','Proverbs','Ecclesiastes',"Solomon's Song"] },
+  { label:'bible_sec_major_prophets',books:['Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel'] },
+  { label:'bible_sec_minor_prophets',books:['Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi'] }
+];
+var NT_SECTIONS_EN = [
+  { label:'bible_sec_gospels', books:['Matthew','Mark','Luke','John'] },
+  { label:'bible_sec_acts',    books:['Acts'] },
+  { label:'bible_sec_paul',    books:['Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon'] },
+  { label:'bible_sec_general', books:['Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude'] },
+  { label:'bible_sec_prophecy',books:['Revelation'] }
+];
+function getATSections() {
+  var lang = localStorage.getItem('selectedLanguage') || 'de';
+  return lang === 'en' ? AT_SECTIONS_EN : AT_SECTIONS;
+}
+function getNTSections() {
+  var lang = localStorage.getItem('selectedLanguage') || 'de';
+  return lang === 'en' ? NT_SECTIONS_EN : NT_SECTIONS;
+}
 
 // ── CSV Parser ────────────────────────────────────────────────────────────────
 function parseCSV(text) {
@@ -404,7 +426,9 @@ function splitCSVLine(line) {
 
 // ── Load CSV ──────────────────────────────────────────────────────────────────
 function loadBible() {
-  fetch('../elberfelder_1905.csv')
+  var lang = localStorage.getItem('selectedLanguage') || 'de';
+  var csvFile = lang === 'en' ? '../kjv_1769.csv' : '../elberfelder_1905.csv';
+  fetch(csvFile)
     .then(function(r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.text();
@@ -483,8 +507,8 @@ function showBooks() {
   updateBackBtn(false);
   clearSearchUI();
   document.getElementById('breadcrumb').textContent = t('bible_header');
-  buildSections(AT_SECTIONS, document.getElementById('ot-sections'));
-  buildSections(NT_SECTIONS, document.getElementById('nt-sections'));
+  buildSections(getATSections(), document.getElementById('ot-sections'));
+  buildSections(getNTSections(), document.getElementById('nt-sections'));
   showScreen('books');
 }
 

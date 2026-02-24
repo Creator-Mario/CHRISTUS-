@@ -9,6 +9,7 @@ on:
       - copilot/send-app-program-to-users
       - copilot/fix-chapter-translations-english
       - copilot/check-english-translation
+      - copilot/fix-text-fillings-in-themes
   workflow_dispatch:
 
 concurrency:
@@ -37,6 +38,7 @@ jobs:
           cp language_selection.html _site/
           cp Lernprogramm_Bibel.csv _site/
           cp elberfelder_1905.csv _site/
+          cp kjv_1769.csv _site/
           [ -f anleitung.html ] && cp anleitung.html _site/ || true
           [ -f DEPLOY.md ] && cp DEPLOY.md _site/ || true
           cp -r preview _site/ 2>/dev/null || true
@@ -50,7 +52,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Deploy CHRISTUS v1.17.3 [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+          git commit -m "Deploy CHRISTUS v1.17.10 [$(date -u +'%Y-%m-%d %H:%M UTC')]"
           git push --force \
             "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
             HEAD:gh-pages
