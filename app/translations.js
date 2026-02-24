@@ -187,6 +187,14 @@
       themen_cat_label: 'Kategorien',
       themen_search_placeholder: 'Thema suchen…',
       themen_no_results: 'Keine Themen gefunden.',
+      themen_at: 'Altes Testament',
+      themen_nt: 'Neues Testament',
+      themen_topic_nr: 'Thema Nr. ',
+      themen_bibel_label: 'Bibelstelle',
+      themen_qv_label: 'Querverweise',
+      themen_erkl_label: 'Erklärung',
+      themen_nav_prev: 'voriges',
+      themen_nav_next: 'nächstes',
 
       // Install / Download
       install_label: 'App installieren',
@@ -386,6 +394,14 @@
       themen_cat_label: 'Categories',
       themen_search_placeholder: 'Search topic…',
       themen_no_results: 'No topics found.',
+      themen_at: 'Old Testament',
+      themen_nt: 'New Testament',
+      themen_topic_nr: 'Topic No. ',
+      themen_bibel_label: 'Bible Passage',
+      themen_qv_label: 'Cross-references',
+      themen_erkl_label: 'Explanation',
+      themen_nav_prev: 'previous',
+      themen_nav_next: 'next',
 
       // Install / Download
       install_label: 'Install App',
