@@ -198,7 +198,7 @@ function fallbackCopy() {
 function shareApp() {
   if (navigator.share) {
     navigator.share({
-      title: 'CHRISTUS \u2013 Glaubensbildung & Nachfolge',
+      title: t('app_name') + ' \u2013 ' + t('app_tagline'),
       text: t('share_text'),
       url: APP_URL
     }).catch(function() {});

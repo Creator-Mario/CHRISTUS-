@@ -8,6 +8,7 @@ on:
       - copilot/update-bible-navigational-features
       - copilot/send-app-program-to-users
       - copilot/fix-chapter-translations-english
+      - copilot/check-english-translation
   workflow_dispatch:
 
 concurrency:

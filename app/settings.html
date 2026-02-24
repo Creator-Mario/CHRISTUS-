@@ -71,7 +71,7 @@ button{font-family:inherit;cursor:pointer}
 <div class="update-banner" id="update-banner">
   <span class="upd-text" data-i18n="update_text">&#128260; <strong>Update verfügbar!</strong> Neue Version der App bereit.</span>
   <button class="update-btn" data-i18n="update_btn" onclick="applyUpdate()">Jetzt aktualisieren</button>
-  <button class="update-dismiss" onclick="dismissUpdate()" title="Schließen">&#10005;</button>
+  <button class="update-dismiss" onclick="dismissUpdate()" data-i18n-title="close">&#10005;</button>
 </div>
 <header class="app-header">
   <button class="back-btn" data-i18n="back" onclick="window.location.href='home.html'">← Zurück</button>
@@ -82,7 +82,7 @@ button{font-family:inherit;cursor:pointer}
   <div class="profile-card">
     <div class="big-avatar" id="big-avatar">?</div>
     <div class="profile-info">
-      <div class="name" id="profile-name">Lädt…</div>
+      <div class="name" id="profile-name" data-i18n="status_checking">Lädt…</div>
       <div class="sub" id="profile-sub"></div>
     </div>
   </div>
@@ -143,7 +143,7 @@ button{font-family:inherit;cursor:pointer}
       <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
     </div>
     <div class="setting-row">
-      <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status">Prüfe…</div></div>
+      <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status" data-i18n="status_checking">Prüfe…</div></div>
       <span class="setting-value" id="sw-badge"></span>
     </div>
     <div class="setting-row">
@@ -162,9 +162,9 @@ button{font-family:inherit;cursor:pointer}
 
   <div class="version-card">
     <span class="v">v1.17.4</span>
-    Jesus Christus – Retter &amp; Kompass<br>
-    Dein täglicher Begleiter im Glauben<br><br>
-    <span style="font-size:.75rem">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
+    <span data-i18n="version_tagline">Jesus Christus – Retter &amp; Kompass</span><br>
+    <span data-i18n="version_description">Dein täglicher Begleiter im Glauben</span><br><br>
+    <span style="font-size:.75rem" data-i18n="version_features">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
     <span style="font-size:.75rem;color:var(--gold)" data-i18n="copyright_text">© Mario Reiner Denzer</span><br>
     <span style="font-size:.72rem" data-i18n="copyright_sub">Alle Rechte vorbehalten</span>
   </div>
@@ -207,7 +207,7 @@ function loadProfile() {
   // Look up by email (new format) or by name (legacy: backwards-compat with old username-only accounts)
   const userData = email ? users[email] : users[name];
   if (userData && userData.created) {
-    const d = new Date(userData.created).toLocaleDateString('de');
+    const d = new Date(userData.created).toLocaleDateString(localStorage.getItem('selectedLanguage') || 'de');
     document.getElementById('profile-sub').textContent = t('member_since') + d;
   } else {
     document.getElementById('profile-sub').textContent = t('guest_mode');
@@ -370,7 +370,7 @@ function deleteAccount() {
 
 function shareApp() {
   var url = 'https://creator-mario.github.io/CHRISTUS-/';
-  var title = 'Jesus Christus – Retter & Kompass';
+  var title = t('app_name') + ' \u2013 ' + t('app_tagline');
   var text = t('share_text');
   if (navigator.share) {
     navigator.share({ title: title, text: text, url: url }).catch(function() {});

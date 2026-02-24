@@ -114,7 +114,7 @@ a{color:var(--gold);text-decoration:none}
 <div class="update-banner" id="update-banner">
   <span class="upd-text" data-i18n="update_text">&#128260; <strong>Update verfügbar!</strong> Neue Version der App bereit.</span>
   <button class="update-btn" data-i18n="update_btn" onclick="applyUpdate()">Jetzt aktualisieren</button>
-  <button class="update-dismiss" onclick="dismissUpdate()" title="Schließen">&#10005;</button>
+  <button class="update-dismiss" onclick="dismissUpdate()" data-i18n-title="close">&#10005;</button>
 </div>
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
@@ -259,7 +259,7 @@ function bibelListItem(b) {
   const rest = colonIdx > 0 ? b.substring(colonIdx) : '';
   const url = bibleHref(ref);
   if (url) {
-    return '<li><a href="' + esc(url) + '" style="color:var(--gold);font-weight:700;text-decoration:none" title="In Bibel öffnen">&#128214; ' + esc(ref) + '</a>' + esc(rest) + '</li>';
+    return '<li><a href="' + esc(url) + '" style="color:var(--gold);font-weight:700;text-decoration:none" title="' + esc(t('bible_open_passage')) + '">&#128214; ' + esc(ref) + '</a>' + esc(rest) + '</li>';
   }
   return '<li>' + esc(b) + '</li>';
 }
@@ -385,7 +385,7 @@ function buildGlossary() {
       if (!map[t]) map[t] = []; map[t].push(m.modul_nr);
     });
   });
-  allTerms = Object.entries(map).sort((a,b) => a[0].localeCompare(b[0],'de')).map(([t,mods]) => ({term:t,modules:mods}));
+  allTerms = Object.entries(map).sort((a,b) => a[0].localeCompare(b[0], localStorage.getItem('selectedLanguage') || 'de')).map(([t,mods]) => ({term:t,modules:mods}));
   renderGlossary(allTerms);
 }
 function renderGlossary(terms) {

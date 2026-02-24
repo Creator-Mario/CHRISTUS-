@@ -149,7 +149,7 @@ button{font-family:inherit;cursor:pointer}
 <div class="update-banner" id="update-banner">
   <span class="upd-text" data-i18n="update_text">&#128260; <strong>Update verfügbar!</strong> Neue Version der App bereit.</span>
   <button class="update-btn" data-i18n="update_btn" onclick="applyUpdate()">Jetzt aktualisieren</button>
-  <button class="update-dismiss" onclick="dismissUpdate()" title="Schließen">&#10005;</button>
+  <button class="update-dismiss" onclick="dismissUpdate()" data-i18n-title="close">&#10005;</button>
 </div>
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
@@ -283,7 +283,35 @@ var DISPLAY_NAMES = {
   '1 Johannes':'1. Johannes','2 Johannes':'2. Johannes','3 Johannes':'3. Johannes',
   'Hebraeer':'Hebräer'
 };
-function displayName(csvName) { return DISPLAY_NAMES[csvName] || csvName; }
+var EN_DISPLAY_NAMES = {
+  '1 Mose':'Genesis','2 Mose':'Exodus','3 Mose':'Leviticus','4 Mose':'Numbers','5 Mose':'Deuteronomy',
+  '1 Samuel':'1 Samuel','2 Samuel':'2 Samuel',
+  '1 Koenige':'1 Kings','2 Koenige':'2 Kings',
+  '1 Chronik':'1 Chronicles','2 Chronik':'2 Chronicles',
+  'Esra':'Ezra','Nehemia':'Nehemiah','Ester':'Esther',
+  'Job':'Job','Sprueche':'Proverbs','Prediger':'Ecclesiastes','Hohelied':'Song of Solomon',
+  'Josua':'Joshua','Richter':'Judges','Rut':'Ruth',
+  'Jesaja':'Isaiah','Jeremia':'Jeremiah','Klagelieder':'Lamentations',
+  'Hesekiel':'Ezekiel','Obadja':'Obadiah','Jona':'Jonah','Mica':'Micah',
+  'Habakuk':'Habakkuk','Zephanja':'Zephaniah','Sacharja':'Zechariah','Maleachi':'Malachi',
+  'Matthaeus':'Matthew','Markus':'Mark','Lukas':'Luke','Johannes':'John',
+  'Apostelgeschichte':'Acts',
+  'Roemers':'Romans',
+  '1 Korinther':'1 Corinthians','2 Korinther':'2 Corinthians',
+  'Galater':'Galatians','Epheser':'Ephesians','Philipper':'Philippians','Kolosser':'Colossians',
+  '1 Thessalonicher':'1 Thessalonians','2 Thessalonicher':'2 Thessalonians',
+  '1 Timotheus':'1 Timothy','2 Timotheus':'2 Timothy',
+  'Titus':'Titus','Philemon':'Philemon',
+  'Hebraeer':'Hebrews','Jakobus':'James',
+  '1 Petrus':'1 Peter','2 Petrus':'2 Peter',
+  '1 Johannes':'1 John','2 Johannes':'2 John','3 Johannes':'3 John',
+  'Judas':'Jude','Offenbarung':'Revelation'
+};
+function displayName(csvName) {
+  var lang = localStorage.getItem('selectedLanguage') || 'de';
+  if (lang === 'en') { return EN_DISPLAY_NAMES[csvName] || DISPLAY_NAMES[csvName] || csvName; }
+  return DISPLAY_NAMES[csvName] || csvName;
+}
 
 // ── AT / NT sub-sections ──────────────────────────────────────────────────────
 var AT_SECTIONS = [
