@@ -181,6 +181,56 @@
       mark_done_btn: 'Als abgeschlossen markieren',
       mark_undone_btn: '✓ Abgeschlossen',
 
+      // Module titles (Kategorie 1)
+      mod_title_1_1: 'Die Bibel – Inspiration, Kanon, Auslegung',
+      mod_title_1_2: 'Gott – Dreieinigkeit, Eigenschaften Gottes',
+      mod_title_1_3: 'Jesus Christus – Gottheit, Menschwerdung, Erlösungswerk',
+      mod_title_1_4: 'Der Heilige Geist – Person, Wirken, Gaben',
+      mod_title_1_5: 'Der Mensch – Schöpfung, Ebenbild Gottes, Sünde',
+      mod_title_1_6: 'Das Heil – Gnade, Glaube, Bekehrung, Rechtfertigung',
+      mod_title_1_7: 'Die Gemeinde – Ekklesiologie, Priestertum aller Gläubigen',
+      mod_title_1_8: 'Die letzten Dinge – Eschatologie, Wiederkunft, Neuschöpfung',
+      // Module titles (Kategorie 2)
+      mod_title_2_1: 'Gebet – Arten, Praxis, Vaterunser',
+      mod_title_2_2: 'Bibellesen – Methoden, Tagebuch',
+      mod_title_2_3: 'Geistliches Wachstum – Heiligung, geistliche Disziplinen',
+      mod_title_2_4: 'Umgang mit Zweifeln – Krisen, Leid, Trost',
+      mod_title_2_5: 'Nachfolge im Alltag – Arbeit, Familie, Freundeskreis',
+      mod_title_2_6: 'Zeit und Prioritäten – Ruhetag, Balance',
+      // Module titles (Kategorie 3)
+      mod_title_3_1: 'Die Ortsgemeinde – Mitgliedschaft, Gabenfindung',
+      mod_title_3_2: 'Taufe und Abendmahl – Bedeutung und Praxis',
+      mod_title_3_3: 'Ehe und Familie – Biblische Grundlagen',
+      mod_title_3_4: 'Freundschaft – Vergebung, Versöhnung, einander ermutigen',
+      mod_title_3_5: 'Leiterschaft – Dienen, Verantwortung, Ältestendienst',
+      // Module titles (Kategorie 4)
+      mod_title_4_1: 'Beruf und Arbeit – Berufung, Dienst',
+      mod_title_4_2: 'Geld und Besitz – Haushalterschaft',
+      mod_title_4_3: 'Soziale Verantwortung – Nächstenliebe, Schöpfung',
+      mod_title_4_4: 'Christ und Staat – Römer 13, Grenzen des Gehorsams',
+      mod_title_4_5: 'Medizinethik – Leben, Tod, Krankheit',
+      mod_title_4_6: 'Ethische Fragen – Sexualität, Digitalisierung, Konflikte',
+      // Module titles (Kategorie 5)
+      mod_title_5_1: 'Die Urgemeinde – Apostel, erste Christen',
+      mod_title_5_2: 'Die Reformation – Luther, Calvin, Zwingli',
+      mod_title_5_3: 'Die Täuferbewegung – Menno Simons, Wurzeln',
+      mod_title_5_4: 'Erweckungsbewegungen – Pietismus, Methodismus, moderne Freikirchen',
+      mod_title_5_5: 'Die Weltmission – Geschichte, Missionare',
+      mod_title_5_6: 'Die eigene Denomination – Entstehungsgeschichte',
+      // Module titles (Kategorie 6)
+      mod_title_6_1: 'Christliche Spiritualität – Mystik, Kontemplation',
+      mod_title_6_2: 'Apologetik – Glaube verteidigen',
+      mod_title_6_3: 'Judentum – Hebräische Wurzeln',
+      mod_title_6_4: 'Kunst und Kultur – Glaube in Literatur, Film, Musik',
+      mod_title_6_5: 'Glaube und Wissenschaft – Schöpfung, Naturwissenschaft',
+      // Module titles (Kategorie 7)
+      mod_title_7_1: 'Was ist Anbetung? – Biblische Grundlegung',
+      mod_title_7_2: 'Lobpreis in der Bibel – Von Mose bis Offenbarung',
+      mod_title_7_3: 'Die Theologie der Lieder – Liedanalysen',
+      mod_title_7_4: 'Der Lobpreisleiter – Theologischer Dienst',
+      mod_title_7_5: 'Lobpreis und Leid – Klage und Lob',
+      mod_title_7_6: 'Anbetung im Alltag – Leben als Lobpreis',
+
       // Themen categories + AT/NT labels
       themen_at: 'AT',
       themen_nt: 'NT',
@@ -502,6 +552,56 @@
       terms_translations: 'Terms & Translations',
       mark_done_btn: 'Mark as complete',
       mark_undone_btn: '✓ Completed',
+
+      // Module titles (Category 1)
+      mod_title_1_1: 'The Bible – Inspiration, Canon, Interpretation',
+      mod_title_1_2: 'God – Trinity, Attributes of God',
+      mod_title_1_3: 'Jesus Christ – Divinity, Incarnation, Redemptive Work',
+      mod_title_1_4: 'The Holy Spirit – Person, Work, Gifts',
+      mod_title_1_5: 'Humanity – Creation, Image of God, Sin',
+      mod_title_1_6: 'Salvation – Grace, Faith, Conversion, Justification',
+      mod_title_1_7: 'The Church – Ecclesiology, Priesthood of All Believers',
+      mod_title_1_8: 'Last Things – Eschatology, Second Coming, New Creation',
+      // Module titles (Category 2)
+      mod_title_2_1: 'Prayer – Types, Practice, Lord\'s Prayer',
+      mod_title_2_2: 'Bible Reading – Methods, Journal',
+      mod_title_2_3: 'Spiritual Growth – Sanctification, Spiritual Disciplines',
+      mod_title_2_4: 'Dealing with Doubts – Crises, Suffering, Comfort',
+      mod_title_2_5: 'Discipleship in Daily Life – Work, Family, Friends',
+      mod_title_2_6: 'Time and Priorities – Day of Rest, Balance',
+      // Module titles (Category 3)
+      mod_title_3_1: 'The Local Church – Membership, Discovering Gifts',
+      mod_title_3_2: 'Baptism and Communion – Meaning and Practice',
+      mod_title_3_3: 'Marriage and Family – Biblical Foundations',
+      mod_title_3_4: 'Friendship – Forgiveness, Reconciliation, Encouragement',
+      mod_title_3_5: 'Leadership – Serving, Responsibility, Elder Ministry',
+      // Module titles (Category 4)
+      mod_title_4_1: 'Vocation and Work – Calling, Service',
+      mod_title_4_2: 'Money and Possessions – Stewardship',
+      mod_title_4_3: 'Social Responsibility – Love of Neighbour, Creation',
+      mod_title_4_4: 'Christians and the State – Romans 13, Limits of Obedience',
+      mod_title_4_5: 'Medical Ethics – Life, Death, Illness',
+      mod_title_4_6: 'Ethical Questions – Sexuality, Digitisation, Conflicts',
+      // Module titles (Category 5)
+      mod_title_5_1: 'The Early Church – Apostles, First Christians',
+      mod_title_5_2: 'The Reformation – Luther, Calvin, Zwingli',
+      mod_title_5_3: 'The Anabaptist Movement – Menno Simons, Roots',
+      mod_title_5_4: 'Revival Movements – Pietism, Methodism, Modern Free Churches',
+      mod_title_5_5: 'World Mission – History, Missionaries',
+      mod_title_5_6: 'Our Own Denomination – History of Origin',
+      // Module titles (Category 6)
+      mod_title_6_1: 'Christian Spirituality – Mysticism, Contemplation',
+      mod_title_6_2: 'Apologetics – Defending the Faith',
+      mod_title_6_3: 'Judaism – Hebrew Roots',
+      mod_title_6_4: 'Art and Culture – Faith in Literature, Film, Music',
+      mod_title_6_5: 'Faith and Science – Creation, Natural Science',
+      // Module titles (Category 7)
+      mod_title_7_1: 'What is Worship? – Biblical Foundation',
+      mod_title_7_2: 'Praise in the Bible – From Moses to Revelation',
+      mod_title_7_3: 'The Theology of Songs – Song Analysis',
+      mod_title_7_4: 'The Worship Leader – Theological Ministry',
+      mod_title_7_5: 'Praise and Suffering – Lament and Praise',
+      mod_title_7_6: 'Worship in Daily Life – Living as Praise',
 
       // Themen categories + AT/NT labels
       themen_at: 'OT',
