@@ -308,11 +308,11 @@ function renderThemen(topics) {
 
     if (!isFiltered) {
       if (isAT && !atShown) {
-        html += '<div class="testament-divider"><span class="testament-label">&#128220; ' + window.t('themen_at') + '</span></div>';
+        html += '<div class="testament-divider"><span class="testament-label">&#128220; ' + t('themen_at') + '</span></div>';
         atShown = true;
       }
       if (!isAT && !ntShown) {
-        html += '<div class="testament-divider"><span class="testament-label">&#10013; ' + window.t('themen_nt') + '</span></div>';
+        html += '<div class="testament-divider"><span class="testament-label">&#10013; ' + t('themen_nt') + '</span></div>';
         ntShown = true;
       }
     }
@@ -324,7 +324,7 @@ function renderThemen(topics) {
     html += '<button class="cat-acc-hdr' + (startOpen ? ' open' : '') + '" onclick=\'toggleCategory(' + JSON.stringify(cid) + ')\' id="hdr-' + cid + '" aria-expanded="' + (startOpen ? 'true' : 'false') + '">'; 
     html += '<span class="cat-badge">' + (isAT ? 'AT' : 'NT') + '</span>';
     html += '<span class="cat-name">' + esc(catName) + '</span>';
-    html += '<span class="cat-count">' + items.length + ' ' + window.t('themen_count_label') + '</span>';
+    html += '<span class="cat-count">' + items.length + ' ' + t('themen_count_label') + '</span>';
     html += '<span class="cat-chev' + (startOpen ? ' open' : '') + '" id="chev-' + cid + '">&rsaquo;</span>';
     html += '</button>';
     html += '<div class="cat-body' + (startOpen ? ' open' : '') + '" id="body-' + cid + '">'; 
@@ -344,7 +344,7 @@ function renderThemen(topics) {
     html += '</div></div></div>';
   });
 
-  if (!html) html = '<div class="no-results">' + window.t('themen_no_results') + '</div>';
+  if (!html) html = '<div class="no-results">' + t('themen_no_results') + '</div>';
   document.getElementById('themen-content').innerHTML = html;
 }
 
@@ -362,7 +362,7 @@ function openTopic(id) {
   var displayTitel = (lang === 'en' && topicData.en_titel) ? topicData.en_titel : topicData.titel;
   document.getElementById('td-cat').textContent = displayCat;
   document.getElementById('td-title').textContent = displayTitel;
-  document.getElementById('td-nr').textContent = window.t('themen_topic_nr') + topicData.id + ' · ' + displayCat;
+  document.getElementById('td-nr').textContent = t('themen_topic_nr') + topicData.id + ' · ' + displayCat;
 
   // Update translatable section labels
   window.applyLang();
