@@ -7,6 +7,7 @@ on:
       - copilot/update-sende
       - copilot/update-bible-navigational-features
       - copilot/send-app-program-to-users
+      - copilot/fix-chapter-translations-english
   workflow_dispatch:
 
 concurrency:
