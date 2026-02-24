@@ -10,12 +10,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
-  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
+  --bg:#1a1208;--surface:#241a0a;--surface2:#2e2010;--border:#5a3e10;
+  --gold:#f5c842;--gold2:#e0a020;--gold3:#fad878;--text:#fdf3dc;--muted:#c8a86a;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
-body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
@@ -138,7 +138,7 @@ input:focus{border-color:var(--gold)}
 </div>
 
 <script>
-var VERSION = '1.16.4';
+var VERSION = '1.17.4';
 var _pendingEmail = null; // email of user awaiting first-login password change
 
 function getUsers() {
