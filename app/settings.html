@@ -82,7 +82,7 @@ button{font-family:inherit;cursor:pointer}
   <div class="profile-card">
     <div class="big-avatar" id="big-avatar">?</div>
     <div class="profile-info">
-      <div class="name" id="profile-name">Lädt…</div>
+      <div class="name" id="profile-name" data-i18n="status_checking">Lädt…</div>
       <div class="sub" id="profile-sub"></div>
     </div>
   </div>
@@ -162,9 +162,9 @@ button{font-family:inherit;cursor:pointer}
 
   <div class="version-card">
     <span class="v">v1.17.4</span>
-    Jesus Christus – Retter &amp; Kompass<br>
-    Dein täglicher Begleiter im Glauben<br><br>
-    <span style="font-size:.75rem">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
+    <span data-i18n="version_tagline">Jesus Christus – Retter &amp; Kompass</span><br>
+    <span data-i18n="version_description">Dein täglicher Begleiter im Glauben</span><br><br>
+    <span style="font-size:.75rem" data-i18n="version_features">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
     <span style="font-size:.75rem;color:var(--gold)" data-i18n="copyright_text">© Mario Reiner Denzer</span><br>
     <span style="font-size:.72rem" data-i18n="copyright_sub">Alle Rechte vorbehalten</span>
   </div>
@@ -207,7 +207,7 @@ function loadProfile() {
   // Look up by email (new format) or by name (legacy: backwards-compat with old username-only accounts)
   const userData = email ? users[email] : users[name];
   if (userData && userData.created) {
-    const d = new Date(userData.created).toLocaleDateString('de');
+    const d = new Date(userData.created).toLocaleDateString(localStorage.getItem('selectedLanguage') || 'de');
     document.getElementById('profile-sub').textContent = t('member_since') + d;
   } else {
     document.getElementById('profile-sub').textContent = t('guest_mode');
@@ -370,7 +370,7 @@ function deleteAccount() {
 
 function shareApp() {
   var url = 'https://creator-mario.github.io/CHRISTUS-/';
-  var title = 'Jesus Christus – Retter & Kompass';
+  var title = t('app_name') + ' \u2013 ' + t('app_tagline');
   var text = t('share_text');
   if (navigator.share) {
     navigator.share({ title: title, text: text, url: url }).catch(function() {});

@@ -385,7 +385,7 @@ function buildGlossary() {
       if (!map[t]) map[t] = []; map[t].push(m.modul_nr);
     });
   });
-  allTerms = Object.entries(map).sort((a,b) => a[0].localeCompare(b[0],'de')).map(([t,mods]) => ({term:t,modules:mods}));
+  allTerms = Object.entries(map).sort((a,b) => a[0].localeCompare(b[0], localStorage.getItem('selectedLanguage') || 'de')).map(([t,mods]) => ({term:t,modules:mods}));
   renderGlossary(allTerms);
 }
 function renderGlossary(terms) {

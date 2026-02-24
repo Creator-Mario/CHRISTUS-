@@ -94,7 +94,7 @@
       recently: 'Zuletzt bearbeitet',
       empty_recent: 'Noch keine Module gestartet. Öffne den Lernbereich!',
       continue_btn: 'Weiter →',
-      update_text: '🔄 Update verfügbar! Neue Version der App bereit.',
+      update_text: '🔄 <strong>Update verfügbar!</strong> Neue Version der App bereit.',
       update_btn: 'Jetzt aktualisieren',
 
       // Settings
@@ -353,26 +353,31 @@
       dist_steps_title: 'Installationsanleitung',
       dist_android_title: 'Android',
       dist_android_hint: 'Chrome, Samsung Internet',
-      dist_android_1: 'Öffne den App-Link in Chrome auf dem Android-Gerät.',
-      dist_android_2: 'Tippe oben rechts auf das Drei-Punkte-Menü ⋮.',
-      dist_android_3: 'Wähle „App installieren" oder „Zum Startbildschirm hinzufügen".',
-      dist_android_4: 'Tippe auf „Installieren" – die App erscheint wie eine normale App auf dem Startbildschirm.',
+      dist_android_1: 'Öffne den App-Link in <strong>Chrome</strong> auf dem Android-Gerät.',
+      dist_android_2: 'Tippe oben rechts auf das <strong>Drei-Punkte-Menü ⋮</strong>.',
+      dist_android_3: 'Wähle <em>„App installieren"</em> oder <em>„Zum Startbildschirm hinzufügen"</em>.',
+      dist_android_4: 'Tippe auf <strong>„Installieren"</strong> – die App erscheint wie eine normale App auf dem Startbildschirm.',
       dist_ios_title: 'iPhone / iPad (iOS)',
       dist_ios_hint: 'Safari',
-      dist_ios_1: 'Öffne den App-Link in Safari auf dem iPhone oder iPad.',
-      dist_ios_2: 'Tippe unten in der Mitte auf das Teilen-Symbol ↑□.',
-      dist_ios_3: 'Scrolle im Menü nach unten und tippe auf „Zum Home-Bildschirm".',
-      dist_ios_4: 'Tippe oben rechts auf „Hinzufügen" – die App erscheint auf dem Home-Bildschirm.',
+      dist_ios_1: 'Öffne den App-Link in <strong>Safari</strong> auf dem iPhone oder iPad.',
+      dist_ios_2: 'Tippe unten in der Mitte auf das <strong>Teilen-Symbol ↑□</strong>.',
+      dist_ios_3: 'Scrolle im Menü nach unten und tippe auf <em>„Zum Home-Bildschirm"</em>.',
+      dist_ios_4: 'Tippe oben rechts auf <strong>„Hinzufügen"</strong> – die App erscheint auf dem Home-Bildschirm.',
       dist_desktop_title: 'Windows / Mac / Linux',
       dist_desktop_hint: 'Chrome, Edge',
-      dist_desktop_1: 'Öffne den App-Link in Chrome oder Edge.',
-      dist_desktop_2: 'Klicke in der Adressleiste auf das Installations-Symbol ⊕ (rechts in der Adressleiste).',
-      dist_desktop_3: 'Alternativ: Öffne das Browser-Menü ⋮ und wähle „CHRISTUS installieren".',
-      dist_desktop_4: 'Bestätige mit „Installieren" – die App öffnet sich danach als eigenständiges Fenster.',
+      dist_desktop_1: 'Öffne den App-Link in <strong>Chrome</strong> oder <strong>Edge</strong>.',
+      dist_desktop_2: 'Klicke in der Adressleiste auf das <strong>Installations-Symbol ⊕</strong> (rechts in der Adressleiste).',
+      dist_desktop_3: 'Alternativ: Öffne das <strong>Browser-Menü ⋮</strong> und wähle <em>„CHRISTUS installieren"</em>.',
+      dist_desktop_4: 'Bestätige mit <strong>„Installieren"</strong> – die App öffnet sich danach als eigenständiges Fenster.',
 
       // Copyright
       copyright_text: '© Mario Reiner Denzer',
       copyright_sub: 'Alle Rechte vorbehalten',
+
+      // Version card
+      version_tagline: 'Jesus Christus – Retter & Kompass',
+      version_description: 'Dein täglicher Begleiter im Glauben',
+      version_features: '7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig',
 
       // UI actions
       close: 'Schließen',
@@ -472,7 +477,7 @@
       recently: 'Recently Studied',
       empty_recent: 'No modules started yet. Open the Learning Area!',
       continue_btn: 'Continue →',
-      update_text: '🔄 Update available! New version ready.',
+      update_text: '🔄 <strong>Update available!</strong> New version ready.',
       update_btn: 'Update now',
 
       // Settings
@@ -731,26 +736,31 @@
       dist_steps_title: 'Installation Guide',
       dist_android_title: 'Android',
       dist_android_hint: 'Chrome, Samsung Internet',
-      dist_android_1: 'Open the app link in Chrome on the Android device.',
-      dist_android_2: 'Tap the three-dot menu ⋮ in the top right.',
-      dist_android_3: 'Select "Install app" or "Add to Home screen".',
-      dist_android_4: 'Tap "Install" – the app appears like a regular app on the home screen.',
+      dist_android_1: 'Open the app link in <strong>Chrome</strong> on the Android device.',
+      dist_android_2: 'Tap the <strong>three-dot menu ⋮</strong> in the top right.',
+      dist_android_3: 'Select <em>"Install app"</em> or <em>"Add to Home screen"</em>.',
+      dist_android_4: 'Tap <strong>"Install"</strong> – the app appears like a regular app on the home screen.',
       dist_ios_title: 'iPhone / iPad (iOS)',
       dist_ios_hint: 'Safari',
-      dist_ios_1: 'Open the app link in Safari on iPhone or iPad.',
-      dist_ios_2: 'Tap the Share icon ↑□ at the bottom centre.',
-      dist_ios_3: 'Scroll down in the menu and tap "Add to Home Screen".',
-      dist_ios_4: 'Tap "Add" in the top right – the app appears on the home screen.',
+      dist_ios_1: 'Open the app link in <strong>Safari</strong> on iPhone or iPad.',
+      dist_ios_2: 'Tap the <strong>Share icon ↑□</strong> at the bottom centre.',
+      dist_ios_3: 'Scroll down in the menu and tap <em>"Add to Home Screen"</em>.',
+      dist_ios_4: 'Tap <strong>"Add"</strong> in the top right – the app appears on the home screen.',
       dist_desktop_title: 'Windows / Mac / Linux',
       dist_desktop_hint: 'Chrome, Edge',
-      dist_desktop_1: 'Open the app link in Chrome or Edge.',
-      dist_desktop_2: 'Click the install icon ⊕ in the address bar (right side).',
-      dist_desktop_3: 'Alternatively open the browser menu ⋮ and select "Install CHRISTUS".',
-      dist_desktop_4: 'Confirm with "Install" – the app then opens as a standalone window.',
+      dist_desktop_1: 'Open the app link in <strong>Chrome</strong> or <strong>Edge</strong>.',
+      dist_desktop_2: 'Click the <strong>install icon ⊕</strong> in the address bar (right side).',
+      dist_desktop_3: 'Alternatively open the <strong>browser menu ⋮</strong> and select <em>"Install CHRISTUS"</em>.',
+      dist_desktop_4: 'Confirm with <strong>"Install"</strong> – the app then opens as a standalone window.',
 
       // Copyright
       copyright_text: '© Mario Reiner Denzer',
       copyright_sub: 'All rights reserved',
+
+      // Version card
+      version_tagline: 'Jesus Christ – Saviour & Compass',
+      version_description: 'Your daily companion in faith',
+      version_features: '7 Categories · 42 Modules · Elberfelder Bible · Offline-capable',
 
       // UI actions
       close: 'Close',
@@ -769,7 +779,9 @@
   window.applyLang = function () {
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var v = window.t(el.dataset.i18n);
-      if (v != null) el.textContent = v;
+      if (v == null) return;
+      // Use innerHTML only when the translation value contains actual HTML tags (trusted static strings)
+      if (/<[a-zA-Z][a-zA-Z0-9]*[\s\/>]/.test(v)) { el.innerHTML = v; } else { el.textContent = v; }
     });
     document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
       var v = window.t(el.dataset.i18nPlaceholder);
