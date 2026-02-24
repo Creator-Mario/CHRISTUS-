@@ -1,10 +1,10 @@
-# 🚀 CHRISTUS App v1.17.9 — Bereit zum Deployen!
+# 🚀 CHRISTUS App v1.17.10 — Bereit zum Deployen!
 
 ## 📍 Live-URL
 
 👉 **https://creator-mario.github.io/CHRISTUS-/**
 
-Die App läuft dann auf **Version 1.17.9** mit englischen Textfüllungen im Themenbereich.
+Die App läuft dann auf **Version 1.17.10** mit englischen Textfüllungen im Themenbereich.
 
 ---
 
@@ -15,7 +15,7 @@ Oder manuell: https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/deplo
 
 ---
 
-## 📦 Was in v1.17.9 neu ist
+## 📦 Was in v1.17.10 neu ist
 
 | Änderung | Details |
 |----------|---------|
