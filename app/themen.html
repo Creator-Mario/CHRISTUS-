@@ -133,8 +133,8 @@ button{font-family:inherit;cursor:pointer}
     <div class="stats-row">
       <div class="stat-card"><div class="stat-num">270</div><div class="stat-label" data-i18n="themen_count_label">Themen</div></div>
       <div class="stat-card"><div class="stat-num">18</div><div class="stat-label" data-i18n="themen_cat_label">Kategorien</div></div>
-      <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">AT</div></div>
-      <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">NT</div></div>
+      <div class="stat-card"><div class="stat-num">10</div><div class="stat-label" data-i18n="themen_at_full">AT</div></div>
+      <div class="stat-card"><div class="stat-num">8</div><div class="stat-label" data-i18n="themen_nt_full">NT</div></div>
     </div>
 
     <div class="search-bar">
@@ -152,24 +152,24 @@ button{font-family:inherit;cursor:pointer}
     <div class="td-nr" id="td-nr"></div>
 
     <div class="td-section" id="td-bibel-section">
-      <div class="td-section-label">&#128214; <span data-i18n="themen_bibel_label">Bibelstelle</span></div>
+      <div class="td-section-label" data-i18n="themen_bibel_label">📖 Bibelstelle</div>
       <div id="td-bibel"></div>
     </div>
 
     <div class="td-section" id="td-qv-section">
-      <div class="td-section-label">&#128279; <span data-i18n="themen_qv_label">Querverweise</span></div>
+      <div class="td-section-label" data-i18n="themen_qv_label">🔗 Querverweise</div>
       <div id="td-qv"></div>
     </div>
 
     <div class="td-section" id="td-erkl-section">
-      <div class="td-section-label">&#128221; <span data-i18n="themen_erkl_label">Erklärung</span></div>
+      <div class="td-section-label" data-i18n="themen_erkl_label">📝 Erklärung</div>
       <div class="td-erklaerung" id="td-erkl"></div>
     </div>
 
     <div class="td-nav">
-      <button class="td-nav-btn" id="td-btn-prev" onclick="prevTopic()">&#8592; <span data-i18n="themen_prev_btn">voriges</span></button>
+      <button class="td-nav-btn" id="td-btn-prev" onclick="prevTopic()" data-i18n="themen_prev_btn">← voriges</button>
       <span class="td-nav-info" id="td-nav-info"></span>
-      <button class="td-nav-btn" id="td-btn-next" onclick="nextTopic()"><span data-i18n="themen_next_btn">nächstes</span> &#8594;</button>
+      <button class="td-nav-btn" id="td-btn-next" onclick="nextTopic()" data-i18n="themen_next_btn">nächstes →</button>
     </div>
   </div>
 </div>
@@ -286,6 +286,32 @@ var AT_CATS = new Set([
   'Prophetische Bücher und Botschaft'
 ]);
 
+// Map German category name → i18n key index (matches translations.js themen_cat_N)
+var THEMEN_CAT_KEY = {
+  'Schöpfung und Ursprung': 1,
+  'Die Erzväter und Mütter Israels': 2,
+  'Der Auszug aus Ägypten und die Wüstenzeit': 3,
+  'Gesetz und Bund': 4,
+  'Einzug und Landnahme': 5,
+  'Die Zeit der Richter': 6,
+  'Könige und Prophetie in Israel': 7,
+  'Die großen Propheten Elia und Elisa': 8,
+  'Psalmen: Gebete und Lieder': 9,
+  'Prophetische Bücher und Botschaft': 10,
+  'Jesus Christus: Geburt und Kindheit': 11,
+  'Jesu Wirken: Taufe, Versuchung und Berufung': 12,
+  'Die Bergpredigt': 13,
+  'Gleichnisse Jesu': 14,
+  'Wunder und Heilungen': 15,
+  'Passion und Auferstehung Jesu': 16,
+  'Die Apostelgeschichte und die Briefe': 17,
+  'Die Offenbarung: Vollendung': 18
+};
+function tThemenCat(germanName) {
+  var idx = THEMEN_CAT_KEY[germanName];
+  return idx ? (t('themen_cat_' + idx) || germanName) : germanName;
+}
+
 function renderThemen(topics) {
   var lang = localStorage.getItem('selectedLanguage') || 'de';
   // Group by thema, preserving original order
@@ -304,7 +330,6 @@ function renderThemen(topics) {
   order.forEach(function(cat) {
     var items = groups[cat];
     var isAT  = AT_CATS.has(cat);
-    var catName = (lang === 'en' && items[0] && items[0].en_thema) ? items[0].en_thema : cat;
 
     if (!isFiltered) {
       if (isAT && !atShown) {
@@ -321,22 +346,23 @@ function renderThemen(topics) {
     var cid = 'cat-' + catNum;
     var startOpen = (catNum === 0 || isFiltered);
     html += '<div class="cat-section">';
-    html += '<button class="cat-acc-hdr' + (startOpen ? ' open' : '') + '" onclick=\'toggleCategory(' + JSON.stringify(cid) + ')\' id="hdr-' + cid + '" aria-expanded="' + (startOpen ? 'true' : 'false') + '">'; 
-    html += '<span class="cat-badge">' + (isAT ? 'AT' : 'NT') + '</span>';
-    html += '<span class="cat-name">' + esc(catName) + '</span>';
+    html += '<button class="cat-acc-hdr' + (startOpen ? ' open' : '') + '" onclick=\'toggleCategory(' + JSON.stringify(cid) + ')\' id="hdr-' + cid + '" aria-expanded="' + (startOpen ? 'true' : 'false') + '">';
+    html += '<span class="cat-badge">' + (isAT ? t('themen_at') : t('themen_nt')) + '</span>';
+    var catDisplayName = (lang === 'en' && items[0] && items[0].en_thema) ? items[0].en_thema : tThemenCat(cat);
+    html += '<span class="cat-name">' + esc(catDisplayName) + '</span>';
     html += '<span class="cat-count">' + items.length + ' ' + t('themen_count_label') + '</span>';
     html += '<span class="cat-chev' + (startOpen ? ' open' : '') + '" id="chev-' + cid + '">&rsaquo;</span>';
     html += '</button>';
-    html += '<div class="cat-body' + (startOpen ? ' open' : '') + '" id="body-' + cid + '">'; 
+    html += '<div class="cat-body' + (startOpen ? ' open' : '') + '" id="body-' + cid + '">';
     html += '<div class="topic-list">';
 
-    items.forEach(function(topicItem) {
-      var topicTitle = (lang === 'en' && topicItem.en_titel) ? topicItem.en_titel : topicItem.titel;
+    items.forEach(function(t) {
+      // Topic rows are now clickable buttons that open the full detail view
       html += '<div class="topic-item">';
-      html += '<button class="topic-hdr" style="width:100%;text-align:left;background:none;border:none;padding:0" onclick=\'openTopic(' + topicItem.id + ')\'>'; 
-      html += '<span class="topic-nr">' + topicItem.id + '</span>';
-      html += '<span class="topic-title">' + esc(topicTitle) + '</span>';
-      html += '<span class="topic-ref">' + esc(topicItem.bibelstelle) + '</span>';
+      html += '<button class="topic-hdr" style="width:100%;text-align:left;background:none;border:none;padding:0" onclick=\'openTopic(' + t.id + ')\'>';
+      html += '<span class="topic-nr">' + t.id + '</span>';
+      html += '<span class="topic-title">' + esc(t.titel) + '</span>';
+      html += '<span class="topic-ref">' + esc(t.bibelstelle) + '</span>';
       html += '<span class="topic-chev">&rsaquo;</span>';
       html += '</button></div>';
     });
@@ -353,24 +379,21 @@ var currentTopicId = null;
 var currentTopicList = THEMEN; // filtered or full list for prev/next nav
 
 function openTopic(id) {
-  var topicData = THEMEN.find(function(x){ return x.id === id; });
-  if (!topicData) return;
-  var lang = localStorage.getItem('selectedLanguage') || 'de';
+  var t = THEMEN.find(function(x){ return x.id === id; });
+  if (!t) return;
   currentTopicId = id;
 
-  var displayCat = (lang === 'en' && topicData.en_thema) ? topicData.en_thema : topicData.thema;
-  var displayTitel = (lang === 'en' && topicData.en_titel) ? topicData.en_titel : topicData.titel;
+  var lang = localStorage.getItem('selectedLanguage') || 'de';
+  var displayCat   = (lang === 'en' && t.en_thema)    ? t.en_thema    : tThemenCat(t.thema);
+  var displayTitel = (lang === 'en' && t.en_titel)     ? t.en_titel    : t.titel;
   document.getElementById('td-cat').textContent = displayCat;
   document.getElementById('td-title').textContent = displayTitel;
-  document.getElementById('td-nr').textContent = t('themen_nr_prefix') + topicData.id + ' · ' + displayCat;
-
-  // Update translatable section labels
-  window.applyLang();
+  document.getElementById('td-nr').textContent = window.t('themen_nr_prefix') + t.id + ' · ' + (lang === 'en' && t.en_thema ? t.en_thema : t.thema);
 
   // Bibelstelle
   var bSection = document.getElementById('td-bibel-section');
-  if (topicData.bibelstelle) {
-    document.getElementById('td-bibel').innerHTML = makeBibleLinks(topicData.bibelstelle);
+  if (t.bibelstelle) {
+    document.getElementById('td-bibel').innerHTML = makeBibleLinks(t.bibelstelle);
     bSection.style.display = '';
   } else {
     bSection.style.display = 'none';
@@ -378,17 +401,17 @@ function openTopic(id) {
 
   // Querverweise
   var qSection = document.getElementById('td-qv-section');
-  if (topicData.querverweise) {
-    document.getElementById('td-qv').innerHTML = makeBibleLinks(topicData.querverweise);
+  if (t.querverweise) {
+    document.getElementById('td-qv').innerHTML = makeBibleLinks(t.querverweise);
     qSection.style.display = '';
   } else {
     qSection.style.display = 'none';
   }
 
-  // Explanation
+  // Erklärung
   var eSection = document.getElementById('td-erkl-section');
-  var erkl = (lang === 'en' && topicData.en_erklaerung) ? topicData.en_erklaerung : topicData.erklaerung;
-  if (erkl) {
+  if (t.erklaerung) {
+    var erkl = (lang === 'en' && t.en_erklaerung) ? t.en_erklaerung : t.erklaerung;
     document.getElementById('td-erkl').textContent = erkl;
     eSection.style.display = '';
   } else {
