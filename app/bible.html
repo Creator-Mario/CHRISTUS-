@@ -10,12 +10,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
-  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
+  --bg:#1a1208;--surface:#241a0a;--surface2:#2e2010;--border:#5a3e10;
+  --gold:#f5c842;--gold2:#e0a020;--gold3:#fad878;--text:#fdf3dc;--muted:#c8a86a;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
-body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 
@@ -154,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.16.4</span>
+  <span class="header-version">v1.17.3</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -178,9 +178,9 @@ button{font-family:inherit;cursor:pointer}
   <div class="screen" id="screen-books">
     <h1 class="page-title" data-i18n="bible_header">&#128214; Elberfelder Bibel 1905</h1>
     <p class="page-sub" data-i18n="bible_book">Buch wählen</p>
-    <p class="section-label">&#9997; Altes Testament</p>
+    <p class="section-label" data-i18n="bible_ot_header">✏ Altes Testament</p>
     <div id="ot-sections"></div>
-    <p class="section-label" style="margin-top:20px">&#10013; Neues Testament</p>
+    <p class="section-label" style="margin-top:20px" data-i18n="bible_nt_header">✝ Neues Testament</p>
     <div id="nt-sections"></div>
     <div class="copyright-bar" data-i18n="copyright_text">© Mario Reiner Denzer</div>
   </div>
@@ -194,7 +194,7 @@ button{font-family:inherit;cursor:pointer}
         <div class="reader-sub" id="ch-select-book-sub"></div>
       </div>
     </div>
-    <p class="page-sub" style="margin-bottom:12px">Kapitel wählen:</p>
+    <p class="page-sub" style="margin-bottom:12px" data-i18n="bible_chapter_select_label">Kapitel wählen:</p>
     <div class="ch-select-grid" id="ch-select-grid"></div>
   </div>
 
@@ -209,11 +209,11 @@ button{font-family:inherit;cursor:pointer}
     </div>
     <!-- Highlight toolbar -->
     <div class="hl-toolbar">
-      <span class="hl-toolbar-label">&#9998; Markieren:</span>
-      <button class="hl-btn hl-btn-yellow" id="hl-yellow" onclick="setHlColor('yellow')">&#11044; Neongelb</button>
-      <button class="hl-btn hl-btn-green" id="hl-green" onclick="setHlColor('green')">&#11044; Neongrün</button>
-      <button class="hl-btn hl-btn-red" id="hl-red" onclick="setHlColor('red')">&#11044; Neonrot</button>
-      <button class="hl-btn hl-btn-erase" id="hl-erase" onclick="setHlColor('erase')">&#10006; Löschen</button>
+      <span class="hl-toolbar-label" data-i18n="bible_hl_label">✏ Markieren:</span>
+      <button class="hl-btn hl-btn-yellow" id="hl-yellow" onclick="setHlColor('yellow')" data-i18n="bible_hl_yellow">⬤ Neongelb</button>
+      <button class="hl-btn hl-btn-green" id="hl-green" onclick="setHlColor('green')" data-i18n="bible_hl_green">⬤ Neongrün</button>
+      <button class="hl-btn hl-btn-red" id="hl-red" onclick="setHlColor('red')" data-i18n="bible_hl_red">⬤ Neonrot</button>
+      <button class="hl-btn hl-btn-erase" id="hl-erase" onclick="setHlColor('erase')" data-i18n="bible_hl_erase">✖ Löschen</button>
     </div>
     <!-- Chapter jump bar -->
     <div class="ch-jump-bar" id="ch-jump-bar"></div>
@@ -221,9 +221,9 @@ button{font-family:inherit;cursor:pointer}
     <ul class="verse-list" id="verse-list"></ul>
     <!-- Prev / Next chapter nav -->
     <div class="reader-ch-nav">
-      <button class="ch-nav-btn" id="btn-prev-ch" onclick="prevChapter()">&#8592; voriges Kapitel</button>
-      <button class="ch-label" id="ch-label-center" onclick="gotoChapterSelect()" title="Kapitel wählen"></button>
-      <button class="ch-nav-btn" id="btn-next-ch" onclick="nextChapter()">nächstes Kapitel &#8594;</button>
+      <button class="ch-nav-btn" id="btn-prev-ch" onclick="prevChapter()" data-i18n="bible_prev_ch">← voriges Kapitel</button>
+      <button class="ch-label" id="ch-label-center" onclick="gotoChapterSelect()"></button>
+      <button class="ch-nav-btn" id="btn-next-ch" onclick="nextChapter()" data-i18n="bible_next_ch">nächstes Kapitel →</button>
     </div>
   </div>
 
@@ -248,10 +248,10 @@ button{font-family:inherit;cursor:pointer}
 <div class="modal-overlay" id="register-modal" style="display:none">
   <div class="modal-box">
     <div class="modal-icon">&#128274;</div>
-    <div class="modal-title">Anmeldung erforderlich</div>
-    <div class="modal-text">Diese Funktion ist nur für registrierte Benutzer verfügbar. Bitte registriere dich oder melde dich an, um alle Funktionen zu nutzen.</div>
-    <button class="modal-btn-primary" onclick="window.location.href='login.html'">Jetzt registrieren / anmelden &#8594;</button>
-    <button class="modal-btn-secondary" onclick="document.getElementById('register-modal').style.display='none'">Schließen</button>
+    <div class="modal-title" data-i18n="bible_modal_title">Anmeldung erforderlich</div>
+    <div class="modal-text" data-i18n="bible_modal_text">Diese Funktion ist nur für registrierte Benutzer verfügbar. Bitte registriere dich oder melde dich an, um alle Funktionen zu nutzen.</div>
+    <button class="modal-btn-primary" onclick="window.location.href='login.html'" data-i18n="bible_modal_btn">Jetzt registrieren / anmelden →</button>
+    <button class="modal-btn-secondary" onclick="document.getElementById('register-modal').style.display='none'" data-i18n="bible_modal_close">Schließen</button>
   </div>
 </div>
 
@@ -287,18 +287,18 @@ function displayName(csvName) { return DISPLAY_NAMES[csvName] || csvName; }
 
 // ── AT / NT sub-sections ──────────────────────────────────────────────────────
 var AT_SECTIONS = [
-  { label:'Pentateuch',       books:['1 Mose','2 Mose','3 Mose','4 Mose','5 Mose'] },
-  { label:'Geschichtsbücher', books:['Josua','Richter','Rut','1 Samuel','2 Samuel','1 Koenige','2 Koenige','1 Chronik','2 Chronik','Esra','Nehemia','Ester'] },
-  { label:'Poetische Bücher', books:['Job','Psalm','Sprueche','Prediger','Hohelied'] },
-  { label:'Große Propheten',  books:['Jesaja','Jeremia','Klagelieder','Hesekiel','Daniel'] },
-  { label:'Kleine Propheten', books:['Hosea','Joel','Amos','Obadja','Jona','Mica','Nahum','Habakuk','Zephanja','Haggai','Sacharja','Maleachi'] }
+  { label:'bible_sec_pentateuch',    books:['1 Mose','2 Mose','3 Mose','4 Mose','5 Mose'] },
+  { label:'bible_sec_history',       books:['Josua','Richter','Rut','1 Samuel','2 Samuel','1 Koenige','2 Koenige','1 Chronik','2 Chronik','Esra','Nehemia','Ester'] },
+  { label:'bible_sec_poetry',        books:['Job','Psalm','Sprueche','Prediger','Hohelied'] },
+  { label:'bible_sec_major_prophets',books:['Jesaja','Jeremia','Klagelieder','Hesekiel','Daniel'] },
+  { label:'bible_sec_minor_prophets',books:['Hosea','Joel','Amos','Obadja','Jona','Mica','Nahum','Habakuk','Zephanja','Haggai','Sacharja','Maleachi'] }
 ];
 var NT_SECTIONS = [
-  { label:'Evangelien',          books:['Matthaeus','Markus','Lukas','Johannes'] },
-  { label:'Apostelgeschichte',   books:['Apostelgeschichte'] },
-  { label:'Paulusbriefe',        books:['Roemers','1 Korinther','2 Korinther','Galater','Epheser','Philipper','Kolosser','1 Thessalonicher','2 Thessalonicher','1 Timotheus','2 Timotheus','Titus','Philemon'] },
-  { label:'Allgemeine Briefe',   books:['Hebraeer','Jakobus','1 Petrus','2 Petrus','1 Johannes','2 Johannes','3 Johannes','Judas'] },
-  { label:'Prophetie',           books:['Offenbarung'] }
+  { label:'bible_sec_gospels', books:['Matthaeus','Markus','Lukas','Johannes'] },
+  { label:'bible_sec_acts',    books:['Apostelgeschichte'] },
+  { label:'bible_sec_paul',    books:['Roemers','1 Korinther','2 Korinther','Galater','Epheser','Philipper','Kolosser','1 Thessalonicher','2 Thessalonicher','1 Timotheus','2 Timotheus','Titus','Philemon'] },
+  { label:'bible_sec_general', books:['Hebraeer','Jakobus','1 Petrus','2 Petrus','1 Johannes','2 Johannes','3 Johannes','Judas'] },
+  { label:'bible_sec_prophecy',books:['Offenbarung'] }
 ];
 
 // ── CSV Parser ────────────────────────────────────────────────────────────────
@@ -436,13 +436,13 @@ function buildSections(sections, containerEl) {
     // Only show sections that have at least one book loaded in the CSV
     var secBooks = sec.books.filter(function(b) { return bibleData[b]; });
     if (!secBooks.length) return;
-    html += '<p class="subsection-label">' + esc(sec.label) + '</p>';
+    html += '<p class="subsection-label">' + esc(t(sec.label)) + '</p>';
     html += '<div class="book-grid">';
     secBooks.forEach(function(b) {
       var chapCount = Object.keys(bibleData[b]).length;
       html += '<button class="book-btn" onclick=\'openBook(' + JSON.stringify(b) + ')\'>' +
         '<span class="b-name">' + esc(displayName(b)) + '</span>' +
-        '<span class="b-info">' + chapCount + ' Kapitel</span>' +
+        '<span class="b-info">' + chapCount + t('bible_chapter_count') + '</span>' +
         '</button>';
     });
     html += '</div>';
@@ -473,8 +473,8 @@ function showChapters(bookName) {
   var allChapters = Object.keys(bibleData[bookName]).map(Number).sort(function(a,b){return a-b;});
   var bookDisplay = displayName(bookName);
   document.getElementById('ch-select-book-title').textContent = bookDisplay;
-  document.getElementById('ch-select-book-sub').textContent = allChapters.length + ' Kapitel';
-  document.getElementById('breadcrumb').textContent = bookDisplay + ' – Kapitel wählen';
+  document.getElementById('ch-select-book-sub').textContent = allChapters.length + t('bible_chapter_count');
+  document.getElementById('breadcrumb').textContent = bookDisplay + ' – ' + t('bible_chapter');
   var html = '';
   allChapters.forEach(function(ch) {
     html += '<button class="ch-select-btn" onclick=\'openChapterFromSelect(' + JSON.stringify(bookName) + ',' + ch + ')\'>' + ch + '</button>';
@@ -502,7 +502,7 @@ function openReader(bookName, chapter) {
     // Header
     document.getElementById('reader-book-title').textContent = bookDisplay;
     document.getElementById('reader-book-sub').textContent =
-      allChapters.length + t('bible_chapter_count') + ' · Kapitel ' + chapter;
+      allChapters.length + t('bible_chapter_count') + ' · ' + t('bible_chapter_word') + ' ' + chapter;
     document.getElementById('breadcrumb').textContent = bookDisplay + ' ' + chapter;
 
     // Chapter jump bar — numbered buttons, active one highlighted
@@ -528,7 +528,8 @@ function openReader(bookName, chapter) {
     var nextBtn = document.getElementById('btn-next-ch');
     prevBtn.disabled = chIdx <= 0;
     nextBtn.disabled = chIdx >= allChapters.length - 1;
-    document.getElementById('ch-label-center').textContent = 'Kapitel ' + chapter + ' / ' + allChapters.length;
+    document.getElementById('ch-label-center').textContent = t('bible_chapter_word') + ' ' + chapter + ' / ' + allChapters.length;
+    document.getElementById('ch-label-center').title = t('bible_chapter');
 
     // Make the reader header clickable to open chapter selection
     var readerHdr = document.querySelector('#screen-reader .reader-header');

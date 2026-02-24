@@ -11,12 +11,12 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
-  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
+  --bg:#1a1208;--surface:#241a0a;--surface2:#2e2010;--border:#5a3e10;
+  --gold:#f5c842;--gold2:#e0a020;--gold3:#fad878;--text:#fdf3dc;--muted:#c8a86a;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
-body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 
@@ -114,6 +114,10 @@ button{font-family:inherit;cursor:pointer}
       </div>
       <button class="btn-save" onclick="doChangePassSettings()" data-i18n="save_pass_btn">Passwort speichern</button>
     </div>
+    <div class="setting-row" id="delete-account-row" style="display:none">
+      <div><div class="setting-label" data-i18n="delete_account_label">Konto löschen</div><div class="setting-sub" data-i18n="delete_account_sub">Konto und alle gespeicherten Daten dauerhaft entfernen</div></div>
+      <button class="setting-action danger" data-i18n="delete_account_btn" aria-label="Konto dauerhaft löschen" onclick="deleteAccount()">Konto löschen</button>
+    </div>
   </div>
 
   <div class="section">
@@ -126,6 +130,14 @@ button{font-family:inherit;cursor:pointer}
 
   <div class="section">
     <div class="section-header" data-i18n="app_section">App</div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="share_label">App teilen</div><div class="setting-sub" data-i18n="share_sub">Link zur App an andere weitergeben</div></div>
+      <button class="setting-action" id="share-btn" data-i18n="share_btn" onclick="shareApp()">🔗 Teilen</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="dist_guide_btn">📋 Anleitung zur Weitergabe</div><div class="setting-sub" data-i18n="dist_guide_sub">QR-Code, Link &amp; Schritt-für-Schritt-Anleitung</div></div>
+      <button class="setting-action" onclick="window.location.href='install.html'" data-i18n="dist_open_btn">Öffnen</button>
+    </div>
     <div class="setting-row">
       <div><div class="setting-label" data-i18n="install_label">App installieren</div><div class="setting-sub" data-i18n="install_sub">App auf Gerät installieren (offline verfügbar)</div></div>
       <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
@@ -149,9 +161,9 @@ button{font-family:inherit;cursor:pointer}
   </div>
 
   <div class="version-card">
-    <span class="v">v1.16.4</span>
-    CHRISTUS – Glaubensbildung &amp; Nachfolge<br>
-    Freikirchliche Theologische Grundbildung<br><br>
+    <span class="v">v1.17.3</span>
+    Jesus Christus – Retter &amp; Kompass<br>
+    Dein täglicher Begleiter im Glauben<br><br>
     <span style="font-size:.75rem">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
     <span style="font-size:.75rem;color:var(--gold)" data-i18n="copyright_text">© Mario Reiner Denzer</span><br>
     <span style="font-size:.72rem" data-i18n="copyright_sub">Alle Rechte vorbehalten</span>
@@ -186,6 +198,10 @@ function loadProfile() {
   // Show change-password row for non-guest users
   const cpRow = document.getElementById('change-pass-row');
   if (cpRow) cpRow.style.display = email ? '' : 'none';
+
+  // Show delete-account row for non-guest users
+  const delRow = document.getElementById('delete-account-row');
+  if (delRow) delRow.style.display = email ? '' : 'none';
 
   const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
   // Look up by email (new format) or by name (legacy: backwards-compat with old username-only accounts)
@@ -332,6 +348,39 @@ async function downloadOffline() {
 function logout() {
   localStorage.removeItem('christus_session');
   window.location.href = 'login.html';
+}
+
+function deleteAccount() {
+  if (!confirm(t('delete_account_confirm'))) return;
+  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+  if (session && session.email) {
+    const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
+    delete users[session.email];
+    localStorage.setItem('christus_users', JSON.stringify(users));
+  }
+  // Clear all user-specific localStorage keys:
+  // christus_session  – login session
+  // christus_done     – completed module IDs
+  // christus_recent   – recently viewed modules
+  localStorage.removeItem('christus_session');
+  localStorage.removeItem('christus_done');
+  localStorage.removeItem('christus_recent');
+  window.location.href = 'login.html';
+}
+
+function shareApp() {
+  var url = 'https://creator-mario.github.io/CHRISTUS-/';
+  var title = 'Jesus Christus – Retter & Kompass';
+  var text = t('share_text');
+  if (navigator.share) {
+    navigator.share({ title: title, text: text, url: url }).catch(function() {});
+  } else if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function() {
+      showMsg(t('share_copied'));
+    }).catch(function() { showMsg(t('share_not_supported')); });
+  } else {
+    showMsg(t('share_not_supported'));
+  }
 }
 
 // PWA Install

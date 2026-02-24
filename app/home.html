@@ -11,12 +11,12 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
-  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
+  --bg:#1a1208;--surface:#241a0a;--surface2:#2e2010;--border:#5a3e10;
+  --gold:#f5c842;--gold2:#e0a020;--gold3:#fad878;--text:#fdf3dc;--muted:#c8a86a;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
-body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 
@@ -44,7 +44,7 @@ button{font-family:inherit;cursor:pointer}
 .action-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 16px;text-decoration:none;color:var(--text);transition:.2s;display:flex;flex-direction:column;align-items:flex-start;gap:8px;position:relative;overflow:hidden}
 .action-card::after{content:'›';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.4rem}
 .action-card:hover{border-color:var(--gold);background:var(--surface2);transform:translateY(-1px)}
-.action-card.primary{grid-column:1/-1;background:linear-gradient(135deg,#1a1e4a,#1f2358);border-color:#343882}
+.action-card.primary{grid-column:1/-1;background:linear-gradient(135deg,#3a2200,#4a2e00);border-color:var(--border)}
 .action-card.primary:hover{border-color:var(--gold)}
 .action-icon{font-size:28px}
 .action-label{font-weight:700;font-size:.95rem}
@@ -104,7 +104,7 @@ button{font-family:inherit;cursor:pointer}
   <div class="header-left">
     <span style="font-size:22px">✝</span>
     <span class="header-logo">CHRISTUS</span>
-    <span class="header-version">v1.16.4</span>
+    <span class="header-version">v1.17.3</span>
   </div>
   <button class="avatar-btn" id="avatar-btn" onclick="window.location.href='settings.html'" title="Profil & Einstellungen"></button>
 </header>

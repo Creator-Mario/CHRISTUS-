@@ -10,12 +10,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0f1028;--surface:#181a38;--surface2:#21234e;--border:#36387a;
-  --gold:#f0c050;--gold2:#d8a030;--text:#ede8ff;--muted:#9890c0;
+  --bg:#1a1208;--surface:#241a0a;--surface2:#2e2010;--border:#5a3e10;
+  --gold:#f5c842;--gold2:#e0a020;--gold3:#fad878;--text:#fdf3dc;--muted:#c8a86a;
   --green:#4ade80;--blue:#60a8f5;--red:#f08080;
   --radius:14px;--radius-sm:9px;
 }
-body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
 a{color:var(--gold);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 
@@ -122,7 +122,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.16.4</span>
+  <span class="header-version">v1.17.3</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="themen_header">Themen</span>
   <button class="back-btn" id="backBtn" onclick="showList()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -133,8 +133,8 @@ button{font-family:inherit;cursor:pointer}
     <div class="stats-row">
       <div class="stat-card"><div class="stat-num">270</div><div class="stat-label" data-i18n="themen_count_label">Themen</div></div>
       <div class="stat-card"><div class="stat-num">18</div><div class="stat-label" data-i18n="themen_cat_label">Kategorien</div></div>
-      <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">AT</div></div>
-      <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">NT</div></div>
+      <div class="stat-card"><div class="stat-num">10</div><div class="stat-label" data-i18n="themen_at_full">AT</div></div>
+      <div class="stat-card"><div class="stat-num">8</div><div class="stat-label" data-i18n="themen_nt_full">NT</div></div>
     </div>
 
     <div class="search-bar">
@@ -152,24 +152,24 @@ button{font-family:inherit;cursor:pointer}
     <div class="td-nr" id="td-nr"></div>
 
     <div class="td-section" id="td-bibel-section">
-      <div class="td-section-label">&#128214; Bibelstelle</div>
+      <div class="td-section-label" data-i18n="themen_bibel_label">📖 Bibelstelle</div>
       <div id="td-bibel"></div>
     </div>
 
     <div class="td-section" id="td-qv-section">
-      <div class="td-section-label">&#128279; Querverweise</div>
+      <div class="td-section-label" data-i18n="themen_qv_label">🔗 Querverweise</div>
       <div id="td-qv"></div>
     </div>
 
     <div class="td-section" id="td-erkl-section">
-      <div class="td-section-label">&#128221; Erklärung</div>
+      <div class="td-section-label" data-i18n="themen_erkl_label">📝 Erklärung</div>
       <div class="td-erklaerung" id="td-erkl"></div>
     </div>
 
     <div class="td-nav">
-      <button class="td-nav-btn" id="td-btn-prev" onclick="prevTopic()">&#8592; voriges</button>
+      <button class="td-nav-btn" id="td-btn-prev" onclick="prevTopic()" data-i18n="themen_prev_btn">← voriges</button>
       <span class="td-nav-info" id="td-nav-info"></span>
-      <button class="td-nav-btn" id="td-btn-next" onclick="nextTopic()">nächstes &#8594;</button>
+      <button class="td-nav-btn" id="td-btn-next" onclick="nextTopic()" data-i18n="themen_next_btn">nächstes →</button>
     </div>
   </div>
 </div>
@@ -286,6 +286,32 @@ var AT_CATS = new Set([
   'Prophetische Bücher und Botschaft'
 ]);
 
+// Map German category name → i18n key index (matches translations.js themen_cat_N)
+var THEMEN_CAT_KEY = {
+  'Schöpfung und Ursprung': 1,
+  'Die Erzväter und Mütter Israels': 2,
+  'Der Auszug aus Ägypten und die Wüstenzeit': 3,
+  'Gesetz und Bund': 4,
+  'Einzug und Landnahme': 5,
+  'Die Zeit der Richter': 6,
+  'Könige und Prophetie in Israel': 7,
+  'Die großen Propheten Elia und Elisa': 8,
+  'Psalmen: Gebete und Lieder': 9,
+  'Prophetische Bücher und Botschaft': 10,
+  'Jesus Christus: Geburt und Kindheit': 11,
+  'Jesu Wirken: Taufe, Versuchung und Berufung': 12,
+  'Die Bergpredigt': 13,
+  'Gleichnisse Jesu': 14,
+  'Wunder und Heilungen': 15,
+  'Passion und Auferstehung Jesu': 16,
+  'Die Apostelgeschichte und die Briefe': 17,
+  'Die Offenbarung: Vollendung': 18
+};
+function tThemenCat(germanName) {
+  var idx = THEMEN_CAT_KEY[germanName];
+  return idx ? (t('themen_cat_' + idx) || germanName) : germanName;
+}
+
 function renderThemen(topics) {
   // Group by thema, preserving original order
   var groups = {};
@@ -306,11 +332,11 @@ function renderThemen(topics) {
 
     if (!isFiltered) {
       if (isAT && !atShown) {
-        html += '<div class="testament-divider"><span class="testament-label">&#128220; Altes Testament</span></div>';
+        html += '<div class="testament-divider"><span class="testament-label">' + t('themen_ot_divider') + '</span></div>';
         atShown = true;
       }
       if (!isAT && !ntShown) {
-        html += '<div class="testament-divider"><span class="testament-label">&#10013; Neues Testament</span></div>';
+        html += '<div class="testament-divider"><span class="testament-label">' + t('themen_nt_divider') + '</span></div>';
         ntShown = true;
       }
     }
@@ -320,9 +346,9 @@ function renderThemen(topics) {
     var startOpen = (catNum === 0 || isFiltered);
     html += '<div class="cat-section">';
     html += '<button class="cat-acc-hdr' + (startOpen ? ' open' : '') + '" onclick=\'toggleCategory(' + JSON.stringify(cid) + ')\' id="hdr-' + cid + '" aria-expanded="' + (startOpen ? 'true' : 'false') + '">';
-    html += '<span class="cat-badge">' + (isAT ? 'AT' : 'NT') + '</span>';
-    html += '<span class="cat-name">' + esc(cat) + '</span>';
-    html += '<span class="cat-count">' + items.length + ' Themen</span>';
+    html += '<span class="cat-badge">' + (isAT ? t('themen_at') : t('themen_nt')) + '</span>';
+    html += '<span class="cat-name">' + esc(tThemenCat(cat)) + '</span>';
+    html += '<span class="cat-count">' + items.length + ' ' + t('themen_count_label') + '</span>';
     html += '<span class="cat-chev' + (startOpen ? ' open' : '') + '" id="chev-' + cid + '">&rsaquo;</span>';
     html += '</button>';
     html += '<div class="cat-body' + (startOpen ? ' open' : '') + '" id="body-' + cid + '">';
@@ -342,7 +368,7 @@ function renderThemen(topics) {
     html += '</div></div></div>';
   });
 
-  if (!html) html = '<div class="no-results" data-i18n="themen_no_results">Keine Themen gefunden.</div>';
+  if (!html) html = '<div class="no-results">' + t('themen_no_results') + '</div>';
   document.getElementById('themen-content').innerHTML = html;
 }
 
@@ -355,9 +381,9 @@ function openTopic(id) {
   if (!t) return;
   currentTopicId = id;
 
-  document.getElementById('td-cat').textContent = t.thema;
+  document.getElementById('td-cat').textContent = tThemenCat(t.thema);
   document.getElementById('td-title').textContent = t.titel;
-  document.getElementById('td-nr').textContent = 'Thema Nr. ' + t.id + ' · ' + t.thema;
+  document.getElementById('td-nr').textContent = window.t('themen_nr_prefix') + t.id + ' · ' + t.thema;
 
   // Bibelstelle
   var bSection = document.getElementById('td-bibel-section');

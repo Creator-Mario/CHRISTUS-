@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f0c050">
+<title>CHRISTUS – App weitergeben</title>
+<link rel="manifest" href="manifest.json">
+<script src="translations.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1208;--surface:#241a0a;--surface2:#2e2010;--border:#5a3e10;
+  --gold:#f5c842;--gold2:#e0a020;--gold3:#fad878;--text:#fdf3dc;--muted:#c8a86a;
+  --green:#4ade80;--blue:#60a8f5;--red:#f08080;
+  --radius:14px;--radius-sm:9px;
+}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+a{color:var(--gold);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.back-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:.85rem;cursor:pointer;transition:.2s}
+.back-btn:hover{border-color:var(--gold);color:var(--gold)}
+.header-title{font-weight:700;font-size:1rem}
+.main{padding:20px;max-width:600px;margin:0 auto;padding-bottom:40px}
+
+/* QR + URL card */
+.qr-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;text-align:center}
+.qr-title{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+.qr-sub{font-size:.82rem;color:var(--muted);margin-bottom:18px}
+.qr-wrap{display:inline-block;background:#fff;border-radius:10px;padding:10px;margin-bottom:18px}
+.qr-wrap img{display:block;width:180px;height:180px;border-radius:4px}
+.qr-offline{display:none;font-size:.78rem;color:var(--muted);margin-top:6px}
+.url-box{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;text-align:left}
+.url-text{flex:1;font-size:.85rem;color:var(--gold);word-break:break-all;font-family:monospace}
+.copy-btn{background:var(--gold);color:#0f1028;border:none;border-radius:6px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s;flex-shrink:0}
+.copy-btn:hover{background:var(--gold2)}
+
+/* Install prompt button */
+.install-prompt-btn{width:100%;margin-top:14px;padding:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0f1028;font-size:.95rem;font-weight:700;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:.2s;display:none}
+.install-prompt-btn:hover{opacity:.9}
+
+/* Share button */
+.share-big-btn{width:100%;margin-top:10px;padding:12px;background:var(--surface2);color:var(--text);font-size:.95rem;font-weight:700;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:.2s}
+.share-big-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Platform cards */
+.section-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:24px 0 12px}
+.platform-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+.platform-header{display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;user-select:none}
+.platform-icon{font-size:26px;flex-shrink:0}
+.platform-name{font-weight:700;font-size:.95rem}
+.platform-hint{font-size:.76rem;color:var(--muted);margin-top:1px}
+.platform-chevron{margin-left:auto;color:var(--muted);font-size:1rem;transition:transform .2s}
+.platform-card.open .platform-chevron{transform:rotate(90deg)}
+.platform-steps{display:none;border-top:1px solid var(--border);padding:16px 18px}
+.platform-card.open .platform-steps{display:block}
+.step{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step-num{width:26px;height:26px;border-radius:50%;background:rgba(240,192,80,.15);border:1px solid rgba(240,192,80,.35);color:var(--gold);font-size:.82rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:.88rem;line-height:1.55}
+.step-text strong{color:var(--gold)}
+.step-text em{font-style:normal;background:var(--surface2);border-radius:5px;padding:1px 6px;font-size:.82rem}
+
+/* toast msg */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 20px;font-size:.88rem;color:var(--green);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:300;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <button class="back-btn" data-i18n="back" onclick="window.location.href='settings.html'">← Zurück</button>
+  <span class="header-title" data-i18n="dist_header">App weitergeben</span>
+</header>
+
+<main class="main">
+
+  <!-- QR code + URL ────────────────────────────────────────────────────────── -->
+  <div class="qr-card">
+    <div class="qr-title" data-i18n="dist_qr_title">📲 App-Link scannen oder kopieren</div>
+    <div class="qr-sub" data-i18n="dist_qr_sub">Einfach den QR-Code scannen oder den Link kopieren und weiterschicken</div>
+
+    <div class="qr-wrap">
+      <img id="qr-img"
+           src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&color=0f1028&bgcolor=ffffff&data=https%3A%2F%2Fcreator-mario.github.io%2FCHRISTUS-%2F"
+           alt="QR-Code"
+           onerror="this.style.display='none';document.getElementById('qr-offline').style.display='block'">
+    </div>
+    <div id="qr-offline" class="qr-offline" data-i18n="dist_qr_offline">QR-Code (Internet erforderlich)</div>
+
+    <div class="url-box">
+      <span class="url-text" id="app-url">https://creator-mario.github.io/CHRISTUS-/</span>
+      <button class="copy-btn" id="copy-btn" onclick="copyUrl()" data-i18n="dist_copy_btn">Kopieren</button>
+    </div>
+
+    <button class="install-prompt-btn" id="install-prompt-btn" onclick="doInstall()" data-i18n="dist_install_btn">📲 App jetzt installieren</button>
+    <button class="share-big-btn" onclick="shareApp()" data-i18n="dist_share_btn">🔗 Link teilen (WhatsApp, E-Mail …)</button>
+  </div>
+
+  <!-- Platform instructions ───────────────────────────────────────────────── -->
+  <p class="section-title" data-i18n="dist_steps_title">Installationsanleitung</p>
+
+  <!-- Android -->
+  <div class="platform-card" id="card-android">
+    <div class="platform-header" onclick="toggleCard('android')">
+      <span class="platform-icon">🤖</span>
+      <div>
+        <div class="platform-name" data-i18n="dist_android_title">Android</div>
+        <div class="platform-hint" data-i18n="dist_android_hint">Chrome, Samsung Internet</div>
+      </div>
+      <span class="platform-chevron">›</span>
+    </div>
+    <div class="platform-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text" data-i18n="dist_android_1">Öffne den App-Link in <strong>Chrome</strong> auf dem Android-Gerät.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text" data-i18n="dist_android_2">Tippe oben rechts auf das <strong>Drei-Punkte-Menü ⋮</strong>.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text" data-i18n="dist_android_3">Wähle <em>„App installieren"</em> oder <em>„Zum Startbildschirm hinzufügen"</em>.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text" data-i18n="dist_android_4">Tippe auf <strong>„Installieren"</strong> – die App erscheint wie eine normale App auf dem Startbildschirm.</div></div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="platform-card" id="card-ios">
+    <div class="platform-header" onclick="toggleCard('ios')">
+      <span class="platform-icon">🍎</span>
+      <div>
+        <div class="platform-name" data-i18n="dist_ios_title">iPhone / iPad (iOS)</div>
+        <div class="platform-hint" data-i18n="dist_ios_hint">Safari</div>
+      </div>
+      <span class="platform-chevron">›</span>
+    </div>
+    <div class="platform-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text" data-i18n="dist_ios_1">Öffne den App-Link in <strong>Safari</strong> auf dem iPhone oder iPad.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text" data-i18n="dist_ios_2">Tippe unten in der Mitte auf das <strong>Teilen-Symbol ↑□</strong>.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text" data-i18n="dist_ios_3">Scrolle im Menü nach unten und tippe auf <em>„Zum Home-Bildschirm"</em>.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text" data-i18n="dist_ios_4">Tippe oben rechts auf <strong>„Hinzufügen"</strong> – die App erscheint auf dem Home-Bildschirm.</div></div>
+    </div>
+  </div>
+
+  <!-- Desktop -->
+  <div class="platform-card" id="card-desktop">
+    <div class="platform-header" onclick="toggleCard('desktop')">
+      <span class="platform-icon">💻</span>
+      <div>
+        <div class="platform-name" data-i18n="dist_desktop_title">Windows / Mac / Linux</div>
+        <div class="platform-hint" data-i18n="dist_desktop_hint">Chrome, Edge</div>
+      </div>
+      <span class="platform-chevron">›</span>
+    </div>
+    <div class="platform-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text" data-i18n="dist_desktop_1">Öffne den App-Link in <strong>Chrome</strong> oder <strong>Edge</strong>.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text" data-i18n="dist_desktop_2">Klicke in der Adressleiste auf das <strong>Installations-Symbol ⊕</strong> (rechts in der Adressleiste).</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text" data-i18n="dist_desktop_3">Alternativ: Öffne das <strong>Browser-Menü ⋮</strong> und wähle <em>„CHRISTUS installieren"</em>.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text" data-i18n="dist_desktop_4">Bestätige mit <strong>„Installieren"</strong> – die App öffnet sich danach als eigenständiges Fenster.</div></div>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var APP_URL = 'https://creator-mario.github.io/CHRISTUS-/';
+
+function showToast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 2500);
+}
+
+function copyUrl() {
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(APP_URL).then(function() {
+      showToast(t('dist_copied'));
+      btn.textContent = '✓';
+      setTimeout(function() { btn.textContent = t('dist_copy_btn'); }, 2000);
+    }).catch(function() { fallbackCopy(); });
+  } else {
+    fallbackCopy();
+  }
+}
+
+function fallbackCopy() {
+  var ta = document.createElement('textarea');
+  ta.value = APP_URL;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  if (ok) { showToast(t('dist_copied')); } else { showToast(APP_URL); }
+}
+
+function shareApp() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'CHRISTUS \u2013 Glaubensbildung & Nachfolge',
+      text: t('share_text'),
+      url: APP_URL
+    }).catch(function() {});
+  } else {
+    copyUrl();
+  }
+}
+
+function toggleCard(id) {
+  var card = document.getElementById('card-' + id);
+  if (card) card.classList.toggle('open');
+}
+
+// Auto-expand the card that matches the current platform
+(function() {
+  var ua = navigator.userAgent;
+  if (/android/i.test(ua)) { document.getElementById('card-android').classList.add('open'); }
+  else if (/iphone|ipad|ipod/i.test(ua)) { document.getElementById('card-ios').classList.add('open'); }
+  else { document.getElementById('card-desktop').classList.add('open'); }
+})();
+
+// PWA install prompt
+var deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  document.getElementById('install-prompt-btn').style.display = 'block';
+});
+window.addEventListener('appinstalled', function() {
+  deferredInstallPrompt = null;
+  document.getElementById('install-prompt-btn').style.display = 'none';
+  showToast(t('install_already'));
+});
+function doInstall() {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(function() { deferredInstallPrompt = null; });
+}
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('../sw.js').catch(function() {});
+}
+
+applyLang();
+</script>
+</body>
+</html>
