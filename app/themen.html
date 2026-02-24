@@ -410,8 +410,8 @@ function openTopic(id) {
 
   // Erklärung
   var eSection = document.getElementById('td-erkl-section');
-  if (t.erklaerung) {
-    var erkl = (lang === 'en' && t.en_erklaerung) ? t.en_erklaerung : t.erklaerung;
+  var erkl = (lang === 'en' && t.en_erklaerung) ? t.en_erklaerung : t.erklaerung;
+  if (erkl) {
     document.getElementById('td-erkl').textContent = erkl;
     eSection.style.display = '';
   } else {
