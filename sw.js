@@ -1,6 +1,6 @@
-// CHRISTUS App v1.17.5 – Service Worker
+// CHRISTUS App v1.17.6 – Service Worker
 // Bump APP_VERSION on every release so the old cache is purged automatically.
-const APP_VERSION = '1.17.5';
+const APP_VERSION = '1.17.6';
 const CACHE_STATIC = 'christus-static-' + APP_VERSION;
 const CACHE_PAGES  = 'christus-pages-'  + APP_VERSION;
 

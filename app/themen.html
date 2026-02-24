@@ -122,7 +122,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.17.5</span>
+  <span class="header-version">v1.17.6</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="themen_header">Themen</span>
   <button class="back-btn" id="backBtn" onclick="showList()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -492,14 +492,14 @@ function filterThemen(q) {
     var qLow = q.toLowerCase();
     var lang = localStorage.getItem('selectedLanguage') || 'de';
     var filtered = THEMEN.filter(function(t) {
-      return t.titel.toLowerCase().indexOf(qLow) !== -1 ||
-             t.thema.toLowerCase().indexOf(qLow) !== -1 ||
+      var titleToSearch = (lang === 'en' && t.en_titel) ? t.en_titel : t.titel;
+      var themaToSearch = (lang === 'en' && t.en_thema) ? t.en_thema : t.thema;
+      var erklToSearch  = (lang === 'en' && t.en_erklaerung) ? t.en_erklaerung : t.erklaerung;
+      return titleToSearch.toLowerCase().indexOf(qLow) !== -1 ||
+             themaToSearch.toLowerCase().indexOf(qLow) !== -1 ||
              t.bibelstelle.toLowerCase().indexOf(qLow) !== -1 ||
              t.querverweise.toLowerCase().indexOf(qLow) !== -1 ||
-             t.erklaerung.toLowerCase().indexOf(qLow) !== -1 ||
-             (lang === 'en' && t.en_titel && t.en_titel.toLowerCase().indexOf(qLow) !== -1) ||
-             (lang === 'en' && t.en_thema && t.en_thema.toLowerCase().indexOf(qLow) !== -1) ||
-             (lang === 'en' && t.en_erklaerung && t.en_erklaerung.toLowerCase().indexOf(qLow) !== -1);
+             erklToSearch.toLowerCase().indexOf(qLow) !== -1;
     });
     currentTopicList = filtered;
     renderThemen(filtered);

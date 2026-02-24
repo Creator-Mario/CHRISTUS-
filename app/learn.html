@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#f0c050">
-<title>CHRISTUS v1.17.5 – Lernbereich</title>
+<title>CHRISTUS v1.17.6 – Lernbereich</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
@@ -119,7 +119,7 @@ a{color:var(--gold);text-decoration:none}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.17.5</span>
+  <span class="header-version">v1.17.6</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="learn_area">Lernbereich</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zur&#252;ck</button>
 </header>
@@ -326,7 +326,9 @@ function openModule(nr) {
   const recent = JSON.parse(localStorage.getItem('christus_recent') || '[]').filter(r => r.nr !== nr);
   recent.unshift({ nr: m.modul_nr, title: modTitle(m), cat: t('cat_name_' + m.kategorie_nr) || m.kategorie });
   localStorage.setItem('christus_recent', JSON.stringify(recent.slice(0,8)));
-  const sk = m.schluesselbegriffe.split(',').map(s => s.trim()).filter(Boolean);
+  const lang = localStorage.getItem('selectedLanguage') || 'de';
+  const skStr = (lang === 'en' && m.en_schluesselbegriffe) ? m.en_schluesselbegriffe : m.schluesselbegriffe;
+  const sk = skStr.split(',').map(s => s.trim()).filter(Boolean);
   const qs = m.weiterdenken.split('?').map(s => { const q = s.trim(); return q ? q + '?' : ''; }).filter(s => s.length > 2);
   function sec(id, icon, label, tag, body) {
     return '<div class="section"><div class="sec-hdr" onclick="toggleSec(\'' + id + '\')" id="hdr-' + id + '">' +
