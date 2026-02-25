@@ -202,10 +202,11 @@ button{font-family:inherit;cursor:pointer}
   <div class="screen" id="screen-reader">
     <div class="reader-header">
       <span style="font-size:28px">&#128214;</span>
-      <div>
+      <div style="flex:1">
         <div class="reader-book" id="reader-book-title"></div>
         <div class="reader-sub" id="reader-book-sub"></div>
       </div>
+      <button class="ch-label" id="reader-ch-top" onclick="event.stopPropagation();gotoChapterSelect()"></button>
     </div>
     <!-- Highlight toolbar -->
     <div class="hl-toolbar">
@@ -556,8 +557,9 @@ function openReader(bookName, chapter) {
 
     // Header
     document.getElementById('reader-book-title').textContent = bookDisplay;
-    document.getElementById('reader-book-sub').textContent =
-      allChapters.length + t('bible_chapter_count') + ' · ' + t('bible_chapter_word') + ' ' + chapter;
+    document.getElementById('reader-book-sub').textContent = allChapters.length + t('bible_chapter_count');
+    document.getElementById('reader-ch-top').textContent = t('bible_chapter_word') + ' ' + chapter + ' / ' + allChapters.length;
+    document.getElementById('reader-ch-top').title = t('bible_chapter');
     document.getElementById('breadcrumb').textContent = bookDisplay + ' ' + chapter;
 
     // Chapter jump bar — numbered buttons, active one highlighted
@@ -586,11 +588,11 @@ function openReader(bookName, chapter) {
     document.getElementById('ch-label-center').textContent = t('bible_chapter_word') + ' ' + chapter + ' / ' + allChapters.length;
     document.getElementById('ch-label-center').title = t('bible_chapter');
 
-    // Make the reader header clickable to open chapter selection
+    // Make the reader header clickable to go back to book selection
     var readerHdr = document.querySelector('#screen-reader .reader-header');
     if (readerHdr) {
       readerHdr.classList.add('clickable');
-      readerHdr.onclick = function() { gotoChapterSelect(); };
+      readerHdr.onclick = function() { showBooks(); };
     }
 
     showScreen('reader');
