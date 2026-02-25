@@ -323,7 +323,7 @@ function openModule(modulNr) {
   // Querverweise (inside Bibelarbeit section or separate)
   if (m.querverweise.length > 0) {
     let qvHtml = '<ul class="querverweise-list">';
-    m.querverweise.forEach(q => qvHtml += '<li>' + esc(q) + '</li>');
+    m.querverweise.forEach(q => { const mm = q.match(/Modul\s+(\d+\.\d+)/); if (mm) qvHtml += '<li style="cursor:pointer;text-decoration:underline" onclick="openModule(\'' + mm[1] + '\')">' + '&#128279; ' + esc(q) + '</li>'; else qvHtml += '<li>' + esc(q) + '</li>'; });
     qvHtml += '</ul>';
     html += section(safeId+'_qv', 'sec-bibel', '🔗', 'Querverweise', 'Vernetzung', qvHtml);
   }

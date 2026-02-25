@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#f0c050">
-<title>CHRISTUS v1.17.13 – Lernbereich</title>
+<title>CHRISTUS v1.17.14 – Lernbereich</title>
 <link rel="manifest" href="manifest.json">
 <script src="translations.js"></script>
 <style>
@@ -119,7 +119,7 @@ a{color:var(--gold);text-decoration:none}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.17.13</span>
+  <span class="header-version">v1.17.14</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="learn_area">Lernbereich</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zur&#252;ck</button>
 </header>
@@ -398,7 +398,7 @@ function openModule(nr) {
   const qvList = (lang === 'en' && m.en_querverweise && m.en_querverweise.length) ? m.en_querverweise : m.querverweise;
   if (qvList.length) {
     html += sec(sid+'_qv', '&#128279;', t('sec_qv'), t('sec_qv_tag'),
-      '<ul class="qv-list">' + qvList.map(q => { const url = bibleHref(q); return url ? '<li><a href="' + esc(url) + '" style="color:var(--gold);text-decoration:none">&#128214; ' + esc(q) + '</a></li>' : '<li>' + esc(q) + '</li>'; }).join('') + '</ul>');
+      '<ul class="qv-list">' + qvList.map(q => { const url = bibleHref(q); if (url) return '<li><a href="' + esc(url) + '" style="color:var(--gold);text-decoration:none">&#128214; ' + esc(q) + '</a></li>'; const mm = q.match(/Modul\s+(\d+\.\d+)/); if (mm) return '<li><span style="color:var(--gold);cursor:pointer;text-decoration:underline" onclick="openModule(\'' + mm[1] + '\')">' + '&#128279; ' + esc(q) + '</span></li>'; return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>');
   }
   html += sec(sid+'_weiter', '&#128173;', t('sec_weiter'), t('sec_weiter_tag'),
     '<ul class="q-list">' + qs.map(q => '<li>' + esc(q) + '</li>').join('') + '</ul>');
