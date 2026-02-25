@@ -154,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 <header class="app-header">
   <span style="font-size:18px">&#10013;</span>
   <span class="header-logo">CHRISTUS</span>
-  <span class="header-version">v1.17.14</span>
+  <span class="header-version">v1.17.15</span>
   <span class="breadcrumb" id="breadcrumb" data-i18n="bible_header">Elberfelder Bibel 1905</span>
   <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none" data-i18n="back">&#8592; Zurück</button>
 </header>
@@ -444,6 +444,9 @@ function loadBible() {
       var paramChapter = params.get('chapter');
       if (paramBook && bibleData[paramBook]) {
         var ch = paramChapter ? parseInt(paramChapter, 10) : 1;
+        // Opened via link from learn.html / themen.html: back button returns to that page
+        navStack = [function() { history.back(); }];
+        updateBackBtn(true);
         openReader(paramBook, bibleData[paramBook][ch] ? ch : 1);
       } else {
         showBooks();
