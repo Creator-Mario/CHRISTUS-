@@ -1,0 +1,139 @@
+name: Build Android (Capacitor)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: build-android-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    name: Build Android APK + AAB
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: mobile-capacitor/package.json
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Install Capacitor dependencies
+        working-directory: mobile-capacitor
+        run: npm install
+
+      - name: Bundle web assets
+        working-directory: mobile-capacitor
+        run: node scripts/bundle.js
+
+      - name: Add Android platform
+        working-directory: mobile-capacitor
+        run: npx cap add android
+
+      - name: Sync web assets into Android project
+        working-directory: mobile-capacitor
+        run: npx cap sync android
+
+      - name: Cache Gradle files
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('mobile-capacitor/android/**/*.gradle*', 'mobile-capacitor/android/**/gradle-wrapper.properties') }}
+          restore-keys: gradle-
+
+      - name: Make Gradle wrapper executable
+        working-directory: mobile-capacitor/android
+        run: chmod +x gradlew
+
+      - name: Build debug APK
+        working-directory: mobile-capacitor/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Build release AAB (unsigned)
+        working-directory: mobile-capacitor/android
+        run: ./gradlew bundleRelease --no-daemon
+
+      - name: Sign release APK (optional – requires secrets)
+        if: >
+          env.KEYSTORE_BASE64 != '' &&
+          env.KEYSTORE_PASSWORD != '' &&
+          env.KEY_ALIAS != '' &&
+          env.KEY_PASSWORD != ''
+        working-directory: mobile-capacitor/android
+        run: |
+          # Decode keystore
+          echo "$KEYSTORE_BASE64" | base64 --decode > christus.keystore
+
+          # Build unsigned release APK first
+          ./gradlew assembleRelease --no-daemon
+
+          UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
+          ALIGNED="app/build/outputs/apk/release/app-release-aligned.apk"
+          SIGNED="app/build/outputs/apk/release/app-release-signed.apk"
+
+          # Locate the newest installed build-tools version robustly
+          BUILD_TOOLS=$(ls -1 "${ANDROID_SDK_ROOT}/build-tools" | sort -V | tail -1)
+          TOOLS_DIR="${ANDROID_SDK_ROOT}/build-tools/${BUILD_TOOLS}"
+          echo "Using build-tools: ${BUILD_TOOLS}"
+
+          # Align
+          "${TOOLS_DIR}/zipalign" -v 4 "$UNSIGNED" "$ALIGNED"
+
+          # Sign
+          "${TOOLS_DIR}/apksigner" sign \
+            --ks christus.keystore \
+            --ks-pass "pass:$KEYSTORE_PASSWORD" \
+            --ks-key-alias "$KEY_ALIAS" \
+            --key-pass "pass:$KEY_PASSWORD" \
+            --out "$SIGNED" \
+            "$ALIGNED"
+
+          echo "Signed APK: $SIGNED"
+        env:
+          KEYSTORE_BASE64:    ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD:  ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS:          ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD:       ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHRISTUS-android-debug-apk
+          path: mobile-capacitor/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload release AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHRISTUS-android-release-aab
+          path: mobile-capacitor/android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload signed release APK (if signing secrets were set)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHRISTUS-android-release-signed-apk
+          path: mobile-capacitor/android/app/build/outputs/apk/release/app-release-signed.apk
+          if-no-files-found: ignore
+          retention-days: 30

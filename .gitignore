@@ -1,3 +1,15 @@
-node_modules/
-package-lock.json
-package.json
+# Root-level auto-generated files (anchored to repo root with leading /)
+/node_modules/
+/package-lock.json
+/package.json
+
+# Standalone build artifacts
+desktop-electron/www/
+desktop-electron/dist/
+desktop-electron/node_modules/
+desktop-electron/package-lock.json
+
+mobile-capacitor/www/
+mobile-capacitor/android/
+mobile-capacitor/node_modules/
+mobile-capacitor/package-lock.json

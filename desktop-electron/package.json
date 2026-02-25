@@ -1,0 +1,49 @@
+{
+  "name": "christus-desktop",
+  "version": "1.17.16",
+  "description": "CHRISTUS – Jesus Christus Retter & Kompass (Desktop-App für Windows)",
+  "main": "main.js",
+  "author": "Mario Reiner Denzer",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "prebuild": "node scripts/bundle.js",
+    "build": "electron-builder --publish never",
+    "build:win": "electron-builder --win --publish never"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.creatormario.christus",
+    "productName": "CHRISTUS",
+    "copyright": "© Mario Reiner Denzer",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "www/**/*"
+    ],
+    "win": {
+      "icon": "www/app/icons/icon-512.png",
+      "target": [
+        { "target": "portable", "arch": ["x64"] },
+        { "target": "zip",      "arch": ["x64"] },
+        { "target": "nsis",     "arch": ["x64"] }
+      ]
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "artifactName": "${productName}-${version}-setup.exe"
+    }
+  }
+}

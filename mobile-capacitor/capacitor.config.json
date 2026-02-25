@@ -1,0 +1,8 @@
+{
+  "appId": "com.creatormario.christus",
+  "appName": "Jesus Christus",
+  "webDir": "www",
+  "server": {
+    "cleartext": false
+  }
+}

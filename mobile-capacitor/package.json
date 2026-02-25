@@ -1,0 +1,22 @@
+{
+  "name": "christus-mobile",
+  "version": "1.17.16",
+  "description": "CHRISTUS – Jesus Christus Retter & Kompass (Android-App via Capacitor)",
+  "author": "Mario Reiner Denzer",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "prebuild": "node scripts/bundle.js",
+    "sync": "npm run prebuild && npx cap sync android",
+    "build:apk": "npm run sync && cd android && ./gradlew assembleDebug",
+    "build:aab": "npm run sync && cd android && ./gradlew bundleRelease",
+    "build:apk:release": "npm run sync && cd android && ./gradlew assembleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0"
+  }
+}

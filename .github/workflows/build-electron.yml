@@ -1,0 +1,68 @@
+name: Build Windows Desktop (Electron)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: build-electron-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    name: Build Windows portable ZIP + EXE
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: desktop-electron/package.json
+
+      - name: Install dependencies
+        working-directory: desktop-electron
+        run: npm install
+
+      - name: Bundle web assets
+        working-directory: desktop-electron
+        run: node scripts/bundle.js
+
+      - name: Build Electron app (portable + ZIP + installer)
+        working-directory: desktop-electron
+        run: npm run build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload portable EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHRISTUS-windows-portable-exe
+          path: desktop-electron/dist/*portable*.exe
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload ZIP archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHRISTUS-windows-zip
+          path: desktop-electron/dist/*.zip
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload NSIS installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHRISTUS-windows-setup-exe
+          path: desktop-electron/dist/*setup*.exe
+          if-no-files-found: warn
+          retention-days: 30
