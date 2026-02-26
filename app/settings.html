@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f0c050">
+<title>CHRISTUS – Einstellungen</title>
+<link rel="manifest" href="manifest.json">
+<script src="translations.js"></script>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1208;--surface:#241a0a;--surface2:#2e2010;--border:#5a3e10;
+  --gold:#f5c842;--gold2:#e0a020;--gold3:#fad878;--text:#fdf3dc;--muted:#c8a86a;
+  --green:#4ade80;--blue:#60a8f5;--red:#f08080;
+  --radius:14px;--radius-sm:9px;
+}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:radial-gradient(ellipse at 50% -15%,rgba(240,180,40,.18) 0%,transparent 55%) var(--bg);color:var(--text);min-height:100vh;line-height:1.75}
+a{color:var(--gold);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.back-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:.85rem;cursor:pointer;transition:.2s}
+.back-btn:hover{border-color:var(--gold);color:var(--gold)}
+.header-title{font-weight:700;font-size:1rem}
+.main{padding:20px;max-width:600px;margin:0 auto;padding-bottom:80px}
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:16px}
+.big-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#0f1028;flex-shrink:0}
+.profile-info .name{font-size:1.2rem;font-weight:700}
+.profile-info .sub{font-size:.82rem;color:var(--muted);margin-top:3px}
+.section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.section-header{padding:14px 18px;border-bottom:1px solid var(--border);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border-bottom:none}
+.setting-label{font-size:.9rem;font-weight:600}
+.setting-sub{font-size:.78rem;color:var(--muted);margin-top:2px}
+.setting-value{font-size:.85rem;color:var(--muted)}
+.setting-action{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 14px;color:var(--text);font-size:.82rem;cursor:pointer;transition:.2s}
+.setting-action:hover{border-color:var(--gold);color:var(--gold)}
+.setting-action.danger{color:var(--red);border-color:rgba(231,76,60,.3)}
+.setting-action.danger:hover{border-color:var(--red);background:rgba(231,76,60,.1)}
+/* Inline change-password form */
+.change-pass-inline{padding:14px 18px;border-top:1px solid var(--border)}
+.change-pass-inline .form-group{margin-bottom:12px}
+.change-pass-inline label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px;font-weight:600}
+.change-pass-inline input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;color:var(--text);font-size:.9rem;outline:none;transition:.2s;font-family:inherit}
+.change-pass-inline input:focus{border-color:var(--gold)}
+.btn-save{width:100%;padding:11px;background:var(--gold);color:#0f1028;font-size:.9rem;font-weight:700;border:none;border-radius:var(--radius-sm);margin-top:4px;transition:.2s;cursor:pointer}
+.btn-save:hover{background:var(--gold2)}
+.lang-grid{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px}
+.lang-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:.85rem;cursor:pointer;transition:.2s}
+.lang-btn.active{border-color:var(--gold);background:rgba(240,192,80,.12);color:var(--gold);font-weight:700}
+.version-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--muted);font-size:.82rem}
+.version-card .v{font-size:1.4rem;font-weight:700;color:var(--gold);display:block;margin-bottom:4px}
+.msg{font-size:.82rem;text-align:center;margin-top:8px;min-height:18px;color:var(--green)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100}
+.bottom-nav a{flex:1;padding:9px 4px;text-align:center;font-size:.65rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;transition:.2s}
+.bottom-nav a .ni{font-size:19px}
+.bottom-nav a.active,.bottom-nav a:hover{color:var(--gold)}
+.update-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:#1c1d48;border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s ease;font-size:.85rem}
+.update-banner.visible{transform:translateY(0)}
+.update-banner .upd-text{flex:1;color:var(--text)}
+.update-banner .upd-text strong{color:var(--gold)}
+.update-btn{background:var(--gold);color:#0f1028;border:none;border-radius:7px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s}
+.update-btn:hover{background:var(--gold2)}
+.update-dismiss{background:transparent;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:2px 6px;line-height:1}
+</style>
+</head>
+<body>
+<div class="update-banner" id="update-banner">
+  <span class="upd-text" data-i18n="update_text">&#128260; <strong>Update verfügbar!</strong> Neue Version der App bereit.</span>
+  <button class="update-btn" data-i18n="update_btn" onclick="applyUpdate()">Jetzt aktualisieren</button>
+  <button class="update-dismiss" onclick="dismissUpdate()" data-i18n-title="close">&#10005;</button>
+</div>
+<header class="app-header">
+  <button class="back-btn" data-i18n="back" onclick="window.location.href='home.html'">← Zurück</button>
+  <span class="header-title" data-i18n="settings_header">Einstellungen</span>
+</header>
+
+<main class="main">
+  <div class="profile-card">
+    <div class="big-avatar" id="big-avatar">?</div>
+    <div class="profile-info">
+      <div class="name" id="profile-name" data-i18n="status_checking">Lädt…</div>
+      <div class="sub" id="profile-sub"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" data-i18n="account_section">Konto</div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="username_setting">Benutzername</div><div class="setting-sub" id="username-display"></div></div>
+    </div>
+    <div class="setting-row" id="email-row" style="display:none">
+      <div><div class="setting-label" data-i18n="email_setting">E-Mail</div><div class="setting-sub" id="email-display"></div></div>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="progress_setting">Lernfortschritt</div><div class="setting-sub" id="prog-info"></div></div>
+      <button class="setting-action danger" data-i18n="reset_btn" onclick="resetProgress()">Zurücksetzen</button>
+    </div>
+    <div class="setting-row" id="change-pass-row" style="display:none">
+      <div><div class="setting-label" data-i18n="change_password_label">Passwort ändern</div><div class="setting-sub" data-i18n="change_password_sub">Neues Passwort festlegen</div></div>
+      <button class="setting-action" data-i18n="change_password_btn" onclick="toggleChangePass()">Ändern</button>
+    </div>
+    <div class="change-pass-inline" id="change-pass-inline" style="display:none">
+      <div class="form-group">
+        <label for="s-new-pass" data-i18n="new_pass_label">Neues Passwort</label>
+        <input type="password" id="s-new-pass" data-i18n-placeholder="new_pass_placeholder" placeholder="Neues Passwort (min. 6 Zeichen)" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="s-new-pass2" data-i18n="confirm_pass_label">Passwort bestätigen</label>
+        <input type="password" id="s-new-pass2" data-i18n-placeholder="confirm_pass_placeholder" placeholder="Passwort wiederholen" autocomplete="new-password">
+      </div>
+      <button class="btn-save" onclick="doChangePassSettings()" data-i18n="save_pass_btn">Passwort speichern</button>
+    </div>
+    <div class="setting-row" id="delete-account-row" style="display:none">
+      <div><div class="setting-label" data-i18n="delete_account_label">Konto löschen</div><div class="setting-sub" data-i18n="delete_account_sub">Konto und alle gespeicherten Daten dauerhaft entfernen</div></div>
+      <button class="setting-action danger" data-i18n="delete_account_btn" aria-label="Konto dauerhaft löschen" onclick="deleteAccount()">Konto löschen</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" data-i18n="lang_section">Sprache</div>
+    <div class="lang-grid">
+      <button class="lang-btn" data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" data-i18n="app_section">App</div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="share_label">App teilen</div><div class="setting-sub" data-i18n="share_sub">Link zur App an andere weitergeben</div></div>
+      <button class="setting-action" id="share-btn" data-i18n="share_btn" onclick="shareApp()">🔗 Teilen</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="dist_guide_btn">📋 Anleitung zur Weitergabe</div><div class="setting-sub" data-i18n="dist_guide_sub">QR-Code, Link &amp; Schritt-für-Schritt-Anleitung</div></div>
+      <button class="setting-action" onclick="window.location.href='install.html'" data-i18n="dist_open_btn">Öffnen</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="install_label">App installieren</div><div class="setting-sub" data-i18n="install_sub">App auf Gerät installieren (offline verfügbar)</div></div>
+      <button class="setting-action" id="install-btn" data-i18n="install_btn" onclick="doInstall()">Installieren</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="offline_mode">Offline-Modus</div><div class="setting-sub" id="sw-status" data-i18n="status_checking">Prüfe…</div></div>
+      <span class="setting-value" id="sw-badge"></span>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="download_offline_label">Offline herunterladen</div><div class="setting-sub" id="download-sub" data-i18n="download_offline_sub">Alle Inhalte für die Offline-Nutzung speichern</div></div>
+      <button class="setting-action" id="download-btn" data-i18n="download_offline_btn" onclick="downloadOffline()">⬇ Herunterladen</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="clear_cache_label">Cache leeren</div><div class="setting-sub" data-i18n="offline_reload_sub">App-Daten neu laden</div></div>
+      <button class="setting-action" data-i18n="clear_cache_btn" onclick="clearCache()">Leeren</button>
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label" data-i18n="logout_label">Abmelden</div><div class="setting-sub" data-i18n="logout_sub">Session beenden</div></div>
+      <button class="setting-action danger" data-i18n="logout_btn" onclick="logout()">Abmelden</button>
+    </div>
+  </div>
+
+  <div class="version-card">
+    <span class="v">v1.17.16</span>
+    <span data-i18n="version_tagline">Jesus Christus – Retter &amp; Kompass</span><br>
+    <span data-i18n="version_description">Dein täglicher Begleiter im Glauben</span><br><br>
+    <span style="font-size:.75rem" data-i18n="version_features">7 Kategorien · 42 Module · Elberfelder Bibel · Offline-fähig</span><br><br>
+    <span style="font-size:.75rem;color:var(--gold)" data-i18n="copyright_text">© Mario Reiner Denzer</span><br>
+    <span style="font-size:.72rem" data-i18n="copyright_sub">Alle Rechte vorbehalten</span>
+  </div>
+  <div class="msg" id="msg"></div>
+</main>
+
+<script>
+function showMsg(t, err) {
+  const m = document.getElementById('msg');
+  m.style.color = err ? 'var(--red)' : 'var(--green)';
+  m.textContent = t;
+  setTimeout(() => m.textContent = '', 3000);
+}
+
+function loadProfile() {
+  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+  if (!session) { window.location.href = 'login.html'; return; }
+  if (!session.email) { window.location.href = 'bible.html'; return; }
+  const name  = session.name;
+  const email = session.email || null;
+  document.getElementById('big-avatar').textContent = name !== 'Gast' ? name.substring(0,2).toUpperCase() : '👤';
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('username-display').textContent = name;
+
+  // Show email for registered (non-guest) users
+  const emailRow = document.getElementById('email-row');
+  const emailEl  = document.getElementById('email-display');
+  if (email && emailEl) { emailEl.textContent = email; if (emailRow) emailRow.style.display = ''; }
+  else if (emailRow)    { emailRow.style.display = 'none'; }
+
+  // Show change-password row for non-guest users
+  const cpRow = document.getElementById('change-pass-row');
+  if (cpRow) cpRow.style.display = email ? '' : 'none';
+
+  // Show delete-account row for non-guest users
+  const delRow = document.getElementById('delete-account-row');
+  if (delRow) delRow.style.display = email ? '' : 'none';
+
+  const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
+  // Look up by email (new format) or by name (legacy: backwards-compat with old username-only accounts)
+  const userData = email ? users[email] : users[name];
+  if (userData && userData.created) {
+    const d = new Date(userData.created).toLocaleDateString(localStorage.getItem('selectedLanguage') || 'de');
+    document.getElementById('profile-sub').textContent = t('member_since') + d;
+  } else {
+    document.getElementById('profile-sub').textContent = t('guest_mode');
+  }
+
+  const done = JSON.parse(localStorage.getItem('christus_done') || '[]').length;
+  document.getElementById('prog-info').textContent = done + ' ' + t('modules_done_suffix');
+
+  const lang = localStorage.getItem('selectedLanguage') || 'de';
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+}
+
+function toggleChangePass() {
+  const inline = document.getElementById('change-pass-inline');
+  if (!inline) return;
+  inline.style.display = inline.style.display === 'none' ? '' : 'none';
+  if (inline.style.display === '') {
+    const f = document.getElementById('s-new-pass');
+    if (f) f.focus();
+  }
+}
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function doChangePassSettings() {
+  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+  if (!session || !session.email) { showMsg(t('err_session_expired'), true); return; }
+  const newPass  = document.getElementById('s-new-pass').value;
+  const newPass2 = document.getElementById('s-new-pass2').value;
+  if (!newPass || newPass.length < 6) { showMsg(t('err_pass_too_short'), true); return; }
+  if (newPass !== newPass2)           { showMsg(t('err_pass_mismatch'), true);   return; }
+  const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
+  const user  = users[session.email];
+  if (!user) { showMsg(t('err_session_expired'), true); return; }
+  user.password           = await hashPassword(newPass);
+  user.mustChangePassword = false;
+  localStorage.setItem('christus_users', JSON.stringify(users));
+  document.getElementById('s-new-pass').value  = '';
+  document.getElementById('s-new-pass2').value = '';
+  document.getElementById('change-pass-inline').style.display = 'none';
+  showMsg(t('msg_pass_changed'));
+}
+
+function setLang(lang) {
+  localStorage.setItem('selectedLanguage', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  applyLang();
+  loadProfile();
+  showMsg(t('msg_lang_saved'));
+}
+
+function resetProgress() {
+  if (!confirm(t('reset_confirm'))) return;
+  localStorage.removeItem('christus_done');
+  localStorage.removeItem('christus_recent');
+  showMsg(t('msg_progress_reset'));
+  loadProfile();
+}
+
+function clearCache() {
+  if ('caches' in window) {
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() => {
+      showMsg(t('msg_cache_cleared'));
+      setTimeout(() => window.location.reload(true), 1500);
+    });
+  } else { showMsg(t('msg_no_cache')); }
+}
+
+async function downloadOffline() {
+  const btn = document.getElementById('download-btn');
+  const sub = document.getElementById('download-sub');
+  if (btn) { btn.disabled = true; btn.textContent = '…'; }
+  if (sub) sub.textContent = t('msg_download_started');
+  showMsg(t('msg_download_started'));
+
+  // Guard: Cache Storage API requires a secure context (HTTPS or localhost)
+  if (!('caches' in window)) {
+    if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
+    if (sub) sub.textContent = t('download_offline_sub');
+    showMsg(t('msg_download_error'), true);
+    return;
+  }
+
+  const OFFLINE_URLS = [
+    '../index.html',
+    './home.html',
+    './login.html',
+    './learn.html',
+    './settings.html',
+    './bible.html',
+    './themen.html',
+    './manifest.json',
+    './translations.js',
+    './icons/icon-192.png',
+    './icons/icon-512.png',
+    '../elberfelder_1905.csv',
+  ];
+
+  try {
+    // Find the SW's active pages cache so downloads are actually served offline.
+    // All URLs (HTML + static) go into the pages cache; caches.match() in the SW
+    // searches all caches, so non-HTML files stored here are also served offline.
+    // The stable fallback name 'christus-offline-v1' is preserved by sw.js activate.
+    const cacheKeys = await caches.keys();
+    // Sort matching caches so we always pick the newest version when multiple exist
+    const pageCaches = cacheKeys.filter(k => k.startsWith('christus-pages-')).sort();
+    const swPageCache = pageCaches[pageCaches.length - 1]; // newest = last alphabetically
+    const targetCache = await caches.open(swPageCache || 'christus-offline-v1');
+
+    let ok = 0;
+    for (const url of OFFLINE_URLS) {
+      try {
+        const resp = await fetch(url);
+        if (resp && resp.status === 200) {
+          await targetCache.put(url, resp.clone());
+          ok++;
+        }
+      } catch (e) { /* skip individual failures, e.g. CSV on slow connections */ }
+    }
+    if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
+    if (sub) sub.textContent = t('download_offline_sub');
+    showMsg(ok === OFFLINE_URLS.length
+      ? t('msg_download_done')
+      : t('msg_download_partial') + ' (' + ok + '/' + OFFLINE_URLS.length + ')');
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = t('download_offline_btn'); }
+    if (sub) sub.textContent = t('download_offline_sub');
+    showMsg(t('msg_download_error'), true);
+  }
+}
+
+function logout() {
+  localStorage.removeItem('christus_session');
+  window.location.href = 'login.html';
+}
+
+function deleteAccount() {
+  if (!confirm(t('delete_account_confirm'))) return;
+  const session = JSON.parse(localStorage.getItem('christus_session') || 'null');
+  if (session && session.email) {
+    const users = JSON.parse(localStorage.getItem('christus_users') || '{}');
+    delete users[session.email];
+    localStorage.setItem('christus_users', JSON.stringify(users));
+  }
+  // Clear all user-specific localStorage keys:
+  // christus_session  – login session
+  // christus_done     – completed module IDs
+  // christus_recent   – recently viewed modules
+  localStorage.removeItem('christus_session');
+  localStorage.removeItem('christus_done');
+  localStorage.removeItem('christus_recent');
+  window.location.href = 'login.html';
+}
+
+function shareApp() {
+  var url = 'https://creator-mario.github.io/CHRISTUS-/';
+  var title = t('app_name') + ' \u2013 ' + t('app_tagline');
+  var text = t('share_text');
+  if (navigator.share) {
+    navigator.share({ title: title, text: text, url: url }).catch(function() {});
+  } else if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function() {
+      showMsg(t('share_copied'));
+    }).catch(function() { showMsg(t('share_not_supported')); });
+  } else {
+    showMsg(t('share_not_supported'));
+  }
+}
+
+// PWA Install
+let deferredInstallPrompt = null;
+function updateInstallButtonState() {
+  const btn = document.getElementById('install-btn');
+  if (!btn) return;
+  btn.textContent = t('install_already');
+  btn.disabled = true;
+}
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+});
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  updateInstallButtonState();
+});
+function doInstall() {
+  if (!deferredInstallPrompt) { showMsg(t('install_not_available')); return; }
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; });
+}
+
+// ── Service Worker status + update detection ─────────────────────────────────
+let pendingWorker = null;
+let isUpdating = false;
+function showUpdateBanner() { document.getElementById('update-banner').classList.add('visible'); }
+function dismissUpdate() { document.getElementById('update-banner').classList.remove('visible'); }
+function applyUpdate() {
+  if (pendingWorker) { isUpdating = true; pendingWorker.postMessage('SKIP_WAITING'); } else { window.location.reload(); }
+}
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('../sw.js').then(reg => {
+    document.getElementById('sw-status').textContent = reg.active ? t('offline_active') : t('offline_inactive');
+    document.getElementById('sw-badge').textContent = reg.active ? '✅' : '❌';
+    if (reg.waiting) { pendingWorker = reg.waiting; showUpdateBanner(); }
+    reg.addEventListener('updatefound', () => {
+      const nw = reg.installing;
+      if (!nw) return;
+      nw.addEventListener('statechange', () => {
+        if (nw.state === 'installed' && navigator.serviceWorker.controller) { pendingWorker = nw; showUpdateBanner(); }
+      });
+    });
+  }).catch(() => {
+    document.getElementById('sw-status').textContent = t('offline_inactive');
+    document.getElementById('sw-badge').textContent = '❌';
+  });
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (isUpdating) window.location.reload(); });
+} else {
+  document.getElementById('sw-status').textContent = t('offline_unsupported');
+  document.getElementById('sw-badge').textContent = '❌';
+}
+
+applyLang();
+loadProfile();
+
+// If app is already installed (running in standalone / installed PWA mode), reflect that on the button
+if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+  updateInstallButtonState();
+}
+</script>
+
+<nav class="bottom-nav">
+  <a href="home.html"><span class="ni">🏠</span><span data-i18n="nav_home">Start</span></a>
+  <a href="learn.html"><span class="ni">📚</span><span data-i18n="nav_learn">Lernen</span></a>
+  <a href="bible.html"><span class="ni">📖</span><span data-i18n="nav_bible">Bibel</span></a>
+  <a href="learn.html" onclick="localStorage.setItem('learn_screen','glossary')"><span class="ni">📘</span><span data-i18n="nav_glossary">Themen Aufgaben</span></a>
+  <a href="settings.html" class="active"><span class="ni">⚙️</span><span data-i18n="nav_profile">Profil</span></a>
+</nav>
+</body>
+</html>
