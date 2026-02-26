@@ -152,6 +152,24 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </div>
 
+  <!-- Lokal speichern / Offline-Paket ─────────────────────────────────────── -->
+  <div class="platform-card" id="card-download">
+    <div class="platform-header" onclick="toggleCard('download')">
+      <span class="platform-icon">💾</span>
+      <div>
+        <div class="platform-name" data-i18n="dist_download_title">Lokal speichern (Offline-Paket)</div>
+        <div class="platform-hint" data-i18n="dist_download_hint">Windows · Mac · Linux – ohne Internet</div>
+      </div>
+      <span class="platform-chevron">›</span>
+    </div>
+    <div class="platform-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text" data-i18n="dist_download_1">Öffne die <a href="https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/build-web-offline.yml" target="_blank" rel="noopener"><strong>GitHub Actions Seite</strong></a> und klicke auf den letzten erfolgreichen Lauf.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text" data-i18n="dist_download_2">Lade das Artefakt <em>christus-offline-web</em> herunter und entpacke die ZIP-Datei.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text" data-i18n="dist_download_3">Windows: Doppelklick auf <em>start-local.bat</em>. Mac/Linux: Im Terminal <em>sh start-local.sh</em> ausführen. Die App öffnet sich automatisch unter <strong>http://localhost:8080</strong>.</div></div>
+      <div class="step step-sub"><div class="step-num" style="background:none;border:none;font-size:.9rem">ℹ</div><div class="step-text" style="color:var(--muted)" data-i18n="dist_download_sub">Voraussetzung: Python 3 oder Node.js (kostenlos, einmalige Installation)</div></div>
+    </div>
+  </div>
+
 </main>
 
 <div class="toast" id="toast"></div>

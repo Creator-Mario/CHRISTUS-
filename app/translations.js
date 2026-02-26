@@ -370,7 +370,13 @@
       dist_desktop_3: 'Alternativ: Öffne das <strong>Browser-Menü ⋮</strong> und wähle <em>„CHRISTUS installieren"</em>.',
       dist_desktop_4: 'Bestätige mit <strong>„Installieren"</strong> – die App öffnet sich danach als eigenständiges Fenster.',
 
-      // Copyright
+      // Offline-Paket herunterladen (Lokal speichern)
+      dist_download_title: 'Lokal speichern (Offline-Paket)',
+      dist_download_hint: 'Windows · Mac · Linux – ohne Internet',
+      dist_download_1: 'Öffne die <a href="https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/build-web-offline.yml" target="_blank" rel="noopener"><strong>GitHub Actions Seite</strong></a> und klicke auf den letzten erfolgreichen Lauf.',
+      dist_download_2: 'Lade das Artefakt <em>christus-offline-web</em> herunter und entpacke die ZIP-Datei.',
+      dist_download_3: 'Windows: Doppelklick auf <em>start-local.bat</em>. Mac/Linux: Im Terminal <em>sh start-local.sh</em> ausführen. Die App öffnet sich automatisch unter <strong>http://localhost:8080</strong>.',
+      dist_download_sub: 'Voraussetzung: Python 3 oder Node.js (kostenlos, einmalige Installation)',
       copyright_text: '© Mario Reiner Denzer',
       copyright_sub: 'Alle Rechte vorbehalten',
 
@@ -753,7 +759,13 @@
       dist_desktop_3: 'Alternatively open the <strong>browser menu ⋮</strong> and select <em>"Install CHRISTUS"</em>.',
       dist_desktop_4: 'Confirm with <strong>"Install"</strong> – the app then opens as a standalone window.',
 
-      // Copyright
+      // Offline package download (save locally)
+      dist_download_title: 'Save locally (offline package)',
+      dist_download_hint: 'Windows · Mac · Linux – no internet required',
+      dist_download_1: 'Open the <a href="https://github.com/Creator-Mario/CHRISTUS-/actions/workflows/build-web-offline.yml" target="_blank" rel="noopener"><strong>GitHub Actions page</strong></a> and click the latest successful run.',
+      dist_download_2: 'Download the artifact <em>christus-offline-web</em> and unzip the file.',
+      dist_download_3: 'Windows: double-click <em>start-local.bat</em>. Mac/Linux: run <em>sh start-local.sh</em> in a terminal. The app opens automatically at <strong>http://localhost:8080</strong>.',
+      dist_download_sub: 'Prerequisite: Python 3 or Node.js (free, one-time install)',
       copyright_text: '© Mario Reiner Denzer',
       copyright_sub: 'All rights reserved',
 
