@@ -1,0 +1,241 @@
+name: Build Offline Web ZIP
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+concurrency:
+  group: build-web-offline-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-zip:
+    name: Package offline web ZIP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Collect app files
+        run: |
+          mkdir -p christus-offline
+
+          # Core web app files
+          cp index.html           christus-offline/
+          cp sw.js                christus-offline/
+          cp language_selection.html christus-offline/
+          cp -r app               christus-offline/
+          cp Lernprogramm_Bibel.csv christus-offline/
+          cp elberfelder_1905.csv christus-offline/
+          cp kjv_1769.csv         christus-offline/
+          [ -f anleitung.html ] && cp anleitung.html christus-offline/ || true
+          cp -r preview           christus-offline/ 2>/dev/null || true
+
+      - name: Create Windows launcher (start-local.bat)
+        run: |
+          cat > christus-offline/start-local.bat << 'BATCH'
+          @echo off
+          title CHRISTUS – Lokaler Server
+          echo ============================================
+          echo  CHRISTUS App – Lokaler Web-Server
+          echo ============================================
+          echo.
+
+          REM Try Python 3
+          where python >nul 2>nul
+          if %ERRORLEVEL%==0 (
+            python -c "import sys; exit(0 if sys.version_info[0]==3 else 1)" 2>nul
+            if %ERRORLEVEL%==0 (
+              echo Python 3 gefunden. Starte Server auf http://localhost:8080 ...
+              echo Druecke Strg+C zum Beenden.
+              start http://localhost:8080
+              python -m http.server 8080
+              goto :eof
+            )
+          )
+
+          REM Try py launcher (Python 3)
+          where py >nul 2>nul
+          if %ERRORLEVEL%==0 (
+            echo Python (py) gefunden. Starte Server auf http://localhost:8080 ...
+            echo Druecke Strg+C zum Beenden.
+            start http://localhost:8080
+            py -3 -m http.server 8080
+            goto :eof
+          )
+
+          REM Try Node.js
+          where node >nul 2>nul
+          if %ERRORLEVEL%==0 (
+            echo Node.js gefunden. Starte Server auf http://localhost:8080 ...
+            echo Druecke Strg+C zum Beenden.
+            start http://localhost:8080
+            node server.js
+            goto :eof
+          )
+
+          echo FEHLER: Weder Python 3 noch Node.js wurde gefunden.
+          echo Bitte installiere Python (https://python.org) oder Node.js (https://nodejs.org).
+          pause
+          BATCH
+
+      - name: Create macOS/Linux launcher (start-local.sh)
+        run: |
+          cat > christus-offline/start-local.sh << 'SHELL'
+          #!/usr/bin/env sh
+          # CHRISTUS App – lokaler Web-Server
+          # Starte dieses Skript im Terminal: sh start-local.sh
+          set -e
+          PORT=8080
+          DIR="$(cd "$(dirname "$0")" && pwd)"
+
+          open_browser() {
+            if command -v xdg-open >/dev/null 2>&1; then
+              xdg-open "http://localhost:$PORT" &
+            elif command -v open >/dev/null 2>&1; then
+              open "http://localhost:$PORT" &
+            fi
+          }
+
+          echo "============================================"
+          echo " CHRISTUS App – Lokaler Web-Server"
+          echo "============================================"
+          echo ""
+          echo "App-Ordner: $DIR"
+
+          if command -v python3 >/dev/null 2>&1; then
+            echo "Python 3 gefunden. Server startet auf http://localhost:$PORT ..."
+            echo "Mit Strg+C beenden."
+            open_browser
+            cd "$DIR" && python3 -m http.server $PORT
+          elif command -v python >/dev/null 2>&1; then
+            echo "Python gefunden. Server startet auf http://localhost:$PORT ..."
+            echo "Mit Strg+C beenden."
+            open_browser
+            cd "$DIR" && python -m http.server $PORT
+          elif command -v node >/dev/null 2>&1; then
+            echo "Node.js gefunden. Server startet auf http://localhost:$PORT ..."
+            echo "Mit Strg+C beenden."
+            open_browser
+            cd "$DIR" && node server.js
+          else
+            echo "FEHLER: Weder Python 3 noch Node.js wurde gefunden."
+            echo "Bitte installiere Python (https://python.org) oder Node.js (https://nodejs.org)."
+            exit 1
+          fi
+          SHELL
+          chmod +x christus-offline/start-local.sh
+
+      - name: Create Node.js server helper (server.js)
+        run: |
+          cat > christus-offline/server.js << 'JS'
+          /**
+           * CHRISTUS App – minimaler lokaler HTTP-Server (Node.js)
+           * Verwendung: node server.js [port]
+           * Standard-Port: 8080
+           */
+          'use strict';
+          const http = require('http');
+          const fs   = require('fs');
+          const path = require('path');
+
+          const PORT = parseInt(process.argv[2], 10) || 8080;
+          const ROOT = __dirname;
+
+          const MIME = {
+            '.html': 'text/html; charset=utf-8',
+            '.js':   'application/javascript; charset=utf-8',
+            '.json': 'application/json; charset=utf-8',
+            '.css':  'text/css; charset=utf-8',
+            '.png':  'image/png',
+            '.jpg':  'image/jpeg',
+            '.ico':  'image/x-icon',
+            '.svg':  'image/svg+xml',
+            '.csv':  'text/csv; charset=utf-8',
+            '.txt':  'text/plain; charset=utf-8',
+          };
+
+          const server = http.createServer(function (req, res) {
+            const urlPath = decodeURIComponent(req.url.split('?')[0]);
+            const filePath = path.join(ROOT, urlPath === '/' ? 'index.html' : urlPath);
+
+            fs.stat(filePath, function (err, stat) {
+              if (err || !stat.isFile()) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.end('404 Not Found');
+                return;
+              }
+              const ext  = path.extname(filePath).toLowerCase();
+              const mime = MIME[ext] || 'application/octet-stream';
+              res.writeHead(200, { 'Content-Type': mime });
+              fs.createReadStream(filePath).pipe(res);
+            });
+          });
+
+          server.listen(PORT, '127.0.0.1', function () {
+            console.log('CHRISTUS-App läuft auf  http://localhost:' + PORT);
+            console.log('Mit Strg+C beenden.');
+          });
+          JS
+
+      - name: Create README-lokal.txt
+        run: |
+          cat > christus-offline/README-lokal.txt << 'README'
+          ============================================
+           CHRISTUS App – Offline-Paket
+          ============================================
+
+          Diese ZIP-Datei enthält die vollständige CHRISTUS-App
+          zur lokalen Nutzung ohne Internetverbindung.
+
+          SCHNELLSTART
+          ─────────────────────────────────────────────
+          Windows:
+            1. ZIP-Datei entpacken
+            2. Doppelklick auf  start-local.bat
+            3. Browser öffnet sich automatisch
+
+          macOS / Linux:
+            1. ZIP-Datei entpacken
+            2. Terminal öffnen im entpackten Ordner
+            3. Befehl:  sh start-local.sh
+            4. Browser öffnet sich automatisch
+
+          Voraussetzung:  Python 3  ODER  Node.js
+            • Python:  https://python.org
+            • Node.js: https://nodejs.org
+
+          MANUELL (ohne Launcher-Skript)
+          ─────────────────────────────────────────────
+          Im entpackten Ordner:
+            python3 -m http.server 8080
+          Dann im Browser:  http://localhost:8080
+
+          ─────────────────────────────────────────────
+          Online-Version:  https://creator-mario.github.io/CHRISTUS-/
+          Quellcode:       https://github.com/Creator-Mario/CHRISTUS-
+          ============================================
+          README
+
+      - name: Create ZIP archive
+        run: |
+          cd christus-offline
+          zip -r ../christus-offline-web.zip .
+          cd ..
+          echo "ZIP size: $(du -sh christus-offline-web.zip | cut -f1)"
+
+      - name: Upload offline web ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: christus-offline-web
+          path: christus-offline-web.zip
+          if-no-files-found: error
+          retention-days: 90
